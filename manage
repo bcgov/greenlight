@@ -19,6 +19,9 @@ case "$1" in
   rebuild)
       docker-compose build --no-cache
     ;;
+  shell)
+      docker-compose run web bash
+    ;;
   *)
     echo $"Usage: $0 {start|stop|build|rebuild}"
 esac
