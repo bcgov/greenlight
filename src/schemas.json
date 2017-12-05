@@ -1,0 +1,14 @@
+[
+    {
+        "name": "bc-corporate-registration",
+        "version": "1.0.0",
+        "attr_names": [
+            "busId",
+            "orgTypeId",
+            "jurisdictionId",
+            "LegalName",
+            "effectiveDate",
+            "endDate"
+        ]
+    }
+]
