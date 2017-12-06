@@ -7,5 +7,4 @@ configurator = Configurator()
 
 
 def index(request):
-    print(configurator.config)
     return render(request, 'index.html', configurator.config)

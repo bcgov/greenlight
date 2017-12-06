@@ -7,5 +7,23 @@
 </head>
 <body>
     <h1>{{ title }}</h1>
+    <h2>{{ description }}</h2>
+    <p>{{ explanation }}</p>
+
+    {% for form in forms %}
+        <h3>{{ form.name }}</h3>
+        <form action="/" method="post" accept-charset="utf-8">
+            {% csrf_token %}
+            {% for input in form.inputs %}
+                <input
+                    type="{{ input.type }}"
+                    name="{{ input.name }}"
+                    placeholder="{{ input.pretty }}"
+                >
+                <br />
+            {% endfor %}
+            <input type="submit">
+        </form>
+    {% endfor %}
 </body>
 </html>

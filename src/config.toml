@@ -1,6 +1,6 @@
 title = "BC Corporate Registry"
 description = "This is a description"
-explanation = "Use the form below to register a BC corporation."
+explanation = "Use the forms below to register a BC corporation."
 
 [[forms]]
 name = "Incorporation"
