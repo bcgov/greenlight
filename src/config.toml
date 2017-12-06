@@ -1,16 +1,86 @@
+# Agent info
+url = ""
+name = "BC Corporate Registry"
+abbreviation = "BCReg"
+jurisdiction_name = "British Columbia"
+jurisdiction_abbreviation = "BC"
+
+# This seed must be authorized on the ledger!
+wallet_seed = "bc_registries_agent_000000000000"
+
+# Webpage info
 title = "BC Corporate Registry"
 description = "This is a description"
 explanation = "Use the forms below to register a BC corporation."
 
+# Forms
 [[forms]]
 name = "Incorporation"
-schema_name = "incorporation"
+for_schema = "incorporation.bc_registries"
 
   [[forms.inputs]]
   type = "text"
   required = true
   name = "legal_name"
   pretty = "Legal Name"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "addressee"
+  pretty = "Addressee"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "address_line_1"
+  pretty = "Address Line 1"
+
+  [[forms.inputs]]
+  type = "text"
+  required = false
+  name = "address_line_2"
+  pretty = "Address Line 2"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "city"
+  pretty = "City"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "province"
+  pretty = "Province"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "postal_code"
+  pretty = "Postal Code"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "country"
+  pretty = "Country"
+
+[[forms]]
+name = "Doing Business As"
+for_schema = "doing_business_as.bc_registries"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "legal_entity_id"
+  pretty = "Legal Entity ID"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "doing_business_as_name"
+  pretty = "Doing Business As Name"
 
   [[forms.inputs]]
   type = "text"

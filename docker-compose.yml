@@ -7,6 +7,7 @@ services:
     command: python3 manage.py runserver 0.0.0.0:8000
     environment:
       DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
+      THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
     links:
       - postgres
     volumes:
