@@ -3,7 +3,10 @@ import json
 from von_agent.nodepool import NodePool
 from von_agent.demo_agents import TrustAnchorAgent, BCRegistrarAgent
 
-import eventloop
+from . import eventloop
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class SchemaManager():
@@ -16,7 +19,7 @@ class SchemaManager():
     def __init__(self):
         self.pool = NodePool(
             'nodepool',
-            '/home/indy/.genesis')
+            '/app/.genesis')
         eventloop.do(self.pool.open())
 
         self.trust_anchor = TrustAnchorAgent(
@@ -38,9 +41,11 @@ class SchemaManager():
             9703,
             'api/v0')
 
+        logger.info('opening pool...\n\n')
         eventloop.do(self.bcreg_agent.open())
+        logger.info('pool opened...\n\n')
 
-    def publishSchema(self, schema):
+    def publish_schema(self, schema):
         # Check if schema exists on ledger
         schema_json = eventloop.do(self.trust_anchor.get_schema(
             self.trust_anchor.did, schema['name'], schema['version']))
@@ -51,7 +56,13 @@ class SchemaManager():
             schema_json = eventloop.do(self.trust_anchor.get_schema(
                 self.trust_anchor.did, schema['name'], schema['version']))
 
-        eventloop.do(self.bcreg_agent.send_claim_def(schema_json))
+        schema = json.loads(schema_json)
+
+        # Check if claim definition has been published. If not then publish.
+        claim_def_json = eventloop.do(self.bcreg_agent.get_claim_def(
+            schema['seqNo'], self.bcreg_agent.did))
+        if not json.loads(claim_def_json):
+            eventloop.do(self.bcreg_agent.send_claim_def(schema_json))
 
     def submit_claim(self, schema):
         claim_def_json = eventloop.do(self.bcreg_agent.get_claim_def(

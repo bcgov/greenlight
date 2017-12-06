@@ -8,7 +8,7 @@ cd "$SCRIPT_HOME"
 
 case "$1" in
   start)
-      docker-compose up web
+      docker-compose up --force-recreate web
     ;;
   stop)
       docker-compose stop

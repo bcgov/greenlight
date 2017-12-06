@@ -1,3 +1,56 @@
 title = "BC Corporate Registry"
 description = "This is a description"
-explanation = "Use the form below to register a BC corporation"
+explanation = "Use the form below to register a BC corporation."
+
+[[forms]]
+name = "Incorporation"
+schema_name = "incorporation"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "legal_name"
+  pretty = "Legal Name"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "addressee"
+  pretty = "Addressee"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "address_line_1"
+  pretty = "Address Line 1"
+
+  [[forms.inputs]]
+  type = "text"
+  required = false
+  name = "address_line_2"
+  pretty = "Address Line 2"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "city"
+  pretty = "City"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "province"
+  pretty = "Province"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "postal_code"
+  pretty = "Postal Code"
+
+  [[forms.inputs]]
+  type = "text"
+  required = true
+  name = "country"
+  pretty = "Country"
+

@@ -1,14 +1,21 @@
 [
     {
-        "name": "bc-corporate-registration",
+        "name": "incorporation",
         "version": "1.0.0",
         "attr_names": [
-            "busId",
-            "orgTypeId",
-            "jurisdictionId",
-            "LegalName",
-            "effectiveDate",
-            "endDate"
+            "legal_entity_id",
+            "corp_num",
+            "legal_name",
+            "org_type",
+            "addressee",
+            "address_line_1",
+            "address_line_2",
+            "city",
+            "province",
+            "postal_code",
+            "country",
+            "effective_date",
+            "end_date"
         ]
     }
 ]

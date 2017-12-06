@@ -16,4 +16,4 @@ requests==2.18.4
 six==1.11.0
 toml==0.9.2
 urllib3==1.22
-von-agent==0.0.0.dev4
+git+https://github.com/nrempel/von_agent#egg=von-agent
