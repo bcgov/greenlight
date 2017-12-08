@@ -5,7 +5,7 @@ import requests
 
 from .schema import SchemaManager
 from .config import Configurator
-from .agent import Agent
+from .agent import Issuer
 
 from django.apps import AppConfig
 
@@ -17,7 +17,7 @@ class VonConnectorConfig(AppConfig):
     name = 'von_connector'
 
     def ready(self):
-        agent = Agent()
+        agent = Issuer()
         config = Configurator().config
         now = datetime.now().strftime("%Y-%m-%d")
 
