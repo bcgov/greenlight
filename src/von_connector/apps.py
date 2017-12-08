@@ -1,6 +1,5 @@
 from datetime import datetime
 import os
-import json
 
 import requests
 
@@ -9,7 +8,6 @@ from .config import Configurator
 from .agent import Agent
 
 from django.apps import AppConfig
-from django.conf import settings
 
 import logging
 logger = logging.getLogger(__name__)
@@ -72,15 +70,7 @@ class VonConnectorConfig(AppConfig):
         # Publish the schemas I care about to the ledger
         # then register them in TheOrgBook
         schema_manager = SchemaManager()
-        schemas_path = os.path.abspath(settings.BASE_DIR + '/schemas.json')
-        try:
-            with open(schemas_path, 'r') as schemas_file:
-                schemas_json = schemas_file.read()
-        except FileNotFoundError as e:
-            logger.error('Could not find schemas.json. Exiting.')
-            return
-        schemas = json.loads(schemas_json)
-        for schema in schemas:
+        for schema in schema_manager.schemas:
             # Publish to ledger
             schema_manager.publish_schema(schema)
             # Register in TheOrgBook

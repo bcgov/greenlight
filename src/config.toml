@@ -13,9 +13,14 @@ title = "BC Corporate Registry"
 description = "This is a description"
 explanation = "Use the forms below to register a BC corporation."
 
-# Forms
+# Forms:
+# 
+# These structures are used to build the forms
+# in the UI.
+
 [[forms]]
-name = "Incorporation"
+name = "incorporation"
+title = "Incorporation"
 for_schema = "incorporation.bc_registries"
 
   [[forms.inputs]]
@@ -67,7 +72,8 @@ for_schema = "incorporation.bc_registries"
   pretty = "Country"
 
 [[forms]]
-name = "Doing Business As"
+name = "doing_business_as"
+title = "Doing Business As"
 for_schema = "doing_business_as.bc_registries"
 
   [[forms.inputs]]
@@ -124,3 +130,145 @@ for_schema = "doing_business_as.bc_registries"
   name = "country"
   pretty = "Country"
 
+# Schema mappers:
+# 
+# One for each schema type.
+# 
+# Each mapper is invoked when a request is received
+# which contains value "schema" which maps to "for"
+# property.
+
+[[schema_mappers]]
+for = "incorporation.bc_registries"
+  [[schema_mappers.attributes]]
+  name = "legal_entity_id"
+  from ="helper"
+  source = "uuid"
+
+  [[schema_mappers.attributes]]
+  name = "corp_num"
+  from ="previous"
+  source = "legal_entity_id"
+
+  [[schema_mappers.attributes]]
+  name = "legal_name"
+  from ="request"
+  source = "legal_name"
+
+  [[schema_mappers.attributes]]
+  name = "org_type"
+  from ="literal"
+  source = "CO"
+
+  [[schema_mappers.attributes]]
+  name = "addressee"
+  from ="request"
+  source = "addressee"
+
+  [[schema_mappers.attributes]]
+  name = "address_line_1"
+  from ="request"
+  source = "address_line_1"
+
+  [[schema_mappers.attributes]]
+  name = "address_line_2"
+  from ="request"
+  source = "address_line_2"
+
+  [[schema_mappers.attributes]]
+  name = "city"
+  from ="request"
+  source = "city"
+
+  [[schema_mappers.attributes]]
+  name = "province"
+  from ="request"
+  source = "province"
+
+  [[schema_mappers.attributes]]
+  name = "postal_code"
+  from ="request"
+  source = "postal_code"
+
+  [[schema_mappers.attributes]]
+  name = "country"
+  from ="request"
+  source = "country"
+
+  [[schema_mappers.attributes]]
+  name = "effective_date"
+  from ="helper"
+  source = "now"
+
+  [[schema_mappers.attributes]]
+  name = "end_date"
+  from ="literal"
+  # source = null
+
+
+[[schema_mappers]]
+for = "doing_business_as.bc_registries"
+  [[schema_mappers.attributes]]
+  name = "legal_entity_id"
+  from ="helper"
+  source = "id"
+
+  [[schema_mappers.attributes]]
+  name = "corp_num"
+  from ="previous"
+  source = "legal_entity_id"
+
+  [[schema_mappers.attributes]]
+  name = "legal_name"
+  from ="request"
+  source = "legal_name"
+
+  [[schema_mappers.attributes]]
+  name = "doing_business_as_name"
+  from ="request"
+  source = "doing_business_as_name"
+
+  [[schema_mappers.attributes]]
+  name = "addressee"
+  from ="request"
+  source = "addressee"
+
+  [[schema_mappers.attributes]]
+  name = "address_line_1"
+  from ="request"
+  source = "address_line_1"
+
+  [[schema_mappers.attributes]]
+  name = "address_line_2"
+  from ="request"
+  source = "address_line_2"
+
+  [[schema_mappers.attributes]]
+  name = "city"
+  from ="request"
+  source = "city"
+
+  [[schema_mappers.attributes]]
+  name = "province"
+  from ="request"
+  source = "province"
+
+  [[schema_mappers.attributes]]
+  name = "postal_code"
+  from ="request"
+  source = "postal_code"
+
+  [[schema_mappers.attributes]]
+  name = "country"
+  from ="request"
+  source = "country"
+
+  [[schema_mappers.attributes]]
+  name = "effective_date"
+  from ="helper"
+  source = "now"
+
+  [[schema_mappers.attributes]]
+  name = "end_date"
+  from ="literal"
+  # source = null

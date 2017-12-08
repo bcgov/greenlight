@@ -19,6 +19,6 @@ class Configurator():
                 config_toml = config_file.read()
         except FileNotFoundError as e:
             logger.error('Could not find config.toml. Exiting.')
-            return
+            raise
 
         self.config = toml.loads(config_toml)

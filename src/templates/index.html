@@ -4,6 +4,30 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{ title }}</title>
+    <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <!-- Quick hack to send forms as JSON -->
+    <script>
+        $(function () {
+          $('form').submit(function (event) {
+            const that = this
+            event.preventDefault()
+            const data = {}
+            $(that).serializeArray().forEach(input => {
+                data[input.name] = input.value
+            })
+
+            $.ajax({
+                method: "POST",
+                url: $(that).attr('action'),
+                data: JSON.stringify(data),
+                dataType: 'application/json'
+            })
+            .done(function( msg ) {
+                alert( "Data Saved: " + msg )
+            })
+          })
+        })
+    </script>
 </head>
 <body>
     <h1>{{ title }}</h1>
@@ -12,13 +36,14 @@
 
     {% for form in forms %}
         <h3>{{ form.name }}</h3>
-        <form action="/" method="post" accept-charset="utf-8">
-            {% csrf_token %}
+        <form action="/submit_claim" method="post" accept-charset="utf-8" name="{{ form.for_schema }}">
+            <input type="hidden" name="schema" value="{{ form.for_schema }}">
             {% for input in form.inputs %}
                 <input
                     type="{{ input.type }}"
                     name="{{ input.name }}"
                     placeholder="{{ input.pretty }}"
+                    {% if input.required %}required{% endif %}
                 >
                 <br />
             {% endfor %}

@@ -19,4 +19,5 @@ from permitify import views
 
 urlpatterns = [
     path('', views.index),
+    path('submit_claim', views.submit_claim),
 ]
