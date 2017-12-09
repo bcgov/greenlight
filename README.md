@@ -33,9 +33,8 @@ You should now be able to visit the services on the following urls:
 
 - localhost:3000
 - localhost:4000
-- localhost:5000
-- localhost:6000
-- localhost:7000
+
+And any other services that are later defined in docker-compose.yml.
 
 Services are defined using config files. See ./site_templates for examples of the existing services.
 

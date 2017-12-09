@@ -15,7 +15,7 @@ configurator = Configurator()
 
 
 def index(request):
-    return render(request, 'index.html', configurator.config)
+    return render(request, configurator.config['template_root'], configurator.config)
 
 
 def submit_claim(request):

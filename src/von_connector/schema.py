@@ -67,12 +67,8 @@ class SchemaManager():
             self.issuer.did, schema['name'], schema['version']))
         schema = json.loads(schema_json)
 
-        logger.info('\n\n\n\n\n\n\n\n\n\n\nschema_json\n' + schema_json + '\n\n\n\n\n\n\n\n\n\n\n\n')
-
         claim_def_json = eventloop.do(self.issuer.get_claim_def(
             schema['seqNo'], self.issuer.did))
-
-        logger.info('\n\n\n\n\n\n\n\n\n\n\nclaim_def\n' + claim_def_json + '\n\n\n\n\n\n\n\n\n\n\n\n')
 
         #
         #
@@ -112,23 +108,15 @@ class SchemaManager():
 
         # Testing with local holder instance for now:
 
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + json.dumps(claim) + '\n\n\n\n\n\n\n\n\n\n\n\n')
-
         eventloop.do(self.holder.store_claim_offer(
             self.issuer.did, schema['seqNo']))
 
         claim_request = eventloop.do(self.holder.store_claim_req(
             self.issuer.did, claim_def_json))
 
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + claim_request + '\n\n\n\n\n\n\n\n\n\n\n\n')
-
-        logger.info('\n\n\n\n\n\n\n\n\n\n\nverkey\n' + self.issuer.verkey + '\n\n\n\n\n\n\n\n\n\n\n\n')        
-
         # Build claim
         (_, claim_json) = eventloop.do(self.issuer.create_claim(
             claim_request, claim))
-
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + claim_json + '\n\n\n\n\n\n\n\n\n\n\n\n')
 
         eventloop.do(self.holder.store_claim(claim_json))
 
@@ -146,11 +134,7 @@ class SchemaManager():
             }
         }
 
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + json.dumps(proof_request) + '\n\n\n\n\n\n\n\n\n\n\n\n')
-
         claims = eventloop.do(self.holder.get_claims(json.dumps(proof_request)))
-
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + str(claims) + '\n\n\n\n\n\n\n\n\n\n\n\n')
 
 
 

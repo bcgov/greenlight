@@ -34,6 +34,27 @@ services:
     ports:
       - 4000:4000
 
+
+
+  # Example new service:
+  
+  # liquor_board:
+  #   build: .
+  #   entrypoint: enter
+  #   command: liquor_board python3 manage.py runserver 0.0.0.0:5000
+  #   environment:
+  #     # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
+  #     THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+  #   # links:
+  #   #   - postgres
+  #   volumes:
+  #     # - ./src:/app
+  #     # - ./site_templates:/app/site_templates
+  #     - worksafe_bc_wallet:/root/.indy_client/wallet
+  #   ports:
+  #     - 5000:5000
+
+
   # postgres:
   #   image: postgres
   #   ports:
@@ -42,3 +63,4 @@ services:
 volumes:
   worksafe_bc_wallet:
   bc_registries_wallet:
+  # liquor_board:

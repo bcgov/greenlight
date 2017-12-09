@@ -1,5 +1,6 @@
 # Agent info
 url = ""
+template_root = "bc_registries.index.html"
 name = "BC Corporate Registry"
 abbreviation = "BCReg"
 jurisdiction_name = "British Columbia"
