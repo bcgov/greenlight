@@ -1,7 +1,7 @@
 [
     {
         "name": "incorporation.bc_registries",
-        "version": "1.0.2",
+        "version": "1.0.4",
         "attr_names": [
             "legal_entity_id",
             "corp_num",
@@ -20,7 +20,7 @@
     },
     {
         "name": "doing_business_as.bc_registries",
-        "version": "1.0.2",
+        "version": "1.0.4",
         "attr_names": [
             "legal_entity_id",
             "corp_num",

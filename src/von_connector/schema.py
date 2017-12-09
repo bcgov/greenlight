@@ -25,7 +25,7 @@ class SchemaManager():
     claim_def_json = None
 
     def __init__(self):
-        self.agent = Issuer()
+        self.issuer = Issuer()
         self.holder = Holder()
         schemas_path = os.path.abspath(settings.BASE_DIR + '/schemas.json')
         try:
@@ -38,34 +38,41 @@ class SchemaManager():
 
     def publish_schema(self, schema):
         # Check if schema exists on ledger
-        schema_json = eventloop.do(self.agent.get_schema(
-            self.agent.did, schema['name'], schema['version']))
+        schema_json = eventloop.do(self.issuer.get_schema(
+            self.issuer.did, schema['name'], schema['version']))
 
         # If not, send the schema to the ledger, then get result
         if not json.loads(schema_json):
-            eventloop.do(self.agent.send_schema(json.dumps(schema)))
-            schema_json = eventloop.do(self.agent.get_schema(
-                self.agent.did, schema['name'], schema['version']))
+            eventloop.do(self.issuer.send_schema(json.dumps(schema)))
+            schema_json = eventloop.do(self.issuer.get_schema(
+                self.issuer.did, schema['name'], schema['version']))
 
         schema = json.loads(schema_json)
 
+
+        # For now, we store claims every 
+
         # Check if claim definition has been published. If not then publish.
-        claim_def_json = eventloop.do(self.agent.get_claim_def(
-            schema['seqNo'], self.agent.did))
+        claim_def_json = eventloop.do(self.issuer.get_claim_def(
+            schema['seqNo'], self.issuer.did))
         if not json.loads(claim_def_json):
-            eventloop.do(self.agent.send_claim_def(schema_json))
+            eventloop.do(self.issuer.send_claim_def(schema_json))
 
     def submit_claim(self, schema, claim):
         for key, value in claim.items():
             claim[key] = claim_value_pair(value)
 
         # We need schema from ledger
-        schema_json = eventloop.do(self.agent.get_schema(
-            self.agent.did, schema['name'], schema['version']))
+        schema_json = eventloop.do(self.issuer.get_schema(
+            self.issuer.did, schema['name'], schema['version']))
         schema = json.loads(schema_json)
 
-        claim_def_json = eventloop.do(self.agent.get_claim_def(
-            schema['seqNo'], self.agent.did))
+        logger.info('\n\n\n\n\n\n\n\n\n\n\nschema_json\n' + schema_json + '\n\n\n\n\n\n\n\n\n\n\n\n')
+
+        claim_def_json = eventloop.do(self.issuer.get_claim_def(
+            schema['seqNo'], self.issuer.did))
+
+        logger.info('\n\n\n\n\n\n\n\n\n\n\nclaim_def\n' + claim_def_json + '\n\n\n\n\n\n\n\n\n\n\n\n')
 
         #
         #
@@ -83,7 +90,7 @@ class SchemaManager():
         # response = requests.post(
         #     TOB_BASE_URL + '/bcovrin/generate-claim-request',
         #     json={
-        #         'did': self.agent.did,
+        #         'did': self.issuer.did,
         #         'seqNo': schema['seqNo'],
         #         'claim_def': claim_def_json
         #     }
@@ -91,7 +98,7 @@ class SchemaManager():
 
         # # Build claim
         # claim_request_json = response.json()
-        # (_, claim_json) = eventloop.do(self.agent.create_claim(
+        # (_, claim_json) = eventloop.do(self.issuer.create_claim(
         #     json.dumps(claim_request_json), claim))
 
         # # Send claim
@@ -105,13 +112,20 @@ class SchemaManager():
 
         # Testing with local holder instance for now:
 
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + self.holder.did + '\n\n\n\n\n\n\n\n\n\n\n\n')
+        logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + json.dumps(claim) + '\n\n\n\n\n\n\n\n\n\n\n\n')
+
+        eventloop.do(self.holder.store_claim_offer(
+            self.issuer.did, schema['seqNo']))
 
         claim_request = eventloop.do(self.holder.store_claim_req(
-            self.agent.did, claim_def_json))
+            self.issuer.did, claim_def_json))
+
+        logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + claim_request + '\n\n\n\n\n\n\n\n\n\n\n\n')
+
+        logger.info('\n\n\n\n\n\n\n\n\n\n\nverkey\n' + self.issuer.verkey + '\n\n\n\n\n\n\n\n\n\n\n\n')        
 
         # Build claim
-        (_, claim_json) = eventloop.do(self.agent.create_claim(
+        (_, claim_json) = eventloop.do(self.issuer.create_claim(
             claim_request, claim))
 
         logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + claim_json + '\n\n\n\n\n\n\n\n\n\n\n\n')
@@ -136,7 +150,7 @@ class SchemaManager():
 
         claims = eventloop.do(self.holder.get_claims(json.dumps(proof_request)))
 
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + json.dumps(json.loads(str(claims))) + '\n\n\n\n\n\n\n\n\n\n\n\n')
+        logger.info('\n\n\n\n\n\n\n\n\n\n\n\n' + str(claims) + '\n\n\n\n\n\n\n\n\n\n\n\n')
 
 
 

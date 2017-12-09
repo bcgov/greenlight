@@ -1,21 +1,44 @@
 version: '3'
 services:
 
-  web:
+  bc_registries:
     build: .
     entrypoint: enter
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: bc_registries python3 manage.py runserver 0.0.0.0:3000
     environment:
-      DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
+      # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
-    links:
-      - postgres
+    # links:
+    #   - postgres
     volumes:
-      - ./src:/app
+      # - ./src:/app
+      # - ./site_templates:/app/site_templates
+      - bc_registries_wallet:/root/.indy_client/wallet
     ports:
-      - 8000:8000
+      - 3000:3000
 
-  postgres:
-    image: postgres
+
+  worksafe_bc:
+    build: .
+    entrypoint: enter
+    command: worksafe_bc python3 manage.py runserver 0.0.0.0:4000
+    environment:
+      # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
+      THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+    # links:
+    #   - postgres
+    volumes:
+      # - ./src:/app
+      # - ./site_templates:/app/site_templates
+      - worksafe_bc_wallet:/root/.indy_client/wallet
     ports:
-      - '5432:5432'
+      - 4000:4000
+
+  # postgres:
+  #   image: postgres
+  #   ports:
+  #     - '5432:5432'
+
+volumes:
+  worksafe_bc_wallet:
+  bc_registries_wallet:

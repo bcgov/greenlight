@@ -29,6 +29,30 @@ git clone <repository url> permitify && cd permitify
 ./manage start
 ```
 
-You should now be able to visit `localhost:8000` to view the website.
+You should now be able to visit the services on the following urls:
 
-Currently, the docker environment only runs a single configuration. You can check out `/src/config.toml` and `/src/schemas/json` to see the data being used to generate the view.
+- localhost:3000
+- localhost:4000
+- localhost:5000
+- localhost:6000
+- localhost:7000
+
+Services are defined using config files. See ./site_templates for examples of the existing services.
+
+## Caveats
+
+### On dev machines
+
+- If you get WalletNotFoundError when submitting a claim, try incrementing the schema version and fully restarting the server. This will re-publish the schema and related claim definition which should fix this. This can occur if the wallet didn't persist properly from a previous restart and the definition cannot be found in the wallet. **This will also be needed on first run.**
+
+- For Django's hot-reloading to work in development, the src directory needs to mounted as a volume. This only works when one "service" is defined in the docker-compose.yml since multiple services will clobber each other's config files that get copied in.
+
+- The wallet directory must be mounted in an internal volume. See docker-compose.yml for example.
+
+### For Wade when you deploy
+
+- This Dockerfile doesn't concern itself with users. It just runs as root. I would use TheOrgBook's Dockerfile as a guide and go from there when deploying to openshift.
+
+- The wallet directory will need to be mounted on a persistent volume. `$HOME/.indy_client/wallet`
+
+- I think I've got my fork of the von-agent reopening wallets between restarts. Look in this requirements.txt to see how to use a github git url as a dependency instead of the package from pypi.

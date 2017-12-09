@@ -56,6 +56,7 @@ RUN $HOME/.cargo/bin/cargo build
 RUN mv target/debug/libindy.so /usr/lib
 
 ADD ./src /app
+ADD ./site_templates /app/site_templates
 ADD ./docker-entrypoint.sh /usr/local/bin/enter
 WORKDIR /app
 
