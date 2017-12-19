@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DISCONNECTED = (os.environ.get('DISCONNECTED') == 'true')
+
 
 # Application definition
 
@@ -38,9 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'von_connector',
 ]
+if not DISCONNECTED:
+    INSTALLED_APPS.append('von_connector')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
