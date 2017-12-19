@@ -14,10 +14,45 @@ case "$1" in
       docker-compose stop
     ;;
   build)
-      docker-compose build
+      echo -e "\nBuilding libindy image ..."
+      docker build \
+          -t 'libindy' \
+          -f 'LibIndy-Dockerfile' \
+          .
+
+      echo -e "\nBuilding python-libindy image ..."
+      docker build \
+          -t 'python-libindy' \
+          -f 'Python-LibIndy-Dockerfile' \
+          .
+
+      echo -e "\nBuilding permitify image ..."
+      docker build \
+          -t 'permitify' \
+          -f 'Permitify-Dockerfile' \
+          .
     ;;
   rebuild)
-      docker-compose build --no-cache
+      echo -e "\nRebuilding libindy image ..."
+      docker build \
+          --no-cache \
+          -t 'libindy' \
+          -f 'LibIndy-Dockerfile' \
+          .
+      
+      echo -e "\nRebuilding python-libindy image ..."
+      docker build \
+          --no-cache \
+          -t 'python-libindy' \
+          -f 'Python-LibIndy-Dockerfile' \
+          .
+
+      echo -e "\nRebuilding permitify image ..."
+      docker build \
+          --no-cache \
+          -t 'permitify' \
+          -f 'Permitify-Dockerfile' \
+          .
     ;;
   shell)
       docker-compose run web bash

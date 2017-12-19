@@ -2,9 +2,9 @@ version: '3'
 services:
 
   bc_registries:
-    build: .
+    image: permitify
     entrypoint: enter
-    command: bc_registries python3 manage.py runserver 0.0.0.0:3000
+    command: bc_registries python manage.py runserver 0.0.0.0:3000
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
@@ -19,9 +19,9 @@ services:
 
 
   worksafe_bc:
-    build: .
+    image: permitify
     entrypoint: enter
-    command: worksafe_bc python3 manage.py runserver 0.0.0.0:4000
+    command: worksafe_bc python manage.py runserver 0.0.0.0:4000
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
@@ -39,9 +39,9 @@ services:
   # Example new service:
   
   # liquor_board:
-  #   build: .
+  #   image: permitify
   #   entrypoint: enter
-  #   command: liquor_board python3 manage.py runserver 0.0.0.0:5000
+  #   command: liquor_board python manage.py runserver 0.0.0.0:5000
   #   environment:
   #     # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
   #     THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'

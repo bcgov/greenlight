@@ -1,0 +1,15 @@
+FROM python-libindy:latest
+
+ENV HOME=/app
+WORKDIR $HOME
+
+ADD ./src $HOME
+ADD ./site_templates $HOME/site_templates
+ADD ./docker-entrypoint.sh /usr/local/bin/enter
+
+RUN pip install -r requirements.txt
+
+RUN chgrp -R 0 $HOME \
+  && chmod -R g+rwx $HOME
+
+USER 1001

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TEMPLATE_NAME=$1
-TEMPLATE_DIRECTORY=/app/site_templates/"$TEMPLATE_NAME"
+TEMPLATE_DIRECTORY="/${HOME}/site_templates/$TEMPLATE_NAME"
 
 echo "Using template $TEMPLATE_NAME"
 shift
