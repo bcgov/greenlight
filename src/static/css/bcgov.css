@@ -1,0 +1,18 @@
+.page-content {
+	padding-bottom: 8rem;
+}
+.form {
+	margin-top: 2rem;
+}
+.form + .form {
+	margin-top: 4rem;
+}
+
+.control-label.required::before {
+	content: '*';
+	color: #b33;
+	display: inline-block;
+	position: relative;
+	left: -.5em;
+	width: .2em;
+}
