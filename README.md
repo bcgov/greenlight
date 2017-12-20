@@ -14,7 +14,7 @@ Also includes the precursor to the von-connector. The goal is to allow all issue
 3. Once Docker has been installed, open a terminal session and clone this repository:
 
 ```bash
-git clone <repository url> permitify && cd permitify
+git clone <repository url> permitify && cd permitify/docker
 ```
 
 4. Now you can build the Dockerfile into an image which we will use to run containers (this process will take several minutes):
@@ -64,11 +64,3 @@ http://138.197.170.136/register?seed=worksafe_bc_agent_00000000000000
 - For Django's hot-reloading to work in development, the src directory needs to mounted as a volume. This only works when one "service" is defined in the docker-compose.yml since multiple services will clobber each other's config files that get copied in.
 
 - The wallet directory must be mounted in an internal volume. See docker-compose.yml for example.
-
-### For Wade when you deploy
-
-- This Dockerfile doesn't concern itself with users. It just runs as root. I would use TheOrgBook's Dockerfile as a guide and go from there when deploying to openshift.
-
-- The wallet directory will need to be mounted on a persistent volume. `$HOME/.indy_client/wallet`
-
-- I think I've got my fork of the von-agent reopening wallets between restarts. Look in this requirements.txt to see how to use a github git url as a dependency instead of the package from pypi.
