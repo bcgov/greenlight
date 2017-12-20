@@ -17,42 +17,42 @@ case "$1" in
       echo -e "\nBuilding libindy image ..."
       docker build \
           -t 'libindy' \
-          -f 'LibIndy-Dockerfile' \
+          -f 'libindy/Dockerfile' \
           .
 
       echo -e "\nBuilding python-libindy image ..."
       docker build \
           -t 'python-libindy' \
-          -f 'Python-LibIndy-Dockerfile' \
+          -f 'python-libindy/Dockerfile' \
           .
 
       echo -e "\nBuilding permitify image ..."
       docker build \
           -t 'permitify' \
-          -f 'Permitify-Dockerfile' \
-          .
+          -f 'permitify/Dockerfile' \
+          ..
     ;;
   rebuild)
       echo -e "\nRebuilding libindy image ..."
       docker build \
           --no-cache \
           -t 'libindy' \
-          -f 'LibIndy-Dockerfile' \
+          -f 'libindy/Dockerfile' \
           .
       
       echo -e "\nRebuilding python-libindy image ..."
       docker build \
           --no-cache \
           -t 'python-libindy' \
-          -f 'Python-LibIndy-Dockerfile' \
+          -f 'python-libindy/Dockerfile' \
           .
 
       echo -e "\nRebuilding permitify image ..."
       docker build \
           --no-cache \
           -t 'permitify' \
-          -f 'Permitify-Dockerfile' \
-          .
+          -f 'permitify/Dockerfile' \
+          ..
     ;;
   shell)
       docker-compose run web bash
