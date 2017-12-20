@@ -14,7 +14,7 @@ services:
       #- ./src/templates:/app/templates
       #- ./src/static:/app/static
       #- ./site_templates:/app/site_templates
-      - bc_registries_wallet:/root/.indy_client/wallet
+      - bc_registries_wallet:/app/.indy_client/wallet
     ports:
       - 3000:8000
 
@@ -31,7 +31,7 @@ services:
     volumes:
       # - ./src:/app
       # - ./site_templates:/app/site_templates
-      - worksafe_bc_wallet:/root/.indy_client/wallet
+      - worksafe_bc_wallet:/app/.indy_client/wallet
     ports:
       - 4000:8000
 
@@ -50,7 +50,7 @@ services:
   #   volumes:
   #     # - ./src:/app
   #     # - ./site_templates:/app/site_templates
-  #     - liquor_board_wallet:/root/.indy_client/wallet
+  #     - liquor_board_wallet:/app/.indy_client/wallet
   #   ports:
   #     - 5000:8000
 

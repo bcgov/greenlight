@@ -39,7 +39,7 @@ RUN rm -rf $HOME/.cargo \
   $HOME/.multirust \
   $HOME/rustup
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 68DB5E88
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 68DB5E88
 ARG indy_stream=master
 RUN echo "deb https://repo.sovrin.org/deb xenial $indy_stream" >> /etc/apt/sources.list
 
