@@ -16,7 +16,7 @@ node {
     // Don't tag with BUILD_ID so the pruner can do it's job; it won't delete tagged images.
     // Tag the images for deployment based on the image's hash
     IMAGE_HASH = sh (
-       script: 'oc get istag permitify:latest -o template --template="{{.image.dockerImageReference}}"|awk -F ":" \'{print $3}\'',
+       script: 'oc get istag "${IMAGESTREAM_NAME}":latest -o template --template="{{.image.dockerImageReference}}"|awk -F ":" \'{print $3}\'',
        returnStdout: true).trim()      
   }
 
