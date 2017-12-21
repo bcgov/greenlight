@@ -8,7 +8,11 @@ cd "$SCRIPT_HOME"
 
 case "$1" in
   start)
-      docker-compose up --force-recreate bc_registries worksafe_bc
+      # docker-compose up --force-recreate \
+      #   bc_registries \
+      #   worksafe_bc \
+      #   ministry_of_finance
+      docker-compose up --force-recreate ministry_of_finance
     ;;
   stop)
       docker-compose stop

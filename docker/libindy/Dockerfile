@@ -13,7 +13,6 @@ apt-get install -y \
     libsodium-dev \
     apt-transport-https \
     ca-certificates
-    
 
 ENV HOME=/app
 WORKDIR $HOME

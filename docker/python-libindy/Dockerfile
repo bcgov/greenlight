@@ -9,7 +9,7 @@ RUN apt-get update -y && apt-get install -y \
 
 ENV HOME=/app
 WORKDIR $HOME
-    
+
 # - Create a Python virtual environment for use by any application to avoid
 #   potential conflicts with Python packages preinstalled in the main Python
 #   installation.
