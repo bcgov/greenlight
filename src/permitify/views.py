@@ -5,12 +5,15 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from von_connector.config import Configurator
-from von_connector.schema import SchemaManager
+#from von_connector.schema import SchemaManager
 
 import logging
 logger = logging.getLogger(__name__)
 
-schema_manager = SchemaManager()
+#import .settings
+
+#if not settings.DISCONNECTED:
+#    schema_manager = SchemaManager()
 configurator = Configurator()
 
 

@@ -3,11 +3,13 @@ services:
 
   bc_registries:
     image: permitify
-    entrypoint: enter
-    command: bc_registries python manage.py runserver 0.0.0.0:3000
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+      DISCONNECTED: '${DISCONNECTED-false}'
+      TEMPLATE_NAME: bc_registries
+      APPLICATION_IP: 0.0.0.0
+      APPLICATION_PORT: 8080
     # links:
     #   - postgres
     volumes:
@@ -15,16 +17,18 @@ services:
       # - ./site_templates:/app/site_templates
       - bc_registries_wallet:/app/.indy_client/wallet
     ports:
-      - 3000:3000
+      - 3000:8080
 
 
   worksafe_bc:
     image: permitify
-    entrypoint: enter
-    command: worksafe_bc python manage.py runserver 0.0.0.0:4000
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+      DISCONNECTED: '${DISCONNECTED-false}'
+      TEMPLATE_NAME: worksafe_bc
+      APPLICATION_IP: 0.0.0.0
+      APPLICATION_PORT: 8080
     # links:
     #   - postgres
     volumes:
@@ -32,7 +36,7 @@ services:
       # - ./site_templates:/app/site_templates
       - worksafe_bc_wallet:/app/.indy_client/wallet
     ports:
-      - 4000:4000
+      - 4000:8080
 
 
 
@@ -40,19 +44,21 @@ services:
   
   # liquor_board:
   #   image: permitify
-  #   entrypoint: enter
-  #   command: liquor_board python manage.py runserver 0.0.0.0:5000
   #   environment:
   #     # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
   #     THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+  #     DISCONNECTED: '${DISCONNECTED-false}'
+  #     TEMPLATE_NAME: liquor_board
+  #     APPLICATION_IP: 0.0.0.0
+  #     APPLICATION_PORT: 8080
   #   # links:
   #   #   - postgres
   #   volumes:
   #     # - ./src:/app
   #     # - ./site_templates:/app/site_templates
-  #     - worksafe_bc_wallet:/app/.indy_client/wallet
+  #     - liquor_board_wallet:/app/.indy_client/wallet
   #   ports:
-  #     - 5000:5000
+  #     - 5000:8080
 
 
   # postgres:
@@ -63,4 +69,4 @@ services:
 volumes:
   worksafe_bc_wallet:
   bc_registries_wallet:
-  # liquor_board:
+  # liquor_board_wallet:
