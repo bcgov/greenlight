@@ -134,6 +134,9 @@ class SchemaManager():
             }
         }
 
+
+        logger.info('\n\n\n\n\n\nproof_request\n' + json.dumps(proof_request))
+
         claims = eventloop.do(self.holder.get_claims(json.dumps(proof_request)))
 
 
