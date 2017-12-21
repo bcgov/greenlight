@@ -8,15 +8,16 @@ services:
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
       DISCONNECTED: '${DISCONNECTED-false}'
       TEMPLATE_NAME: bc_registries
+      APPLICATION_IP: 0.0.0.0
+      APPLICATION_PORT: 8080
     # links:
     #   - postgres
     volumes:
-      #- ./src/templates:/app/templates
-      #- ./src/static:/app/static
-      #- ./site_templates:/app/site_templates
+      # - ./src:/app
+      # - ./site_templates:/app/site_templates
       - bc_registries_wallet:/app/.indy_client/wallet
     ports:
-      - 3000:8000
+      - 3000:8080
 
 
   worksafe_bc:
@@ -26,6 +27,8 @@ services:
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
       DISCONNECTED: '${DISCONNECTED-false}'
       TEMPLATE_NAME: worksafe_bc
+      APPLICATION_IP: 0.0.0.0
+      APPLICATION_PORT: 8080
     # links:
     #   - postgres
     volumes:
@@ -33,7 +36,7 @@ services:
       # - ./site_templates:/app/site_templates
       - worksafe_bc_wallet:/app/.indy_client/wallet
     ports:
-      - 4000:8000
+      - 4000:8080
 
 
 
@@ -44,7 +47,10 @@ services:
   #   environment:
   #     # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
   #     THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+  #     DISCONNECTED: '${DISCONNECTED-false}'
   #     TEMPLATE_NAME: liquor_board
+  #     APPLICATION_IP: 0.0.0.0
+  #     APPLICATION_PORT: 8080
   #   # links:
   #   #   - postgres
   #   volumes:
@@ -52,7 +58,7 @@ services:
   #     # - ./site_templates:/app/site_templates
   #     - liquor_board_wallet:/app/.indy_client/wallet
   #   ports:
-  #     - 5000:8000
+  #     - 5000:8080
 
 
   # postgres:
