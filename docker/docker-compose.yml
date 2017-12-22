@@ -17,7 +17,7 @@ services:
   #     # - ./site_templates:/app/site_templates
   #     - bc_registries_wallet:/app/.indy_client/wallet
   #   ports:
-  #     - 3000:8080
+  #     - 5000:8080
 
 
   # worksafe_bc:
@@ -36,15 +36,33 @@ services:
   #     # - ./site_templates:/app/site_templates
   #     - worksafe_bc_wallet:/app/.indy_client/wallet
   #   ports:
-  #     - 4000:8080
+  #     - 5001:8080
 
-  ministry_of_finance:
+  # ministry_of_finance:
+  #   image: permitify
+  #   environment:
+  #     # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
+  #     THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+  #     DISCONNECTED: '${DISCONNECTED-false}'
+  #     TEMPLATE_NAME: ministry_of_finance
+  #     APPLICATION_IP: 0.0.0.0
+  #     APPLICATION_PORT: 8080
+  #   # links:
+  #   #   - postgres
+  #   volumes:
+  #     # - ./src:/app
+  #     # - ./site_templates:/app/site_templates
+  #     - ministry_of_finance_wallet:/app/.indy_client/wallet
+  #   ports:
+  #     - 5002:8080
+
+  fraser_valley_health_authority:
     image: permitify
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
       DISCONNECTED: '${DISCONNECTED-false}'
-      TEMPLATE_NAME: ministry_of_finance
+      TEMPLATE_NAME: fraser_valley_health_authority
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
     # links:
@@ -52,9 +70,9 @@ services:
     volumes:
       # - ./src:/app
       # - ./site_templates:/app/site_templates
-      - ministry_of_finance_wallet:/app/.indy_client/wallet
+      - fraser_valley_health_authority_wallet:/app/.indy_client/wallet
     ports:
-      - 5000:8080
+      - 5003:8080
 
 
   # postgres:
@@ -66,3 +84,4 @@ volumes:
   worksafe_bc_wallet:
   bc_registries_wallet:
   ministry_of_finance_wallet:
+  fraser_valley_health_authority_wallet:

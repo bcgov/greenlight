@@ -92,6 +92,6 @@ class VonConnectorConfig(AppConfig):
                         'issuerServiceId':  issuer_service_id,
                         'issuerURL':        'no',
                         'effectiveDate':    now,
-                        'schema_name':      schema['name'],
-                        'schema_version':   schema['version']
+                        'schemaName':      schema['name'],
+                        'schemaVersion':   schema['version']
                     }).json()

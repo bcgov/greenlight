@@ -12,11 +12,13 @@ $(function () {
       data[input.name] = input.value
     })
 
+    console.log(data)
+
     $.ajax({
       method: 'POST',
       url: $(that).attr('action'),
       data: JSON.stringify(data),
-      dataType: 'application/json'
+      contentType: 'application/json'
     })
   })
 })

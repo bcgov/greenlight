@@ -11,8 +11,9 @@ case "$1" in
       # docker-compose up --force-recreate \
       #   bc_registries \
       #   worksafe_bc \
-      #   ministry_of_finance
-      docker-compose up --force-recreate ministry_of_finance
+      #   ministry_of_finance \
+      #   fraser_valley_health_authority
+      docker-compose up --force-recreate fraser_valley_health_authority
     ;;
   stop)
       docker-compose stop
