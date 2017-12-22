@@ -4,13 +4,13 @@ export GIT_REF=${GIT_REF:-"master"}
 
 # The project components
 # - They are all contained under the main OpenShift folder.
-export -a components=(".")
+export components="."
 
 # The builds to be triggered after buildconfigs created (not auto-triggered)
-export -a builds=()
+export builds=""
 
 # The images to be tagged after build
-export -a images=("permitify")
+export images="permitify"
 
 # The routes for the project
-export -a routes=("bc-registries" "worksafe-bc")
+export routes="bc-registries worksafe-bc"
