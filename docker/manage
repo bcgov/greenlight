@@ -12,8 +12,9 @@ case "$1" in
       #   bc_registries \
       #   worksafe_bc \
       #   ministry_of_finance \
-      #   fraser_valley_health_authority
-      docker-compose up --force-recreate fraser_valley_health_authority
+      #   fraser_valley_health_authority \
+      #   city_of_surrey
+      docker-compose up --force-recreate city_of_surrey
     ;;
   stop)
       docker-compose stop
