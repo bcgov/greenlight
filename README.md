@@ -5,6 +5,10 @@ Includes a "roadmap" site which the user can follow like a checklist.
 
 Also includes the precursor to the von-connector. The goal is to allow all issuers and verifiers to be declaratively configurable.
 
+## Running in OpenShift
+
+This project uses the scripts found in [openshift-project-tools](https://github.com/BCDevOps/openshift-project-tools) to setup and maintain OpenShift environments (both local and hosted).  Refer to the [OpenShift Scripts](https://github.com/BCDevOps/openshift-project-tools/blob/master/bin/README.md) documentation for details.
+
 ## Running Locally
 
 1. First, install Docker. Download the installer for your operating system [here](https://store.docker.com/search?type=edition&offering=community). Once it is installed, keep the Docker daemon running in the background.
