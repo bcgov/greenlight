@@ -20,12 +20,34 @@
         <form action="/submit_claim" method="post" accept-charset="utf-8" name="{{ form.for_schema }}">
             <input type="hidden" name="schema" value="{{ form.for_schema }}">
             {% for input in form.inputs %}
-                <input
-                    type="{{ input.type }}"
-                    name="{{ input.name }}"
-                    placeholder="{{ input.pretty }}"
-                    {% if input.required %}required{% endif %}
-                >
+                {% if input.type == "select" %}
+                    <label>
+                        {{ input.pretty }}
+                        <br/>
+                        <select
+                            name="{{ input.name }}"
+                            {% if input.multiple %}multiple{% endif %}
+                            {% if input.required %}required{% endif %}>
+                            {% for option in input.options %}
+                                <option value="{{ option }}">
+                                    {{ option }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                {% else %}
+                    <label>
+                        {{ input.pretty }}
+                        <br />
+                        <input
+                            type="{{ input.type }}"
+                            name="{{ input.name }}"
+                            placeholder="{{ input.pretty }}"
+                            {% if input.required %}required{% endif %}
+                        >
+                    </label>
+                {% endif %}
+                <br />
                 <br />
             {% endfor %}
             <input type="submit">

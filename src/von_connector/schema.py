@@ -60,12 +60,14 @@ class SchemaManager():
 
     def submit_claim(self, schema, claim):
         for key, value in claim.items():
-            claim[key] = claim_value_pair(value)
+            claim[key] = claim_value_pair(str(value))
 
         # We need schema from ledger
         schema_json = eventloop.do(self.issuer.get_schema(
             self.issuer.did, schema['name'], schema['version']))
         schema = json.loads(schema_json)
+
+        logger.info('\n\n\n\n\n\n\n\n\n\n\n0.\n\n\n\n\n\n\n\n\n\n\n')
 
         claim_def_json = eventloop.do(self.issuer.get_claim_def(
             schema['seqNo'], self.issuer.did))
@@ -108,16 +110,25 @@ class SchemaManager():
 
         # Testing with local holder instance for now:
 
+        logger.info('\n\n\n\n\n\n\n\n\n\n\n1.\n\n\n\n\n\n\n\n\n\n\n')
+
         eventloop.do(self.holder.store_claim_offer(
             self.issuer.did, schema['seqNo']))
 
+        logger.info('\n\n\n\n\n\n\n\n\n\n\n2.\n\n\n\n\n\n\n\n\n\n\n')
         claim_request = eventloop.do(self.holder.store_claim_req(
             self.issuer.did, claim_def_json))
+
+        logger.info('\n\n\n\n\n\n\n\n\n\n\n3.\n\n\n\n\n\n\n\n\n\n\n')
+
+        logger.info('\n\n\n\n\n\n\n\n\n\n\nclaim_request:\n' + claim_request + '\n\n\n\n\n\n\n\n\n\n\n')
+        logger.info('\n\n\n\n\n\n\n\n\n\n\nclaim:\n' + json.dumps(claim) + '\n\n\n\n\n\n\n\n\n\n\n')
 
         # Build claim
         (_, claim_json) = eventloop.do(self.issuer.create_claim(
             claim_request, claim))
 
+        logger.info('\n\n\n\n\n\n\n\n\n\n\n4.\n\n\n\n\n\n\n\n\n\n\n')
         eventloop.do(self.holder.store_claim(claim_json))
 
         proof_request = {
@@ -136,6 +147,7 @@ class SchemaManager():
 
 
         logger.info('\n\n\n\n\n\nproof_request\n' + json.dumps(proof_request))
+
 
         claims = eventloop.do(self.holder.get_claims(json.dumps(proof_request)))
 

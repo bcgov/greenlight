@@ -21,24 +21,33 @@
             <input type="hidden" name="schema" value="{{ form.for_schema }}">
             {% for input in form.inputs %}
                 {% if input.type == "select" %}
-                    <select
-                        name="{{ input.name }}"
-                        {% if input.multiple %}multiple{% endif %}
-                        {% if input.required %}required{% endif %}>
-                        {% for option in input.options %}
-                            <option value="{{ option }}">
-                                {{ option }}
-                            </option>
-                        {% endfor %}
-                    </select>
+                    <label>
+                        {{ input.pretty }}
+                        <br/>
+                        <select
+                            name="{{ input.name }}"
+                            {% if input.multiple %}multiple{% endif %}
+                            {% if input.required %}required{% endif %}>
+                            {% for option in input.options %}
+                                <option value="{{ option }}">
+                                    {{ option }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </label>
                 {% else %}
-                    <input
-                        type="{{ input.type }}"
-                        name="{{ input.name }}"
-                        placeholder="{{ input.pretty }}"
-                        {% if input.required %}required{% endif %}
-                    >
+                    <label>
+                        {{ input.pretty }}
+                        <br />
+                        <input
+                            type="{{ input.type }}"
+                            name="{{ input.name }}"
+                            placeholder="{{ input.pretty }}"
+                            {% if input.required %}required{% endif %}
+                        >
+                    </label>
                 {% endif %}
+                <br />
                 <br />
             {% endfor %}
             <input type="submit">
