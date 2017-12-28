@@ -8,14 +8,14 @@ cd "$SCRIPT_HOME"
 
 case "$1" in
   start)
-      # docker-compose up --force-recreate \
-      #   bc_registries \
-      #   worksafe_bc \
-      #   ministry_of_finance \
-      #   fraser_valley_health_authority \
-      #   city_of_surrey \
-      #   liquor_control_and_licensing_branch
-      docker-compose up --force-recreate liquor_control_and_licensing_branch
+      docker-compose up --force-recreate \
+        bc_registries \
+        worksafe_bc \
+        ministry_of_finance \
+        fraser_valley_health_authority \
+        city_of_surrey \
+        liquor_control_and_licensing_branch
+      # docker-compose up --force-recreate liquor_control_and_licensing_branch
     ;;
   stop)
       docker-compose stop
