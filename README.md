@@ -35,9 +35,12 @@ git clone <repository url> permitify && cd permitify/docker
 
 You should now be able to visit the services on the following urls:
 
-- localhost:3000
-- localhost:4000
 - localhost:5000
+- localhost:5001
+- localhost:5002
+- localhost:5003
+- localhost:5004
+- localhost:5005
 
 And any other services that are later defined in docker-compose.yml.
 
