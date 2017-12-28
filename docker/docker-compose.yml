@@ -73,23 +73,41 @@ services:
   #   ports:
   #     - 5003:8080
 
-  city_of_surrey:
+  # city_of_surrey:
+  #   image: permitify
+  #   environment:
+  #     # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
+  #     THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+  #     DISCONNECTED: '${DISCONNECTED-false}'
+  #     TEMPLATE_NAME: city_of_surrey
+  #     APPLICATION_IP: 0.0.0.0
+  #     APPLICATION_PORT: 8080
+  #   # links:
+  #   #   - postgres
+  #   volumes:
+  #     - ../src:/app
+  #     - ../site_templates:/app/site_templates
+  #     - city_of_surrey_wallet:/app/.indy_client/wallet
+  #   ports:
+  #     - 5004:8080
+
+  liquor_control_and_licensing_branch:
     image: permitify
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
       DISCONNECTED: '${DISCONNECTED-false}'
-      TEMPLATE_NAME: city_of_surrey
+      TEMPLATE_NAME: liquor_control_and_licensing_branch
       APPLICATION_IP: 0.0.0.0
-      APPLICATION_PORT: 8080
+      APPLICATION_PORT: 8070
     # links:
     #   - postgres
     volumes:
       - ../src:/app
       - ../site_templates:/app/site_templates
-      - city_of_surrey_wallet:/app/.indy_client/wallet
+      - liquor_control_and_licensing_branch_wallet:/app/.indy_client/wallet
     ports:
-      - 5004:8080
+      - 5005:8070
 
   # postgres:
   #   image: postgres
@@ -102,3 +120,4 @@ volumes:
   ministry_of_finance_wallet:
   fraser_valley_health_authority_wallet:
   city_of_surrey_wallet:
+  liquor_control_and_licensing_branch_wallet:
