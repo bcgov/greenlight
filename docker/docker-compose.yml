@@ -13,8 +13,8 @@ services:
     # links:
     #   - postgres
     volumes:
-      # - ../src:/app
-      # - ../site_templates:/app/site_templates
+      - ../src:/app
+      - ../site_templates:/app/site_templates
       - bc_registries_wallet:/app/.indy_client/wallet
     ports:
       - 5000:8080

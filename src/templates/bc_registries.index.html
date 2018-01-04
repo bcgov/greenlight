@@ -60,6 +60,36 @@
                 </fieldset>
                 </form>
             {% endfor %}
+            <form action="/verify_dba" method="post" accept-charset="utf-8" name="verify_dba" class="form well">
+                <fieldset>
+                    <legend>Verify DBA Name</legend>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label required" for="one-input"><span class="field-name">Label</span> <span class="required">(required)</span></label>
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="one"
+                                    id="one-input"
+                                    required
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label required" for="two-input"><span class="field-name">Label</span> <span class="required">(required)</span></label>
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="two"
+                                    id="two-input"
+                                    required
+                                >
+                            </div>
+                            <button type="submit" class="btn btn-primary"><span class="fa fa-check"></span> Submit</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
     </main>
