@@ -89,6 +89,21 @@ def submit_claim(request):
         else:
             raise Exception('Unkown mapper type "%s"' % attribute['from'])
 
-    schema_manager.submit_claim(schema, claim)
+    claim = schema_manager.submit_claim(schema, claim)
 
-    return JsonResponse({'success': True})
+    return JsonResponse({'success': True, 'result': claim})
+
+
+def verify_dba(request):
+    # Get json request body
+    body = json.loads(request.body.decode('utf-8'))
+    if 'legal_entity_id' not in body or 'doing_business_as_name' not in body:
+        raise Exception('Missing required input')
+    verified = schema_manager.verify_dba(body)
+    
+    if verified:
+        return JsonResponse({'success': True, 'message': 'Verified'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Not verified'})
+    
+    

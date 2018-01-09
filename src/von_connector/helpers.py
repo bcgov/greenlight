@@ -1,3 +1,4 @@
+import time
 import datetime
 from uuid import uuid4
 from random import randrange
@@ -12,10 +13,10 @@ def pst():
 
 
 def now():
-    return datetime.datetime.now().strftime('%Y-%m-%d')
+    return int(time.mktime(datetime.datetime.now().timetuple()))
 
 
 def one_year():
-    return (
+    return int(time.mktime(
       datetime.datetime.now() +
-      datetime.timedelta(days=365)).strftime('%Y-%m-%d')
+      datetime.timedelta(days=365)))

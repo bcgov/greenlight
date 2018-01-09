@@ -58,6 +58,8 @@
                         </div>
                     </div>
                 </fieldset>
+                <br />
+                <div>Your legal entity id is: 8c6be4df-c6e4-4c7b-85c9-8c3153dfaa60</div>
                 </form>
             {% endfor %}
             <form action="/verify_dba" method="post" accept-charset="utf-8" name="verify_dba" class="form well">
@@ -66,22 +68,22 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="form-group">
-                                <label class="control-label required" for="one-input"><span class="field-name">Label</span> <span class="required">(required)</span></label>
+                                <label class="control-label required" for="one-input"><span class="field-name">Legal Entity ID</span> <span class="required">(required)</span></label>
                                 <input
                                     class="form-control"
                                     type="text"
-                                    name="one"
-                                    id="one-input"
+                                    name="legal_entity_id"
+                                    id="legal_entity_id-input"
                                     required
                                 >
                             </div>
                             <div class="form-group">
-                                <label class="control-label required" for="two-input"><span class="field-name">Label</span> <span class="required">(required)</span></label>
+                                <label class="control-label required" for="two-input"><span class="field-name">Doing Business As Name</span> <span class="required">(required)</span></label>
                                 <input
                                     class="form-control"
                                     type="text"
-                                    name="two"
-                                    id="two-input"
+                                    name="doing_business_as_name"
+                                    id="doing_business_as_name-input"
                                     required
                                 >
                             </div>

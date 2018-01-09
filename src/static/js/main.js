@@ -3,12 +3,12 @@
 $(function () {
   // override forms to submit json
   $('form').submit(function (event) {
-    const that = this
+    const form = this
     event.preventDefault()
 
     // serialize data as json
     const data = {}
-    $(that).serializeArray().forEach(input => {
+    $(form).serializeArray().forEach(input => {
       data[input.name] = input.value
     })
 
@@ -27,11 +27,15 @@ $(function () {
       })
     })
 
+    $(form).find('button[type=submit]').toggleClass('loading')
+
     $.ajax({
       method: 'POST',
-      url: $(that).attr('action'),
+      url: $(form).attr('action'),
       data: JSON.stringify(data),
       contentType: 'application/json'
+    }).done(function (response) {
+      $(form).find('button[type=submit]').toggleClass('loading')
     })
   })
 })

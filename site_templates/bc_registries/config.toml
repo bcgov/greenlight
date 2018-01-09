@@ -212,17 +212,12 @@ for = "doing_business_as.bc_registries"
   [[schema_mappers.attributes]]
   name = "legal_entity_id"
   from ="helper"
-  source = "id"
+  source = "uuid"
 
   [[schema_mappers.attributes]]
   name = "corp_num"
   from ="previous"
   source = "legal_entity_id"
-
-  [[schema_mappers.attributes]]
-  name = "legal_name"
-  from ="request"
-  source = "legal_name"
 
   [[schema_mappers.attributes]]
   name = "doing_business_as_name"
