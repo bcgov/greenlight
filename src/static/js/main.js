@@ -1,5 +1,7 @@
 /* global $ */
 
+const FORM_HANDLERS = {}
+
 $(function () {
   // override forms to submit json
   $('form').submit(function (event) {
@@ -36,6 +38,10 @@ $(function () {
       contentType: 'application/json'
     }).done(function (response) {
       $(form).find('button[type=submit]').toggleClass('loading')
+      // This is used allow each template to implement its own response handler
+      if (FORM_HANDLERS[$(form).attr('name')]) {
+        FORM_HANDLERS[$(form).attr('name')](form, response)
+      }
     })
   })
 })
