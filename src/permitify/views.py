@@ -99,11 +99,7 @@ def verify_dba(request):
     body = json.loads(request.body.decode('utf-8'))
     if 'legal_entity_id' not in body or 'doing_business_as_name' not in body:
         raise Exception('Missing required input')
-    verified = schema_manager.verify_dba(body)
-    
-    if verified:
-        return JsonResponse({'success': True, 'message': 'Verified'})
-    else:
-        return JsonResponse({'success': False, 'message': 'Not verified'})
-    
-    
+    (verified, message) = schema_manager.verify_dba(body)
+
+    return JsonResponse({'success': verified, 'message': message})
+

@@ -138,14 +138,14 @@ class SchemaManager():
         inc_schema_json = eventloop.do(self.holder.get_schema(
             self.issuer.did,
             'incorporation.bc_registries',
-            '1.0.15'
+            '1.0.16'
         ))
         inc_schema = json.loads(inc_schema_json)
 
         dba_schema_json = eventloop.do(self.holder.get_schema(
             self.issuer.did,
             'doing_business_as.bc_registries',
-            '1.0.15'
+            '1.0.16'
         ))
         dba_schema = json.loads(dba_schema_json)
 
@@ -192,7 +192,7 @@ class SchemaManager():
         logger.info('\n\n\n\n\n\nclaims[1]\n' + json.dumps(claims))
 
         if len(claims["attrs"]["doing_business_as_name"]) == 0 or len(claims["attrs"]["legal_entity_id"]) == 0:
-            return "Requested claim does not exist"
+            return (False, "Requested claim does not exist")
 
         def get_claim_by_attr(clms, key, value):
             for clm in clms:
@@ -210,7 +210,7 @@ class SchemaManager():
                 'requested_predicates': {}
             }
         except Exception:
-            return False
+            return (False, "Could not find attribute in claim")
 
         logger.info('\n\n\n\n\n\nrequested_claims\n' + json.dumps(requested_claims))
 
@@ -257,5 +257,6 @@ class SchemaManager():
             json.dumps(claim_defs),
         ))
 
-        return verified
+        logger.info('\n\n\n\n\nverified\n' + verified)
 
+        return (verified, "Successfully verified")
