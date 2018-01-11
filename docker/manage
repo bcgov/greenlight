@@ -2,14 +2,15 @@
 export MSYS_NO_PATHCONV=1
 set -e
 
-ALL_CONTAINERS=<<EOQ
-    bc_registries
-    worksafe_bc
-    ministry_of_finance
-    fraser_valley_health_authority
-    city_of_surrey
-    liquor_control_and_licensing_branch
-EOQ
+ALL_CONTAINERS="\
+    bc_registries\
+    worksafe_bc\
+    ministry_of_finance\
+    fraser_valley_health_authority\
+    city_of_surrey\
+    liquor_control_and_licensing_branch\
+"
+DEFAULT_CONTAINERS="bc_registries"
 
 SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 
@@ -18,7 +19,6 @@ cd "$SCRIPT_HOME"
 case "$1" in
   start)
       shift
-      DEFAULT_CONTAINERS=bc_registries
       ARGS="--force-recreate"
       CONTAINERS=""
       for arg in $@; do
@@ -31,8 +31,8 @@ case "$1" in
             CONTAINERS+=" $arg"
         esac
       done
-      if [ -z $CONTAINERS ]; then
-        CONTAINERS=$DEFAULT_CONTAINERS
+      if [ -z "$CONTAINERS" ]; then
+        CONTAINERS="$DEFAULT_CONTAINERS"
       fi
       docker-compose up $ARGS $CONTAINERS
     ;;
