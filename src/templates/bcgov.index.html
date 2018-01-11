@@ -53,13 +53,50 @@
                                 {% else %}
                                     <label class="control-label" for="{{ input.name }}-input"><span class="field-name">{{ input.pretty }}</span></label>
                                 {% endif %}
-                                <input
-                                    class="form-control"
-                                    type="{{ input.type }}"
-                                    name="{{ input.name }}"
-                                    id="{{ input.name }}-input"
-                                    {% if input.required %}required{% endif %}
-                                >
+                                {% if input.type == "select" %}
+                                    <select
+                                        class="form-control"
+                                        name="{{ input.name }}"
+                                        id="{{ input.name }}-input"
+                                        {% if input.multiple %}multiple{% endif %}
+                                        {% if input.required %}required{% endif %}
+                                        {% if input.disabled %}disabled{% endif %}>
+                                        {% for option in input.options %}
+                                            <option value="{{ option }}">
+                                                {{ option }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                {% elif input.type == "checkbox" or input.type == "radio" %}
+                                    <div class="{{ input.type }}">
+                                        <input
+                                            name="{{ input.name }}"
+                                            type="{{ input.type }}"
+                                            id="{{ input.name }}-input"
+                                            {% if input.checked %}checked{% endif %}
+                                            {% if input.disabled %}disabled{% endif %}
+                                        ><label for="{{ input.name }}-input">{{ input.text }}</label>
+                                    </div>
+                                {% elif input.type == "textarea" %}
+                                    <textarea
+                                        name="{{ input.name }}"
+                                        type="{{ input.type }}"
+                                        id="{{ input.name }}-input"
+                                        {% if input.disabled %}disabled{% endif %}
+                                        ></textarea>
+                                    </div>
+
+                                {% else %}
+                                    <input
+                                        class="form-control"
+                                        type="{{ input.type }}"
+                                        name="{{ input.name }}"
+                                        size="{{ input.size }}"
+                                        id="{{ input.name }}-input"
+                                        {% if input.required %}required{% endif %}
+                                        {% if input.disabled %}disabled{% endif %}
+                                    >
+                                {% endif %}
                             </div>
                             {% endfor %}
                             <button type="submit" class="btn btn-primary"><span class="fa fa-check"></span> Submit</button>

@@ -1,6 +1,6 @@
 # Agent info
 url = ""
-template_root = "fraser_valley_health_authority.index.html"
+template_root = "bcgov.index.html"
 name = "Fraser Valley Health Authority"
 abbreviation = "Health Authority"
 jurisdiction_name = "Fraser Valley"
@@ -22,7 +22,10 @@ explanation = "Use the form below to obtain an operating permit."
 [[forms]]
 name = "operating_permit"
 title = "Operating Permit"
-for_schema = "operating_permit.fraser_valley_health_authority"
+
+  [[forms.hidden]]
+  name = "for_schema"
+  value = "operating_permit.fraser_valley_health_authority"
 
   [[forms.inputs]]
   type = "text"
