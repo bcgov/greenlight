@@ -2,20 +2,39 @@
 export MSYS_NO_PATHCONV=1
 set -e
 
+ALL_CONTAINERS=<<EOQ
+    bc_registries
+    worksafe_bc
+    ministry_of_finance
+    fraser_valley_health_authority
+    city_of_surrey
+    liquor_control_and_licensing_branch
+EOQ
+
 SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 
 cd "$SCRIPT_HOME"
 
 case "$1" in
   start)
-      # docker-compose up --force-recreate \
-      #   bc_registries \
-      #   worksafe_bc \
-      #   ministry_of_finance \
-      #   fraser_valley_health_authority \
-      #   city_of_surrey \
-      #   liquor_control_and_licensing_branch
-      docker-compose up --force-recreate bc_registries
+      shift
+      DEFAULT_CONTAINERS=bc_registries
+      ARGS="--force-recreate"
+      CONTAINERS=""
+      for arg in $@; do
+        case "$arg" in
+          -*)
+            ARGS+=" $arg";;
+          all)
+            CONTAINERS+=" $ALL_CONTAINERS";;
+          *)
+            CONTAINERS+=" $arg"
+        esac
+      done
+      if [ -z $CONTAINERS ]; then
+        CONTAINERS=$DEFAULT_CONTAINERS
+      fi
+      docker-compose up $ARGS $CONTAINERS
     ;;
   stop)
       docker-compose stop
