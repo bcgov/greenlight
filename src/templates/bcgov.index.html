@@ -38,72 +38,7 @@
             <p>{{ explanation }}</p>
 
             {% for form in forms %}
-                <form action="{{ form.action|default:"/submit_claim" }}" method="{{ form.method|default:"post" }}" accept-charset="utf-8" name="{{ form.name }}" class="form well {{ form.class }}">
-                <fieldset>
-                    <legend>{{ form.title }}</legend>
-                    {% for input in form.hidden %}
-                        <input type="hidden" name="{{ input.name }}" value="{{ input.value }}">
-                    {% endfor %}
-                    <div class="row">
-                        <div class="col-md-8">
-                            {% for input in form.inputs %}
-                            <div class="form-group">
-                                {% if input.required %}
-                                    <label class="control-label required" for="{{ input.name }}-input"><span class="field-name">{{ input.pretty }}</span> <span class="required">(required)</span></label>
-                                {% else %}
-                                    <label class="control-label" for="{{ input.name }}-input"><span class="field-name">{{ input.pretty }}</span></label>
-                                {% endif %}
-                                {% if input.type == "select" %}
-                                    <select
-                                        class="form-control"
-                                        name="{{ input.name }}"
-                                        id="{{ input.name }}-input"
-                                        {% if input.multiple %}multiple{% endif %}
-                                        {% if input.required %}required{% endif %}
-                                        {% if input.disabled %}disabled{% endif %}>
-                                        {% for option in input.options %}
-                                            <option value="{{ option }}">
-                                                {{ option }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                {% elif input.type == "checkbox" or input.type == "radio" %}
-                                    <div class="{{ input.type }}">
-                                        <input
-                                            name="{{ input.name }}"
-                                            type="{{ input.type }}"
-                                            id="{{ input.name }}-input"
-                                            {% if input.checked %}checked{% endif %}
-                                            {% if input.disabled %}disabled{% endif %}
-                                        ><label for="{{ input.name }}-input">{{ input.text }}</label>
-                                    </div>
-                                {% elif input.type == "textarea" %}
-                                    <textarea
-                                        name="{{ input.name }}"
-                                        type="{{ input.type }}"
-                                        id="{{ input.name }}-input"
-                                        {% if input.disabled %}disabled{% endif %}
-                                        ></textarea>
-                                    </div>
-
-                                {% else %}
-                                    <input
-                                        class="form-control"
-                                        type="{{ input.type }}"
-                                        name="{{ input.name }}"
-                                        size="{{ input.size }}"
-                                        id="{{ input.name }}-input"
-                                        {% if input.required %}required{% endif %}
-                                        {% if input.disabled %}disabled{% endif %}
-                                    >
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                            <button type="submit" class="btn btn-primary"><span class="fa fa-check"></span> Submit</button>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
+                {% include "bootstrap.form.html" %}
             {% endfor %}
         </div>
     </div>
