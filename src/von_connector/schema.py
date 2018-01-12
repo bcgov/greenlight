@@ -58,13 +58,20 @@ class SchemaManager():
             eventloop.do(self.issuer.send_claim_def(schema_json))
 
     def submit_claim(self, schema, claim):
+
+        logger.debug('\n\nclaim:\n\n' + json.dumps(claim))
+        logger.debug('\n\nschema:\n\n' + json.dumps(schema))
+
         for key, value in claim.items():
-            claim[key] = claim_value_pair(str(value))
+            claim[key] = claim_value_pair(value) if value else \
+                claim_value_pair("")
 
         # We need schema from ledger
         schema_json = eventloop.do(self.issuer.get_schema(
             self.issuer.did, schema['name'], schema['version']))
         schema = json.loads(schema_json)
+
+        logger.debug('\n\nschema:\n\n' + json.dumps(schema))
 
         claim_def_json = eventloop.do(self.issuer.get_claim_def(
             schema['seqNo'], self.issuer.did))
@@ -86,10 +93,10 @@ class SchemaManager():
         # Send claim
         response = requests.post(
             TOB_BASE_URL + '/bcovrin/store-claim',
-            json=json.loads({
-                'claim_type': schema['name'],
-                'claim_data': claim_json}
-            )
+            json={
+                'claim_type': schema['data']['name'],
+                'claim_data': json.loads(claim_json)
+            }
         )
 
         return json.loads(claim_json)

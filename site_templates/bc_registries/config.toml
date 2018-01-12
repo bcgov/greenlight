@@ -27,7 +27,7 @@ name = "incorporation"
 title = "Incorporation"
 
   [[forms.hidden]]
-  name = "for_schema"
+  name = "schema"
   value = "incorporation.bc_registries"
 
   [[forms.inputs]]
