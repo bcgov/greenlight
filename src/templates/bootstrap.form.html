@@ -5,15 +5,85 @@
             <input type="hidden" name="{{ input.name }}" value="{{ input.value }}">
         {% endfor %}
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 col-md-push-2">
                 {% for input in form.inputs %}
                 <div class="form-group">
                     {% if input.required %}
-                        <label class="control-label required" for="{{ input.name }}-input"><span class="field-name">{{ input.pretty }}</span> <span class="required">(required)</span></label>
+                        <label class="control-label required" for="{{ input.prefix }}line1-input"><span class="field-name">{{ input.pretty }}</span> <span class="required">(required)</span></label>
                     {% else %}
                         <label class="control-label" for="{{ input.name }}-input"><span class="field-name">{{ input.pretty }}</span></label>
                     {% endif %}
-                    {% if input.type == "select" %}
+                    {% if input.type == 'address' %}
+                        <div class="form-address" id="{{ input.name }}-input">
+                            <div class="row form-field">
+                                <div class="col-sm-12">
+                                    <label class="control-label" for="{{ input.prefix }}addressee-input"><span class="field-name">Attention</span></label>
+                                    <input class="form-control" type="text"
+                                        name="{{ input.prefix }}addressee"
+                                        id="{{ input.prefix }}addressee-input"
+                                        {% if input.disabled %}disabled{% endif %}>
+                                </div>
+                            </div>
+                            <div class="row form-field">
+                                <div class="col-sm-12">
+                                    <label class="control-label" for="{{ input.prefix }}line1-input"><span class="field-name">Street Address</span></label>
+                                    <input class="form-control" type="text"
+                                        name="{{ input.prefix }}address_line_1"
+                                        id="{{ input.prefix }}line1-input"
+                                        {% if input.required %}required{% endif %}
+                                        {% if input.disabled %}disabled{% endif %}>
+                                </div>
+                            </div>
+                            <div class="row form-field">
+                                <div class="col-sm-12">
+                                    <input class="form-control mrgn-tp-sm" type="text"
+                                        name="{{ input.prefix }}address_line_2"
+                                        id="{{ input.prefix }}line2-input"
+                                        {% if input.disabled %}disabled{% endif %}>
+                                </div>
+                            </div>
+                            <div class="row form-field">
+                                <div class="col-sm-6">
+                                    <label class="control-label" for="{{ input.prefix }}city-input"><span class="field-name">City</span></label>
+                                    <input class="form-control" type="text"
+                                        name="{{ input.prefix }}city"
+                                        id="{{ input.prefix }}city-input"
+                                        {% if input.required %}required{% endif %}
+                                        {% if input.disabled %}disabled{% endif %}>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="control-label" for="{{ input.prefix }}province-input"><span class="field-name">Province</span></label>
+                                    <select class="form-control" type="text"
+                                        name="{{ input.prefix }}province"
+                                        id="{{ input.prefix }}province-input"
+                                        {% if input.required %}required{% endif %}
+                                        {% if input.disabled %}disabled{% endif %}>
+                                            <option value="BC" selected>British Columbia</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-field">
+                                <div class="col-sm-6">
+                                    <label class="control-label" for="{{ input.prefix }}postal_code-input"><span class="field-name">Postal Code</span></label>
+                                    <input class="form-control" type="text"
+                                        name="{{ input.prefix }}postal_code"
+                                        id="{{ input.prefix }}postal_code-input"
+                                        {% if input.required %}required{% endif %}
+                                        {% if input.disabled %}disabled{% endif %}>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="control-label" for="{{ input.prefix }}country-input"><span class="field-name">Country</span></label>
+                                    <select class="form-control"
+                                        name="{{ input.prefix }}country"
+                                        id="{{ input.prefix }}country-input"
+                                        {% if input.required %}required{% endif %}
+                                        {% if input.disabled %}disabled{% endif %}>
+                                            <option value="CA" selected>Canada</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    {% elif input.type == "select" %}
                         <select
                             class="form-control"
                             name="{{ input.name }}"
@@ -39,13 +109,12 @@
                         </div>
                     {% elif input.type == "textarea" %}
                         <textarea
+                            class="form-control"
                             name="{{ input.name }}"
                             type="{{ input.type }}"
                             id="{{ input.name }}-input"
                             {% if input.disabled %}disabled{% endif %}
                             ></textarea>
-                        </div>
-
                     {% else %}
                         <input
                             class="form-control"

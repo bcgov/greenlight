@@ -1,6 +1,6 @@
 # Agent info
 url = ""
-template_root = "city_of_surrey.index.html"
+template_root = "bcgov.index.html"
 name = "City of Surrey"
 abbreviation = "Surrey"
 jurisdiction_name = "Surrey"
@@ -22,7 +22,10 @@ explanation = "Use the form below to obtain a business license."
 [[forms]]
 name = "business_license"
 title = "Business License"
-for_schema = "business_license.city_of_surrey"
+
+  [[forms.hidden]]
+  name = "for_schema"
+  value = "business_license.city_of_surrey"
 
   [[forms.inputs]]
   type = "text"

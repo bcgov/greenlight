@@ -37,105 +37,36 @@ title = "Incorporation"
   pretty = "Legal Name"
 
   [[forms.inputs]]
-  type = "text"
+  type = "address"
   required = true
-  name = "addressee"
-  pretty = "Addressee"
+  name = "address"
+  pretty = "Mailing Address"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "address_line_1"
-  pretty = "Address Line 1"
+#[[forms]]
+#name = "doing_business_as"
+#title = "Doing Business As"
 
-  [[forms.inputs]]
-  type = "text"
-  required = false
-  name = "address_line_2"
-  pretty = "Address Line 2"
+#  [[forms.hidden]]
+#  name = "for_schema"
+#  value = "doing_business_as.bc_registries"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "city"
-  pretty = "City"
+#  [[forms.inputs]]
+#  type = "text"
+#  required = true
+#  name = "legal_entity_id"
+#  pretty = "Legal Entity ID"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "province"
-  pretty = "Province"
+#  [[forms.inputs]]
+#  type = "text"
+#  required = true
+#  name = "doing_business_as_name"
+#  pretty = "Doing Business As Name"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "postal_code"
-  pretty = "Postal Code"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "country"
-  pretty = "Country"
-
-# [[forms]]
-# name = "doing_business_as"
-# title = "Doing Business As"
-# for_schema = "doing_business_as.bc_registries"
-
-#   [[forms.inputs]]
-#   type = "text"
-#   required = true
-#   name = "legal_entity_id"
-#   pretty = "Legal Entity ID"
-
-#   [[forms.inputs]]
-#   type = "text"
-#   required = true
-#   name = "doing_business_as_name"
-#   pretty = "Doing Business As Name"
-
-#   [[forms.inputs]]
-#   type = "text"
-#   required = true
-#   name = "addressee"
-#   pretty = "Addressee"
-
-#   [[forms.inputs]]
-#   type = "text"
-#   required = true
-#   name = "address_line_1"
-#   pretty = "Address Line 1"
-
-#   [[forms.inputs]]
-#   type = "text"
-#   required = false
-#   name = "address_line_2"
-#   pretty = "Address Line 2"
-
-#   [[forms.inputs]]
-#   type = "text"
-#   required = true
-#   name = "city"
-#   pretty = "City"
-
-#   [[forms.inputs]]
-#   type = "text"
-#   required = true
-#   name = "province"
-#   pretty = "Province"
-
-#   [[forms.inputs]]
-#   type = "text"
-#   required = true
-#   name = "postal_code"
-#   pretty = "Postal Code"
-
-#   [[forms.inputs]]
-#   type = "text"
-#   required = true
-#   name = "country"
-#   pretty = "Country"
+#  [[forms.inputs]]
+#  type = "address"
+#  required = true
+#  name = "address"
+#  pretty = "Mailing Address"
 
 [[forms]]
 name = "verify_dba"

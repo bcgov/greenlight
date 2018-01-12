@@ -1,6 +1,6 @@
 # Agent info
 url = ""
-template_root = "ministry_of_finance.index.html"
+template_root = "bcgov.index.html"
 name = "BC Ministry of Finance"
 abbreviation = "Ministry of Finance"
 jurisdiction_name = "British Columbia"
@@ -22,7 +22,10 @@ explanation = "Use the form below to obtain a PST number."
 [[forms]]
 name = "pst_number"
 title = "PST Number"
-for_schema = "pst_number.restaurant_clearance_letter"
+
+  [[forms.hidden]]
+  name = "for_schema"
+  value = "pst_number.restaurant_clearance_letter"
 
   [[forms.inputs]]
   type = "text"
