@@ -37,46 +37,10 @@ title = "Incorporation"
   pretty = "Legal Name"
 
   [[forms.inputs]]
-  type = "text"
+  type = "address"
   required = true
-  name = "addressee"
-  pretty = "Addressee"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "address_line_1"
-  pretty = "Address Line 1"
-
-  [[forms.inputs]]
-  type = "text"
-  required = false
-  name = "address_line_2"
-  pretty = "Address Line 2"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "city"
-  pretty = "City"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "province"
-  pretty = "Province"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "postal_code"
-  pretty = "Postal Code"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "country"
-  pretty = "Country"
+  name = "address"
+  pretty = "Mailing Address"
 
 [[forms]]
 name = "doing_business_as"
@@ -99,46 +63,10 @@ title = "Doing Business As"
   pretty = "Doing Business As Name"
 
   [[forms.inputs]]
-  type = "text"
+  type = "address"
   required = true
-  name = "addressee"
-  pretty = "Addressee"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "address_line_1"
-  pretty = "Address Line 1"
-
-  [[forms.inputs]]
-  type = "text"
-  required = false
-  name = "address_line_2"
-  pretty = "Address Line 2"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "city"
-  pretty = "City"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "province"
-  pretty = "Province"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "postal_code"
-  pretty = "Postal Code"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "country"
-  pretty = "Country"
+  name = "address"
+  pretty = "Mailing Address"
 
 [[forms]]
 name = "verify_dba"
