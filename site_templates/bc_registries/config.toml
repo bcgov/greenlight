@@ -1,6 +1,6 @@
 # Agent info
 url = ""
-template_root = "bc_registries.index.html"
+template_root = "bcgov.index.html"
 name = "BC Corporate Registry"
 abbreviation = "BCReg"
 jurisdiction_name = "British Columbia"
@@ -14,6 +14,9 @@ title = "BC Corporate Registry"
 description = "This is a description"
 explanation = "Use the forms below to register a BC corporation."
 
+[[js_includes]]
+src = "js/bc_registries.js"
+
 # Forms:
 # 
 # These structures are used to build the forms
@@ -22,7 +25,10 @@ explanation = "Use the forms below to register a BC corporation."
 [[forms]]
 name = "incorporation"
 title = "Incorporation"
-for_schema = "incorporation.bc_registries"
+
+  [[forms.hidden]]
+  name = "for_schema"
+  value = "incorporation.bc_registries"
 
   [[forms.inputs]]
   type = "text"
@@ -130,6 +136,23 @@ for_schema = "incorporation.bc_registries"
 #   required = true
 #   name = "country"
 #   pretty = "Country"
+
+[[forms]]
+name = "verify_dba"
+action = "/verify_dba"
+title = "Verify DBA Name"
+
+  [[forms.inputs]]
+  type = "text"
+  name = "legal_entity_id"
+  required = true
+  pretty = "Legal Entity ID"
+
+  [[forms.inputs]]
+  type = "text"
+  name = "doing_business_as_name"
+  required = true
+  pretty = "Doing Business As Name"  
 
 # Schema mappers:
 # 
