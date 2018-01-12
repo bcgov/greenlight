@@ -58,94 +58,62 @@ class SchemaManager():
             eventloop.do(self.issuer.send_claim_def(schema_json))
 
     def submit_claim(self, schema, claim):
+
+        logger.debug('\n\nclaim:\n\n' + json.dumps(claim))
+        logger.debug('\n\nschema:\n\n' + json.dumps(schema))
+
         for key, value in claim.items():
-            claim[key] = claim_value_pair(str(value))
+            claim[key] = claim_value_pair(value) if value else \
+                claim_value_pair("")
 
         # We need schema from ledger
         schema_json = eventloop.do(self.issuer.get_schema(
             self.issuer.did, schema['name'], schema['version']))
         schema = json.loads(schema_json)
 
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n0.\n\n\n\n\n\n\n\n\n\n\n')
+        logger.debug('\n\nschema:\n\n' + json.dumps(schema))
 
         claim_def_json = eventloop.do(self.issuer.get_claim_def(
             schema['seqNo'], self.issuer.did))
 
-        #
-        #
-        # Store claims in TheOrgBook.
-        # Works, but TOB needs to be updated to accept
-        # new request format:
-        #
-        # current:
-        # <claim_json>
-        #
-        # new:
-        # { "claim_type": <schema.name>, claim_data: <claim_json> }
-        #
-
-        # response = requests.post(
-        #     TOB_BASE_URL + '/bcovrin/generate-claim-request',
-        #     json={
-        #         'did': self.issuer.did,
-        #         'seqNo': schema['seqNo'],
-        #         'claim_def': claim_def_json
-        #     }
-        # )
-
-        # # Build claim
-        # claim_request_json = response.json()
-        # (_, claim_json) = eventloop.do(self.issuer.create_claim(
-        #     json.dumps(claim_request_json), claim))
-
-        # # Send claim
-        # response = requests.post(
-        #     TOB_BASE_URL + '/bcovrin/store-claim',
-        #     json=json.loads({
-        #         'claim_type': schema['name'],
-        #         'claim_data': claim_json}
-        #     )
-        # )
-
-        # Testing with local holder instance for now:
-
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n1.\n\n\n\n\n\n\n\n\n\n\n')
-
-        eventloop.do(self.holder.store_claim_offer(
-            self.issuer.did, schema['seqNo']))
-
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n2.\n\n\n\n\n\n\n\n\n\n\n')
-        claim_request = eventloop.do(self.holder.store_claim_req(
-            self.issuer.did, claim_def_json))
-
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n3.\n\n\n\n\n\n\n\n\n\n\n')
-
-        logger.info('\n\n\n\n\n\n\n\n\n\n\nclaim_request:\n' + claim_request + '\n\n\n\n\n\n\n\n\n\n\n')
-        logger.info('\n\n\n\n\n\n\n\n\n\n\nclaim:\n' + json.dumps(claim) + '\n\n\n\n\n\n\n\n\n\n\n')
+        response = requests.post(
+            TOB_BASE_URL + '/bcovrin/generate-claim-request',
+            json={
+                'did': self.issuer.did,
+                'seqNo': schema['seqNo'],
+                'claim_def': claim_def_json
+            }
+        )
 
         # Build claim
+        claim_request_json = response.json()
         (_, claim_json) = eventloop.do(self.issuer.create_claim(
-            claim_request, claim))
+            json.dumps(claim_request_json), claim))
 
-        logger.info('\n\n\n\n\n\n\n\n\n\n\n4.\n\n\n\n\n\n\n\n\n\n\n')
-        eventloop.do(self.holder.store_claim(claim_json))
+        # Send claim
+        response = requests.post(
+            TOB_BASE_URL + '/bcovrin/store-claim',
+            json={
+                'claim_type': schema['data']['name'],
+                'claim_data': json.loads(claim_json)
+            }
+        )
 
         return json.loads(claim_json)
-
 
     def verify_dba(self, data):
         # We need schema from ledger
         inc_schema_json = eventloop.do(self.holder.get_schema(
             self.issuer.did,
             'incorporation.bc_registries',
-            '1.0.15'
+            '1.0.16'
         ))
         inc_schema = json.loads(inc_schema_json)
 
         dba_schema_json = eventloop.do(self.holder.get_schema(
             self.issuer.did,
             'doing_business_as.bc_registries',
-            '1.0.15'
+            '1.0.16'
         ))
         dba_schema = json.loads(dba_schema_json)
 
@@ -192,7 +160,7 @@ class SchemaManager():
         logger.info('\n\n\n\n\n\nclaims[1]\n' + json.dumps(claims))
 
         if len(claims["attrs"]["doing_business_as_name"]) == 0 or len(claims["attrs"]["legal_entity_id"]) == 0:
-            return "Requested claim does not exist"
+            return (False, "Requested claim does not exist")
 
         def get_claim_by_attr(clms, key, value):
             for clm in clms:
@@ -210,7 +178,7 @@ class SchemaManager():
                 'requested_predicates': {}
             }
         except Exception:
-            return False
+            return (False, "Could not find attribute in claim")
 
         logger.info('\n\n\n\n\n\nrequested_claims\n' + json.dumps(requested_claims))
 
@@ -257,5 +225,6 @@ class SchemaManager():
             json.dumps(claim_defs),
         ))
 
-        return verified
+        logger.info('\n\n\n\n\nverified\n' + verified)
 
+        return (verified, "Successfully verified")

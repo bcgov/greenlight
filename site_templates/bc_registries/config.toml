@@ -27,7 +27,7 @@ name = "incorporation"
 title = "Incorporation"
 
   [[forms.hidden]]
-  name = "for_schema"
+  name = "schema"
   value = "incorporation.bc_registries"
 
   [[forms.inputs]]
@@ -42,31 +42,31 @@ title = "Incorporation"
   name = "address"
   pretty = "Mailing Address"
 
-[[forms]]
-name = "doing_business_as"
-title = "Doing Business As"
+#[[forms]]
+#name = "doing_business_as"
+#title = "Doing Business As"
 
-  [[forms.hidden]]
-  name = "for_schema"
-  value = "doing_business_as.bc_registries"
+#  [[forms.hidden]]
+#  name = "for_schema"
+#  value = "doing_business_as.bc_registries"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "legal_entity_id"
-  pretty = "Legal Entity ID"
+#  [[forms.inputs]]
+#  type = "text"
+#  required = true
+#  name = "legal_entity_id"
+#  pretty = "Legal Entity ID"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "doing_business_as_name"
-  pretty = "Doing Business As Name"
+#  [[forms.inputs]]
+#  type = "text"
+#  required = true
+#  name = "doing_business_as_name"
+#  pretty = "Doing Business As Name"
 
-  [[forms.inputs]]
-  type = "address"
-  required = true
-  name = "address"
-  pretty = "Mailing Address"
+#  [[forms.inputs]]
+#  type = "address"
+#  required = true
+#  name = "address"
+#  pretty = "Mailing Address"
 
 [[forms]]
 name = "verify_dba"
@@ -161,64 +161,64 @@ for = "incorporation.bc_registries"
   # source = null
 
 
-[[schema_mappers]]
-for = "doing_business_as.bc_registries"
-  [[schema_mappers.attributes]]
-  name = "legal_entity_id"
-  from ="helper"
-  source = "uuid"
+# [[schema_mappers]]
+# for = "doing_business_as.bc_registries"
+#   [[schema_mappers.attributes]]
+#   name = "legal_entity_id"
+#   from ="helper"
+#   source = "uuid"
 
-  [[schema_mappers.attributes]]
-  name = "corp_num"
-  from ="previous"
-  source = "legal_entity_id"
+#   [[schema_mappers.attributes]]
+#   name = "corp_num"
+#   from ="previous"
+#   source = "legal_entity_id"
 
-  [[schema_mappers.attributes]]
-  name = "doing_business_as_name"
-  from ="request"
-  source = "doing_business_as_name"
+#   [[schema_mappers.attributes]]
+#   name = "doing_business_as_name"
+#   from ="request"
+#   source = "doing_business_as_name"
 
-  [[schema_mappers.attributes]]
-  name = "addressee"
-  from ="request"
-  source = "addressee"
+#   [[schema_mappers.attributes]]
+#   name = "addressee"
+#   from ="request"
+#   source = "addressee"
 
-  [[schema_mappers.attributes]]
-  name = "address_line_1"
-  from ="request"
-  source = "address_line_1"
+#   [[schema_mappers.attributes]]
+#   name = "address_line_1"
+#   from ="request"
+#   source = "address_line_1"
 
-  [[schema_mappers.attributes]]
-  name = "address_line_2"
-  from ="request"
-  source = "address_line_2"
+#   [[schema_mappers.attributes]]
+#   name = "address_line_2"
+#   from ="request"
+#   source = "address_line_2"
 
-  [[schema_mappers.attributes]]
-  name = "city"
-  from ="request"
-  source = "city"
+#   [[schema_mappers.attributes]]
+#   name = "city"
+#   from ="request"
+#   source = "city"
 
-  [[schema_mappers.attributes]]
-  name = "province"
-  from ="request"
-  source = "province"
+#   [[schema_mappers.attributes]]
+#   name = "province"
+#   from ="request"
+#   source = "province"
 
-  [[schema_mappers.attributes]]
-  name = "postal_code"
-  from ="request"
-  source = "postal_code"
+#   [[schema_mappers.attributes]]
+#   name = "postal_code"
+#   from ="request"
+#   source = "postal_code"
 
-  [[schema_mappers.attributes]]
-  name = "country"
-  from ="request"
-  source = "country"
+#   [[schema_mappers.attributes]]
+#   name = "country"
+#   from ="request"
+#   source = "country"
 
-  [[schema_mappers.attributes]]
-  name = "effective_date"
-  from ="helper"
-  source = "now"
+#   [[schema_mappers.attributes]]
+#   name = "effective_date"
+#   from ="helper"
+#   source = "now"
 
-  [[schema_mappers.attributes]]
-  name = "end_date"
-  from ="literal"
-  # source = null
+#   [[schema_mappers.attributes]]
+#   name = "end_date"
+#   from ="literal"
+#   # source = null
