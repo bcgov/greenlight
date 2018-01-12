@@ -72,64 +72,64 @@ for_schema = "incorporation.bc_registries"
   name = "country"
   pretty = "Country"
 
-[[forms]]
-name = "doing_business_as"
-title = "Doing Business As"
-for_schema = "doing_business_as.bc_registries"
+# [[forms]]
+# name = "doing_business_as"
+# title = "Doing Business As"
+# for_schema = "doing_business_as.bc_registries"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "legal_entity_id"
-  pretty = "Legal Entity ID"
+#   [[forms.inputs]]
+#   type = "text"
+#   required = true
+#   name = "legal_entity_id"
+#   pretty = "Legal Entity ID"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "doing_business_as_name"
-  pretty = "Doing Business As Name"
+#   [[forms.inputs]]
+#   type = "text"
+#   required = true
+#   name = "doing_business_as_name"
+#   pretty = "Doing Business As Name"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "addressee"
-  pretty = "Addressee"
+#   [[forms.inputs]]
+#   type = "text"
+#   required = true
+#   name = "addressee"
+#   pretty = "Addressee"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "address_line_1"
-  pretty = "Address Line 1"
+#   [[forms.inputs]]
+#   type = "text"
+#   required = true
+#   name = "address_line_1"
+#   pretty = "Address Line 1"
 
-  [[forms.inputs]]
-  type = "text"
-  required = false
-  name = "address_line_2"
-  pretty = "Address Line 2"
+#   [[forms.inputs]]
+#   type = "text"
+#   required = false
+#   name = "address_line_2"
+#   pretty = "Address Line 2"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "city"
-  pretty = "City"
+#   [[forms.inputs]]
+#   type = "text"
+#   required = true
+#   name = "city"
+#   pretty = "City"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "province"
-  pretty = "Province"
+#   [[forms.inputs]]
+#   type = "text"
+#   required = true
+#   name = "province"
+#   pretty = "Province"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "postal_code"
-  pretty = "Postal Code"
+#   [[forms.inputs]]
+#   type = "text"
+#   required = true
+#   name = "postal_code"
+#   pretty = "Postal Code"
 
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "country"
-  pretty = "Country"
+#   [[forms.inputs]]
+#   type = "text"
+#   required = true
+#   name = "country"
+#   pretty = "Country"
 
 # Schema mappers:
 # 
@@ -207,64 +207,64 @@ for = "incorporation.bc_registries"
   # source = null
 
 
-[[schema_mappers]]
-for = "doing_business_as.bc_registries"
-  [[schema_mappers.attributes]]
-  name = "legal_entity_id"
-  from ="helper"
-  source = "uuid"
+# [[schema_mappers]]
+# for = "doing_business_as.bc_registries"
+#   [[schema_mappers.attributes]]
+#   name = "legal_entity_id"
+#   from ="helper"
+#   source = "uuid"
 
-  [[schema_mappers.attributes]]
-  name = "corp_num"
-  from ="previous"
-  source = "legal_entity_id"
+#   [[schema_mappers.attributes]]
+#   name = "corp_num"
+#   from ="previous"
+#   source = "legal_entity_id"
 
-  [[schema_mappers.attributes]]
-  name = "doing_business_as_name"
-  from ="request"
-  source = "doing_business_as_name"
+#   [[schema_mappers.attributes]]
+#   name = "doing_business_as_name"
+#   from ="request"
+#   source = "doing_business_as_name"
 
-  [[schema_mappers.attributes]]
-  name = "addressee"
-  from ="request"
-  source = "addressee"
+#   [[schema_mappers.attributes]]
+#   name = "addressee"
+#   from ="request"
+#   source = "addressee"
 
-  [[schema_mappers.attributes]]
-  name = "address_line_1"
-  from ="request"
-  source = "address_line_1"
+#   [[schema_mappers.attributes]]
+#   name = "address_line_1"
+#   from ="request"
+#   source = "address_line_1"
 
-  [[schema_mappers.attributes]]
-  name = "address_line_2"
-  from ="request"
-  source = "address_line_2"
+#   [[schema_mappers.attributes]]
+#   name = "address_line_2"
+#   from ="request"
+#   source = "address_line_2"
 
-  [[schema_mappers.attributes]]
-  name = "city"
-  from ="request"
-  source = "city"
+#   [[schema_mappers.attributes]]
+#   name = "city"
+#   from ="request"
+#   source = "city"
 
-  [[schema_mappers.attributes]]
-  name = "province"
-  from ="request"
-  source = "province"
+#   [[schema_mappers.attributes]]
+#   name = "province"
+#   from ="request"
+#   source = "province"
 
-  [[schema_mappers.attributes]]
-  name = "postal_code"
-  from ="request"
-  source = "postal_code"
+#   [[schema_mappers.attributes]]
+#   name = "postal_code"
+#   from ="request"
+#   source = "postal_code"
 
-  [[schema_mappers.attributes]]
-  name = "country"
-  from ="request"
-  source = "country"
+#   [[schema_mappers.attributes]]
+#   name = "country"
+#   from ="request"
+#   source = "country"
 
-  [[schema_mappers.attributes]]
-  name = "effective_date"
-  from ="helper"
-  source = "now"
+#   [[schema_mappers.attributes]]
+#   name = "effective_date"
+#   from ="helper"
+#   source = "now"
 
-  [[schema_mappers.attributes]]
-  name = "end_date"
-  from ="literal"
-  # source = null
+#   [[schema_mappers.attributes]]
+#   name = "end_date"
+#   from ="literal"
+#   # source = null
