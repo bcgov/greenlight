@@ -5,7 +5,7 @@
             <input type="hidden" name="{{ input.name }}" value="{{ input.value }}">
         {% endfor %}
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 col-md-push-2">
                 {% for input in form.inputs %}
                 <div class="form-group">
                     {% if input.required %}
@@ -109,12 +109,12 @@
                         </div>
                     {% elif input.type == "textarea" %}
                         <textarea
+                            class="form-control"
                             name="{{ input.name }}"
                             type="{{ input.type }}"
                             id="{{ input.name }}-input"
                             {% if input.disabled %}disabled{% endif %}
                             ></textarea>
-                        </div>
                     {% else %}
                         <input
                             class="form-control"

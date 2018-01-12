@@ -1,6 +1,6 @@
 # Agent info
 url = ""
-template_root = "worksafe_bc.index.html"
+template_root = "bcgov.index.html"
 name = "WorkSafe BC"
 abbreviation = "WorkSafe"
 jurisdiction_name = "British Columbia"
@@ -22,7 +22,10 @@ explanation = "Use the forms below to obtain a restaurant clearance letter."
 [[forms]]
 name = "restaurant_clearance_letter"
 title = "Restaurant Clearance Letter"
-for_schema = "restaurant_clearance_letter.worksafe_bc"
+
+  [[forms.hidden]]
+  name = "for_schema"
+  value = "restaurant_clearance_letter.worksafe_bc"
 
   # [[forms.inputs]]
   # type = "text"
@@ -49,47 +52,10 @@ for_schema = "restaurant_clearance_letter.worksafe_bc"
   pretty = "Coverage Description"
 
   [[forms.inputs]]
-  type = "text"
+  type = "address"
   required = true
-  name = "addressee"
-  pretty = "Addressee"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "address_line_1"
-  pretty = "Address Line 1"
-
-  [[forms.inputs]]
-  type = "text"
-  required = false
-  name = "address_line_2"
-  pretty = "Address Line 2"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "city"
-  pretty = "City"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "province"
-  pretty = "Province"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "postal_code"
-  pretty = "Postal Code"
-
-  [[forms.inputs]]
-  type = "text"
-  required = true
-  name = "country"
-  pretty = "Country"
-
+  name = "address"
+  pretty = "Mailing Address"
 
 # Schema mappers:
 # 
