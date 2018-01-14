@@ -8,6 +8,7 @@ from django.http import Http404
 
 from von_connector.config import Configurator
 from von_connector.schema import SchemaManager
+from von_connector.proof import ProofRequestManager
 
 import logging
 logger = logging.getLogger(__name__)
@@ -17,21 +18,42 @@ configurator = Configurator()
 
 
 def index(request):
-    legal_entity_id = request.GET.get('id', None)
-    if legal_entity_id or \
-            'foundational' in configurator.config and \
+
+    # If this is the form for the foundational claim,
+    # we have no prequisites so just render.
+    if 'foundational' in configurator.config and \
             configurator.config['foundational']:
-
-        # TODO: Verify requirements in config via
-        # proof request
-
         return render(
             request,
             configurator.config['template_root'],
             configurator.config
         )
 
-    return render(request, 'missing_id.html')
+    legal_entity_id = request.GET.get('id', None)
+
+    # If id isn't passed in, we render a form to ask for it.
+    if not legal_entity_id:
+        return render(request, 'missing_id.html')
+
+    proof_request_manager = ProofRequestManager()
+    proof_response = proof_request_manager.request_proof({
+        'legal_entity_id': legal_entity_id
+    })
+
+    if not proof_response['success']:
+        return render(
+            request,
+            'missing_id.html',
+            {'message': proof_response['message']}
+        )
+
+    logger.info('\n\n\n\n\n\n\n\n\nproof' + json.dumps(proof))
+
+    return render(
+        request,
+        configurator.config['template_root'],
+        configurator.config
+    )
 
 
 def submit_claim(request):
