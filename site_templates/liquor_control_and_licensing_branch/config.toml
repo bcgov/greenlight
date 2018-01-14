@@ -1,6 +1,6 @@
 # Agent info
 url = ""
-template_root = "liquor_control_and_licensing_branch.index.html"
+template_root = "bcgov.index.html"
 name = "Liquor Control and Licensing Branch"
 abbreviation = "Liquor Licensing"
 jurisdiction_name = "British Columbia"
@@ -22,7 +22,10 @@ explanation = "Use the form below to obtain a liquor license."
 [[forms]]
 name = "liquor_license"
 title = "Liquor Control and Licensing Branch"
-for_schema = "liquor_license.liquor_control_and_licensing_branch"
+
+  [[forms.hidden]]
+  name = "for_schema"
+  value = "liquor_license.liquor_control_and_licensing_branch"
 
   [[forms.inputs]]
   type = "text"
@@ -115,88 +118,46 @@ for_schema = "liquor_license.liquor_control_and_licensing_branch"
   pretty = "Is your establishment located on Treaty First Nation land?"
 
   [[forms.inputs]]
-  type = "time"
+  type = "open_close"
   required = true
-  name = "hours_of_operation[]"
-  pretty = "Sunday Hours (Open)"
+  name = "hours_of_operation"
+  pretty = "Sunday Hours"
 
   [[forms.inputs]]
-  type = "time"
+  type = "open_close"
   required = true
-  name = "hours_of_operation[]"
-  pretty = "Sunday Hours (Close)"
+  name = "hours_of_operation"
+  pretty = "Monday Hours"
 
   [[forms.inputs]]
-  type = "time"
+  type = "open_close"
   required = true
-  name = "hours_of_operation[]"
-  pretty = "Monday Hours (Open)"
+  name = "hours_of_operation"
+  pretty = "Tuesday Hours"
 
   [[forms.inputs]]
-  type = "time"
+  type = "open_close"
   required = true
-  name = "hours_of_operation[]"
-  pretty = "Monday Hours (Close)"
+  name = "hours_of_operation"
+  pretty = "Wednesday Hours"
 
   [[forms.inputs]]
-  type = "time"
+  type = "open_close"
   required = true
-  name = "hours_of_operation[]"
-  pretty = "Tuesday Hours (Open)"
+  name = "hours_of_operation"
+  pretty = "Thursday Hours"
 
   [[forms.inputs]]
-  type = "time"
+  type = "open_close"
   required = true
-  name = "hours_of_operation[]"
-  pretty = "Tuesday Hours (Close)"
+  name = "hours_of_operation"
+  pretty = "Friday Hours"
 
   [[forms.inputs]]
-  type = "time"
+  type = "open_close"
   required = true
-  name = "hours_of_operation[]"
-  pretty = "Wednesday Hours (Open)"
-
-  [[forms.inputs]]
-  type = "time"
-  required = true
-  name = "hours_of_operation[]"
-  pretty = "Wednesday Hours (Close)"
-
-  [[forms.inputs]]
-  type = "time"
-  required = true
-  name = "hours_of_operation[]"
-  pretty = "Thursday Hours (Open)"
-
-  [[forms.inputs]]
-  type = "time"
-  required = true
-  name = "hours_of_operation[]"
-  pretty = "Thursday Hours (Close)"
-
-  [[forms.inputs]]
-  type = "time"
-  required = true
-  name = "hours_of_operation[]"
-  pretty = "Friday Hours (Open)"
-
-  [[forms.inputs]]
-  type = "time"
-  required = true
-  name = "hours_of_operation[]"
-  pretty = "Friday Hours (Close)"
-
-  [[forms.inputs]]
-  type = "time"
-  required = true
-  name = "hours_of_operation[]"
-  pretty = "Saturday Hours (Open)"
-
-  [[forms.inputs]]
-  type = "time"
-  required = true
-  name = "hours_of_operation[]"
-  pretty = "Saturday Hours (Close)"
+  name = "hours_of_operation"
+  pretty = "Saturday Hours"
 
   [[forms.inputs]]
   type = "radio"
