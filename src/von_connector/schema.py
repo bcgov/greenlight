@@ -59,12 +59,12 @@ class SchemaManager():
 
     def submit_claim(self, schema, claim):
 
-        logger.debug('\n\nclaim:\n\n' + json.dumps(claim))
-        logger.debug('\n\nschema:\n\n' + json.dumps(schema))
-
         for key, value in claim.items():
             claim[key] = claim_value_pair(value) if value else \
                 claim_value_pair("")
+
+        logger.debug('\n\nclaim:\n\n' + json.dumps(claim))
+        logger.debug('\n\nschema:\n\n' + json.dumps(schema))
 
         # We need schema from ledger
         schema_json = eventloop.do(self.issuer.get_schema(
@@ -76,6 +76,12 @@ class SchemaManager():
         claim_def_json = eventloop.do(self.issuer.get_claim_def(
             schema['seqNo'], self.issuer.did))
 
+        logger.debug('\n\nrequesting_claim_request:\n\n' + json.dumps({
+                'did': self.issuer.did,
+                'seqNo': schema['seqNo'],
+                'claim_def': claim_def_json
+            }))
+
         response = requests.post(
             TOB_BASE_URL + '/bcovrin/generate-claim-request',
             json={
@@ -86,9 +92,20 @@ class SchemaManager():
         )
 
         # Build claim
-        claim_request_json = response.json()
-        (_, claim_json) = eventloop.do(self.issuer.create_claim(
-            json.dumps(claim_request_json), claim))
+        claim_request = response.json()
+
+        # The claim_request format changed
+        # claim_request['blinded_ms']['prover_did'] = claim_request['prover_did']
+        # del claim_request['prover_did']
+
+        claim_request_json = json.dumps(claim_request)
+
+        logger.debug('\n\nclaim_request_json:\n\n' + claim_request_json)
+
+        (_, claim_json) = eventloop.do(
+            self.issuer.create_claim(claim_request_json, claim))
+
+        logger.debug('\n\nclaim_json:\n\n' + claim_json)
 
         # Send claim
         response = requests.post(

@@ -4,22 +4,37 @@ from importlib import import_module
 from django.http import JsonResponse
 from django.shortcuts import render
 
+from django.http import Http404
+
 from von_connector.config import Configurator
 from von_connector.schema import SchemaManager
 
 import logging
 logger = logging.getLogger(__name__)
 
-#import .settings
-
-#if not settings.DISCONNECTED:
 schema_manager = SchemaManager()
 configurator = Configurator()
 
 
 def index(request):
-    return render(
-        request, configurator.config['template_root'], configurator.config)
+    legal_entity_id = request.GET.get('id', None)
+    if legal_entity_id or \
+            'foundational' in configurator.config and \
+            configurator.config['foundational']:
+
+        # TODO: Verify requirements in config via
+        # proof request
+
+        return render(
+            request,
+            configurator.config['template_root'],
+            configurator.config
+        )
+
+    # TODO: Show form to enter legal entity ID
+    # For now, we always expect it to exist (unless it is
+    # foundational claim).
+    raise Http404()
 
 
 def submit_claim(request):
@@ -102,4 +117,3 @@ def verify_dba(request):
     (verified, message) = schema_manager.verify_dba(body)
 
     return JsonResponse({'success': verified, 'message': message})
-

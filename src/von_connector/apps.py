@@ -79,7 +79,7 @@ class VonConnectorConfig(AppConfig):
                 tob_base_url + '/verifiableclaimtypes').json()
             claim_type_exists = False
             for claim_type in claim_types:
-                if claim_type['claimType'] == schema['name']:
+                if claim_type['schemaName'] == schema['name']:
                     claim_type_exists = True
                     break
 
@@ -88,7 +88,7 @@ class VonConnectorConfig(AppConfig):
                 requests.post(
                     tob_base_url + '/verifiableclaimtypes',
                     json={
-                        'claimType':        schema['name'],
+                        'claimType':        config['name'],
                         'issuerServiceId':  issuer_service_id,
                         'issuerURL':        'no',
                         'effectiveDate':    now,
