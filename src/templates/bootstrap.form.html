@@ -9,11 +9,12 @@
                 {% for input in form.inputs %}
                 <div class="form-group">
                     {% if input.required %}
-                        <label class="control-label required" for="{{ input.prefix }}line1-input"><span class="field-name">{{ input.pretty }}</span> <span class="required">(required)</span></label>
+                        <label class="control-label required" for="{{ input.prefix }}line1-input"><span class="field-name">{{ input.pretty | safe }}</span>
+                        {% if input.type != "radio" %}<span class="required">(required)</span>{% endif %}</label>
                     {% else %}
-                        <label class="control-label" for="{{ input.name }}-input"><span class="field-name">{{ input.pretty }}</span></label>
+                        <label class="control-label" for="{{ input.name }}-input"><span class="field-name">{{ input.pretty | safe}}</span></label>
                     {% endif %}
-                    {% if input.type == 'address' %}
+                    {% if input.type == "address" %}
                         <div class="form-address" id="{{ input.name }}-input">
                             <div class="row form-field">
                                 <div class="col-sm-12">
@@ -97,6 +98,19 @@
                                 </option>
                             {% endfor %}
                         </select>
+                    {% elif input.type == "radio" %}
+                        {% for opt in input.options %}
+                        <div class="{{ input.type }}">
+                            <input
+                                name="{{ input.name }}"
+                                type="{{ input.type }}"
+                                id="{{ input.name }}-{{ opt.value }}-input"
+                                value="{{ opt.value }}"
+                                {% if opt.checked %}checked{% endif %}
+                                {% if input.disabled or opt.disabled %}disabled{% endif %}
+                            ><label for="{{ input.name }}-{{ opt.value }}-input">{{ opt.pretty }}</label>
+                        </div>
+                        {% endfor %}
                     {% elif input.type == "checkbox" or input.type == "radio" %}
                         <div class="{{ input.type }}">
                             <input
@@ -115,6 +129,27 @@
                             id="{{ input.name }}-input"
                             {% if input.disabled %}disabled{% endif %}
                             ></textarea>
+                    {% elif input.type == "open_close" %}
+                        <div class="form-inline">
+                        <input
+                            class="form-control"
+                            type="time"
+                            name="{{ input.name }}[]"
+                            size="5"
+                            id="{{ input.name }}-open-input"
+                            placeholder="open"
+                            {% if input.required %}required{% endif %}
+                            {% if input.disabled %}disabled{% endif %}
+                        ><span style="padding: 0 1.5em">to</span><input
+                            class="form-control"
+                            type="time"
+                            name="{{ input.name }}[]"
+                            size="5"
+                            id="{{ input.name }}-close-input"
+                            placeholder="close"
+                            {% if input.required %}required{% endif %}
+                            {% if input.disabled %}disabled{% endif %}
+                        ></div>
                     {% else %}
                         <input
                             class="form-control"
