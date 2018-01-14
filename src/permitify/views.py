@@ -31,10 +31,7 @@ def index(request):
             configurator.config
         )
 
-    # TODO: Show form to enter legal entity ID
-    # For now, we always expect it to exist (unless it is
-    # foundational claim).
-    raise Http404()
+    return render(request, 'missing_id.html')
 
 
 def submit_claim(request):
