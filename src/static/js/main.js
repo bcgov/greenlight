@@ -22,7 +22,7 @@ $(function () {
     // Convert checkboxes to booleans
     $(this).find('input[type=date]').each((i, input) => {
       // data[input.name] = moment(input.value).unix()
-      data[input.name] = ''
+      data[input.name] = moment(input.value).unix()
     })
 
     // Convert multi select to array

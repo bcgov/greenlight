@@ -215,10 +215,10 @@ for = "liquor_license.liquor_control_and_licensing_branch"
   from ="request"
   source = "legal_entity_id"
 
-  [[schema_mappers.attributes]]
-  name = "daily_hours_of_operation"
-  from ="request"
-  source = "hours_of_operation[]"
+  # [[schema_mappers.attributes]]
+  # name = "daily_hours_of_operation"
+  # from ="request"
+  # source = "hours_of_operation[]"
 
   [[schema_mappers.attributes]]
   name = "dancing_permitted"
