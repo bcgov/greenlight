@@ -50,22 +50,24 @@ class ProofRequestManager():
                 'error': response.json()['detail']
             }
 
-        proof = response.json()
+        proof_response = response.json()
+        proof = proof_response['proof']
 
         parsed_proof = {}
         for attr in proof['requested_proof']['revealed_attrs']:
             parsed_proof[attr] = \
                 proof['requested_proof']['revealed_attrs'][attr][1]
 
-        # verified = eventloop.do(self.verifier.verify_proof(
-        #     json.dumps(proof_request),
-        #     json.loads(proof),
-        #     json.dumps(schemas),
-        #     json.dumps(claim_defs),
-        # ))
+        verified = eventloop.do(self.verifier.verify_proof(
+            json.dumps(self.proof_request),
+            proof,
+            json.dumps(proof_response['schemas']),
+            json.dumps(proof_response['claim_defs']),
+        ))
 
         return {
             'success': True,
             'proof': proof,
-            'parsed_proof': parsed_proof
+            'parsed_proof': parsed_proof,
+            'verified': verified
         }

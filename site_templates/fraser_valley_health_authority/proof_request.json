@@ -1,0 +1,164 @@
+{
+  "name": "incorporation.bc_registries",
+  "version": "1.0.0",
+  "nonce": "1986273812765872",
+  "requested_attrs": {
+    "address_line_1": {
+      "name": "address_line_1",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "address_line_2": {
+      "name": "address_line_2",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "addressee": {
+      "name": "addressee",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "city": {
+      "name": "city",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "corp_num": {
+      "name": "corp_num",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "country": {
+      "name": "country",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "effective_date": {
+      "name": "effective_date",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "end_date": {
+      "name": "end_date",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "legal_entity_id": {
+      "name": "legal_entity_id",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "legal_name": {
+      "name": "legal_name",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "org_type": {
+      "name": "org_type",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "postal_code": {
+      "name": "postal_code",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    },
+    "province": {
+      "name": "province",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "27TL9VHhcQNok9QvHLVx1a",
+            "name": "incorporation.bc_registries",
+            "version": "1.0.20"
+          }
+        }
+      ]
+    }
+  },
+  "requested_predicates": {}
+}
