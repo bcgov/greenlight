@@ -1,4 +1,4 @@
-/* global $ */
+/* global $, moment */
 
 const FORM_HANDLERS = {}
 
@@ -17,6 +17,11 @@ $(function () {
     // Convert checkboxes to booleans
     $(this).find('input[type=checkbox]').each((i, input) => {
       data[input.name] ? data[input.name] = true : data[input.name] = false
+    })
+
+    // Convert checkboxes to booleans
+    $(this).find('input[type=date]').each((i, input) => {
+      data[input.name] = moment(input.value).unix()
     })
 
     // Convert multi select to array
