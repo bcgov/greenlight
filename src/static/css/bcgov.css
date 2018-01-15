@@ -24,3 +24,16 @@
 .form-field + .form-field {
 	margin-top: 0.8rem;
 }
+
+
+.margin-xs { margin: .25em; }
+.margin-sm { margin: .5em; }
+.margin-md { margin: 1em; }
+.margin-lg { margin: 1.5em; }
+.margin-xl { margin: 3em; }
+
+.padding-xs { padding: .25em; }
+.padding-sm { padding: .5em; }
+.padding-md { padding: 1em; }
+.padding-lg { padding: 1.5em; }
+.padding-xl { padding: 3em; }

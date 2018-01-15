@@ -35,7 +35,6 @@ class ProofRequestManager():
         logger.info(proof_request_json)
         self.proof_request = json.loads(proof_request_json)
 
-
     def request_proof(self, filters):
         response = requests.post(
             TOB_BASE_URL + '/bcovrin/construct-proof',
@@ -48,12 +47,16 @@ class ProofRequestManager():
         if response.status_code == 406:
             return {
                 'success': False,
-                'message': response.json()['detail']
+                'error': response.json()['detail']
             }
 
-        logger.info(response.status_code)
+        logger.info(response.text)
 
         proof = response.json()
+        return {
+            'success': True,
+            'proof': proof
+        }
 
         # verified = eventloop.do(self.verifier.verify_proof(
         #     json.dumps(proof_request),

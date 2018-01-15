@@ -29,7 +29,7 @@ def index(request):
             configurator.config
         )
 
-    legal_entity_id = request.GET.get('id', None)
+    legal_entity_id = request.GET.get('org_id', None)
 
     # If id isn't passed in, we render a form to ask for it.
     if not legal_entity_id:
@@ -40,14 +40,7 @@ def index(request):
         'legal_entity_id': legal_entity_id
     })
 
-    if not proof_response['success']:
-        return render(
-            request,
-            'missing_id.html',
-            {'message': proof_response['message']}
-        )
-
-    logger.info('\n\n\n\n\n\n\n\n\nproof' + json.dumps(proof))
+    configurator.config['proof_response'] = proof_response
 
     return render(
         request,

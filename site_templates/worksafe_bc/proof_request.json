@@ -1,7 +1,7 @@
 {
   "name": "incorporation.bc_registries",
   "version": "1.0.0",
-  "nonce": "123123123",
+  "nonce": "1986273812765872",
   "requested_attrs": {
     "address_line_1": {
       "name": "address_line_1",
@@ -10,7 +10,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -22,7 +22,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -34,7 +34,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -46,7 +46,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -58,7 +58,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -70,7 +70,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -82,7 +82,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -94,7 +94,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -106,7 +106,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -118,7 +118,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -130,7 +130,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -142,7 +142,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
@@ -154,7 +154,7 @@
           "schema_key": {
             "did": "27TL9VHhcQNok9QvHLVx1a",
             "name": "incorporation.bc_registries",
-            "version": "1.0.19"
+            "version": "1.0.20"
           }
         }
       ]
