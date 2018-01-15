@@ -24,7 +24,7 @@ name = "pst_number"
 title = "PST Number"
 
   [[forms.hidden]]
-  name = "for_schema"
+  name = "schema"
   value = "pst_number.restaurant_clearance_letter"
 
   [[forms.inputs]]

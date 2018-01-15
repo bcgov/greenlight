@@ -39,9 +39,14 @@ $(function () {
     }).done(function (response) {
       $(form).find('button[type=submit]').toggleClass('loading')
       // This is used allow each template to implement its own response handler
-      if (FORM_HANDLERS[$(form).attr('name')]) {
-        FORM_HANDLERS[$(form).attr('name')](form, response)
-      }
+      // if (FORM_HANDLERS[$(form).attr('name')]) {
+      //   FORM_HANDLERS[$(form).attr('name')](form, response)
+      // }
+
+      window.location.replace(
+        'https://devex-von-dev.pathfinder.gov.bc.ca/roadmap?record=' +
+        response.result.id
+      )
     })
   })
 })

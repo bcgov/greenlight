@@ -24,7 +24,7 @@ name = "liquor_license"
 title = "Liquor Control and Licensing Branch"
 
   [[forms.hidden]]
-  name = "for_schema"
+  name = "schema"
   value = "liquor_license.liquor_control_and_licensing_branch"
 
   [[forms.inputs]]

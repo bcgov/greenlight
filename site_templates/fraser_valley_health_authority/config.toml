@@ -24,7 +24,7 @@ name = "operating_permit"
 title = "Operating Permit"
 
   [[forms.hidden]]
-  name = "for_schema"
+  name = "schema"
   value = "operating_permit.fraser_valley_health_authority"
 
   [[forms.inputs]]

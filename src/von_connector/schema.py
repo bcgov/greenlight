@@ -94,10 +94,6 @@ class SchemaManager():
         # Build claim
         claim_request = response.json()
 
-        # The claim_request format changed
-        # claim_request['blinded_ms']['prover_did'] = claim_request['prover_did']
-        # del claim_request['prover_did']
-
         claim_request_json = json.dumps(claim_request)
 
         logger.debug('\n\nclaim_request_json:\n\n' + claim_request_json)
@@ -116,7 +112,7 @@ class SchemaManager():
             }
         )
 
-        return json.loads(claim_json)
+        return response.json()
 
     def verify_dba(self, data):
         # We need schema from ledger

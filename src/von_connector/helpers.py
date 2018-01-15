@@ -17,6 +17,11 @@ def now():
 
 
 def one_year():
-    return int(time.mktime(
-      datetime.datetime.now() +
-      datetime.timedelta(days=365)))
+    return int(
+      time.mktime(
+        (
+          datetime.datetime.now() +
+          datetime.timedelta(days=365)
+        ).timetuple()
+      )
+    )

@@ -164,7 +164,7 @@
                             name="{{ input.name }}"
                             size="{{ input.size }}"
                             id="{{ input.name }}-input"
-                            
+                            value="{{ proof_response.parsed_proof|get_item:input.name|default_if_none:'' }}"
                             {% if input.required %}required{% endif %}
                             {% if input.disabled %}disabled{% endif %}
                         >
