@@ -27,6 +27,9 @@ $(function () {
           data[select.name].push(option.value)
         }
       })
+
+      // Convert array into comma delimited string
+      data[select.name] = data[select.name].join(',')
     })
 
     $(form).find('button[type=submit]').toggleClass('loading')
