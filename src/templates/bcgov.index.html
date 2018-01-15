@@ -43,6 +43,14 @@
     {% block content %}
     <main class="container page-content">
     <div class="row">
+        <div class="col-sm-10 col-sm-push-1">
+            <h2>{{ description }}</h2>
+            <p>{{ explanation }}</p>
+
+            {% for form in forms %}
+                {% include "bootstrap.form.html" %}
+            {% endfor %}
+        </div>
         {% if not foundational %}
         {% if proof_response.success == True %}
         <div class="col-sm-10 col-sm-push-1">
@@ -80,14 +88,6 @@
         </div>
         {% endif %}
         {% endif %}
-        <div class="col-sm-10 col-sm-push-1">
-            <h2>{{ description }}</h2>
-            <p>{{ explanation }}</p>
-
-            {% for form in forms %}
-                {% include "bootstrap.form.html" %}
-            {% endfor %}
-        </div>
     </div>
     </main>
     {% endblock %}
