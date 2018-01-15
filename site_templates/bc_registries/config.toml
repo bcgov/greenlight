@@ -70,22 +70,22 @@ title = "Incorporation"
 #  name = "address"
 #  pretty = "Mailing Address"
 
-[[forms]]
-name = "verify_dba"
-action = "/verify_dba"
-title = "Verify DBA Name"
+# [[forms]]
+# name = "verify_dba"
+# action = "/verify_dba"
+# title = "Verify DBA Name"
 
-  [[forms.inputs]]
-  type = "text"
-  name = "legal_entity_id"
-  required = true
-  pretty = "Legal Entity ID"
+#   [[forms.inputs]]
+#   type = "text"
+#   name = "legal_entity_id"
+#   required = true
+#   pretty = "Legal Entity ID"
 
-  [[forms.inputs]]
-  type = "text"
-  name = "doing_business_as_name"
-  required = true
-  pretty = "Doing Business As Name"
+#   [[forms.inputs]]
+#   type = "text"
+#   name = "doing_business_as_name"
+#   required = true
+#   pretty = "Doing Business As Name"
 
 # Schema mappers:
 # 

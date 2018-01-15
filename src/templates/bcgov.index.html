@@ -42,14 +42,19 @@
     {% block content %}
     <main class="container page-content">
     <div class="row">
+        {% if not foundational %}
         {% if proof_response.success == True %}
         <div class="col-sm-10 col-sm-push-1">
             <div class="row margin-lg">
                 <div class="col-sm-10 col-sm-push-1">
-                    <div class="panel panel-danger padding-md">
-                        <h3>Received proof from TheOrgBook.</h3>
+                    <div class="panel panel-success padding-md">
+                        <h3>Received proof from TheOrgBook:</h3>
                         <p>
                             <pre>{{ proof_response.proof }}</pre>
+                        </p>
+                        <h3>Available claim data:</h3>
+                        <p>
+                            <pre>{{ proof_response.parsed_proof }}</pre>
                         </p>
                     </div>
                 </div>
@@ -68,6 +73,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         {% endif %}
         <div class="col-sm-10 col-sm-push-1">
             <h2>{{ description }}</h2>
