@@ -1,7 +1,7 @@
 [
     {
         "name": "liquor_license.liquor_control_and_licensing_branch",
-        "version": "1.0.21",
+        "version": "1.0.22",
         "attr_names": [
             "legal_entity_id",
             "legal_name",
