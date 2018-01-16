@@ -127,7 +127,7 @@ for = "operating_permit.fraser_valley_health_authority"
   from ="request"
   source = "tobacco"
 
-  [[schema_mappers.attributes]]
-  name = "months_of_operation"
-  from ="request"
-  source = "months_of_operation"
+  # [[schema_mappers.attributes]]
+  # name = "months_of_operation"
+  # from ="request"
+  # source = "months_of_operation"
