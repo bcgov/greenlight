@@ -1,6 +1,6 @@
 # Agent info
 url = ""
-template_root = "bcgov.index.html"
+template_root = "worksafe_bc.index.html"
 name = "WorkSafe BC"
 abbreviation = "WorkSafe"
 jurisdiction_name = "British Columbia"
@@ -11,8 +11,8 @@ wallet_seed = "worksafe_bc_agent_00000000000000"
 
 # Webpage info
 title = "WorkSafe BC"
-description = "This is a description"
-explanation = "Use the forms below to obtain a restaurant clearance letter."
+description = "Get a clearance letter"
+explanation = "While some exceptions exist, most types of clearance letters can be accessed online using our clearance letter application."
 
 # Forms:
 # 
