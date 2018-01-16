@@ -24,7 +24,7 @@ name = "business_license"
 title = "Business License"
 
   [[forms.hidden]]
-  name = "for_schema"
+  name = "schema"
   value = "business_license.city_of_surrey"
 
   [[forms.inputs]]

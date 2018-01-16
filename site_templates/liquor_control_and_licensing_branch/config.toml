@@ -24,7 +24,7 @@ name = "liquor_license"
 title = "Liquor Control and Licensing Branch"
 
   [[forms.hidden]]
-  name = "for_schema"
+  name = "schema"
   value = "liquor_license.liquor_control_and_licensing_branch"
 
   [[forms.inputs]]
@@ -117,47 +117,47 @@ title = "Liquor Control and Licensing Branch"
   name = "treaty"
   pretty = "Is your establishment located on Treaty First Nation land?"
 
-  [[forms.inputs]]
-  type = "open_close"
-  required = true
-  name = "hours_of_operation"
-  pretty = "Sunday Hours"
+  # [[forms.inputs]]
+  # type = "open_close"
+  # required = true
+  # name = "hours_of_operation"
+  # pretty = "Sunday Hours"
 
-  [[forms.inputs]]
-  type = "open_close"
-  required = true
-  name = "hours_of_operation"
-  pretty = "Monday Hours"
+  # [[forms.inputs]]
+  # type = "open_close"
+  # required = true
+  # name = "hours_of_operation"
+  # pretty = "Monday Hours"
 
-  [[forms.inputs]]
-  type = "open_close"
-  required = true
-  name = "hours_of_operation"
-  pretty = "Tuesday Hours"
+  # [[forms.inputs]]
+  # type = "open_close"
+  # required = true
+  # name = "hours_of_operation"
+  # pretty = "Tuesday Hours"
 
-  [[forms.inputs]]
-  type = "open_close"
-  required = true
-  name = "hours_of_operation"
-  pretty = "Wednesday Hours"
+  # [[forms.inputs]]
+  # type = "open_close"
+  # required = true
+  # name = "hours_of_operation"
+  # pretty = "Wednesday Hours"
 
-  [[forms.inputs]]
-  type = "open_close"
-  required = true
-  name = "hours_of_operation"
-  pretty = "Thursday Hours"
+  # [[forms.inputs]]
+  # type = "open_close"
+  # required = true
+  # name = "hours_of_operation"
+  # pretty = "Thursday Hours"
 
-  [[forms.inputs]]
-  type = "open_close"
-  required = true
-  name = "hours_of_operation"
-  pretty = "Friday Hours"
+  # [[forms.inputs]]
+  # type = "open_close"
+  # required = true
+  # name = "hours_of_operation"
+  # pretty = "Friday Hours"
 
-  [[forms.inputs]]
-  type = "open_close"
-  required = true
-  name = "hours_of_operation"
-  pretty = "Saturday Hours"
+  # [[forms.inputs]]
+  # type = "open_close"
+  # required = true
+  # name = "hours_of_operation"
+  # pretty = "Saturday Hours"
 
   [[forms.inputs]]
   type = "radio"
@@ -215,10 +215,10 @@ for = "liquor_license.liquor_control_and_licensing_branch"
   from ="request"
   source = "legal_entity_id"
 
-  [[schema_mappers.attributes]]
-  name = "daily_hours_of_operation"
-  from ="request"
-  source = "hours_of_operation[]"
+  # [[schema_mappers.attributes]]
+  # name = "daily_hours_of_operation"
+  # from ="request"
+  # source = "hours_of_operation[]"
 
   [[schema_mappers.attributes]]
   name = "dancing_permitted"

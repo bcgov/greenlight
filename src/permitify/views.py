@@ -4,22 +4,49 @@ from importlib import import_module
 from django.http import JsonResponse
 from django.shortcuts import render
 
+from django.http import Http404
+
 from von_connector.config import Configurator
 from von_connector.schema import SchemaManager
+from von_connector.proof import ProofRequestManager
 
 import logging
 logger = logging.getLogger(__name__)
 
-#import .settings
-
-#if not settings.DISCONNECTED:
 schema_manager = SchemaManager()
 configurator = Configurator()
 
 
 def index(request):
+
+    # If this is the form for the foundational claim,
+    # we have no prequisites so just render.
+    if 'foundational' in configurator.config and \
+            configurator.config['foundational']:
+        return render(
+            request,
+            configurator.config['template_root'],
+            configurator.config
+        )
+
+    legal_entity_id = request.GET.get('org_id', None)
+
+    # If id isn't passed in, we render a form to ask for it.
+    if not legal_entity_id:
+        return render(request, 'missing_id.html')
+
+    proof_request_manager = ProofRequestManager()
+    proof_response = proof_request_manager.request_proof({
+        'legal_entity_id': legal_entity_id
+    })
+
+    configurator.config['proof_response'] = proof_response
+
     return render(
-        request, configurator.config['template_root'], configurator.config)
+        request,
+        configurator.config['template_root'],
+        configurator.config
+    )
 
 
 def submit_claim(request):
@@ -102,4 +129,3 @@ def verify_dba(request):
     (verified, message) = schema_manager.verify_dba(body)
 
     return JsonResponse({'success': verified, 'message': message})
-

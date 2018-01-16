@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static "css/mygovbc-bootstrap-theme.min.css" %}">
     <link rel="stylesheet" href="{% static "css/bcgov.css" %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js" type="text/javascript" charset="utf-8" async defer></script>
     {% for include in css_includes %}
         <link rel="stylesheet" href="{% static include.src %}">
     {% endfor %}
@@ -50,6 +51,43 @@
                 {% include "bootstrap.form.html" %}
             {% endfor %}
         </div>
+        {% if not foundational %}
+        {% if proof_response.success == True %}
+        <div class="col-sm-10 col-sm-push-1">
+            <div class="row margin-lg">
+                <div class="col-sm-10 col-sm-push-1">
+                    <div class="panel panel-success padding-md">
+                        <h3>Received proof from TheOrgBook:</h3>
+                        <p>
+                            <pre>{{ proof_response.proof }}</pre>
+                        </p>
+                        <h3>Available claim data:</h3>
+                        <p>
+                            <pre>{{ proof_response.parsed_proof }}</pre>
+                        </p>
+                        <h3>Cryptographically verified:</h3>
+                        <p>
+                            <pre>{{ proof_response.verified }}</pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-sm-10 col-sm-push-1">
+            <div class="row margin-lg">
+                <div class="col-sm-10 col-sm-push-1">
+                    <div class="panel panel-danger padding-md">
+                        <h3>We could not validate your prerequisites.</h3>
+                        <p>
+                            <code>{{ proof_response.error }}</code>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
     </div>
     </main>
     {% endblock %}
