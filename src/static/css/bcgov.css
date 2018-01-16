@@ -24,3 +24,25 @@
 .form-field + .form-field {
 	margin-top: 0.8rem;
 }
+
+.btn.loading {
+  background-color: #ddd;
+  border-color: #bbb;
+  color: #666;
+  cursor: wait;
+  overflow: hidden;
+  position: relative;
+  text-shadow:0 2px 2px #fff;
+  &::before {
+    animation: loading 1s linear infinite;
+    background-color: #2980b9;
+    background: linear-gradient(to right, #ddd, #2980b9, #ddd);
+    bottom: 0;
+    content: "";
+    height: 2px;
+    left: -100%;
+    position: absolute;
+    width: 50%;
+  }
+}
+

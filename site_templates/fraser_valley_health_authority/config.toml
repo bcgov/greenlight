@@ -1,6 +1,6 @@
 # Agent info
 url = ""
-template_root = "bcgov.index.html"
+template_root = "fraser_valley_health_authority.index.html"
 name = "Fraser Valley Health Authority"
 abbreviation = "Health Authority"
 jurisdiction_name = "Fraser Valley"
@@ -15,7 +15,7 @@ description = "This is a description"
 explanation = "Use the form below to obtain an operating permit."
 
 # Forms:
-# 
+#
 # These structures are used to build the forms
 # in the UI.
 
@@ -92,9 +92,9 @@ title = "Operating Permit"
 
 
 # Schema mappers:
-# 
+#
 # One for each schema type.
-# 
+#
 # Each mapper is invoked when a request is received
 # which contains value "schema" which maps to "for"
 # property.

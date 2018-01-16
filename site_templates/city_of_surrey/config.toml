@@ -1,6 +1,6 @@
 # Agent info
 url = ""
-template_root = "bcgov.index.html"
+template_root = "city_of_surrey.index.html"
 name = "City of Surrey"
 abbreviation = "Surrey"
 jurisdiction_name = "Surrey"
@@ -11,11 +11,11 @@ wallet_seed = "city_of_surrey_00000000000000000"
 
 # Webpage info
 title = "City of Surrey"
-description = "This is a description"
-explanation = "Use the form below to obtain a business license."
+description = "Business Licensing"
+explanation = "To conduct your business in Surrey, you must have a valid business licence."
 
 # Forms:
-# 
+#
 # These structures are used to build the forms
 # in the UI.
 
@@ -47,9 +47,9 @@ title = "Business License"
 
 
 # Schema mappers:
-# 
+#
 # One for each schema type.
-# 
+#
 # Each mapper is invoked when a request is received
 # which contains value "schema" which maps to "for"
 # property.
