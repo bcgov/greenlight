@@ -25,6 +25,11 @@
 	margin-top: 0.8rem;
 }
 
+@keyframes loading {
+    from {left: -100%; }
+    to { left: 100%; }
+}
+
 .btn.loading {
   background-color: #ddd;
   border-color: #bbb;
