@@ -68,26 +68,26 @@ title = "Operating Permit"
   name = "tobacco"
   pretty = "Tobacco"
 
-  [[forms.inputs]]
-  type = "select"
-  options = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ]
-  required = true
-  multiple = true
-  name = "months_of_operation"
-  pretty = "Months of Operation"
+  # [[forms.inputs]]
+  # type = "select"
+  # options = [
+  #   "January",
+  #   "February",
+  #   "March",
+  #   "April",
+  #   "May",
+  #   "June",
+  #   "July",
+  #   "August",
+  #   "September",
+  #   "October",
+  #   "November",
+  #   "December"
+  # ]
+  # required = true
+  # multiple = true
+  # name = "months_of_operation"
+  # pretty = "Months of Operation"
 
 
 
