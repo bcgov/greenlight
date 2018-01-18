@@ -77,6 +77,7 @@ class VonConnectorConfig(AppConfig):
         # Publish the schemas I care about to the ledger
         # then register them in TheOrgBook
         schema_manager = SchemaManager()
+
         for schema in schema_manager.schemas:
             # Publish to ledger
             schema_manager.publish_schema(schema)

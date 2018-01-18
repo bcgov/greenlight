@@ -35,6 +35,10 @@ class SchemaManager():
             raise
         self.schemas = json.loads(schemas_json)
 
+        if os.getenv('PYTHON_ENV') == 'development':
+            for schema in self.schemas:
+                schema['version'] = '0.0.0'
+
     def publish_schema(self, schema):
         async def run(schema):
             async with Issuer() as issuer:

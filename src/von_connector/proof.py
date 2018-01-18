@@ -35,6 +35,12 @@ class ProofRequestManager():
 
     def request_proof(self, filters):
         async def run(filters):
+
+            if os.getenv('PYTHON_ENV') == 'development':
+                for attr in self.proof_request['requested_attrs']:
+                    for restriction in self.proof_request['requested_attrs'][attr]['restrictions']:
+                        restriction['schema_key']['version'] = '0.0.0'
+
             async with Verifier() as verifier:
                 response = requests.post(
                     TOB_BASE_URL + '/bcovrin/construct-proof',
@@ -72,4 +78,4 @@ class ProofRequestManager():
                     'verified': verified
                 }
 
-        eventloop.do(run(filters))
+        return eventloop.do(run(filters))

@@ -4,6 +4,7 @@ services:
   bc_registries:
     image: permitify
     environment:
+      PYTHON_ENV: development
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -22,6 +23,7 @@ services:
   worksafe_bc:
     image: permitify
     environment:
+      PYTHON_ENV: development
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -40,6 +42,7 @@ services:
   ministry_of_finance:
     image: permitify
     environment:
+      PYTHON_ENV: development
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -58,6 +61,7 @@ services:
   fraser_valley_health_authority:
     image: permitify
     environment:
+      PYTHON_ENV: development
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -76,6 +80,7 @@ services:
   city_of_surrey:
     image: permitify
     environment:
+      PYTHON_ENV: development
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -94,6 +99,7 @@ services:
   liquor_control_and_licensing_branch:
     image: permitify
     environment:
+      PYTHON_ENV: development
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
       DISCONNECTED: '${DISCONNECTED-false}'
