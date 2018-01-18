@@ -31,7 +31,6 @@ class ProofRequestManager():
             logger.error('Could not find proof_request.json. Exiting.')
             raise
 
-        logger.info(proof_request_json)
         self.proof_request = json.loads(proof_request_json)
 
     def request_proof(self, filters):

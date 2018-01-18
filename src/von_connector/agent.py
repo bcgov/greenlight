@@ -45,7 +45,7 @@ class Verifier:
             'permitify-verifier',
             '/app/.genesis')
 
-        self.issuer = VonVerifier(
+        self.instance = VonVerifier(
             self.pool,
             config['wallet_seed'],
             config['name'] + ' Verifier Wallet',
@@ -72,7 +72,7 @@ class Holder:
             'permitify-holder',
             '/app/.genesis')
 
-        self.issuer = VonHolderProver(
+        self.instance = VonHolderProver(
             self.pool,
             config['wallet_seed'],
             config['name'] + ' Holder Wallet',
