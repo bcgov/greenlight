@@ -9,7 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{{ title }}{% endblock %}</title>
     {% block includes %}
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script type="text/javascript"
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"></script>
     <script src="{% static "js/main.js" %}"></script>
     {% for include in js_includes %}
         <script src="{% static include.src %}"></script>
@@ -18,7 +21,11 @@
     <link rel="stylesheet" href="{% static "css/mygovbc-bootstrap-theme.min.css" %}">
     <link rel="stylesheet" href="{% static "css/bcgov.css" %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js" type="text/javascript" charset="utf-8" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"
+      type="text/javascript" charset="utf-8" async defer></script>
+    <script type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.4/jquery.typeahead.js"></script>
+    <!-- link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.4/jquery.typeahead.css" -->
     {% for include in css_includes %}
         <link rel="stylesheet" href="{% static include.src %}">
     {% endfor %}
