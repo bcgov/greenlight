@@ -1,5 +1,3 @@
-from . import eventloop
-
 from .config import Configurator
 from .helpers import uuid
 
@@ -8,107 +6,89 @@ from von_agent.agents import Issuer as VonIssuer
 from von_agent.agents import Verifier as VonVerifier
 from von_agent.agents import HolderProver as VonHolderProver
 
+import logging
+logger = logging.getLogger(__name__)
+
 config = Configurator().config
 
 
 class Issuer:
-    # Singleton
-    class Singleton:
-        async def start(self):
-            pool = NodePool(
-                'permitify-issuer',
-                '/app/.genesis')
-            await pool.open()
-
-            self.issuer = VonIssuer(
-                pool,
-                config['wallet_seed'],
-                config['name'] + ' Issuer Wallet',
-                None,
-                '127.0.0.1',
-                9703,
-                'api/v0')
-
-            await self.issuer.open()
-
-        def __getattr__(self, name):
-            return getattr(self.issuer, name)
-
-    instance = None
-
     def __init__(self):
-        if not Issuer.instance:
-            Issuer.instance = Issuer.Singleton()
-            eventloop.do(Issuer.instance.start())
+        self.pool = NodePool(
+            'permitify-issuer',
+            '/app/.genesis')
 
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
+        self.instance = VonIssuer(
+            self.pool,
+            config['wallet_seed'],
+            config['name'] + ' Issuer Wallet',
+            None,
+            '127.0.0.1',
+            9703,
+            'api/v0')
+
+    async def __aenter__(self):
+        await self.pool.open()
+        return await self.instance.open()
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if exc_type is not None:
+            logger.error(exc_type, exc_value, traceback)
+
+        await self.instance.close()
+        await self.pool.close()
 
 
 class Verifier:
-    # Singleton
-    class Singleton:
-        async def start(self):
-            pool = NodePool(
-                'permitify-verifier',
-                '/app/.genesis')
-            await pool.open()
-
-            self.issuer = VonVerifier(
-                pool,
-                config['wallet_seed'],
-                config['name'] + ' Verifier Wallet',
-                None,
-                '127.0.0.1',
-                9703,
-                'api/v0')
-
-            await self.issuer.open()
-
-        def __getattr__(self, name):
-            return getattr(self.issuer, name)
-
-    instance = None
-
     def __init__(self):
-        if not Verifier.instance:
-            Verifier.instance = Verifier.Singleton()
-            eventloop.do(Verifier.instance.start())
+        self.pool = NodePool(
+            'permitify-verifier',
+            '/app/.genesis')
 
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
+        self.issuer = VonVerifier(
+            self.pool,
+            config['wallet_seed'],
+            config['name'] + ' Verifier Wallet',
+            None,
+            '127.0.0.1',
+            9703,
+            'api/v0')
+
+    async def __aenter__(self):
+        await self.pool.open()
+        return await self.instance.open()
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if exc_type is not None:
+            logger.error(exc_type, exc_value, traceback)
+
+        await self.instance.close()
+        await self.pool.close()
 
 
 class Holder:
-    # Singleton
-    class Singleton:
-        async def start(self):
-            pool = NodePool(
-                'permitify-holder',
-                '/app/.genesis')
-            await pool.open()
-
-            self.issuer = VonHolderProver(
-                pool,
-                config['wallet_seed'],
-                config['name'] + ' Holder Wallet',
-                None,
-                '127.0.0.1',
-                9703,
-                'api/v0')
-
-            await self.issuer.open()
-            await self.create_master_secret(uuid())
-
-        def __getattr__(self, name):
-            return getattr(self.issuer, name)
-
-    instance = None
-
     def __init__(self):
-        if not Holder.instance:
-            Holder.instance = Holder.Singleton()
-            eventloop.do(Holder.instance.start())
+        self.pool = NodePool(
+            'permitify-holder',
+            '/app/.genesis')
 
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
+        self.issuer = VonHolderProver(
+            self.pool,
+            config['wallet_seed'],
+            config['name'] + ' Holder Wallet',
+            None,
+            '127.0.0.1',
+            9703,
+            'api/v0')
+
+    async def __aenter__(self):
+        await self.pool.open()
+        await self.create_master_secret(uuid())
+        return await self.instance.open()
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if exc_type is not None:
+            logger.error(exc_type, exc_value, traceback)
+
+        await self.instance.close()
+        await self.pool.close()

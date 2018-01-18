@@ -6,6 +6,7 @@ import requests
 from .schema import SchemaManager
 from .config import Configurator
 from .agent import Issuer
+from . import eventloop
 
 from django.apps import AppConfig
 
@@ -17,55 +18,61 @@ class VonConnectorConfig(AppConfig):
     name = 'von_connector'
 
     def ready(self):
-        agent = Issuer()
         config = Configurator().config
         now = datetime.now().strftime("%Y-%m-%d")
-
         # Register myself with TheOrgBook
         tob_base_url = os.getenv('THE_ORG_BOOK_BASE_URL')
-        # Check if my jurisdiction exists by name
-        jurisdictions = requests.get(tob_base_url + '/jurisdictions').json()
-
-        jurisdiction_id = None
-        for jurisdiction in jurisdictions:
-            if jurisdiction['name'] == config['jurisdiction_name']:
-                jurisdiction_id = jurisdiction['id']
-                break
-
-        # If it doesn't, then create it
-        if not jurisdiction_id:
-            jurisdiction = requests.post(
-                tob_base_url + '/jurisdictions',
-                json={
-                    'name':             config['jurisdiction_name'],
-                    'abbrv':            config['jurisdiction_abbreviation'],
-                    'displayOrder':     0,
-                    'isOnCommonList':   True,
-                    'effectiveDate':    now
-                }).json()
-            jurisdiction_id = jurisdiction['id']
-
-        # Check if my issuer record exists by name
-        issuer_services = requests.get(tob_base_url + '/issuerservices').json()
         issuer_service_id = None
-        for issuer_service in issuer_services:
-            if issuer_service['name'] == config['name']:
-                issuer_service_id = issuer_service['id']
-                break
 
-        # If it doesn't, then create it
-        if not issuer_service_id:
-            issuer_service = requests.post(
-                tob_base_url + '/issuerservices',
-                json={
-                    'name':             config['name'],
-                    'issuerOrgTLA':     config['abbreviation'],
-                    'DID':              agent.did,
-                    'issuerOrgURL':     config['url'],
-                    'effectiveDate':    now,
-                    'jurisdictionId':   jurisdiction_id
-                }).json()
-            issuer_service_id = issuer_service['id']
+        async def run():
+            async with Issuer() as agent:
+                # Check if my jurisdiction exists by name
+                jurisdictions = requests.get(tob_base_url + '/jurisdictions').json()
+
+                jurisdiction_id = None
+                for jurisdiction in jurisdictions:
+                    if jurisdiction['name'] == config['jurisdiction_name']:
+                        jurisdiction_id = jurisdiction['id']
+                        break
+
+                # If it doesn't, then create it
+                if not jurisdiction_id:
+                    jurisdiction = requests.post(
+                        tob_base_url + '/jurisdictions',
+                        json={
+                            'name':             config['jurisdiction_name'],
+                            'abbrv':            config['jurisdiction_abbreviation'],
+                            'displayOrder':     0,
+                            'isOnCommonList':   True,
+                            'effectiveDate':    now
+                        }).json()
+                    jurisdiction_id = jurisdiction['id']
+
+                # Check if my issuer record exists by name
+                issuer_services = requests.get(tob_base_url + '/issuerservices').json()
+
+                for issuer_service in issuer_services:
+                    if issuer_service['name'] == config['name']:
+                        issuer_service_id = issuer_service['id']
+                        break
+
+                # If it doesn't, then create it
+                if not issuer_service_id:
+                    issuer_service = requests.post(
+                        tob_base_url + '/issuerservices',
+                        json={
+                            'name':             config['name'],
+                            'issuerOrgTLA':     config['abbreviation'],
+                            'DID':              agent.did,
+                            'issuerOrgURL':     config['url'],
+                            'effectiveDate':    now,
+                            'jurisdictionId':   jurisdiction_id
+                        }).json()
+                    issuer_service_id = issuer_service['id']
+
+                return
+
+        eventloop.do(run())
 
         # Publish the schemas I care about to the ledger
         # then register them in TheOrgBook
