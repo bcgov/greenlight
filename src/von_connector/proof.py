@@ -79,3 +79,4 @@ class ProofRequestManager():
                 }
 
         return eventloop.do(run(filters))
+
