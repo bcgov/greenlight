@@ -1,7 +1,7 @@
 [
     {
         "name": "operating_permit.fraser_valley_health_authority",
-        "version": "1.0.25",
+        "version": "1.0.26",
         "attr_names": [
             "legal_entity_id",
             "site_name",
