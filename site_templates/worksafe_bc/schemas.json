@@ -1,7 +1,7 @@
 [
     {
         "name": "restaurant_clearance_letter.worksafe_bc",
-        "version": "1.0.27",
+        "version": "1.0.28",
         "attr_names": [
             "legal_entity_id",
             "restaurant_name",
