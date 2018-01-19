@@ -9,7 +9,6 @@ from .agent import Issuer
 from von_agent.util import encode
 
 from . import eventloop
-from . import helpers
 
 import logging
 logger = logging.getLogger(__name__)

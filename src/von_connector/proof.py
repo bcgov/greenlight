@@ -6,10 +6,8 @@ import requests
 from django.conf import settings
 
 from .agent import Verifier
-from von_agent.util import encode
 
 from . import eventloop
-from . import helpers
 
 import logging
 logger = logging.getLogger(__name__)
@@ -79,4 +77,3 @@ class ProofRequestManager():
                 }
 
         return eventloop.do(run(filters))
-
