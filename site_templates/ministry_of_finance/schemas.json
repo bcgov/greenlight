@@ -1,7 +1,7 @@
 [
     {
         "name": "pst_number.restaurant_clearance_letter",
-        "version": "1.0.28",
+        "version": "1.0.29",
         "attr_names": [
             "legal_entity_id",
             "legal_name",
