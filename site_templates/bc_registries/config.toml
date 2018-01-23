@@ -13,8 +13,8 @@ wallet_seed = "bc_registries_000000000000000000"
 
 # Webpage info
 title = "BC Corporate Registry"
-description = "This is a description"
-explanation = "Use the forms below to register a BC corporation."
+description = "BC Registries and Online Services administers and supports the legal framework used for operating a business, not-for-profit society, cooperative association or financial institution in B.C. Organizations need to register, file documents and update records, which are kept as a matter of public record."
+explanation = "Use the form below to register a BC corporation."
 
 [[js_includes]]
 src = "js/bc_registries.js"
