@@ -2,6 +2,37 @@
 export MSYS_NO_PATHCONV=1
 set -e
 
+usage () {
+  cat <<-EOF
+
+  Usage: $0 {start|stop|build|rebuild|shell}
+
+  Options:
+
+  build - Build the docker images for the project.
+          You need to do this first.
+
+  start - Creates the application containers from the built images
+          and starts the services based on the docker-compose.yml file.
+
+          To start the services and connect them to a specific TOB API instance,
+          inject the url for the API using the tob-url flag.
+
+          For example:
+          $0 start tob-url=http://docker.for.win.localhost:56325/api/v1
+
+  stop - Stops the services.  This is a non-destructive process.  The containers
+         are not deleted so they will be reused the next time you run start.
+         
+  rebuild - Rebuild the docker images.  
+EOF
+exit 1
+}
+
+configureEnvironment () {
+  export THE_ORG_BOOK_BASE_URL="https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1"
+}
+
 ALL_CONTAINERS="\
     bc_registries\
     worksafe_bc\
@@ -18,6 +49,7 @@ cd "$SCRIPT_HOME"
 
 case "$1" in
   start)
+      configureEnvironment
       shift
       ARGS="--force-recreate"
       CONTAINERS=""
@@ -27,6 +59,12 @@ case "$1" in
             ARGS+=" $arg";;
           all)
             CONTAINERS+=" $ALL_CONTAINERS";;
+          tob-url*)
+            # Inject the URL for the TOB API
+            # Example; ./manage start tob-url=http://docker.for.win.localhost:56325/api/v1
+            API_URL=$(echo ${arg} | sed 's~\(^.*=\)\(.*$\)~\2~;')
+            export THE_ORG_BOOK_BASE_URL=${API_URL}
+            ;;  
           *)
             CONTAINERS+=" $arg"
         esac
@@ -84,7 +122,7 @@ case "$1" in
       docker-compose run web bash
     ;;
   *)
-    echo $"Usage: $0 {start|stop|build|rebuild}"
+      usage;;
 esac
 
 ( cd - ) > /dev/null

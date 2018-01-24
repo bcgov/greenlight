@@ -5,7 +5,7 @@ services:
     image: permitify
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
-      THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+      THE_ORG_BOOK_BASE_URL: ${THE_ORG_BOOK_BASE_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
       TEMPLATE_NAME: bc_registries
       APPLICATION_IP: 0.0.0.0
@@ -23,7 +23,7 @@ services:
     image: permitify
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
-      THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+      THE_ORG_BOOK_BASE_URL: ${THE_ORG_BOOK_BASE_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
       TEMPLATE_NAME: worksafe_bc
       APPLICATION_IP: 0.0.0.0
@@ -41,7 +41,7 @@ services:
     image: permitify
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
-      THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+      THE_ORG_BOOK_BASE_URL: ${THE_ORG_BOOK_BASE_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
       TEMPLATE_NAME: ministry_of_finance
       APPLICATION_IP: 0.0.0.0
@@ -59,7 +59,7 @@ services:
     image: permitify
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
-      THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+      THE_ORG_BOOK_BASE_URL: ${THE_ORG_BOOK_BASE_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
       TEMPLATE_NAME: fraser_valley_health_authority
       APPLICATION_IP: 0.0.0.0
@@ -77,7 +77,7 @@ services:
     image: permitify
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
-      THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+      THE_ORG_BOOK_BASE_URL: ${THE_ORG_BOOK_BASE_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
       TEMPLATE_NAME: city_of_surrey
       APPLICATION_IP: 0.0.0.0
@@ -95,7 +95,7 @@ services:
     image: permitify
     environment:
       # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
-      THE_ORG_BOOK_BASE_URL: 'https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1'
+      THE_ORG_BOOK_BASE_URL: ${THE_ORG_BOOK_BASE_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
       TEMPLATE_NAME: liquor_control_and_licensing_branch
       APPLICATION_IP: 0.0.0.0
