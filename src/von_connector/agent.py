@@ -83,8 +83,9 @@ class Holder:
 
     async def __aenter__(self):
         await self.pool.open()
+        instance = await self.instance.open()
         await self.instance.create_master_secret(uuid())
-        return await self.instance.open()
+        return instance
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         if exc_type is not None:
