@@ -2,6 +2,11 @@
 export MSYS_NO_PATHCONV=1
 set -e
 
+SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
+
+# =================================================================================================================
+# Usage:
+# -----------------------------------------------------------------------------------------------------------------
 usage () {
   cat <<-EOF
 
@@ -18,8 +23,11 @@ usage () {
           To start the services and connect them to a specific TOB API instance,
           inject the url for the API using the tob-url flag.
 
-          For example:
-          $0 start tob-url=http://docker.for.win.localhost:56325/api/v1
+          Examples:
+          $0 start
+          $0 start THE_ORG_BOOK_BASE_URL=http://docker.for.win.localhost:56325/api/v1
+          $0 start bc_registries          
+          $0 start bc_registries THE_ORG_BOOK_BASE_URL=http://docker.for.win.localhost:56325/api/v1
 
   stop - Stops the services.  This is a non-destructive process.  The containers
          are not deleted so they will be reused the next time you run start.
@@ -28,11 +36,9 @@ usage () {
 EOF
 exit 1
 }
-
-configureEnvironment () {
-  export THE_ORG_BOOK_BASE_URL="https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1"
-}
-
+# -----------------------------------------------------------------------------------------------------------------
+# Default Settings:
+# -----------------------------------------------------------------------------------------------------------------
 ALL_CONTAINERS="\
     bc_registries\
     worksafe_bc\
@@ -42,81 +48,108 @@ ALL_CONTAINERS="\
     liquor_control_and_licensing_branch\
 "
 DEFAULT_CONTAINERS="bc_registries"
+# -----------------------------------------------------------------------------------------------------------------
+# Functions:
+# -----------------------------------------------------------------------------------------------------------------
+configureEnvironment () {
+  for arg in $@; do
+    case "$arg" in
+      *=*)
+        export ${arg}
+        ;;  
+    esac
+  done  
+  
+  export THE_ORG_BOOK_BASE_URL=${THE_ORG_BOOK_BASE_URL-https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1}
+}
 
-SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
+getStartupParams() {
+  CONTAINERS=""
+  ARGS="--force-recreate"
 
-cd "$SCRIPT_HOME"
+  for arg in $@; do
+    case "$arg" in
+      *=*)
+        # Skip it
+        ;;  
+      all)
+        CONTAINERS+=" $ALL_CONTAINERS";;
+     -*)
+        ARGS+=" $arg";;
+      *)
+        CONTAINERS+=" $arg";;
+    esac
+  done
+
+  if [ -z "$CONTAINERS" ]; then
+    CONTAINERS="$DEFAULT_CONTAINERS"
+  fi
+
+  echo ${ARGS} ${CONTAINERS}
+}
+
+build() {
+    echo -e "\nBuilding libindy image ..."
+    docker build \
+        -t 'libindy' \
+        -f 'libindy/Dockerfile' \
+        .
+
+    echo -e "\nBuilding python-libindy image ..."
+    docker build \
+        -t 'python-libindy' \
+        -f 'python-libindy/Dockerfile' \
+        .
+
+    echo -e "\nBuilding permitify image ..."
+    docker build \
+        -t 'permitify' \
+        -f 'permitify/Dockerfile' \
+        ..
+}
+
+rebuild() {
+    echo -e "\nRebuilding libindy image ..."
+    docker build \
+        --no-cache \
+        -t 'libindy' \
+        -f 'libindy/Dockerfile' \
+        .
+    
+    echo -e "\nRebuilding python-libindy image ..."
+    docker build \
+        --no-cache \
+        -t 'python-libindy' \
+        -f 'python-libindy/Dockerfile' \
+        .
+
+    echo -e "\nRebuilding permitify image ..."
+    docker build \
+        --no-cache \
+        -t 'permitify' \
+        -f 'permitify/Dockerfile' \
+        ..
+}
+# =================================================================================================================
+
+pushd ${SCRIPT_HOME} >/dev/null
 
 case "$1" in
   start)
-      configureEnvironment
       shift
-      ARGS="--force-recreate"
-      CONTAINERS=""
-      for arg in $@; do
-        case "$arg" in
-          -*)
-            ARGS+=" $arg";;
-          all)
-            CONTAINERS+=" $ALL_CONTAINERS";;
-          tob-url*)
-            # Inject the URL for the TOB API
-            # Example; ./manage start tob-url=http://docker.for.win.localhost:56325/api/v1
-            API_URL=$(echo ${arg} | sed 's~\(^.*=\)\(.*$\)~\2~;')
-            export THE_ORG_BOOK_BASE_URL=${API_URL}
-            ;;  
-          *)
-            CONTAINERS+=" $arg"
-        esac
-      done
-      if [ -z "$CONTAINERS" ]; then
-        CONTAINERS="$DEFAULT_CONTAINERS"
-      fi
-      docker-compose up $ARGS $CONTAINERS
+      _startupParams=$(getStartupParams $@)
+      configureEnvironment $@
+      docker-compose up ${_startupParams}
     ;;
   stop)
+      configureEnvironment
       docker-compose stop
     ;;
   build)
-      echo -e "\nBuilding libindy image ..."
-      docker build \
-          -t 'libindy' \
-          -f 'libindy/Dockerfile' \
-          .
-
-      echo -e "\nBuilding python-libindy image ..."
-      docker build \
-          -t 'python-libindy' \
-          -f 'python-libindy/Dockerfile' \
-          .
-
-      echo -e "\nBuilding permitify image ..."
-      docker build \
-          -t 'permitify' \
-          -f 'permitify/Dockerfile' \
-          ..
+      build
     ;;
   rebuild)
-      echo -e "\nRebuilding libindy image ..."
-      docker build \
-          --no-cache \
-          -t 'libindy' \
-          -f 'libindy/Dockerfile' \
-          .
-      
-      echo -e "\nRebuilding python-libindy image ..."
-      docker build \
-          --no-cache \
-          -t 'python-libindy' \
-          -f 'python-libindy/Dockerfile' \
-          .
-
-      echo -e "\nRebuilding permitify image ..."
-      docker build \
-          --no-cache \
-          -t 'permitify' \
-          -f 'permitify/Dockerfile' \
-          ..
+      rebuild
     ;;
   shell)
       docker-compose run web bash
@@ -125,4 +158,4 @@ case "$1" in
       usage;;
 esac
 
-( cd - ) > /dev/null
+popd >/dev/null
