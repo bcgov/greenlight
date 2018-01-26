@@ -26,6 +26,8 @@ class VonConnectorConfig(AppConfig):
 
         async def run():
             async with Issuer() as agent:
+                issuer_service_id = None
+
                 # Check if my jurisdiction exists by name
                 jurisdictions = requests.get(tob_base_url + '/jurisdictions').json()
 
@@ -70,9 +72,9 @@ class VonConnectorConfig(AppConfig):
                         }).json()
                     issuer_service_id = issuer_service['id']
 
-                return
+                return issuer_service_id
 
-        eventloop.do(run())
+        issuer_service_id = eventloop.do(run())
 
         # Publish the schemas I care about to the ledger
         # then register them in TheOrgBook
