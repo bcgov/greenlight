@@ -38,6 +38,15 @@ class SchemaManager():
             for schema in self.schemas:
                 schema['version'] = '0.0.0'
 
+    def __log_json(self, heading, data):
+        logger.debug(
+            "\n============================================================================\n" +
+            "{0}\n".format(heading) +
+            "----------------------------------------------------------------------------\n" +
+            "{0}\n".format(json.dumps(data, indent=2)) +
+            "============================================================================\n")
+        return
+
     def publish_schema(self, schema):
         async def run(schema):
             async with Issuer() as issuer:
@@ -69,24 +78,25 @@ class SchemaManager():
                     claim[key] = claim_value_pair(value) if value else \
                         claim_value_pair("")
 
-                logger.debug('\n\nclaim:\n\n' + json.dumps(claim))
-                logger.debug('\n\nschema:\n\n' + json.dumps(schema))
+                self.__log_json('Claim:', claim)
+                self.__log_json('Schema:', schema)
 
                 # We need schema from ledger
                 schema_json = await issuer.get_schema(
                     issuer.did, schema['name'], schema['version'])
                 schema = json.loads(schema_json)
 
-                logger.debug('\n\nschema:\n\n' + json.dumps(schema))
+                self.__log_json('Schema:', schema)
 
                 claim_def_json = await issuer.get_claim_def(
                     schema['seqNo'], issuer.did)
 
-                logger.debug('\n\nrequesting_claim_request:\n\n' + json.dumps({
+                self.__log_json('Requesting Claim Request:', 
+                    {
                         'did': issuer.did,
                         'seqNo': schema['seqNo'],
-                        'claim_def': claim_def_json
-                    }))
+                        'claim_def': json.loads(claim_def_json)
+                    })
 
                 response = requests.post(
                     TOB_BASE_URL + '/bcovrin/generate-claim-request',
@@ -101,13 +111,12 @@ class SchemaManager():
                 claim_request = response.json()
 
                 claim_request_json = json.dumps(claim_request)
-
-                logger.debug('\n\nclaim_request_json:\n\n' + claim_request_json)
+                self.__log_json('Claim Request Json:', claim_request)
 
                 (_, claim_json) = await issuer.create_claim(
                     claim_request_json, claim)
 
-                logger.debug('\n\nclaim_json:\n\n' + claim_json)
+                self.__log_json('Claim Json:', json.loads(claim_json))
 
                 # Send claim
                 response = requests.post(
