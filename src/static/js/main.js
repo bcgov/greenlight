@@ -52,7 +52,7 @@ $(function () {
       // }
 
       window.location.replace(
-        'https://devex-von-dev.pathfinder.gov.bc.ca/roadmap?record=' +
+        'https://devex-von-dev.pathfinder.gov.bc.ca/recipe/start_a_restaurant?record=' +
         response.result.id
       )
     })
