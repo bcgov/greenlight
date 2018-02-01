@@ -25,7 +25,7 @@ title = "PST Number"
 
   [[forms.hidden]]
   name = "schema"
-  value = "pst_number.restaurant_clearance_letter"
+  value = "pst_number.ministry_of_finance"
 
   [[forms.inputs]]
   type = "text"
@@ -55,7 +55,7 @@ title = "PST Number"
 # property.
 
 [[schema_mappers]]
-for = "pst_number.restaurant_clearance_letter"
+for = "pst_number.ministry_of_finance"
 
   [[schema_mappers.attributes]]
   name = "legal_entity_id"

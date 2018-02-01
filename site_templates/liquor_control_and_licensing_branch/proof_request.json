@@ -3,6 +3,54 @@
   "version": "1.0.0",
   "nonce": "1986273812765872",
   "requested_attrs": {
+    "worksafe_letter_exists": {
+      "name": "legal_entity_id",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "2dTaSgHtQ8ZNZ5GLqomauU",
+            "name": "restaurant_clearance_letter.worksafe_bc",
+            "version": "1.0.30"
+          }
+        }
+      ]
+    },
+    "pst_number_exists": {
+      "name": "legal_entity_id",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "6ksN1bSHrwa3ZuHVLYcbjq",
+            "name": "pst_number.ministry_of_finance",
+            "version": "1.0.30"
+          }
+        }
+      ]
+    },
+    "operating_permit_exists": {
+      "name": "legal_entity_id",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "8BaVQQW6WkRQ2p1gY1FG3A",
+            "name": "operating_permit.fraser_valley_health_authority",
+            "version": "1.0.30"
+          }
+        }
+      ]
+    },
+    "business_license_exists": {
+      "name": "legal_entity_id",
+      "restrictions": [
+        {
+          "schema_key": {
+            "did": "K81nomphZemfm6iwothDD8",
+            "name": "business_license.city_of_surrey",
+            "version": "1.0.30"
+          }
+        }
+      ]
+    },
     "address_line_1": {
       "name": "address_line_1",
       "restrictions": [
