@@ -51,8 +51,10 @@ $(function () {
       //   FORM_HANDLERS[$(form).attr('name')](form, response)
       // }
 
+      console.log('asdasdasd', THE_ORG_BOOK_APP_URL)
+
       window.location.replace(
-        'https://devex-von-dev.pathfinder.gov.bc.ca/recipe/start_a_restaurant?record=' +
+        THE_ORG_BOOK_APP_URL + '/recipe/start_a_restaurant?record=' +
         response.result.id
       )
     })

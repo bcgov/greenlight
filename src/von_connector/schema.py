@@ -13,7 +13,7 @@ from . import eventloop
 import logging
 logger = logging.getLogger(__name__)
 
-TOB_BASE_URL = os.getenv('THE_ORG_BOOK_BASE_URL')
+TOB_BASE_URL = os.getenv('THE_ORG_BOOK_API_URL')
 
 
 def claim_value_pair(plain):

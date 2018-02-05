@@ -191,8 +191,8 @@
                     "value": "${APPLICATION_PORT}"
                   },
                   {
-                    "name": "THE_ORG_BOOK_BASE_URL",
-                    "value": "${THE_ORG_BOOK_BASE_URL}"
+                    "name": "THE_ORG_BOOK_API_URL",
+                    "value": "${THE_ORG_BOOK_API_URL}"
                   }
                 ],
                 "resources": {
@@ -324,7 +324,7 @@
       "value": "8080"
     },
     {
-      "name": "THE_ORG_BOOK_BASE_URL",
+      "name": "THE_ORG_BOOK_API_URL",
       "displayName": "TheOrgBook API Base URL",
       "description": "The base URL for TheOrgBook's API.",
       "required": true,

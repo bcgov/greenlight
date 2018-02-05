@@ -21,7 +21,7 @@ class VonConnectorConfig(AppConfig):
         config = Configurator().config
         now = datetime.now().strftime("%Y-%m-%d")
         # Register myself with TheOrgBook
-        tob_base_url = os.getenv('THE_ORG_BOOK_BASE_URL')
+        tob_base_url = os.getenv('THE_ORG_BOOK_API_URL')
         issuer_service_id = None
 
         async def run():
