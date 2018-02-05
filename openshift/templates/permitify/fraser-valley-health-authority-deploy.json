@@ -193,6 +193,10 @@
                   {
                     "name": "THE_ORG_BOOK_API_URL",
                     "value": "${THE_ORG_BOOK_API_URL}"
+                  },
+                  {
+                    "name": "THE_ORG_BOOK_APP_URL",
+                    "value": "${THE_ORG_BOOK_APP_URL}"
                   }
                 ],
                 "resources": {
@@ -329,6 +333,13 @@
       "description": "The base URL for TheOrgBook's API.",
       "required": true,
       "value": "https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1"
+    },
+    {
+      "name": "THE_ORG_BOOK_APP_URL",
+      "displayName": "TheOrgBook APP Base URL",
+      "description": "The base URL for TheOrgBook.",
+      "required": true,
+      "value": "https://devex-von-dev.pathfinder.gov.bc.ca/api/v1"
     }
   ]
 }
