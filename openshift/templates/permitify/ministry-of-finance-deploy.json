@@ -339,7 +339,7 @@
       "displayName": "TheOrgBook APP Base URL",
       "description": "The base URL for TheOrgBook.",
       "required": true,
-      "value": "https://devex-von-dev.pathfinder.gov.bc.ca/api/v1"
+      "value": "https://devex-von-dev.pathfinder.gov.bc.ca"
     }
   ]
 }
