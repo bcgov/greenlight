@@ -1,5 +1,4 @@
 # Agent info
-url = ""
 template_root = "bcgov.index.html"
 name = "BC Corporate Registry"
 abbreviation = "BCReg"

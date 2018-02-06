@@ -1,5 +1,4 @@
 # Agent info
-url = ""
 template_root = "worksafe_bc.index.html"
 name = "WorkSafe BC"
 abbreviation = "WorkSafe"

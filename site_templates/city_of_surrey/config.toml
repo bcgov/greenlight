@@ -1,5 +1,4 @@
 # Agent info
-url = ""
 template_root = "city_of_surrey.index.html"
 name = "City of Surrey"
 abbreviation = "Surrey"

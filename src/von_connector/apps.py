@@ -22,6 +22,7 @@ class VonConnectorConfig(AppConfig):
         now = datetime.now().strftime("%Y-%m-%d")
         # Register myself with TheOrgBook
         tob_base_url = os.getenv('THE_ORG_BOOK_API_URL')
+        tob_app_url = os.getenv('THE_ORG_BOOK_APP_URL')
         issuer_service_id = None
 
         async def run():
@@ -29,7 +30,8 @@ class VonConnectorConfig(AppConfig):
                 issuer_service_id = None
 
                 # Check if my jurisdiction exists by name
-                jurisdictions = requests.get(tob_base_url + '/jurisdictions').json()
+                jurisdictions = requests.get(
+                    tob_base_url + '/jurisdictions').json()
 
                 jurisdiction_id = None
                 for jurisdiction in jurisdictions:
@@ -51,7 +53,8 @@ class VonConnectorConfig(AppConfig):
                     jurisdiction_id = jurisdiction['id']
 
                 # Check if my issuer record exists by name
-                issuer_services = requests.get(tob_base_url + '/issuerservices').json()
+                issuer_services = requests.get(
+                    tob_base_url + '/issuerservices').json()
 
                 for issuer_service in issuer_services:
                     if issuer_service['name'] == config['name']:
@@ -89,7 +92,8 @@ class VonConnectorConfig(AppConfig):
                 tob_base_url + '/verifiableclaimtypes').json()
             claim_type_exists = False
             for claim_type in claim_types:
-                if claim_type['schemaName'] == schema['name']:
+                if claim_type['schemaName'] == schema['name'] and \
+                        claim_type['schemaVersion'] == schema['version']:
                     claim_type_exists = True
                     break
 
@@ -100,8 +104,8 @@ class VonConnectorConfig(AppConfig):
                     json={
                         'claimType':        config['name'],
                         'issuerServiceId':  issuer_service_id,
-                        'issuerURL':        'no',
+                        'issuerURL':        tob_app_url,
                         'effectiveDate':    now,
-                        'schemaName':      schema['name'],
-                        'schemaVersion':   schema['version']
+                        'schemaName':       schema['name'],
+                        'schemaVersion':    schema['version']
                     }).json()

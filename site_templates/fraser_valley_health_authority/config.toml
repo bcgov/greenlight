@@ -1,5 +1,4 @@
 # Agent info
-url = ""
 template_root = "fraser_valley_health_authority.index.html"
 name = "Fraser Valley Health Authority"
 abbreviation = "Health Authority"
