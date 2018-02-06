@@ -67,17 +67,17 @@
             <div class="row margin-lg">
                 <div class="col-sm-10 col-sm-push-1">
                     <div class="panel panel-success padding-md">
-                        <h3>Received proof from TheOrgBook:</h3>
-                        <p>
-                            <pre>{{ proof_response.proof }}</pre>
-                        </p>
-                        <h3>Available claim data:</h3>
-                        <p>
-                            <pre>{{ proof_response.parsed_proof }}</pre>
-                        </p>
                         <h3>Cryptographically verified:</h3>
                         <p>
                             <pre>{{ proof_response.verified }}</pre>
+                        </p>
+                        <h3>Available claim data:</h3>
+                        <p>
+                            <pre>{{ proof_response.parsed_proof | jsonify }}</pre>
+                        </p>
+                        <h3>Received proof from TheOrgBook:</h3>
+                        <p>
+                            <pre>{{ proof_response.proof | jsonify }}</pre>
                         </p>
                     </div>
                 </div>
