@@ -350,7 +350,7 @@
       "displayName": "Application url",
       "description": "This service's url.",
       "required": true,
-      "value": "https://bc-registries-devex-von-permitify-dev.pathfinder.gov.bc.ca"
+      "value": "https://ministry-of-finance-devex-von-permitify-dev.pathfinder.gov.bc.ca"
     }
   ]
 }

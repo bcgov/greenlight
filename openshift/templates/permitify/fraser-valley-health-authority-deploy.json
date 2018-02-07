@@ -350,7 +350,7 @@
       "displayName": "Application url",
       "description": "This service's url.",
       "required": true,
-      "value": "https://bc-registries-devex-von-permitify-dev.pathfinder.gov.bc.ca"
+      "value": "https://fraser-valley-health-authority-devex-von-permitify-dev.pathfinder.gov.bc.ca"
     }
   ]
 }
