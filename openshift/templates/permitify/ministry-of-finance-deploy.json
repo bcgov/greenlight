@@ -197,6 +197,10 @@
                   {
                     "name": "THE_ORG_BOOK_APP_URL",
                     "value": "${THE_ORG_BOOK_APP_URL}"
+                  },
+                  {
+                    "name": "APPLICATION_URL",
+                    "value": "${APPLICATION_URL}"
                   }
                 ],
                 "resources": {
@@ -340,6 +344,13 @@
       "description": "The base URL for TheOrgBook.",
       "required": true,
       "value": "https://devex-von-dev.pathfinder.gov.bc.ca"
+    },
+    {
+      "name": "APPLICATION_URL",
+      "displayName": "Application url",
+      "description": "This service's url.",
+      "required": true,
+      "value": "https://bc-registries-devex-von-permitify-dev.pathfinder.gov.bc.ca"
     }
   ]
 }
