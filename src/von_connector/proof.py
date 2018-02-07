@@ -37,7 +37,7 @@ class ProofRequestManager():
             if os.getenv('PYTHON_ENV') == 'development':
                 for attr in self.proof_request['requested_attrs']:
                     for restriction in self.proof_request['requested_attrs'][attr]['restrictions']:
-                        restriction['schema_key']['version'] = '0.0.1'
+                        restriction['schema_key']['version'] = '0.0.3'
 
             async with Verifier() as verifier:
                 response = requests.post(

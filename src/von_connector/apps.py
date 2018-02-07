@@ -22,7 +22,7 @@ class VonConnectorConfig(AppConfig):
         now = datetime.now().strftime("%Y-%m-%d")
         # Register myself with TheOrgBook
         tob_base_url = os.getenv('THE_ORG_BOOK_API_URL')
-        tob_app_url = os.getenv('THE_ORG_BOOK_APP_URL')
+        app_url = os.getenv('APPLICATION_URL')
         issuer_service_id = None
 
         async def run():
@@ -104,7 +104,7 @@ class VonConnectorConfig(AppConfig):
                     json={
                         'claimType':        config['name'],
                         'issuerServiceId':  issuer_service_id,
-                        'issuerURL':        tob_app_url,
+                        'issuerURL':        app_url,
                         'effectiveDate':    now,
                         'schemaName':       schema['name'],
                         'schemaVersion':    schema['version']

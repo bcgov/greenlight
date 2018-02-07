@@ -1,7 +1,7 @@
 [
     {
         "name": "pst_number.ministry_of_finance",
-        "version": "1.0.30",
+        "version": "1.0.31",
         "attr_names": [
             "legal_entity_id",
             "legal_name",

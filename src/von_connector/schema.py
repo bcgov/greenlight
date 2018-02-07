@@ -36,7 +36,7 @@ class SchemaManager():
 
         if os.getenv('PYTHON_ENV') == 'development':
             for schema in self.schemas:
-                schema['version'] = '0.0.1'
+                schema['version'] = '0.0.3'
 
     def __log_json(self, heading, data):
         logger.debug(

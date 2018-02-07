@@ -12,6 +12,7 @@ services:
       TEMPLATE_NAME: bc_registries
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
+      APPLICATION_URL: ${APPLICATION_URL}:5000
     # links:
     #   - postgres
     volumes:
@@ -32,6 +33,7 @@ services:
       TEMPLATE_NAME: worksafe_bc
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
+      APPLICATION_URL: ${APPLICATION_URL}:5001
     # links:
     #   - postgres
     volumes:
@@ -52,6 +54,7 @@ services:
       TEMPLATE_NAME: ministry_of_finance
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
+      APPLICATION_URL: ${APPLICATION_URL}:5002
     # links:
     #   - postgres
     volumes:
@@ -72,6 +75,7 @@ services:
       TEMPLATE_NAME: fraser_valley_health_authority
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
+      APPLICATION_URL: ${APPLICATION_URL}:5003
     # links:
     #   - postgres
     volumes:
@@ -92,6 +96,7 @@ services:
       TEMPLATE_NAME: city_of_surrey
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
+      APPLICATION_URL: ${APPLICATION_URL}:5004
     # links:
     #   - postgres
     volumes:
@@ -112,6 +117,7 @@ services:
       TEMPLATE_NAME: liquor_control_and_licensing_branch
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8070
+      APPLICATION_URL: ${APPLICATION_URL}:5005
     # links:
     #   - postgres
     volumes:
