@@ -7,7 +7,7 @@ from django.conf import settings
 
 from .agent import Verifier
 
-from . import eventloop
+from . import eventloop, dev
 
 import logging
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ class ProofRequestManager():
             if os.getenv('PYTHON_ENV') == 'development':
                 for attr in self.proof_request['requested_attrs']:
                     for restriction in self.proof_request['requested_attrs'][attr]['restrictions']:
-                        restriction['schema_key']['version'] = '0.0.3'
+                        restriction['schema_key']['version'] = dev.get_unique_version()
 
             async with Verifier() as verifier:
                 response = requests.post(

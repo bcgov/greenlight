@@ -8,7 +8,7 @@ from django.conf import settings
 from .agent import Issuer
 from von_agent.util import encode
 
-from . import eventloop
+from . import eventloop, dev
 
 import logging
 logger = logging.getLogger(__name__)
@@ -36,7 +36,7 @@ class SchemaManager():
 
         if os.getenv('PYTHON_ENV') == 'development':
             for schema in self.schemas:
-                schema['version'] = '0.0.3'
+                schema['version'] = dev.get_unique_version()
 
     def __log_json(self, heading, data):
         logger.debug(
