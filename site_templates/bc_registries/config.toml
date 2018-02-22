@@ -1,5 +1,6 @@
 # Agent info
 template_root = "bcgov.index.html"
+temp_root_admin = "admin.index.html"
 name = "BC Corporate Registry"
 abbreviation = "BCReg"
 jurisdiction_name = "British Columbia"
@@ -12,8 +13,10 @@ wallet_seed = "bc_registries_000000000000000000"
 
 # Webpage info
 title = "BC Corporate Registry"
+title_Admin = "Adminstrative Interface" 
 description = "BC Registries and Online Services administers and supports the legal framework used for operating a business, not-for-profit society, cooperative association or financial institution in B.C. Organizations need to register, file documents and update records, which are kept as a matter of public record."
 explanation = "Use the form below to register a BC corporation."
+# description_admin = "BC Online Services enables a pre-approval method."
 
 [[js_includes]]
 src = "js/bc_registries.js"
@@ -26,6 +29,7 @@ src = "js/bc_registries.js"
 [[forms]]
 name = "incorporation"
 title = "Incorporation"
+# title2 = "Adminstrative Interface"
 
   [[forms.hidden]]
   name = "schema"

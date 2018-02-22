@@ -19,6 +19,9 @@ from permitify import views
 
 urlpatterns = [
     path('', views.index),
+    # admin - for rendering admin page
+    path('admin', views.admin),
+    # process_request - for handling admin form submit
     path('submit_claim', views.submit_claim),
     path('verify_dba', views.verify_dba)
 ]
