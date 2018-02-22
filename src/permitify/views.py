@@ -16,6 +16,23 @@ logger = logging.getLogger(__name__)
 schema_manager = SchemaManager()
 configurator = Configurator()
 
+def admin(request ):
+    print('\n\n\n\n\n\n')
+    print(json.dumps(configurator.config))
+    return render(request, 'admin.index.html', {})
+#configurator.config['temp_root_admin']
+
+# get pending requests from redis
+
+# render page
+
+# render(request, admin.html, { 'pending_requests': [ *requests from redis* ] })
+
+# 2. /process_request controller
+
+# continue submit claim...
+
+
 
 def index(request):
 
@@ -65,6 +82,19 @@ def submit_claim(request):
         raise Exception(
             'Schema type "%s" in request did not match any schemas.' %
             body['schema'])
+
+
+
+
+    # if address = 123 fake st:
+        # key = current time
+        # value = body
+
+        # save in redis
+        
+        # return 'message'
+
+
 
     # Build schema body skeleton
     claim = {}
