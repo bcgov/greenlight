@@ -1,3 +1,5 @@
+import os
+
 from .config import Configurator
 from .helpers import uuid
 
@@ -11,6 +13,10 @@ logger = logging.getLogger(__name__)
 
 config = Configurator().config
 
+WALLET_SEED = os.environ.get('INDY_WALLET_SEED')
+if not WALLET_SEED or len(WALLET_SEED) is not 32:
+    raise Exception('INDY_WALLET_SEED must be set and be 32 characters long.')
+
 
 class Issuer:
     def __init__(self):
@@ -20,7 +26,7 @@ class Issuer:
 
         self.instance = VonIssuer(
             self.pool,
-            config['wallet_seed'],
+            WALLET_SEED,
             config['name'] + ' Issuer Wallet',
             None,
             '127.0.0.1',
@@ -47,7 +53,7 @@ class Verifier:
 
         self.instance = VonVerifier(
             self.pool,
-            config['wallet_seed'],
+            WALLET_SEED,
             config['name'] + ' Verifier Wallet',
             None,
             '127.0.0.1',
@@ -74,7 +80,7 @@ class Holder:
 
         self.instance = VonHolderProver(
             self.pool,
-            config['wallet_seed'],
+            WALLET_SEED,
             config['name'] + ' Holder Wallet',
             None,
             '127.0.0.1',

@@ -8,9 +8,6 @@ jurisdiction_abbreviation = "BC"
 
 foundational = true
 
-# This seed must be authorized on the ledger!
-wallet_seed = "bc_registries_000000000000000000"
-
 # Webpage info
 title = "BC Corporate Registry"
 title_Admin = "Adminstrative Interface" 
