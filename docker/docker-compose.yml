@@ -14,8 +14,8 @@ services:
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5000
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}1
-    # links:
-    #   - postgres
+    links:
+      - redis
     volumes:
       - ../src:/app
       - ../site_templates:/app/site_templates
@@ -36,8 +36,8 @@ services:
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5001
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}2
-    # links:
-    #   - postgres
+    links:
+      - redis
     volumes:
       # - ./src:/app
       # - ./site_templates:/app/site_templates
@@ -58,8 +58,8 @@ services:
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5002
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}3
-    # links:
-    #   - postgres
+    links:
+      - redis
     volumes:
       # - ./src:/app
       # - ./site_templates:/app/site_templates
@@ -80,8 +80,8 @@ services:
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5003
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}4
-    # links:
-    #   - postgres
+    links:
+      - redis
     volumes:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
@@ -102,8 +102,8 @@ services:
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5004
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}5
-    # links:
-    #   - postgres
+    links:
+      - redis
     volumes:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
@@ -124,8 +124,8 @@ services:
       APPLICATION_PORT: 8070
       APPLICATION_URL: ${APPLICATION_URL}:5005
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}6
-    # links:
-    #   - postgres
+    links:
+      - redis
     volumes:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
@@ -133,10 +133,8 @@ services:
     ports:
       - 5005:8070
 
-  # postgres:
-  #   image: postgres
-  #   ports:
-  #     - '5432:5432'
+  redis:
+    image: redis
 
 volumes:
   worksafe_bc_wallet:

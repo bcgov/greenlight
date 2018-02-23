@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 from importlib import import_module
 
@@ -13,13 +14,34 @@ from von_connector.proof import ProofRequestManager
 import logging
 logger = logging.getLogger(__name__)
 
+# Get redis connection
+import redis
+r = redis.StrictRedis(host='redis', port=6379, db=0)
+
 schema_manager = SchemaManager()
 configurator = Configurator()
 
-def admin(request ):
-    print('\n\n\n\n\n\n')
-    print(json.dumps(configurator.config))
+
+def admin(request):
+
+    # Get all keys in redis
+    pending_requests = []
+    rkeys = r.scan()[1]
+    for key in rkeys:
+        pending_request = r.get(key)
+        pending_requests.append(pending_request)
+
+    logger.info('\n\n\n\n\n\n')
+    logger.info('--------pending requests-------')
+    for req in pending_requests:
+        logger.info(req)
+    logger.info('-------------------------------')
+
+    logger.info('\n\n\n\n\n\n')
+    logger.info(json.dumps(configurator.config))
     return render(request, 'admin.index.html', {})
+
+
 #configurator.config['temp_root_admin']
 
 # get pending requests from redis
@@ -83,19 +105,6 @@ def submit_claim(request):
             'Schema type "%s" in request did not match any schemas.' %
             body['schema'])
 
-
-
-
-    # if address = 123 fake st:
-        # key = current time
-        # value = body
-
-        # save in redis
-        
-        # return 'message'
-
-
-
     # Build schema body skeleton
     claim = {}
     for attr in schema['attr_names']:
@@ -145,6 +154,15 @@ def submit_claim(request):
                     'Cannot find previous value "%s"' % attribute['source'])
         else:
             raise Exception('Unkown mapper type "%s"' % attribute['from'])
+
+
+
+
+    current_time = datetime.now().isoformat()
+    r.set(current_time, json.dumps(claim))
+
+
+
 
     claim = schema_manager.submit_claim(schema, claim)
 
