@@ -20,3 +20,4 @@ TAG_NAME=test
 THE_ORG_BOOK_API_URL=https://django-devex-von-test.pathfinder.gov.bc.ca/api/v1
 THE_ORG_BOOK_APP_URL=https://devex-von-test.pathfinder.gov.bc.ca
 APPLICATION_URL=https://fraser-valley-health-authority-devex-von-permitify-test.pathfinder.gov.bc.ca
+INDY_WALLET_SEED=fraser_valley_test_0000000000000

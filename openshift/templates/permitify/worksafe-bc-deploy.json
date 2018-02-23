@@ -361,7 +361,7 @@
       "displayName": "Indy Wallet Seed",
       "description": "The seed that the indy wallet uses to generate predictable keys.",
       "required": true,
-      "value": "worksafe_bc_00000000000000000000"
+      "value": "worksafe_bc_dev_0000000000000000"
     }
   ]
 }
