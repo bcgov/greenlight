@@ -5,9 +5,6 @@ abbreviation = "Surrey"
 jurisdiction_name = "Surrey"
 jurisdiction_abbreviation = "SUR"
 
-# This seed must be authorized on the ledger!
-wallet_seed = "city_of_surrey_00000000000000000"
-
 # Webpage info
 title = "City of Surrey"
 description = "Business Licensing"

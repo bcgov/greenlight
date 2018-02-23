@@ -20,3 +20,4 @@ APPLICATION_PORT=8080
 THE_ORG_BOOK_API_URL=https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1
 THE_ORG_BOOK_APP_URL=https://devex-von-dev.pathfinder.gov.bc.ca
 APPLICATION_URL=https://city-of-surrey-devex-von-permitify-dev.pathfinder.gov.bc.ca
+INDY_WALLET_SEED=city_of_surrey_dev_0000000000000
