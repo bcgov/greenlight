@@ -2,6 +2,12 @@
     padding-bottom: 20px;
     padding-top: 20px;
 }
+.row {
+    margin-left: 5px; 
+    margin-right: 5px; 
+    padding-block-start: 5px; 
+    padding-block-end: 5px; 
+}
 .background{ 
     width: 100%;
     height: 100%;

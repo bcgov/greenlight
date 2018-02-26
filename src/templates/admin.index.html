@@ -22,14 +22,78 @@
     <main class="container page-content background">
     <!-- <div class="background" filter-color="#black" style="background-image: url('../static/img/Admin.jpg'); background-size: cover; background-position: center;">
     </div>                 -->
-    <!-- <div class="row">
-        <div class="col-sm-10 col-sm-push-1">
-            <h2>{{ description_admin }}</h2>
-            {% for form in forms %}
-                {% include "adminstrative.form.html" %}
-            {% endfor %}
+        <div class="container">
+            <div class="row">
+              <div class="col-md-10 col-md-offset-1">
+                <h1 style="color:rgb(43, 6, 255); font-weight: bold; margin-left:160px; padding-top:150px;">Dashboard Claims</h1>
+                <div class="card card-signup">
+                  <h1 style="color:rgb(251, 255, 2); font-weight: bold; margin-left:160px;">Active Pending Claims</h1>
+                  <div class="row">
+                  </div>
+                  <div style="margin-left:160px; margin-right:160px; padding-bottom:20px;">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr style="color:yellow;">
+                            <th style="font-weight:700">Legal Name</th>
+                            <th style="font-weight:700">Mailing Address</th>
+                            <th style="font-weight:700">Street Address</th>
+                            <th style="font-weight:700">City</th>
+                            <th style="font-weight:700">Province</th>
+                            <th style="font-weight:700">Country</th>
+                          </tr>
+                        </thead>
+                        <tr>
+                          <td>N/A</td>
+                          <td>N/A</td>
+                          <td>N/A</td>
+                          <td>N/A</td>
+                          <td>N/A</td>
+                          <td class="td-actions text-center">
+                            <a href="/details">
+                                <button class="btn btn-info btn-primary btn-fab btn-fab-mini btn-round" style="font-weight: 5px">
+                                  <i style="text-align: center" class="material-icons">info</i>
+                                </button>
+                              </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="card card-signup">
+                  <h1 style="color:rgb(251, 255, 2); font-weight: bold; margin-left:160px; margin-top:10px;">Claims Request History</h1>
+                  <div class="row">
+                  </div>
+                  <div style="margin-left:160px ; margin-right: 160px; margin-top:10px;">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr style="color:yellow;">
+                                <th style="font-weight:700">Legal Name</th>
+                                <th style="font-weight:700">Mailing Address</th>
+                                <th style="font-weight:700">Street Address</th>
+                                <th style="font-weight:700">City</th>
+                                <th style="font-weight:700">Province</th>
+                                <th style="font-weight:700">Country</th>
+                          </tr>
+                        </thead>
+                        <tr>
+                          <td>N/A</td>
+                          <td>N/A</td>
+                          <td>N/A</td>
+                          <td>N/A</td>
+                          <td>N/A</td>
+                          <td>N/A</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
         </div>
-    </div> -->
+
     </main>
 {% endblock %}
 
