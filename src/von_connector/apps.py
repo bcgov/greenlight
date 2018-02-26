@@ -69,7 +69,7 @@ class VonConnectorConfig(AppConfig):
                             'name':             config['name'],
                             'issuerOrgTLA':     config['abbreviation'],
                             'DID':              agent.did,
-                            'issuerOrgURL':     config['url'],
+                            'issuerOrgURL':     '',
                             'effectiveDate':    now,
                             'jurisdictionId':   jurisdiction_id
                         }).json()

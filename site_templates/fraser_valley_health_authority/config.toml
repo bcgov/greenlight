@@ -5,9 +5,6 @@ abbreviation = "Health Authority"
 jurisdiction_name = "Fraser Valley"
 jurisdiction_abbreviation = "FRV"
 
-# This seed must be authorized on the ledger!
-wallet_seed = "fraser_valley_health_authority_0"
-
 # Webpage info
 title = "Fraser Valley Health Authority"
 description = "This is a description"

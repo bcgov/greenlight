@@ -13,8 +13,9 @@ services:
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5000
-    # links:
-    #   - postgres
+      INDY_WALLET_SEED: ${INDY_WALLET_SEED}1
+    links:
+      - redis
     volumes:
       - ../src:/app
       - ../site_templates:/app/site_templates
@@ -34,8 +35,9 @@ services:
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5001
-    # links:
-    #   - postgres
+      INDY_WALLET_SEED: ${INDY_WALLET_SEED}2
+    links:
+      - redis
     volumes:
       # - ./src:/app
       # - ./site_templates:/app/site_templates
@@ -55,8 +57,9 @@ services:
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5002
-    # links:
-    #   - postgres
+      INDY_WALLET_SEED: ${INDY_WALLET_SEED}3
+    links:
+      - redis
     volumes:
       # - ./src:/app
       # - ./site_templates:/app/site_templates
@@ -76,8 +79,9 @@ services:
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5003
-    # links:
-    #   - postgres
+      INDY_WALLET_SEED: ${INDY_WALLET_SEED}4
+    links:
+      - redis
     volumes:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
@@ -97,8 +101,9 @@ services:
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5004
-    # links:
-    #   - postgres
+      INDY_WALLET_SEED: ${INDY_WALLET_SEED}5
+    links:
+      - redis
     volumes:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
@@ -118,8 +123,9 @@ services:
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8070
       APPLICATION_URL: ${APPLICATION_URL}:5005
-    # links:
-    #   - postgres
+      INDY_WALLET_SEED: ${INDY_WALLET_SEED}6
+    links:
+      - redis
     volumes:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
@@ -127,10 +133,8 @@ services:
     ports:
       - 5005:8070
 
-  # postgres:
-  #   image: postgres
-  #   ports:
-  #     - '5432:5432'
+  redis:
+    image: redis
 
 volumes:
   worksafe_bc_wallet:

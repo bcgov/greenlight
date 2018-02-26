@@ -18,3 +18,4 @@
 # APPLICATION_IP=0.0.0.0
 # APPLICATION_PORT=8080
 # THE_ORG_BOOK_API_URL=https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1
+# INDY_WALLET_SEED=bc_registries_dev_00000000000000

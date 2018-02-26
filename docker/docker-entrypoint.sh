@@ -19,6 +19,7 @@ if [ -z "$@" ]; then
   echoWarning "TEMPLATE_NAME: ${TEMPLATE_NAME}"
   echoWarning "APPLICATION_IP: ${APPLICATION_IP}"
   echoWarning "APPLICATION_PORT: ${APPLICATION_PORT}"
+  echoWarning "INDY_WALLET_SEED: ${INDY_WALLET_SEED}"
   echoWarning "----------------------------------------------------------------------------------"  
 
   set "${TEMPLATE_NAME}" "python" "manage.py" "runserver" "${APPLICATION_IP}:${APPLICATION_PORT}"

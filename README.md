@@ -11,6 +11,8 @@ This project uses the scripts found in [openshift-project-tools](https://github.
 
 ## Running Locally
 
+0. An instance of TheOrgBook must be running. By default, Permitify looks for TheOrgBook running on your local machine. Look here for instructions on running TheOrgBook: https://github.com/bcgov/TheOrgBook
+
 1. First, install Docker. Download the installer for your operating system [here](https://store.docker.com/search?type=edition&offering=community). Once it is installed, keep the Docker daemon running in the background.
 
 2. Linux users will also need to [install docker-compose](https://github.com/docker/compose/releases). Mac and Windows users will have this already. 
@@ -29,9 +31,36 @@ git clone <repository url> permitify && cd permitify/docker
 
 5. Once the build process completes, you can test the build to make sure everything works properly:
 
+You will need to choose a unique seed value for development. Use a value that no one else is using. It must be 32 characters long exactly.
+
 ```bash
-./manage start
+./manage start all seed=my_unique_seed_00000000000000000
 ```
+
+When you run the services, each service will use a seed derived from the seed you pass in. Currently, it increments the last character value for each service. So for the example above, it will use the follow seeds for each service:
+
+- my_unique_seed_00000000000000001
+- my_unique_seed_00000000000000002
+- my_unique_seed_00000000000000003
+- my_unique_seed_00000000000000004
+- my_unique_seed_00000000000000005
+- my_unique_seed_00000000000000006
+
+You can see which seed value each service using by looking at the logs like this:
+
+```
+----------------------------------------------------------------------------------
+No command line parameters were provided to the entry point.
+Using the values specified for the environment, or defaults if none are provided.
+
+TEMPLATE_NAME: bc_registries
+APPLICATION_IP: 0.0.0.0
+APPLICATION_PORT: 8080
+INDY_WALLET_SEED: my_seed_000000000000000000000001
+----------------------------------------------------------------------------------
+```
+
+Each seed, must be authorized on the indy ledger! If you are using the https://github.com/bcgov/von-network network locally, you can visit the webserver running on your local machine to authorize the did for each seed. If you are using the shared development Indy ledger (which is an instance of von-network), you can visit this page to authorize your did: http://138.197.170.136
 
 You should now be able to visit the services on the following urls:
 
@@ -45,6 +74,15 @@ You should now be able to visit the services on the following urls:
 And any other services that are later defined in docker-compose.yml.
 
 Services are defined using config files. See ./site_templates for examples of the existing services.
+
+During development, you can run
+
+```bash
+./manage start seed=my_unique_seed_00000000000000000
+```
+
+which will only start the first service with the source directory mounted as a volume for quicker development.
+
 
 ## Caveats
 

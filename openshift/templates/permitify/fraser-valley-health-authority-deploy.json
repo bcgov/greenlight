@@ -201,6 +201,10 @@
                   {
                     "name": "APPLICATION_URL",
                     "value": "${APPLICATION_URL}"
+                  },
+                  {
+                    "name": "INDY_WALLET_SEED",
+                    "value": "${INDY_WALLET_SEED}"
                   }
                 ],
                 "resources": {
@@ -351,6 +355,13 @@
       "description": "This service's url.",
       "required": true,
       "value": "https://fraser-valley-health-authority-devex-von-permitify-dev.pathfinder.gov.bc.ca"
+    },
+    {
+      "name": "INDY_WALLET_SEED",
+      "displayName": "Indy Wallet Seed",
+      "description": "The seed that the indy wallet uses to generate predictable keys.",
+      "required": true,
+      "value": "fraser_valley_dev_00000000000000"
     }
   ]
 }

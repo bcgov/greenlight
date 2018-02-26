@@ -5,9 +5,6 @@ abbreviation = "WorkSafe"
 jurisdiction_name = "British Columbia"
 jurisdiction_abbreviation = "BC"
 
-# This seed must be authorized on the ledger!
-wallet_seed = "worksafe_bc_00000000000000000000"
-
 # Webpage info
 title = "WorkSafe BC"
 description = "Get a clearance letter"
