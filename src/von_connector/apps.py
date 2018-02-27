@@ -57,7 +57,8 @@ class VonConnectorConfig(AppConfig):
                     tob_base_url + '/issuerservices').json()
 
                 for issuer_service in issuer_services:
-                    if issuer_service['name'] == config['name']:
+                    if issuer_service['name'] == config['name'] and \
+                            issuer_service['DID'] == agent.did:
                         issuer_service_id = issuer_service['id']
                         break
 
@@ -93,7 +94,8 @@ class VonConnectorConfig(AppConfig):
             claim_type_exists = False
             for claim_type in claim_types:
                 if claim_type['schemaName'] == schema['name'] and \
-                        claim_type['schemaVersion'] == schema['version']:
+                        claim_type['schemaVersion'] == schema['version'] and \
+                        claim_type['issuerServiceId'] == issuer_service_id:
                     claim_type_exists = True
                     break
 

@@ -34,9 +34,9 @@ class SchemaManager():
             raise
         self.schemas = json.loads(schemas_json)
 
-        if os.getenv('PYTHON_ENV') == 'development':
-            for schema in self.schemas:
-                schema['version'] = dev.get_unique_version()
+        # if os.getenv('PYTHON_ENV') == 'development':
+        #     for schema in self.schemas:
+        #         schema['version'] = dev.get_unique_version()
 
     def __log_json(self, heading, data):
         logger.debug(
@@ -62,12 +62,19 @@ class SchemaManager():
 
                 schema = json.loads(schema_json)
 
+                self.__log_json('schema:', schema)
+
                 # Check if claim definition has been published.
                 # If not then publish.
                 claim_def_json = await issuer.get_claim_def(
                     schema['seqNo'], issuer.did)
                 if not json.loads(claim_def_json):
-                    await issuer.send_claim_def(schema_json)
+                    claim_def_json = await issuer.send_claim_def(schema_json)
+
+                claim_def = json.loads(claim_def_json)
+                self.__log_json('claim_def:', claim_def)
+
+
 
         return eventloop.do(run(schema))
 
