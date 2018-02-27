@@ -34,10 +34,10 @@ class ProofRequestManager():
     def request_proof(self, filters):
         async def run(filters):
 
-            if os.getenv('PYTHON_ENV') == 'development':
-                for attr in self.proof_request['requested_attrs']:
-                    for restriction in self.proof_request['requested_attrs'][attr]['restrictions']:
-                        restriction['schema_key']['version'] = dev.get_unique_version()
+            # if os.getenv('PYTHON_ENV') == 'development':
+            #     for attr in self.proof_request['requested_attrs']:
+            #         for restriction in self.proof_request['requested_attrs'][attr]['restrictions']:
+            #             restriction['schema_key']['version'] = dev.get_unique_version()
 
             async with Verifier() as verifier:
                 response = requests.post(
