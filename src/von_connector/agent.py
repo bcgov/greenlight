@@ -8,6 +8,8 @@ from von_agent.agents import Issuer as VonIssuer
 from von_agent.agents import Verifier as VonVerifier
 from von_agent.agents import HolderProver as VonHolderProver
 
+from von_connector import genesis
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -20,9 +22,10 @@ if not WALLET_SEED or len(WALLET_SEED) is not 32:
 
 class Issuer:
     def __init__(self):
+        genesis_config = genesis.config()
         self.pool = NodePool(
             'permitify-issuer',
-            '/app/.genesis')
+            genesis_config['genesis_txn_path'])
 
         self.instance = VonIssuer(
             self.pool,
@@ -47,9 +50,10 @@ class Issuer:
 
 class Verifier:
     def __init__(self):
+        genesis_config = genesis.config()
         self.pool = NodePool(
             'permitify-verifier',
-            '/app/.genesis')
+            genesis_config['genesis_txn_path'])
 
         self.instance = VonVerifier(
             self.pool,
@@ -74,9 +78,10 @@ class Verifier:
 
 class Holder:
     def __init__(self):
+        genesis_config = genesis.config()
         self.pool = NodePool(
             'permitify-holder',
-            '/app/.genesis')
+            genesis_config['genesis_txn_path'])
 
         self.instance = VonHolderProver(
             self.pool,

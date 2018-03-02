@@ -81,6 +81,7 @@ configureEnvironment () {
     exit 1
   fi
 
+  export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export INDY_WALLET_SEED=${seed%?}
 }
 
