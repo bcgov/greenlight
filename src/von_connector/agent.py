@@ -1,5 +1,4 @@
 import os
-import uuid
 
 from .config import Configurator
 from .helpers import uuid
@@ -25,7 +24,7 @@ class Issuer:
     def __init__(self):
         genesis_config = genesis.config()
         self.pool = NodePool(
-            uuid.uuid4(),
+            'permitify-issuer',
             genesis_config['genesis_txn_path'])
 
         self.instance = VonIssuer(
@@ -53,7 +52,7 @@ class Verifier:
     def __init__(self):
         genesis_config = genesis.config()
         self.pool = NodePool(
-            uuid.uuid4(),
+            'permitify-verifier',
             genesis_config['genesis_txn_path'])
 
         self.instance = VonVerifier(
@@ -81,7 +80,7 @@ class Holder:
     def __init__(self):
         genesis_config = genesis.config()
         self.pool = NodePool(
-            uuid.uuid4(),
+            'permitify-holder',
             genesis_config['genesis_txn_path'])
 
         self.instance = VonHolderProver(
