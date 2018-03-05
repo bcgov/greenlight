@@ -164,7 +164,6 @@ case "$1" in
       docker-compose up ${_startupParams}
     ;;
   stop)
-      configureEnvironment
       docker-compose stop
     ;;
   build)
@@ -172,6 +171,9 @@ case "$1" in
     ;;
   rebuild)
       rebuild
+    ;;
+  rm)
+      docker-compose rm
     ;;
   shell)
       docker-compose run web bash
