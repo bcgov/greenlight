@@ -63,10 +63,8 @@ class ProofRequestManager():
                         proof['requested_proof']['revealed_attrs'][attr][1]
 
                 verified = await verifier.verify_proof(
-                    json.dumps(self.proof_request),
-                    proof,
-                    json.dumps(proof_response['schemas']),
-                    json.dumps(proof_response['claim_defs']),
+                    self.proof_request,
+                    proof
                 )
 
                 return {
