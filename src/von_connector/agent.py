@@ -27,11 +27,13 @@ class Issuer:
             'permitify-issuer',
             genesis_config['genesis_txn_path'])
 
+        issuer_config = '{"freshness_time":0}'
+
         self.instance = VonIssuer(
             self.pool,
             WALLET_SEED,
             config['name'] + ' Issuer Wallet',
-            None,
+            issuer_config,
             '127.0.0.1',
             9703,
             'api/v0')
@@ -55,11 +57,13 @@ class Verifier:
             'permitify-verifier',
             genesis_config['genesis_txn_path'])
 
+        verifier_config = '{"freshness_time":0}'
+
         self.instance = VonVerifier(
             self.pool,
             WALLET_SEED,
             config['name'] + ' Verifier Wallet',
-            None,
+            verifier_config,
             '127.0.0.1',
             9703,
             'api/v0')
@@ -83,11 +87,13 @@ class Holder:
             'permitify-holder',
             genesis_config['genesis_txn_path'])
 
+        holder_config = '{"freshness_time":0}'
+
         self.instance = VonHolderProver(
             self.pool,
             WALLET_SEED,
             config['name'] + ' Holder Wallet',
-            None,
+            holder_config,
             '127.0.0.1',
             9703,
             'api/v0')
