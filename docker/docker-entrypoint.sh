@@ -42,6 +42,8 @@ else
     exit 1
 fi
 
+export RUST_LOG=debug
+
 # python3 manage.py migrate
 echo "Starting server ..."
 exec "$@"

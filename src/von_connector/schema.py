@@ -7,6 +7,7 @@ from django.conf import settings
 
 from .agent import Issuer
 from von_agent.util import encode
+from von_agent.schema import schema_key_for
 
 from . import eventloop, dev
 
@@ -34,6 +35,8 @@ class SchemaManager():
             raise
         self.schemas = json.loads(schemas_json)
 
+        self.__log_json('Schema start', self.schemas)
+
         # if os.getenv('PYTHON_ENV') == 'development':
         #     for schema in self.schemas:
         #         schema['version'] = dev.get_unique_version()
@@ -52,14 +55,19 @@ class SchemaManager():
             async with Issuer() as issuer:
                 # Check if schema exists on ledger
                 schema_json = await issuer.get_schema(
-                    issuer.did, schema['name'], schema['version'])
+                    schema_key_for(
+                        {
+                            'origin_did': issuer.did,
+                            'name': schema['name'],
+                            'version': schema['version']
+                        }
+                    )
+                )
 
                 # If not, send the schema to the ledger, then get result
                 if not json.loads(schema_json):
-                    await issuer.send_schema(json.dumps(schema))
-                    schema_json = await issuer.get_schema(
-                        issuer.did, schema['name'], schema['version'])
-
+                    schema_json = await issuer.send_schema(json.dumps(schema))
+                
                 schema = json.loads(schema_json)
 
                 self.__log_json('schema:', schema)

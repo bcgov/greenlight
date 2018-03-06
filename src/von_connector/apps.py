@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 import os
 
@@ -13,11 +14,11 @@ from django.apps import AppConfig
 import logging
 logger = logging.getLogger(__name__)
 
-
 class VonConnectorConfig(AppConfig):
     name = 'von_connector'
 
     def ready(self):
+
         config = Configurator().config
         now = datetime.now().strftime("%Y-%m-%d")
         # Register myself with TheOrgBook
