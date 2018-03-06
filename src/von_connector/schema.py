@@ -98,7 +98,14 @@ class SchemaManager():
 
                 # We need schema from ledger
                 schema_json = await issuer.get_schema(
-                    issuer.did, schema['name'], schema['version'])
+                    schema_key_for(
+                        {
+                            'origin_did': issuer.did,
+                            'name': schema['name'],
+                            'version': schema['version']
+                        }
+                    )
+                )
                 schema = json.loads(schema_json)
 
                 self.__log_json('Schema:', schema)
