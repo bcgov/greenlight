@@ -29,6 +29,19 @@
     <script type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.4/jquery.typeahead.js"></script>
     <!-- link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.4/jquery.typeahead.css" -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script>
+      if (response.result == null) {
+        $(document).ready(function(){
+                $(".message").append(" <b>Your request is being processed by one of our representative</b>.");
+         });
+        }
+      if (response.result != null) {
+            window.location.replace(
+          THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=' +
+          response.result.id) 
+        }
+    </script> -->
     {% for include in css_includes %}
         <link rel="stylesheet" href="{% static include.src %}">
     {% endfor %}
@@ -61,6 +74,9 @@
                 {% include "bootstrap.form.html" %}
             {% endfor %}
         </div>
+    <div class="message  page-content">
+        <p></p>
+    </div>
         {% if not foundational %}
         {% if proof_response.success == True %}
         <div class="col-sm-10 col-sm-push-1">

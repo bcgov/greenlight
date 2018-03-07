@@ -25,9 +25,9 @@
         <div class="container">
             <div class="row">
               <div class="col-md-10 col-md-offset-1">
-                <h1 style="color:rgb(43, 6, 255); font-weight: bold; margin-left:160px; padding-top:150px;">Dashboard Claims</h1>
+                <!-- <h1 style="color:rgb(43, 6, 255); font-weight: bold; margin-left:160px; padding-top:150px;">Dashboard Claims</h1> -->
                 <div class="card card-signup">
-                  <h1 style="color:rgb(251, 255, 2); font-weight: bold; margin-left:160px;">Active Pending Claims</h1>
+                  <h1 style="color:rgb(251, 255, 2); font-weight: bold; margin-left:160px; padding-top:150px;">Active Pending Claims</h1>
                   <div class="row">
                   </div>
                   <div style="margin-left:160px; margin-right:160px; padding-bottom:20px;">
@@ -36,33 +36,30 @@
                         <thead>
                           <tr style="color:yellow;">
                             <th style="font-weight:700">Legal Name</th>
-                            <th style="font-weight:700">Mailing Address</th>
                             <th style="font-weight:700">Street Address</th>
                             <th style="font-weight:700">City</th>
                             <th style="font-weight:700">Province</th>
                             <th style="font-weight:700">Country</th>
                           </tr>
                         </thead>
-                        <tr>
-                          <td>N/A</td>
-                          <td>N/A</td>
-                          <td>N/A</td>
-                          <td>N/A</td>
-                          <td>N/A</td>
-                          <td class="td-actions text-center">
-                            <a href="/details">
-                                <button class="btn btn-info btn-primary btn-fab btn-fab-mini btn-round" style="font-weight: 5px">
-                                  <i style="text-align: center" class="material-icons">info</i>
-                                </button>
-                              </a>
-                          </td>
+                        <tr style="color:white;">
+                        {% for pending_requests in pending_requests %}
+                          <td>{{ pending_requests.legal_name }}</td>
+                          <td>{{ pending_requests.address_line_1 }}</td>
+                          <td>{{ pending_requests.city }}</td>
+                          <td>{{ pending_requests.province }}</td>
+                          <td>{{ pending_requests.country }}</td>
+                        {% endfor %}
                         </tr>
                       </table>
                     </div>
+                    <td>
+                      <button class="btn btn-info pull-left" (click)="withdraw(i)">Approve</button>
+                    </td>
                   </div>
                 </div>
                 <div class="card card-signup">
-                  <h1 style="color:rgb(251, 255, 2); font-weight: bold; margin-left:160px; margin-top:10px;">Claims Request History</h1>
+                  <h1 style="color:rgb(251, 255, 2); font-weight: bold; margin-left:160px; margin-top:40px;">Claims Request History</h1>
                   <div class="row">
                   </div>
                   <div style="margin-left:160px ; margin-right: 160px; margin-top:10px;">
