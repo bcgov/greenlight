@@ -4,6 +4,8 @@ from .config import Configurator
 from .helpers import uuid
 
 from von_agent.nodepool import NodePool
+from von_agent.wallet import Wallet
+from von_agent.agents import _BaseAgent
 from von_agent.agents import Issuer as VonIssuer
 from von_agent.agents import Verifier as VonVerifier
 from von_agent.agents import HolderProver as VonHolderProver
@@ -29,12 +31,12 @@ class Issuer:
 
         self.instance = VonIssuer(
             self.pool,
-            WALLET_SEED,
-            config['name'] + ' Issuer Wallet',
-            None,
-            '127.0.0.1',
-            9703,
-            'api/v0')
+            Wallet(
+                self.pool.name,
+                WALLET_SEED,
+                config['name'] + ' Issuer Wallet'
+            )
+        )
 
     async def __aenter__(self):
         await self.pool.open()
@@ -57,12 +59,12 @@ class Verifier:
 
         self.instance = VonVerifier(
             self.pool,
-            WALLET_SEED,
-            config['name'] + ' Verifier Wallet',
-            None,
-            '127.0.0.1',
-            9703,
-            'api/v0')
+            Wallet(
+                self.pool.name,
+                WALLET_SEED,
+                config['name'] + ' Verifier Wallet'
+            )
+        )
 
     async def __aenter__(self):
         await self.pool.open()
@@ -85,12 +87,12 @@ class Holder:
 
         self.instance = VonHolderProver(
             self.pool,
-            WALLET_SEED,
-            config['name'] + ' Holder Wallet',
-            None,
-            '127.0.0.1',
-            9703,
-            'api/v0')
+            Wallet(
+                self.pool.name,
+                WALLET_SEED,
+                config['name'] + ' Holder Wallet'
+            )
+        )
 
     async def __aenter__(self):
         await self.pool.open()
@@ -104,3 +106,23 @@ class Holder:
 
         await self.instance.close()
         await self.pool.close()
+
+async def convert_seed_to_did(seed):
+    genesis_config = genesis.config()
+    pool = NodePool(
+        'util-agent',
+        genesis_config['genesis_txn_path'])
+
+    agent = _BaseAgent(
+        pool,
+        Wallet(
+            pool.name,
+            seed,
+            seed + '-wallet'
+        ),
+    )
+
+    await agent.open()
+    agent_did = agent.did
+    await agent.close()
+    return agent_did
