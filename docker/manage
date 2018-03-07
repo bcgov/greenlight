@@ -81,8 +81,19 @@ configureEnvironment () {
     exit 1
   fi
 
+  if [ -z "$TOB_INDY_SEED" ]; then
+    echo "You must provide a TOB_INDY_SEED parameter. For example: seed=my_tob_seed_00000000000000000000."
+    exit 1
+  fi
+
+  if [ ${#TOB_INDY_SEED} -ne 32 ]; then
+    echo "The TOB_INDY_SEED parameter must be 32 characters long exactly."
+    exit 1
+  fi
+
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export INDY_WALLET_SEED=${seed%?}
+  export TOB_INDY_SEED=${TOB_INDY_SEED}
 }
 
 getStartupParams() {

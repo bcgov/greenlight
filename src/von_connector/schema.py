@@ -6,6 +6,7 @@ import requests
 from django.conf import settings
 
 from .agent import Issuer
+from .agent import convert_seed_to_did
 from von_agent.util import encode
 from von_agent.schema import schema_key_for
 
@@ -14,8 +15,9 @@ from . import eventloop, dev
 import logging
 logger = logging.getLogger(__name__)
 
+# TODO: resolve url via DID -> endpoint
 TOB_BASE_URL = os.getenv('THE_ORG_BOOK_API_URL')
-
+TOB_INDY_SEED = os.getenv('TOB_INDY_SEED')
 
 def claim_value_pair(plain):
     return [str(plain), encode(plain)]
@@ -47,6 +49,15 @@ class SchemaManager():
             "{0}\n".format(heading) +
             "----------------------------------------------------------------------------\n" +
             "{0}\n".format(json.dumps(data, indent=2)) +
+            "============================================================================\n")
+        return
+
+    def __log(self, heading, data):
+        logger.debug(
+            "\n============================================================================\n" +
+            "{0}\n".format(heading) +
+            "----------------------------------------------------------------------------\n" +
+            "{0}\n".format(data) +
             "============================================================================\n")
         return
 
@@ -112,19 +123,29 @@ class SchemaManager():
 
                 claim_def_json = await issuer.get_claim_def(
                     schema['seqNo'], issuer.did)
+                claim_def = json.loads(claim_def_json)
+
+                self.__log_json('Schema:', schema)
+
+                tob_did = await convert_seed_to_did(TOB_INDY_SEED)
+                self.__log('TheOrgBook DID:', tob_did)
+
+                # We create a claim offer
+                claim_offer_json = await issuer.create_claim_offer(schema_json, tob_did)
+                claim_offer = json.loads(claim_offer_json)
+
+                self.__log_json('Claim Offer:', claim_offer)
 
                 self.__log_json('Requesting Claim Request:', 
                     {
-                        'did': issuer.did,
-                        'seqNo': schema['seqNo'],
-                        'claim_def': json.loads(claim_def_json)
+                        'claim_offer': claim_offer,
+                        'claim_def': claim_def
                     })
 
                 response = requests.post(
                     TOB_BASE_URL + '/bcovrin/generate-claim-request',
                     json={
-                        'did': issuer.did,
-                        'seqNo': schema['seqNo'],
+                        'claim_offer': claim_offer_json,
                         'claim_def': claim_def_json
                     }
                 )

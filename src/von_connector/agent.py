@@ -5,6 +5,7 @@ from .helpers import uuid
 
 from von_agent.nodepool import NodePool
 from von_agent.wallet import Wallet
+from von_agent.agents import _BaseAgent
 from von_agent.agents import Issuer as VonIssuer
 from von_agent.agents import Verifier as VonVerifier
 from von_agent.agents import HolderProver as VonHolderProver
@@ -105,3 +106,23 @@ class Holder:
 
         await self.instance.close()
         await self.pool.close()
+
+async def convert_seed_to_did(seed):
+    genesis_config = genesis.config()
+    pool = NodePool(
+        'util-agent',
+        genesis_config['genesis_txn_path'])
+
+    agent = _BaseAgent(
+        pool,
+        Wallet(
+            pool.name,
+            seed,
+            seed + '-wallet'
+        ),
+    )
+
+    await agent.open()
+    agent_did = agent.did
+    await agent.close()
+    return agent_did
