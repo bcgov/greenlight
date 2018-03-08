@@ -207,6 +207,10 @@
                     "value": "${INDY_WALLET_SEED}"
                   },
                   {
+                    "name": "TOB_INDY_SEED",
+                    "value": "${TOB_INDY_SEED}"
+                  },
+                  {
                     "name": "LEDGER_URL",
                     "value": "${LEDGER_URL}"
                   }
@@ -364,6 +368,13 @@
       "description": "The seed that the indy wallet uses to generate predictable keys.",
       "required": true,
       "value": "fraser_valley_dev_00000000000000"
+    },
+    {
+      "name": "TOB_INDY_SEED",
+      "displayName": "TheOrgBook Indy Wallet Seed",
+      "description": "The seed that TheOrgBook uses to generate predictable keys.",
+      "required": true,
+      "value": "the_org_book_dev_000000000000000"
     },
     {
       "name": "LEDGER_URL",
