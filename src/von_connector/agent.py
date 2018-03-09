@@ -24,6 +24,7 @@ if not WALLET_SEED or len(WALLET_SEED) is not 32:
 
 class Issuer:
     def __init__(self):
+        logger.debug("Issuer __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
             'permitify-issuer',
@@ -32,6 +33,8 @@ class Issuer:
         issuer_type   = 'default'
         issuer_config = {'freshness_time':0}
         issuer_creds  = {'key':''}
+
+        logger.debug("Issuer __init__>>> {} {} {}".format(issuer_type, issuer_config, issuer_creds))
 
         self.instance = VonIssuer(
             self.pool,
@@ -46,10 +49,12 @@ class Issuer:
         )
 
     async def __aenter__(self):
+        logger.debug("Issuer __aenter__>>>")
         await self.pool.open()
         return await self.instance.open()
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        logger.debug("Issuer __aexit__>>>")
         if exc_type is not None:
             logger.error(exc_type, exc_value, traceback)
 
@@ -59,6 +64,7 @@ class Issuer:
 
 class Verifier:
     def __init__(self):
+        logger.debug("Verifier __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
             'permitify-verifier',
@@ -67,6 +73,8 @@ class Verifier:
         verifier_type   = 'default'
         verifier_config = {'freshness_time':0}
         verifier_creds  = {'key':''}
+
+        logger.debug("Verifier __init__>>> {} {} {}".format(verifier_type, verifier_config, verifier_creds))
 
         self.instance = VonVerifier(
             self.pool,
@@ -81,10 +89,12 @@ class Verifier:
         )
 
     async def __aenter__(self):
+        logger.debug("Verifier __aenter__>>>")
         await self.pool.open()
         return await self.instance.open()
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        logger.debug("Verifier __aexit__>>>")
         if exc_type is not None:
             logger.error(exc_type, exc_value, traceback)
 
@@ -94,6 +104,7 @@ class Verifier:
 
 class Holder:
     def __init__(self):
+        logger.debug("Holder __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
             'permitify-holder',
@@ -102,6 +113,8 @@ class Holder:
         holder_type   = 'default'
         holder_config = {'freshness_time':0}
         holder_creds  = {'key':''}
+
+        logger.debug("Holder __init__>>> {} {} {}".format(holder_type, holder_config, holder_creds))
 
         self.instance = VonHolderProver(
             self.pool,
@@ -116,12 +129,14 @@ class Holder:
         )
 
     async def __aenter__(self):
+        logger.debug("Holder __aenter__>>>")
         await self.pool.open()
         instance = await self.instance.open()
         await self.instance.create_master_secret(uuid())
         return instance
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        logger.debug("Holder __aexit__>>>")
         if exc_type is not None:
             logger.error(exc_type, exc_value, traceback)
 
