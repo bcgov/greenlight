@@ -30,7 +30,7 @@ class Issuer:
             'permitify-issuer',
             genesis_config['genesis_txn_path'])
 
-        issuer_type   = 'default'
+        issuer_type   = 'virtual'
         issuer_config = {'freshness_time':0}
         issuer_creds  = {'key':''}
 
@@ -70,7 +70,7 @@ class Verifier:
             'permitify-verifier',
             genesis_config['genesis_txn_path'])
 
-        verifier_type   = 'default'
+        verifier_type   = 'virtual'
         verifier_config = {'freshness_time':0}
         verifier_creds  = {'key':''}
 
@@ -110,7 +110,7 @@ class Holder:
             'permitify-holder',
             genesis_config['genesis_txn_path'])
 
-        holder_type   = 'default'
+        holder_type   = 'virtual'
         holder_config = {'freshness_time':0}
         holder_creds  = {'key':''}
 
