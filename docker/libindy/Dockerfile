@@ -14,6 +14,8 @@ apt-get install -y \
     apt-transport-https \
     ca-certificates
 
+RUN apt-get install -y sqlite3 libsqlite3-dev
+
 ENV HOME=/app
 WORKDIR $HOME
 
