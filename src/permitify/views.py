@@ -143,10 +143,16 @@ def index(request):
     if not legal_entity_id:
         return render(request, 'missing_id.html')
 
+    logger.info('----\n\n\n\n\n\n{}\n\n\n\n\n'.format(legal_entity_id))
+
     proof_request_manager = ProofRequestManager()
     proof_response = proof_request_manager.request_proof({
         'legal_entity_id': legal_entity_id
     })
+
+    logger.info('----\n\n\n\n\n\n{}\n\n\n\n\n'.format(proof_response))
+
+    logger.info(legal_entity_id)
 
     configurator.config['proof_response'] = proof_response
 

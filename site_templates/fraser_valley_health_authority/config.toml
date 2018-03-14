@@ -50,7 +50,7 @@ title = "Operating Permit"
   type = "date"
   required = true
   name = "effective_date"
-  pretty = "Effective Date"
+  pretty = "Effective Date (yyyy-mm-dd)"
 
   [[forms.inputs]]
   type = "number"

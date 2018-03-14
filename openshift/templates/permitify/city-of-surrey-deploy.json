@@ -205,6 +205,14 @@
                   {
                     "name": "INDY_WALLET_SEED",
                     "value": "${INDY_WALLET_SEED}"
+                  },
+                  {
+                    "name": "TOB_INDY_SEED",
+                    "value": "${TOB_INDY_SEED}"
+                  },
+                  {
+                    "name": "LEDGER_URL",
+                    "value": "${LEDGER_URL}"
                   }
                 ],
                 "resources": {
@@ -360,6 +368,20 @@
       "description": "The seed that the indy wallet uses to generate predictable keys.",
       "required": true,
       "value": "city_of_surrey_dev_0000000000000"
+    },
+    {
+      "name": "TOB_INDY_SEED",
+      "displayName": "TheOrgBook Indy Wallet Seed",
+      "description": "The seed that TheOrgBook uses to generate predictable keys.",
+      "required": true,
+      "value": "the_org_book_dev_000000000000000"
+    },
+    {
+      "name": "LEDGER_URL",
+      "displayName": "Ledger URL",
+      "description": "The URL for a running instance of von-network.",
+      "required": true,
+      "value": "http://138.197.170.136"
     }
   ]
 }

@@ -16,9 +16,13 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}1
     links:
       - redis
+      TOB_INDY_SEED: ${TOB_INDY_SEED}
+      LEDGER_URL: ${LEDGER_URL}
+    # links:
+    #   - postgres
     volumes:
-      - ../src:/app
-      - ../site_templates:/app/site_templates
+      # - ../src:/app
+      # - ../site_templates:/app/site_templates
       - bc_registries_wallet:/app/.indy_client/wallet
     ports:
       - 5000:8080
@@ -38,6 +42,10 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}2
     links:
       - redis
+      TOB_INDY_SEED: ${TOB_INDY_SEED}
+      LEDGER_URL: ${LEDGER_URL}
+    # links:
+    #   - postgres
     volumes:
       # - ./src:/app
       # - ./site_templates:/app/site_templates
@@ -60,6 +68,10 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}3
     links:
       - redis
+      TOB_INDY_SEED: ${TOB_INDY_SEED}
+      LEDGER_URL: ${LEDGER_URL}
+    # links:
+    #   - postgres
     volumes:
       # - ./src:/app
       # - ./site_templates:/app/site_templates
@@ -82,6 +94,10 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}4
     links:
       - redis
+      TOB_INDY_SEED: ${TOB_INDY_SEED}
+      LEDGER_URL: ${LEDGER_URL}
+    # links:
+    #   - postgres
     volumes:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
@@ -104,6 +120,10 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}5
     links:
       - redis
+      TOB_INDY_SEED: ${TOB_INDY_SEED}
+      LEDGER_URL: ${LEDGER_URL}
+    # links:
+    #   - postgres
     volumes:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
@@ -126,6 +146,10 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}6
     links:
       - redis
+      TOB_INDY_SEED: ${TOB_INDY_SEED}
+      LEDGER_URL: ${LEDGER_URL}
+    # links:
+    #   - postgres
     volumes:
       # - ../src:/app
       # - ../site_templates:/app/site_templates

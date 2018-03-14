@@ -6,15 +6,18 @@ import requests
 from django.conf import settings
 
 from .agent import Issuer
+from .agent import convert_seed_to_did
 from von_agent.util import encode
+from von_agent.schema import schema_key_for
 
 from . import eventloop, dev
 
 import logging
 logger = logging.getLogger(__name__)
 
+# TODO: resolve url via DID -> endpoint
 TOB_BASE_URL = os.getenv('THE_ORG_BOOK_API_URL')
-
+TOB_INDY_SEED = os.getenv('TOB_INDY_SEED')
 
 def claim_value_pair(plain):
     return [str(plain), encode(plain)]
@@ -34,9 +37,11 @@ class SchemaManager():
             raise
         self.schemas = json.loads(schemas_json)
 
-        if os.getenv('PYTHON_ENV') == 'development':
-            for schema in self.schemas:
-                schema['version'] = dev.get_unique_version()
+        self.__log_json('Schema start', self.schemas)
+
+        # if os.getenv('PYTHON_ENV') == 'development':
+        #     for schema in self.schemas:
+        #         schema['version'] = dev.get_unique_version()
 
     def __log_json(self, heading, data):
         logger.debug(
@@ -47,27 +52,48 @@ class SchemaManager():
             "============================================================================\n")
         return
 
+    def __log(self, heading, data):
+        logger.debug(
+            "\n============================================================================\n" +
+            "{0}\n".format(heading) +
+            "----------------------------------------------------------------------------\n" +
+            "{0}\n".format(data) +
+            "============================================================================\n")
+        return
+
     def publish_schema(self, schema):
         async def run(schema):
             async with Issuer() as issuer:
                 # Check if schema exists on ledger
                 schema_json = await issuer.get_schema(
-                    issuer.did, schema['name'], schema['version'])
+                    schema_key_for(
+                        {
+                            'origin_did': issuer.did,
+                            'name': schema['name'],
+                            'version': schema['version']
+                        }
+                    )
+                )
 
                 # If not, send the schema to the ledger, then get result
                 if not json.loads(schema_json):
-                    await issuer.send_schema(json.dumps(schema))
-                    schema_json = await issuer.get_schema(
-                        issuer.did, schema['name'], schema['version'])
-
+                    schema_json = await issuer.send_schema(json.dumps(schema))
+                
                 schema = json.loads(schema_json)
+
+                self.__log_json('schema:', schema)
 
                 # Check if claim definition has been published.
                 # If not then publish.
                 claim_def_json = await issuer.get_claim_def(
                     schema['seqNo'], issuer.did)
                 if not json.loads(claim_def_json):
-                    await issuer.send_claim_def(schema_json)
+                    claim_def_json = await issuer.send_claim_def(schema_json)
+
+                claim_def = json.loads(claim_def_json)
+                self.__log_json('claim_def:', claim_def)
+
+
 
         return eventloop.do(run(schema))
 
@@ -83,26 +109,43 @@ class SchemaManager():
 
                 # We need schema from ledger
                 schema_json = await issuer.get_schema(
-                    issuer.did, schema['name'], schema['version'])
+                    schema_key_for(
+                        {
+                            'origin_did': issuer.did,
+                            'name': schema['name'],
+                            'version': schema['version']
+                        }
+                    )
+                )
                 schema = json.loads(schema_json)
 
                 self.__log_json('Schema:', schema)
 
                 claim_def_json = await issuer.get_claim_def(
                     schema['seqNo'], issuer.did)
+                claim_def = json.loads(claim_def_json)
+
+                self.__log_json('Schema:', schema)
+
+                tob_did = await convert_seed_to_did(TOB_INDY_SEED)
+                self.__log('TheOrgBook DID:', tob_did)
+
+                # We create a claim offer
+                claim_offer_json = await issuer.create_claim_offer(schema_json, tob_did)
+                claim_offer = json.loads(claim_offer_json)
+
+                self.__log_json('Claim Offer:', claim_offer)
 
                 self.__log_json('Requesting Claim Request:', 
                     {
-                        'did': issuer.did,
-                        'seqNo': schema['seqNo'],
-                        'claim_def': json.loads(claim_def_json)
+                        'claim_offer': claim_offer,
+                        'claim_def': claim_def
                     })
 
                 response = requests.post(
                     TOB_BASE_URL + '/bcovrin/generate-claim-request',
                     json={
-                        'did': issuer.did,
-                        'seqNo': schema['seqNo'],
+                        'claim_offer': claim_offer_json,
                         'claim_def': claim_def_json
                     }
                 )
