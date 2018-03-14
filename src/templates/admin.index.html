@@ -43,18 +43,19 @@
                           </tr>
                         </thead>
                         <tr style="color:white;">
-                        {% for pending_requests in pending_requests %}
-                          <td>{{ pending_requests.legal_name }}</td>
-                          <td>{{ pending_requests.address_line_1 }}</td>
-                          <td>{{ pending_requests.city }}</td>
-                          <td>{{ pending_requests.province }}</td>
-                          <td>{{ pending_requests.country }}</td>
+                        {% for pending_request in pending_requests %}
+                          <td>{{ pending_request.legal_name }}</td>
+                          <td>{{ pending_request.address_line_1 }}</td>
+                          <td>{{ pending_request.city }}</td>
+                          <td>{{ pending_request.province }}</td>
+                          <td>{{ pending_request.country }}</td>
+                          <td><input type="checkbox" id="ckbox" value= "{{rkeys|index:forloop.counter0}}"></td>
                         {% endfor %}
                         </tr>
                       </table>
                     </div>
                     <td>
-                      <button class="btn btn-info pull-left" (click)="withdraw(i)">Approve</button>
+                      <button class="approve btn btn-info pull-left">Approve</button>
                     </td>
                   </div>
                 </div>
@@ -68,21 +69,21 @@
                         <thead>
                           <tr style="color:yellow;">
                                 <th style="font-weight:700">Legal Name</th>
-                                <th style="font-weight:700">Mailing Address</th>
                                 <th style="font-weight:700">Street Address</th>
                                 <th style="font-weight:700">City</th>
                                 <th style="font-weight:700">Province</th>
                                 <th style="font-weight:700">Country</th>
                           </tr>
                         </thead>
-                        <tr>
-                          <td>N/A</td>
-                          <td>N/A</td>
-                          <td>N/A</td>
-                          <td>N/A</td>
-                          <td>N/A</td>
-                          <td>N/A</td>
-                        </tr>
+                        <!-- <tr>
+                        {% for process_requests in process_requests%}
+                          <td>{{ process_requests.legal_name }}</td>
+                          <td>{{ process_requests.address_line_1 }}</td>
+                          <td>{{ process_requests.city }}</td>
+                          <td>{{ process_requests.province }}</td>
+                          <td>{{ process_requests.country }}</td>
+                        {% endfor %}
+                        </tr> -->
                       </table>
                     </div>
                   </div>

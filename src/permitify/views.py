@@ -29,6 +29,9 @@ def admin(request):
     # Get all keys in redis
     pending_requests = []
     rkeys = r.scan()[1]
+    rkeys = [byte.decode("utf-8") for byte in rkeys]
+    # # logger.info('------rkeys-----')
+    # logger.info(rkeys)
     for key in rkeys:
         pending_request = r.get(key).decode("utf-8")
         pending_request=json.loads(pending_request)
@@ -62,6 +65,37 @@ def admin(request):
     logger.info(json.dumps(configurator.config))
     return render(request, 'admin.index.html', {'pending_requests': pending_requests, 'rkeys': rkeys})
 
+def process_request(request):   
+    
+    body = json.loads(request.body.decode('utf-8'))
+    schema = schema_manager.schemas[0]
+    logger.info('----------------body')
+    logger.info(body)
+
+    for rkey in body: 
+        # logger.info(rkey)
+        # rkey_str = rkey.decode('utf-8')
+        logger.info(rkey)
+        process_req=r.get(rkey).decode('utf-8')
+        process_req = json.loads(process_req)
+        logger.info('-----------process-------')
+        logger.info(process_req)
+        claim = schema_manager.submit_claim(schema, process_req)
+                
+    
+    
+    # process_request=[]
+    # process_request = r.get(rkeys).decode("utf-8")
+    # process_request.append(rkeys)
+    # process_request=json.loads(process_request)
+    # process_requests.append(process_request)
+    # for key in rekeys: 
+    #     process_request = r.get(key).decode("utf-8")
+    #     process_request=json.loads(process_request)d
+    #     process_requests.append(process_request)
+    # return render(request, 'admin.index.html', {'process_requests': process_requests}) 
+    
+    return JsonResponse({'success': True, 'result': claim})
     
 
 # def process_request(request):
@@ -94,7 +128,7 @@ def admin(request):
 def index(request):
 
     # If this is the form for the foundational claim,
-    # we have no prequisites so just render.
+    # we have no prequisites so just render.e
     if 'foundational' in configurator.config and \
             configurator.config['foundational']:
         return render(
