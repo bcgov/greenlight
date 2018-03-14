@@ -19,6 +19,8 @@ class VonConnectorConfig(AppConfig):
 
     def ready(self):
 
+        logger.error("startup code ...")
+
         config = Configurator().config
         now = datetime.now().strftime("%Y-%m-%d")
         # Register myself with TheOrgBook
@@ -27,7 +29,9 @@ class VonConnectorConfig(AppConfig):
         issuer_service_id = None
 
         async def run():
+            logger.debug("running in run ...")
             async with Issuer() as agent:
+                logger.debug("running with Issuer() ...")
                 issuer_service_id = None
 
                 # Check if my jurisdiction exists by name
@@ -79,6 +83,7 @@ class VonConnectorConfig(AppConfig):
 
                 return issuer_service_id
 
+        logger.debug("running ...")
         issuer_service_id = eventloop.do(run())
 
         # Publish the schemas I care about to the ledger

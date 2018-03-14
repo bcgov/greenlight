@@ -23,7 +23,7 @@ if not WALLET_SEED or len(WALLET_SEED) is not 32:
 
 
 class Issuer:
-    async def __init__(self):
+    def __init__(self):
         logger.debug("Issuer __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
@@ -34,6 +34,8 @@ class Issuer:
         issuer_config = {'freshness_time':0}
         issuer_creds  = {'key':''}
 
+        logger.debug("Issuer __init__>>> {} {} {}".format(issuer_type, issuer_config, issuer_creds))
+
         issuer_wallet = Wallet(
                 self.pool.name,
                 WALLET_SEED,
@@ -41,7 +43,6 @@ class Issuer:
                 issuer_type,
                 issuer_config,
                 issuer_creds)
-        await issuer_wallet.create()
 
         logger.debug("Issuer __init__>>> {} {} {}".format(issuer_type, issuer_config, issuer_creds))
 
@@ -53,6 +54,7 @@ class Issuer:
     async def __aenter__(self):
         logger.debug("Issuer __aenter__>>>")
         await self.pool.open()
+        await self.wallet.create()
         return await self.instance.open()
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -75,6 +77,8 @@ class Verifier:
         verifier_type   = 'virtual'
         verifier_config = {'freshness_time':0}
         verifier_creds  = {'key':''}
+
+        logger.debug("Verifier __init__>>> {} {} {}".format(verifier_type, verifier_config, verifier_creds))
 
         verifier_wallet = Wallet(
                 self.pool.name,
@@ -117,6 +121,8 @@ class Holder:
         holder_type   = 'virtual'
         holder_config = {'freshness_time':0}
         holder_creds  = {'key':''}
+
+        logger.debug("Holder __init__>>> {} {} {}".format(holder_type, holder_config, holder_creds))
 
         holder_wallet = Wallet(
                 self.pool.name,
