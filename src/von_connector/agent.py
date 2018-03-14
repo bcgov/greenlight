@@ -23,7 +23,7 @@ if not WALLET_SEED or len(WALLET_SEED) is not 32:
 
 
 class Issuer:
-    def __init__(self):
+    async def __init__(self):
         logger.debug("Issuer __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
@@ -34,18 +34,20 @@ class Issuer:
         issuer_config = {'freshness_time':0}
         issuer_creds  = {'key':''}
 
+        issuer_wallet = Wallet(
+                self.pool.name,
+                WALLET_SEED,
+                config['name'] + 'IssuerWallet',
+                issuer_type,
+                issuer_config,
+                issuer_creds)
+        await issuer_wallet.create()
+
         logger.debug("Issuer __init__>>> {} {} {}".format(issuer_type, issuer_config, issuer_creds))
 
         self.instance = VonIssuer(
             self.pool,
-            Wallet(
-                self.pool.name,
-                WALLET_SEED,
-                config['name'] + ' Issuer Wallet',
-                issuer_type,
-                issuer_config,
-                issuer_creds,
-            )
+            issuer_wallet
         )
 
     async def __aenter__(self):
@@ -63,7 +65,7 @@ class Issuer:
 
 
 class Verifier:
-    def __init__(self):
+    async def __init__(self):
         logger.debug("Verifier __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
@@ -74,18 +76,20 @@ class Verifier:
         verifier_config = {'freshness_time':0}
         verifier_creds  = {'key':''}
 
+        verifier_wallet = Wallet(
+                self.pool.name,
+                WALLET_SEED,
+                config['name'] + 'VerifierWallet',
+                verifier_type,
+                verifier_config,
+                verifier_creds)
+        await verifier_wallet.create()
+
         logger.debug("Verifier __init__>>> {} {} {}".format(verifier_type, verifier_config, verifier_creds))
 
         self.instance = VonVerifier(
             self.pool,
-            Wallet(
-                self.pool.name,
-                WALLET_SEED,
-                config['name'] + ' Verifier Wallet',
-                verifier_type,
-                verifier_config,
-                verifier_creds,
-            )
+            verifier_wallet
         )
 
     async def __aenter__(self):
@@ -103,7 +107,7 @@ class Verifier:
 
 
 class Holder:
-    def __init__(self):
+    asyncdef __init__(self):
         logger.debug("Holder __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
@@ -114,18 +118,20 @@ class Holder:
         holder_config = {'freshness_time':0}
         holder_creds  = {'key':''}
 
+        holder_wallet = Wallet(
+                self.pool.name,
+                WALLET_SEED,
+                config['name'] + 'HolderWallet',
+                holder_type,
+                holder_config,
+                holder_creds)
+        await holder_wallet.create()
+
         logger.debug("Holder __init__>>> {} {} {}".format(holder_type, holder_config, holder_creds))
 
         self.instance = VonHolderProver(
             self.pool,
-            Wallet(
-                self.pool.name,
-                WALLET_SEED,
-                config['name'] + ' Holder Wallet',
-                holder_type,
-                holder_config,
-                holder_creds,
-            )
+            holder_wallet
         )
 
     async def __aenter__(self):
