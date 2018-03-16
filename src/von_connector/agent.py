@@ -39,7 +39,7 @@ class Issuer:
         issuer_wallet = Wallet(
                 self.pool.name,
                 WALLET_SEED,
-                config['name'] + 'IssuerWallet',
+                config['name'] + '_Issuer_Wallet',
                 issuer_type,
                 issuer_config,
                 issuer_creds)
@@ -83,7 +83,7 @@ class Verifier:
         verifier_wallet = Wallet(
                 self.pool.name,
                 WALLET_SEED,
-                config['name'] + 'VerifierWallet',
+                config['name'] + '_Verifier_Wallet',
                 verifier_type,
                 verifier_config,
                 verifier_creds)
@@ -127,7 +127,7 @@ class Holder:
         holder_wallet = Wallet(
                 self.pool.name,
                 WALLET_SEED,
-                config['name'] + 'HolderWallet',
+                config['name'] + '_Holder_Wallet',
                 holder_type,
                 holder_config,
                 holder_creds)
