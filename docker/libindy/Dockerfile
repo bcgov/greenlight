@@ -11,6 +11,7 @@ apt-get install -y \
     libssl-dev \
     libsqlite3-dev \
     libsodium-dev \
+    libzmq3-dev \
     apt-transport-https \
     ca-certificates
 
