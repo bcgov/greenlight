@@ -10,7 +10,7 @@ from .agent import Issuer
 from von_agent.util import encode
 from von_agent.schema import schema_key_for
 
-from . import eventloop, dev
+from . import eventloop, dev, apps
 
 import logging
 logger = logging.getLogger(__name__)
@@ -127,7 +127,8 @@ class SchemaManager():
 
                 self.__log_json('Schema:', schema)
 
-                tob_did = issuer.wallet.did              # await convert_seed_to_did(TOB_INDY_SEED)
+                # tob_did = await convert_seed_to_did(TOB_INDY_SEED)
+                tob_did = apps.get_tob_did()
                 self.__log('TheOrgBook DID:', tob_did)
 
                 # We create a claim offer

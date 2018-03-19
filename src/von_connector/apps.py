@@ -7,6 +7,7 @@ import requests
 from .schema import SchemaManager
 from .config import Configurator
 from .agent import Issuer
+from .agent import convert_seed_to_did
 from . import eventloop
 
 from django.apps import AppConfig
@@ -14,12 +15,19 @@ from django.apps import AppConfig
 import logging
 logger = logging.getLogger(__name__)
 
+# TODO fix this global variable, badly implemented :-(
+def get_tob_did():
+    return tob_did
+tob_did = None
+
 class VonConnectorConfig(AppConfig):
     name = 'von_connector'
 
     def ready(self):
 
         logger.error("startup code ...")
+
+        TOB_INDY_SEED = os.getenv('TOB_INDY_SEED')
 
         config = Configurator().config
         now = datetime.now().strftime("%Y-%m-%d")
@@ -33,6 +41,10 @@ class VonConnectorConfig(AppConfig):
             async with Issuer() as agent:
                 logger.debug("running with Issuer() ...")
                 issuer_service_id = None
+
+                global tob_did
+                tob_did = await convert_seed_to_did(TOB_INDY_SEED)
+                logger.debug("TheOrgBook DID:" + tob_did)
 
                 # Check if my jurisdiction exists by name
                 jurisdictions = requests.get(
