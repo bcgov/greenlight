@@ -24,25 +24,42 @@ if not WALLET_SEED or len(WALLET_SEED) is not 32:
 
 class Issuer:
     def __init__(self):
+        logger.debug("Issuer __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
             'permitify-issuer',
             genesis_config['genesis_txn_path'])
 
+        issuer_type   = 'default'
+        issuer_config = {'freshness_time':0}
+        issuer_creds  = {'key':''}
+
+        logger.debug("Issuer __init__>>> create wallet {} {} {}".format(issuer_type, issuer_config, issuer_creds))
+
+        issuer_wallet = Wallet(
+                self.pool,
+                WALLET_SEED,
+                config['name'] + '_Issuer_Wallet',
+                issuer_type,
+                issuer_config,
+                issuer_creds)
+
+        logger.debug("Issuer __init__>>> done {} {} {}".format(issuer_type, issuer_config, issuer_creds))
+
         self.instance = VonIssuer(
             self.pool,
-            Wallet(
-                self.pool.name,
-                WALLET_SEED,
-                config['name'] + ' Issuer Wallet'
-            )
+            issuer_wallet
         )
+        logger.debug("Issuer __init__>>> created VonIssuer")
 
     async def __aenter__(self):
+        logger.debug("Issuer __aenter__>>>")
         await self.pool.open()
+        await self.instance.wallet.create()
         return await self.instance.open()
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        logger.debug("Issuer __aexit__>>>")
         if exc_type is not None:
             logger.error(exc_type, exc_value, traceback)
 
@@ -52,25 +69,41 @@ class Issuer:
 
 class Verifier:
     def __init__(self):
+        logger.debug("Verifier __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
             'permitify-verifier',
             genesis_config['genesis_txn_path'])
 
+        verifier_type   = 'default'
+        verifier_config = {'freshness_time':0}
+        verifier_creds  = {'key':''}
+
+        logger.debug("Verifier __init__>>> {} {} {}".format(verifier_type, verifier_config, verifier_creds))
+
+        verifier_wallet = Wallet(
+                self.pool,
+                WALLET_SEED,
+                config['name'] + '_Verifier_Wallet',
+                verifier_type,
+                verifier_config,
+                verifier_creds)
+
+        logger.debug("Verifier __init__>>> {} {} {}".format(verifier_type, verifier_config, verifier_creds))
+
         self.instance = VonVerifier(
             self.pool,
-            Wallet(
-                self.pool.name,
-                WALLET_SEED,
-                config['name'] + ' Verifier Wallet'
-            )
+            verifier_wallet
         )
 
     async def __aenter__(self):
+        logger.debug("Verifier __aenter__>>>")
         await self.pool.open()
+        await self.instance.wallet.create()
         return await self.instance.open()
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        logger.debug("Verifier __aexit__>>>")
         if exc_type is not None:
             logger.error(exc_type, exc_value, traceback)
 
@@ -80,27 +113,43 @@ class Verifier:
 
 class Holder:
     def __init__(self):
+        logger.debug("Holder __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
             'permitify-holder',
             genesis_config['genesis_txn_path'])
 
+        holder_type   = 'default'
+        holder_config = {'freshness_time':0}
+        holder_creds  = {'key':''}
+
+        logger.debug("Holder __init__>>> {} {} {}".format(holder_type, holder_config, holder_creds))
+
+        holder_wallet = Wallet(
+                self.pool,
+                WALLET_SEED,
+                config['name'] + '_Holder_Wallet',
+                holder_type,
+                holder_config,
+                holder_creds)
+
+        logger.debug("Holder __init__>>> {} {} {}".format(holder_type, holder_config, holder_creds))
+
         self.instance = VonHolderProver(
             self.pool,
-            Wallet(
-                self.pool.name,
-                WALLET_SEED,
-                config['name'] + ' Holder Wallet'
-            )
+            holder_wallet
         )
 
     async def __aenter__(self):
+        logger.debug("Holder __aenter__>>>")
         await self.pool.open()
+        await self.instance.wallet.create()
         instance = await self.instance.open()
         await self.instance.create_master_secret(uuid())
         return instance
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        logger.debug("Holder __aexit__>>>")
         if exc_type is not None:
             logger.error(exc_type, exc_value, traceback)
 
@@ -113,14 +162,18 @@ async def convert_seed_to_did(seed):
         'util-agent',
         genesis_config['genesis_txn_path'])
 
-    agent = _BaseAgent(
-        pool,
-        Wallet(
-            pool.name,
+    agent_wallet = Wallet(
+            pool,
             seed,
             seed + '-wallet'
-        ),
+        )
+    agent = _BaseAgent(
+        pool,
+        agent_wallet,
     )
+
+    await pool.open()
+    await agent_wallet.create()
 
     await agent.open()
     agent_did = agent.did

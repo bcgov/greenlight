@@ -11,8 +11,11 @@ apt-get install -y \
     libssl-dev \
     libsqlite3-dev \
     libsodium-dev \
+    libzmq3-dev \
     apt-transport-https \
     ca-certificates
+
+RUN apt-get install -y sqlite3 libsqlite3-dev
 
 ENV HOME=/app
 WORKDIR $HOME
@@ -22,11 +25,10 @@ RUN curl -o rustup https://sh.rustup.rs
 RUN chmod +x rustup
 RUN ./rustup -y
 
-# Build libindy
-RUN git clone https://github.com/hyperledger/indy-sdk.git
+RUN git clone https://github.com/ianco/indy-sdk.git
 WORKDIR $HOME/indy-sdk/libindy
 RUN git fetch
-RUN git checkout 778a38d92234080bb77c6dd469a8ff298d9b7154
+# RUN git checkout ew_wallet_dev
 RUN $HOME/.cargo/bin/cargo build
 
 # Move libindy to lib path
