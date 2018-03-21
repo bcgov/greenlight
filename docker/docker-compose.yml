@@ -22,6 +22,8 @@ services:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
       - bc_registries_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
     ports:
       - 5000:8080
 
@@ -46,6 +48,8 @@ services:
       # - ./src:/app
       # - ./site_templates:/app/site_templates
       - worksafe_bc_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
     ports:
       - 5001:8080
 
@@ -70,6 +74,8 @@ services:
       # - ./src:/app
       # - ./site_templates:/app/site_templates
       - ministry_of_finance_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
     ports:
       - 5002:8080
 
@@ -94,6 +100,8 @@ services:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
       - fraser_valley_health_authority_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
     ports:
       - 5003:8080
 
@@ -118,6 +126,8 @@ services:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
       - city_of_surrey_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
     ports:
       - 5004:8080
 
@@ -142,6 +152,8 @@ services:
       # - ../src:/app
       # - ../site_templates:/app/site_templates
       - liquor_control_and_licensing_branch_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
     ports:
       - 5005:8070
 
@@ -149,6 +161,10 @@ services:
   #   image: postgres
   #   ports:
   #     - '5432:5432'
+
+networks:
+  tob_tob:
+    external: true
 
 volumes:
   worksafe_bc_wallet:
