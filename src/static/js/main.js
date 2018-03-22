@@ -57,7 +57,12 @@ $(function () {
       if (response.result == null) {
         
                 $(".message").append(" <b>Your request is being processed by one of our representative</b>.");
-                console.log('asdasdasd')
+                
+                var delay=10000;
+                var url = THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=';
+                var timeoutID = setTimeout(function(){
+                  window.location.href = url;
+                }, delay);
         }
       if (response.result != null) {
             window.location.replace(

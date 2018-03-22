@@ -71,6 +71,7 @@ def process_request(request):
     schema = schema_manager.schemas[0]
     logger.info('----------------body')
     logger.info(body)
+    # process_reqs = []
 
     for rkey in body: 
         # logger.info(rkey)
@@ -81,14 +82,21 @@ def process_request(request):
         logger.info('-----------process-------')
         logger.info(process_req)
         claim = schema_manager.submit_claim(schema, process_req)
-                
+        # process_reqs.append(process_req)
+        
+    # return render(request, 'admin.index.html', {'process_reqs': process_reqs})
+    
+    expired_keys = r.scan()[1]
+    for key in expired_keys:
+        r.delete(key)
+        
     
     
-    # process_request=[]
+    # process_request
     # process_request = r.get(rkeys).decode("utf-8")
     # process_request.append(rkeys)
     # process_request=json.loads(process_request)
-    # process_requests.append(process_request)
+    # process_requests.append(process_request)./
     # for key in rekeys: 
     #     process_request = r.get(key).decode("utf-8")
     #     process_request=json.loads(process_request)d
@@ -96,7 +104,17 @@ def process_request(request):
     # return render(request, 'admin.index.html', {'process_requests': process_requests}) 
     
     return JsonResponse({'success': True, 'result': claim})
+
+def approved_request(request): 
     
+    body = json.loads(request.body.decode('utf-8'))
+    schema = schema_manager.schemas[0]
+    logger.info('---Approved------')
+    logger.info(body)
+    
+    claim = schema_manager.submit_claim(schema, body)
+
+    return JsonResponse({'success': True, 'result': claim})
 
 # def process_request(request):
     
@@ -166,6 +184,8 @@ def index(request):
 def submit_claim(request):
     # Get json request body
     body = json.loads(request.body.decode('utf-8'))
+    logger.info('-------------Int------')
+    logger.info(body)
 
     logger.info('---------Body--------')
     for claim in body:
@@ -235,7 +255,7 @@ def submit_claim(request):
         else:
             raise Exception('Unkown mapper type "%s"' % attribute['from'])
     
-    if 'legal_name' in claim and claim["legal_name"] == "Maher":
+    if 'address_line_1' in claim and claim["address_line_1"] == "1224Hillside":
         # messages.add_message(request, messages.INFO, 'Your request is being processed by one of our representative')
 
         # storage = get_messages(request)
