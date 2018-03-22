@@ -1,5 +1,5 @@
 #!/bin/bash
-export DOCKERHOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)
+export DOCKERHOST=${APPLICATION_URL-$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)}
 export MSYS_NO_PATHCONV=1
 set -e
 
@@ -27,13 +27,13 @@ usage () {
           Examples:
           $0 start seed=my_seed
           $0 start seed=my_seed THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
-          $0 start bc_registries seed=my_seed        
+          $0 start bc_registries seed=my_seed
           $0 start bc_registries seed=my_seed THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
 
   stop - Stops the services.  This is a non-destructive process.  The containers
          are not deleted so they will be reused the next time you run start.
-         
-  rebuild - Rebuild the docker images.  
+
+  rebuild - Rebuild the docker images.
 EOF
 exit 1
 }
@@ -59,14 +59,19 @@ configureEnvironment () {
         export ${arg}
         ;;
     esac
-  done  
-  
+  done
+
   export APPLICATION_URL=${APPLICATION_URL-http://localhost}
   export THE_ORG_BOOK_API_URL=${THE_ORG_BOOK_API_URL-http://$DOCKERHOST:8081/api/v1}
   export THE_ORG_BOOK_APP_URL=${THE_ORG_BOOK_APP_URL-http://$DOCKERHOST:8080}
   # export THE_ORG_BOOK_API_URL="http://$DOCKERHOST:8081/api/v1"
   # export THE_ORG_BOOK_APP_URL="http://$DOCKERHOST:8080"
   
+  # export THE_ORG_BOOK_API_URL=${THE_ORG_BOOK_API_URL-https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1}
+  # export THE_ORG_BOOK_APP_URL=${THE_ORG_BOOK_APP_URL-https://devex-von-dev.pathfinder.gov.bc.ca}
+  # export THE_ORG_BOOK_API_URL="http://$DOCKERHOST:8081/api/v1"
+  # export THE_ORG_BOOK_APP_URL="http://$DOCKERHOST:8080"
+
   # Hacky - we trim the length of the string by 1 then
   # append unique numbers to each service in docker-compose.yml.
   # Each service needs a unique wallet seed, but we only
@@ -104,7 +109,7 @@ getStartupParams() {
     case "$arg" in
       *=*)
         # Skip it
-        ;;  
+        ;;
       all)
         CONTAINERS+=" $ALL_CONTAINERS";;
      -*)
@@ -148,7 +153,7 @@ rebuild() {
         -t 'libindy' \
         -f 'libindy/Dockerfile' \
         .
-    
+
     echo -e "\nRebuilding python-libindy image ..."
     docker build \
         --no-cache \

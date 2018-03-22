@@ -105,16 +105,16 @@ def process_request(request):
     
     return JsonResponse({'success': True, 'result': claim})
 
-def approved_request(request): 
+# def approved_request(request): 
     
-    body = json.loads(request.body.decode('utf-8'))
-    schema = schema_manager.schemas[0]
-    logger.info('---Approved------')
-    logger.info(body)
+#     body = json.loads(request.body.decode('utf-8'))
+#     schema = schema_manager.schemas[0]
+#     logger.info('---Approved------')
+#     logger.info(body)
     
-    claim = schema_manager.submit_claim(schema, body)
+#     claim = schema_manager.submit_claim(schema, body)
 
-    return JsonResponse({'success': True, 'result': claim})
+#     return JsonResponse({'success': True, 'result': claim})
 
 # def process_request(request):
     
