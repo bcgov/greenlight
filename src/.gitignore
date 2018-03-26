@@ -3,3 +3,4 @@ config.toml
 proof_requests.json
 .indy_client
 .bash_history
+.vscode 

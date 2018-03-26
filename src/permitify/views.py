@@ -204,7 +204,7 @@ def submit_claim(request):
             raise Exception('Unkown mapper type "%s"' % attribute['from'])
    
     
-    if 'address_line_1' in claim and claim["address_line_1"] is not 0:
+    if 'addressee' in claim and claim["addressee"] is not 0:
       
         current_time = datetime.now().isoformat() 
         r.set(current_time, json.dumps(claim))
