@@ -46,19 +46,18 @@ $(function () {
       contentType: 'application/json'
     }).done(function (response) {
       $(form).find('button[type=submit]').toggleClass('loading')
-      // This is used allow each template to implement its own response handler
-      // if (FORM_HANDLERS[$(form).attr('name')]) {
-      //   FORM_HANDLERS[$(form).attr('name')](form, response)
-      // }
+     
 
       console.log('asdasdasd')
 
 
       if (response.result == null) {
         
-                $(".message").append(" <b>Your request is being processed by one of our representative</b>.");
+                // $(".message").append(" <b>Your request is being processed by one of our representative</b>.");
+
+                alert('Your request is being processed by one of our representative')
                 
-                var delay=10000;
+                var delay=2000;
                 var url = THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=';
                 var timeoutID = setTimeout(function(){
                   window.location.href = url;
@@ -68,40 +67,13 @@ $(function () {
             window.location.replace(
           THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=' +
           response.result.id) 
-        }    // if (response.result = null) { 
-      //  console.log(response.message)
-      //     $(document).ready(function(){
-      //           $("#btn").click(function(){
-      //           $("p").append(" <b>Appended text</b>.");
-      //           });
-      //     });
-      //   }
-      // else {
-      //   window.location.replace(
-      //     THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=' +
-      //     response.result.id
-      //   )
-      // }
-          // If response.result is not null, redirect
-
-          // Otherwise, show message
-           
-          // (user jquery)
-      // window.location.replace(
-      //   THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=' +
-      //   response.result.id
-      // )
-
-      // {notice the difference between .click() and .submit() mehtod in Jquery }
+        }    
     })
   })
 
   $('.approve').click(function (event) {
       
-      // if ($("#ckbox':checked"))
-      //  { 
-      //    rkeys = $("input[type='checkbox']").val();
-      //  }
+      
      var selected_keys = $('#ckbox:checked').map(function() { return $(this).val(); }).get()
       $.ajax({
         method: 'POST',
@@ -115,9 +87,11 @@ $(function () {
         console.log('sdfddsg')
 
         if (response.result != null){
-              window.location.replace(
-            THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=' +
-            response.result.id) 
+                var delay=0;
+                var url = '/admin';
+                var timeoutID = setTimeout(function(){
+                  window.location.href = url;
+                }, delay);
 
             console.log('sdfddsg')
         }

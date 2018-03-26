@@ -75,15 +75,15 @@
                                 <th style="font-weight:700">Country</th>
                           </tr>
                         </thead>
-                        <!-- <tr style="color:white;">
-                        {% for process_req in process_reqs %}
-                          <td>{{ process_req.legal_name }}</td>
-                          <td>{{ process_req.address_line_1 }}</td>
-                          <td>{{ process_req.city }}</td>
-                          <td>{{ process_req.province }}</td>
-                          <td>{{ process_req.country }}</td>
+                        <tr style="color:white;">
+                        {% for approved_req in approved_reqs %}
+                          <td>{{approved_req.legal_name }}</td>
+                          <td>{{approved_req.address_line_1 }}</td>
+                          <td>{{approved_req.city }}</td>
+                          <td>{{approved_req.province }}</td>
+                          <td>{{approved_req.country }}</td>
                         {% endfor %}
-                        </tr> -->
+                        </tr>
                       </table>
                     </div>
                   </div>

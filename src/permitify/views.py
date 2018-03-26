@@ -12,6 +12,8 @@ from von_connector.schema import SchemaManager
 from von_connector.proof import ProofRequestManager
 from django.contrib import messages
 from django.contrib.messages import get_messages
+from django.db.models import CharField
+from django.db.models.functions import Length
 
 import logging
 logger = logging.getLogger(__name__)
@@ -19,9 +21,11 @@ logger = logging.getLogger(__name__)
 # Get redis connection
 import redis
 r = redis.StrictRedis(host='redis', port=6379, db=0)
+r_history = redis.StrictRedis(host='redis', port=6379, db=1)
 
 schema_manager = SchemaManager()
 configurator = Configurator()
+CharField.register_lookup(Length, 'length')
 
 
 def admin(request):
@@ -35,26 +39,22 @@ def admin(request):
     for key in rkeys:
         pending_request = r.get(key).decode("utf-8")
         pending_request=json.loads(pending_request)
-        # if 'Maher' in pending_request:
-        # if 'legal_name' in pending_request and pending_request["legal_name"] == "Maher":
         pending_requests.append(pending_request)
-            
+     
+    # For Approved Requests
+    approved_reqs = []
+    app_keys = r_history.scan()[1]
+    logger.info('-----app-----')
+    logger.info(app_keys)
+    app_keys = [byte.decode("utf-8") for byte in app_keys]
         
+    for key in app_keys: 
+        approved_req = r_history.get(key).decode("utf-8")
+        approved_req = json.loads(approved_req)
+        logger.info('------Approved------')
+        logger.info(approved_req)
+        approved_reqs.append(approved_req)
         
-        # Address = pending_request['address_line_1'] if 'address_line_1' in pending_request else ""
-        # print('The Address' + str(Address))
-        
-        # if  pending_request['address_line_1'] == "1224 Hillside Avenue": 
-        #     pending_requests.append(pending_request)
-        # else: 
-        #     return render (request, 'admin.index.html', {})
-        # if pending_request['address_1'] == 'BC':
-        #     pending_requests.append(pending_request)
-        # else
-        # return render (request, '', {})
-    
-
-
     logger.info('\n\n\n\n\n\n')
     logger.info('--------pending requests-------')
     for req in pending_requests:
@@ -63,7 +63,7 @@ def admin(request):
 
     logger.info('\n\n\n\n\n\n')
     logger.info(json.dumps(configurator.config))
-    return render(request, 'admin.index.html', {'pending_requests': pending_requests, 'rkeys': rkeys})
+    return render(request, 'admin.index.html', {'pending_requests': pending_requests, 'approved_reqs': approved_reqs, 'rkeys': rkeys})
 
 def process_request(request):   
     
@@ -76,72 +76,20 @@ def process_request(request):
     for rkey in body: 
         # logger.info(rkey)
         # rkey_str = rkey.decode('utf-8')
-        logger.info(rkey)
+        # logger.info(rkey)
         process_req=r.get(rkey).decode('utf-8')
         process_req = json.loads(process_req)
         logger.info('-----------process-------')
         logger.info(process_req)
+        current_time = datetime.now().isoformat() 
+        r_history.set(current_time, json.dumps(process_req))
         claim = schema_manager.submit_claim(schema, process_req)
-        # process_reqs.append(process_req)
-        
-    # return render(request, 'admin.index.html', {'process_reqs': process_reqs})
     
     expired_keys = r.scan()[1]
     for key in expired_keys:
         r.delete(key)
-        
-    
-    
-    # process_request
-    # process_request = r.get(rkeys).decode("utf-8")
-    # process_request.append(rkeys)
-    # process_request=json.loads(process_request)
-    # process_requests.append(process_request)./
-    # for key in rekeys: 
-    #     process_request = r.get(key).decode("utf-8")
-    #     process_request=json.loads(process_request)d
-    #     process_requests.append(process_request)
-    # return render(request, 'admin.index.html', {'process_requests': process_requests}) 
     
     return JsonResponse({'success': True, 'result': claim})
-
-# def approved_request(request): 
-    
-#     body = json.loads(request.body.decode('utf-8'))
-#     schema = schema_manager.schemas[0]
-#     logger.info('---Approved------')
-#     logger.info(body)
-    
-#     claim = schema_manager.submit_claim(schema, body)
-
-#     return JsonResponse({'success': True, 'result': claim})
-
-# def process_request(request):
-    
-#     for 
-
-#get index of keys. 
-
-#configurator.config['temp_root_admin']
-
-# get pending requests from redis
-
-# render pageget 
-
-# render(request, admin.html, { 'pending_requests': [ *requests from redis* ] })
-
-# 2. /process_request controller
-
-# continue submit claim...
-
-# def index(redis)
-#     // set key == 10.3; 
-#     set key == 11.40; 
-#     redis clear dat struct; 
-#     for agent in redis:: 
-#         clear cash value; 
-#         If agent in redis cleared:
-
 
 def index(request):
 
@@ -254,20 +202,14 @@ def submit_claim(request):
                     'Cannot find previous value "%s"' % attribute['source'])
         else:
             raise Exception('Unkown mapper type "%s"' % attribute['from'])
+   
     
-    if 'address_line_1' in claim and claim["address_line_1"] == "1224Hillside":
-        # messages.add_message(request, messages.INFO, 'Your request is being processed by one of our representative')
-
-        # storage = get_messages(request)
-        # for message in storage:
-        #     do_something_with_the_message(message)
+    if 'address_line_1' in claim and claim["address_line_1"] is not 0:
+      
         current_time = datetime.now().isoformat() 
         r.set(current_time, json.dumps(claim))
 
-        # storage = get_messages(request)
-        # do_something_with_the_message(message)
-        
-        # return redirect('/')
+       
         return JsonResponse({'success': True, 'result': None})
     else:
         claim = schema_manager.submit_claim(schema, claim)
@@ -275,11 +217,7 @@ def submit_claim(request):
         logger.info(claim)
         logger.info('---------End of Claim-')
 
-        return JsonResponse({'success': True, 'result': claim})
-    
-    # storage = get_messages(request)
-    # do_something_with_the_message(message)
-            
+        return JsonResponse({'success': True, 'result': claim})         
 
 def verify_dba(request):
     # Get json request body
