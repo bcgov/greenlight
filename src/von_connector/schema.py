@@ -26,9 +26,6 @@ def claim_value_pair(plain):
 
 class SchemaManager():
 
-    schema_cache = dict()
-    claim_def_cache = dict()
-
     claim_def_json = None
 
     def __init__(self):
@@ -124,19 +121,15 @@ class SchemaManager():
                             'name': schema['name'],
                             'version': schema['version']
                         })
-                if schema_key in self.schema_cache:
-                    schema_json = self.schema_cache[schema_key]
-                else:
-                    schema_json = await issuer.get_schema(
-                        schema_key_for(
-                            {
-                                'origin_did': issuer.did,
-                                'name': schema['name'],
-                                'version': schema['version']
-                            }
-                        )
+                schema_json = await issuer.get_schema(
+                    schema_key_for(
+                        {
+                            'origin_did': issuer.did,
+                            'name': schema['name'],
+                            'version': schema['version']
+                        }
                     )
-                    self.schema_cache[schema_key] = schema_json
+                )
                 schema = json.loads(schema_json)
 
                 self.__log_json('Schema:', schema)
@@ -146,12 +139,8 @@ class SchemaManager():
                 logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 1.00
                 logger.warn("schema_manager.submit_claim() >>> get claim definition")
                 claim_def_key = str(schema['seqNo']) + ":" + issuer.did
-                if claim_def_key in self.claim_def_cache:
-                    claim_def_json = self.claim_def_cache[claim_def_key]
-                else:
-                    claim_def_json = await issuer.get_claim_def(
-                        schema['seqNo'], issuer.did)
-                    self.claim_def_cache[claim_def_key] = claim_def_json
+                claim_def_json = await issuer.get_claim_def(
+                    schema['seqNo'], issuer.did)
                 claim_def = json.loads(claim_def_json)
 
                 self.__log_json('Schema:', schema)
