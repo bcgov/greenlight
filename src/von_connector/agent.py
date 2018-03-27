@@ -70,7 +70,7 @@ class Issuer:
             issuer_type, issuer_config, issuer_creds))
 
         self.instance = VonIssuer(
-            self.pool,
+            # self.pool,
             issuer_wallet
         )
         logger.debug("Issuer __init__>>> created VonIssuer")
@@ -136,7 +136,7 @@ class Verifier:
             verifier_type, verifier_config, verifier_creds))
 
         self.instance = VonVerifier(
-            self.pool,
+            # self.pool,
             verifier_wallet
         )
 
@@ -195,7 +195,7 @@ class Holder:
             holder_type, holder_config, holder_creds))
 
         self.instance = VonHolderProver(
-            self.pool,
+            # self.pool,
             holder_wallet
         )
 
@@ -228,7 +228,7 @@ async def convert_seed_to_did(seed):
         seed + '-wallet'
     )
     agent = _BaseAgent(
-        pool,
+        # pool,
         agent_wallet,
     )
 
