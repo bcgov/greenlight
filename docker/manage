@@ -94,6 +94,15 @@ configureEnvironment () {
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export INDY_WALLET_SEED=${seed%?}
   export TOB_INDY_SEED=${TOB_INDY_SEED}
+
+  export INDY_WALLET_URL=${INDY_WALLET_URL-http://$DOCKERHOST:6000/api/v1/}
+  export INDY_WALLET_TYPE=${wallet}
+
+  if [ "$COMMAND" == "start" ]; then
+    if [ -z "$wallet" ]; then
+      export INDY_WALLET_TYPE="virtual"
+    fi
+  fi
 }
 
 getStartupParams() {
