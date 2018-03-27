@@ -37,9 +37,11 @@ class Issuer:
         self.pool = NodePool(
             'permitify-issuer-' + str(thread_id),
             genesis_config['genesis_txn_path'])
+        wallet_name = config['name'] + '_Issuer_Wallet'
 
         issuer_type = os.environ.get('INDY_WALLET_TYPE')
         if issuer_type == 'remote':
+            wallet_name = wallet_name + "$$" + str(thread_id)
             holder_url = os.environ.get('INDY_WALLET_URL')
             issuer_config = {'endpoint': holder_url, 'ping': 'schema/',
                              'auth': 'api-token-auth/', 'keyval': 'keyval/', 'freshness_time': 0}
@@ -61,7 +63,7 @@ class Issuer:
         issuer_wallet = Wallet(
             self.pool,
             WALLET_SEED,
-            config['name'] + '_Issuer_Wallet',
+            wallet_name,
             issuer_type,
             issuer_config,
             issuer_creds)
@@ -103,6 +105,7 @@ class Verifier:
         self.pool = NodePool(
             'permitify-verifier',
             genesis_config['genesis_txn_path'])
+        wallet_name = config['name'] + '_Verifier_Wallet'
 
         verifier_type = os.environ.get('INDY_WALLET_TYPE')
         if verifier_type == 'remote':
@@ -127,7 +130,7 @@ class Verifier:
         verifier_wallet = Wallet(
             self.pool,
             WALLET_SEED,
-            config['name'] + '_Verifier_Wallet',
+            wallet_name,
             verifier_type,
             verifier_config,
             verifier_creds)
@@ -162,6 +165,7 @@ class Holder:
         self.pool = NodePool(
             'permitify-holder',
             genesis_config['genesis_txn_path'])
+        wallet_name = config['name'] + '_Holder_Wallet'
 
         holder_type = os.environ.get('INDY_WALLET_TYPE')
         if holder_type == 'remote':
@@ -186,7 +190,7 @@ class Holder:
         holder_wallet = Wallet(
             self.pool,
             WALLET_SEED,
-            config['name'] + '_Holder_Wallet',
+            wallet_name,
             holder_type,
             holder_config,
             holder_creds)
