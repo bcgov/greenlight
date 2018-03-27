@@ -26,7 +26,7 @@ def claim_value_pair(plain):
 
 class SchemaManager():
 
-    claim_def_json = None
+    # claim_def_json = None
 
     def __init__(self):
         schemas_path = os.path.abspath(settings.BASE_DIR + '/schemas.json')
@@ -65,6 +65,8 @@ class SchemaManager():
     def publish_schema(self, schema):
         async def run(schema):
             async with Issuer() as issuer:
+                claim_def_json = None
+
                 # Check if schema exists on ledger
                 schema_json = await issuer.get_schema(
                     schema_key_for(
@@ -77,7 +79,7 @@ class SchemaManager():
                 )
 
                 # If not, send the schema to the ledger, then get result
-                if not json.loads(schema_json):
+                if not json.loads(schema_json): 
                     schema_json = await issuer.send_schema(json.dumps(schema))
                 
                 schema = json.loads(schema_json)
@@ -103,6 +105,8 @@ class SchemaManager():
             logger.warn("schema_manager.submit_claim() >>> start")
             start_time = time.time()
             async with Issuer() as issuer:
+                claim_def_json = None
+
                 for key, value in claim.items():
                     claim[key] = claim_value_pair(value) if value else \
                         claim_value_pair("")
