@@ -41,7 +41,7 @@ class Issuer:
 
         issuer_type = os.environ.get('INDY_WALLET_TYPE')
         if issuer_type == 'remote':
-            wallet_name = wallet_name + "$$" + str(thread_id)
+            # wallet_name = wallet_name + "$$" + str(thread_id)
             holder_url = os.environ.get('INDY_WALLET_URL')
             issuer_config = {'endpoint': holder_url, 'ping': 'schema/',
                              'auth': 'api-token-auth/', 'keyval': 'keyval/', 'freshness_time': 0}
