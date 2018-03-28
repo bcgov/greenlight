@@ -78,7 +78,7 @@ def submit_claim(request):
     print(schema_manager.schemas)
     # Get the schema we care about by 'schema'
     # passed in request
-    print(schema_manager.schemas)
+    print(schema_manager)
     try:
         schema = next(
             schema for
