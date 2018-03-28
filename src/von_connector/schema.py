@@ -9,7 +9,7 @@ from django.conf import settings
 from .agent import Issuer
 # from .agent import convert_seed_to_did
 from von_agent.util import encode
-from von_agent.schema import schema_key_for
+from von_agent.schemakey import schema_key_for
 
 from . import eventloop, dev, apps
 
@@ -172,7 +172,7 @@ class SchemaManager():
                 elapsed_time = time.time() - start_time
                 start_time = time.time()
                 logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 0.01
-                logger.warn("schema_manager.submit_claim() >>> bcovrin generate claim request")
+                logger.warn("schema_manager.submit_claim() >>> bcovrin generate claim request: " + TOB_BASE_URL + '/bcovrin/generate-claim-request')
                 response = requests.post(
                     TOB_BASE_URL + '/bcovrin/generate-claim-request',
                     json={
