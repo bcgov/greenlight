@@ -16,7 +16,7 @@
     /* background-image: url('./static/img/Admin.jpg'); */
     position: relative;
     /* background-size: cover; */
-    background-image: url('../img/Admin.jpg'); background-size: cover; background-position: center;
+    background-image: url('../img/Admins.jpg'); background-size: contain; background-position: center;
 }
 .page-content {
 	padding-bottom: auto;

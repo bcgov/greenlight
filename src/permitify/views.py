@@ -84,10 +84,11 @@ def process_request(request):
         current_time = datetime.now().isoformat() 
         r_history.set(current_time, json.dumps(process_req))
         claim = schema_manager.submit_claim(schema, process_req)
+        r.delete(rkey)
     
-    expired_keys = r.scan()[1]
-    for key in expired_keys:
-        r.delete(key)
+    # # expired_keys = r.scan()[1]
+    # # for rkey in expired_keys:
+    #     r.delete(rkey)
     
     return JsonResponse({'success': True, 'result': claim})
 
@@ -204,11 +205,11 @@ def submit_claim(request):
             raise Exception('Unkown mapper type "%s"' % attribute['from'])
    
     
-    if 'addressee' in claim and claim["addressee"] is not 0:
+    if 'addressee' in claim and claim["addressee"]: 
       
         current_time = datetime.now().isoformat() 
         r.set(current_time, json.dumps(claim))
-
+    # is not 0/None does not include the empty string case.
        
         return JsonResponse({'success': True, 'result': None})
     else:

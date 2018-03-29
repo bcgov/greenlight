@@ -22,9 +22,9 @@
     <main class="container page-content background">
     <!-- <div class="background" filter-color="#black" style="background-image: url('../static/img/Admin.jpg'); background-size: cover; background-position: center;">
     </div>                 -->
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
-              <div class="col-md-10 col-md-offset-1">
+              <div class="col-lg col-lg">
                 <!-- <h1 style="color:rgb(43, 6, 255); font-weight: bold; margin-left:160px; padding-top:150px;">Dashboard Claims</h1> -->
                 <div class="card card-signup">
                   <h1 style="color:rgb(251, 255, 2); font-weight: bold; margin-left:160px; padding-top:150px;">Active Pending Claims</h1>
@@ -42,8 +42,8 @@
                             <th style="font-weight:700">Country</th>
                           </tr>
                         </thead>
-                        <tr style="color:white;">
                         {% for pending_request in pending_requests %}
+                        <tr id="table" style="color:white;"></tr>
                           <td>{{ pending_request.legal_name }}</td>
                           <td>{{ pending_request.address_line_1 }}</td>
                           <td>{{ pending_request.city }}</td>
@@ -51,7 +51,6 @@
                           <td>{{ pending_request.country }}</td>
                           <td><input type="checkbox" id="ckbox" value= "{{rkeys|index:forloop.counter0}}"></td>
                         {% endfor %}
-                        </tr>
                       </table>
                     </div>
                     <td>
@@ -75,15 +74,15 @@
                                 <th style="font-weight:700">Country</th>
                           </tr>
                         </thead>
-                        <tr style="color:white;">
                         {% for approved_req in approved_reqs %}
+                        <tr style="color:white;">
                           <td>{{approved_req.legal_name }}</td>
                           <td>{{approved_req.address_line_1 }}</td>
                           <td>{{approved_req.city }}</td>
                           <td>{{approved_req.province }}</td>
                           <td>{{approved_req.country }}</td>
-                        {% endfor %}
                         </tr>
+                        {% endfor %}
                       </table>
                     </div>
                   </div>
