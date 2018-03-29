@@ -18,6 +18,13 @@
     position: relative;
     /* background-size: cover; */
     background-image: url('../img/Admins.jpg'); background-size: contain; background-position: center;
+    /* To Enable Parallex Effect
+    background-attachment: fixed;
+    background-repeat: no-repeat; */
+
+}
+tr:hover  {
+    box-shadow: 0 2px 12px 2px yellow;
 }
 .page-content {
 	padding-bottom: auto;
