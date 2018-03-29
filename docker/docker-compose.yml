@@ -26,6 +26,7 @@ services:
       - bc_registries_wallet:/app/.indy_client/wallet
     networks:
       - tob_tob
+      - tob_wallet-tob
     ports:
       - 5000:8080
 
@@ -54,6 +55,7 @@ services:
       - worksafe_bc_wallet:/app/.indy_client/wallet
     networks:
       - tob_tob
+      - tob_wallet-tob
     ports:
       - 5001:8080
 
@@ -82,6 +84,7 @@ services:
       - ministry_of_finance_wallet:/app/.indy_client/wallet
     networks:
       - tob_tob
+      - tob_wallet-tob
     ports:
       - 5002:8080
 
@@ -110,6 +113,7 @@ services:
       - fraser_valley_health_authority_wallet:/app/.indy_client/wallet
     networks:
       - tob_tob
+      - tob_wallet-tob
     ports:
       - 5003:8080
 
@@ -138,6 +142,7 @@ services:
       - city_of_surrey_wallet:/app/.indy_client/wallet
     networks:
       - tob_tob
+      - tob_wallet-tob
     ports:
       - 5004:8080
 
@@ -166,6 +171,7 @@ services:
       - liquor_control_and_licensing_branch_wallet:/app/.indy_client/wallet
     networks:
       - tob_tob
+      - tob_wallet-tob
     ports:
       - 5005:8070
 
@@ -176,6 +182,8 @@ services:
 
 networks:
   tob_tob:
+    external: true
+  tob_wallet-tob:
     external: true
 
 volumes:
