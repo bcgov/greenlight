@@ -1,6 +1,9 @@
 import os
 import threading
 
+import string
+from random import *
+
 from .config import Configurator
 from .helpers import uuid
 
@@ -33,9 +36,10 @@ class Issuer:
     def __init__(self, legal_entity_id: str = None):
         logger.debug("Issuer __init__>>>")
         genesis_config = genesis.config()
-        thread_id = threading.get_ident()
+        # thread_id = threading.get_ident()
         self.pool = NodePool(
-            'permitify-issuer-' + str(thread_id),
+            # 'permitify-issuer-' + str(thread_id),
+            'permitify-issuer',
             genesis_config['genesis_txn_path'])
         wallet_name = config['name'] + '_Issuer_Wallet'
 
@@ -220,6 +224,16 @@ class Holder:
         await self.pool.close()
 
 
+min_char = 8
+max_char = 12
+allchar = "0123456789abcdef"
+
+# generate a short random string
+def random_string():
+    r_str = "".join(choice(allchar) for x in range(randint(min_char, max_char)))
+    return r_str
+
+
 async def convert_seed_to_did(seed):
     genesis_config = genesis.config()
     pool = NodePool(
@@ -229,7 +243,7 @@ async def convert_seed_to_did(seed):
     agent_wallet = Wallet(
         pool,
         seed,
-        seed + '-wallet'
+        seed + '-' + random_string() + '-wallet'
     )
     agent = _BaseAgent(
         # pool,
