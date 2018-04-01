@@ -36,17 +36,6 @@
         }
       ]
     },
-    "business_license_exists": {
-      "name": "legal_entity_id",
-      "restrictions": [
-        {
-          "schema_key": {
-            "name": "business_license.city_of_surrey",
-            "version": "1.0.31"
-          }
-        }
-      ]
-    },
     "address_line_1": {
       "name": "address_line_1",
       "restrictions": [
