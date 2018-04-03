@@ -381,7 +381,7 @@
       "displayName": "Ledger URL",
       "description": "The URL for a running instance of von-network.",
       "required": true,
-      "value": "http://138.197.170.136"
+      "value": "http://159.89.115.24"
     }
   ]
 }
