@@ -253,9 +253,6 @@ async def convert_seed_to_did(seed):
     await pool.open()
     await agent_wallet.create()
 
-    await pool.open()
-    await agent_wallet.create()
-
     await agent.open()
     agent_did = agent.did
     await agent.close()
