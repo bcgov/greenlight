@@ -22,3 +22,4 @@ THE_ORG_BOOK_APP_URL=https://devex-von-dev.pathfinder.gov.bc.ca
 APPLICATION_URL=https://worksafe-bc-devex-von-permitify-dev.pathfinder.gov.bc.ca
 INDY_WALLET_SEED=worksafe_bc_dev_0000000000000000
 TOB_INDY_SEED=the_org_book_dev_000000000000000
+LEDGER_URL=http://159.89.115.24

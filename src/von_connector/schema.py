@@ -6,11 +6,11 @@ import requests
 from django.conf import settings
 
 from .agent import Issuer
-from .agent import convert_seed_to_did
+# from .agent import convert_seed_to_did
 from von_agent.util import encode
-from von_agent.schema import schema_key_for
+from von_agent.schemakey import schema_key_for
 
-from . import eventloop, dev
+from . import eventloop, dev, apps
 
 import logging
 logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ def claim_value_pair(plain):
 
 class SchemaManager():
 
-    claim_def_json = None
+    # claim_def_json = None
 
     def __init__(self):
         schemas_path = os.path.abspath(settings.BASE_DIR + '/schemas.json')
@@ -64,6 +64,8 @@ class SchemaManager():
     def publish_schema(self, schema):
         async def run(schema):
             async with Issuer() as issuer:
+                claim_def_json = None
+
                 # Check if schema exists on ledger
                 schema_json = await issuer.get_schema(
                     schema_key_for(
@@ -127,7 +129,8 @@ class SchemaManager():
 
                 self.__log_json('Schema:', schema)
 
-                tob_did = await convert_seed_to_did(TOB_INDY_SEED)
+                # tob_did = await convert_seed_to_did(TOB_INDY_SEED)
+                tob_did = apps.get_tob_did()
                 self.__log('TheOrgBook DID:', tob_did)
 
                 # We create a claim offer
