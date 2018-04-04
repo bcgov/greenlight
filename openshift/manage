@@ -1,0 +1,153 @@
+#!/bin/bash
+export MSYS_NO_PATHCONV=1
+set -e
+SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
+
+# =================================================================================================================
+# Usage:
+# -----------------------------------------------------------------------------------------------------------------
+usage () {
+  cat <<-EOF
+
+  Manage the permitify pods within a given (the current) OpenShift environment.
+
+  Usage: 
+    $0 {scaleUp|scaleDown|reset}
+
+  Options:
+
+    scaleUp
+      - Scale down one or more pods.
+
+    scaleDown
+      - Scale up one or more pods.
+
+    deleteWallet
+      - Delete the wallet file(s) from one or more pods.
+
+    reset
+      - Reset one or more pods.
+        Delete the wallet file(s), and scale down the pod(s).
+EOF
+exit 1
+}
+
+# -----------------------------------------------------------------------------------------------------------------
+# Functions:
+# -----------------------------------------------------------------------------------------------------------------
+scaleUp() {
+  _pods=${@}
+  if [ -z "${_pods}" ]; then
+    echo -e \\n"scaleUp; Missing parameter!"\\n
+    exit 1
+  fi
+
+  for _pod in ${_pods}; do
+    scaleDeployment ${_pod} 1
+  done  
+}
+
+scaleDown() {
+  _pods=${@}
+  if [ -z "${_pods}" ]; then
+    echo -e \\n"scaleDown; Missing parameter!"\\n
+    exit 1
+  fi
+
+  for _pod in ${_pods}; do
+    scaleDeployment ${_pod}
+  done  
+}
+
+deleteWallets() {
+  _pods=${@}
+  if [ -z "${_pods}" ]; then
+    echo -e \\n"deleteWallets; Missing parameter!"\\n
+    exit 1
+  fi
+
+  for _pod in ${_pods}; do
+    deleteWallet ${_pod}
+  done
+}
+
+reset() {
+  _pods=${@}
+  if [ -z "${_pods}" ]; then
+    echo -e \\n"reset; Missing parameter!"\\n
+    exit 1
+  fi
+
+  for _pod in ${_pods}; do
+    deleteWallet ${_pod}
+    exitOnError
+    scaleDeployment ${_pod}
+  done
+}
+
+scaleDeployment() {
+  _deplymentConfigName=${1}
+  _numReplicas=${2:-0}
+  if [ -z "${_deplymentConfigName}" ] || [ -z "${_numReplicas}" ]; then
+    echo -e \\n"scaleDeployment; Missing parameter!"\\n
+    exit 1
+  fi
+
+  oc scale --replicas=${_numReplicas} dc ${_deplymentConfigName}
+}
+
+deleteWallet() {
+  _podName=${1}
+  _cmd=${2:-"rm -rf /app/.indy_client/wallet/*"}
+  if [ -z "${_podName}" ] || [ -z "${_cmd}" ]; then
+    echo -e \\n"deleteWallet; Missing parameter!"\\n
+    exit 1
+  fi
+
+  runInContainer.sh "${_podName}" "${_cmd}"
+}
+
+getAllPods() {
+  _pods=${@}
+  if [ ! -z "${_pods}" ]; then
+    echo "${_pods}"
+  else
+    oc get dc | awk '{if(NR>1)print $1}'
+  fi  
+}
+
+exitOnError() {
+  rtnCd=$?
+  if [ ${rtnCd} -ne 0 ]; then
+	echo "An error has occured.  Please check the previous output message(s) for details."
+    exit ${rtnCd}
+  fi
+}
+# =================================================================================================================
+
+pushd ${SCRIPT_HOME} >/dev/null
+_cmd=${1}
+shift
+
+case "${_cmd}" in
+  scaleUp)
+    PODS=$(getAllPods ${@})
+    scaleUp ${PODS}
+    ;;
+  scaleDown)
+    PODS=$(getAllPods ${@})
+    scaleDown ${PODS}
+    ;;
+  deleteWallet)
+    PODS=$(getAllPods ${@})
+    deleteWallets ${PODS}
+    ;;
+  reset)
+    PODS=$(getAllPods ${@})
+    reset ${PODS}
+    ;;
+  *)
+      usage;;
+esac
+
+popd >/dev/null
