@@ -42,6 +42,12 @@ usage () {
         For example;
           $0 -e test scaleDown bc-registries worksafe-bc
 
+    recycle
+      - Recycle up one or more pods.  By default all pods are affected.
+        To recycle select pods list them following the command.
+        For example;
+          $0 -e test recycle bc-registries worksafe-bc
+
     reset
       - Reset one or more pods.  By default all pods are affected.
         To reset select pods list them following the command.
@@ -132,6 +138,18 @@ reset() {
   registerDids $(getDidNames)
 }
 
+recycle() {
+  _pods=${@}
+  if [ -z "${_pods}" ]; then
+    echo -e \\n"recycle; Missing parameter!"\\n
+    exit 1
+  fi
+
+  scaleDown ${_pods}
+  printAndWait "Wait for all of the pods to scale down completely before continuing."
+  scaleUp ${_pods}  
+}
+
 getDidNames() {
   _didNames="
     bc_registries
@@ -173,6 +191,11 @@ case "${_cmd}" in
     switchProject
     PODS=$(getAllPods ${@})
     scaleDown ${PODS}
+    ;;
+  recycle)
+    switchProject
+    PODS=$(getAllPods ${@})
+    recycle ${PODS}
     ;;
   reset)
     switchProject
