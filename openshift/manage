@@ -31,14 +31,27 @@ usage () {
   Commands:
   ========
     scaleUp
-      - Scale down one or more pods.
+      - Scale down one or more pods.  By default all pods are affected.
+        To scale select pods list them following the command.
+        For example;
+          $0 -e test scaleUp bc-registries worksafe-bc
 
     scaleDown
-      - Scale up one or more pods.
+      - Scale up one or more pods.  By default all pods are affected.
+        To scale select pods list them following the command.
+        For example;
+          $0 -e test scaleDown bc-registries worksafe-bc
 
     reset
-      - Reset one or more pods.
-        Delete the wallet file(s), and scale down the pod(s).
+      - Reset one or more pods.  By default all pods are affected.
+        To reset select pods list them following the command.
+        For example;
+          $0 -e test reset bc-registries worksafe-bc
+        
+        Performs the following operations:
+        - Delete the persistent indy wallet information.
+        - Scale down the pod.
+        - Register the environment's DID with the ledger.
 EOF
 exit 1
 }
@@ -113,6 +126,37 @@ reset() {
     exitOnError
     scaleDown ${_pod}
   done
+
+  printAndWait "If you are resetting the ledger, wait for the ledger to completely start up down before continuing."
+
+  registerDids $(getDidNames)
+}
+
+getDidNames() {
+  _didNames="
+    bc_registries
+    city_of_surrey
+    fraser_valley
+    liquor_control
+    ministry_of_finance
+    worksafe_bc"
+  
+  echo ${_didNames}
+}
+
+getLedgerAddress() {
+  case "${DEPLOYMENT_ENV_NAME}" in
+    dev)
+      _ledgerAddress="159.89.115.24";;
+    test)
+      _ledgerAddress="159.89.125.134";;
+    prod)
+      _ledgerAddress="159.89.125.134";;
+    *)
+      return 1;;
+  esac
+
+  echo ${_ledgerAddress}
 }
 # =================================================================================================================
 pushd ${SCRIPT_HOME} >/dev/null
