@@ -60,7 +60,7 @@ INDY_WALLET_SEED: my_seed_000000000000000000000001
 ----------------------------------------------------------------------------------
 ```
 
-Each seed, must be authorized on the indy ledger! If you are using the https://github.com/bcgov/von-network network locally, you can visit the webserver running on your local machine to authorize the did for each seed. If you are using the shared development Indy ledger (which is an instance of von-network), you can visit this page to authorize your did: http://138.197.170.136
+Each seed, must be authorized on the indy ledger! If you are using the https://github.com/bcgov/von-network network locally, you can visit the webserver running on your local machine to authorize the did for each seed. If you are using the shared development Indy ledger (which is an instance of von-network), you can visit this page to authorize your did: http://159.89.115.24
 
 You should now be able to visit the services on the following urls:
 
@@ -94,13 +94,13 @@ You may receive errors that look something like this:
 Casting error to ErrorCode: Rejected by pool: {"op":"REQNACK","reqId":1513638530415465900,"reason":"client request invalid: ColdNotAuthenticate('Can not find verkey for DID QmaAjcfw2HCgydR1daFg9V',)","identifier":"QmaAjcfw2HCgydR1daFg9V"}
 ```
 
-This indicates the agent has not been registered and you need to authorize a new DID for the agent.  Use the [VON-Network](http://138.197.170.136) site to do this.  The seeds for the agents are defined in the config.toml file for each site.
+This indicates the agent has not been registered and you need to authorize a new DID for the agent.  Use the [VON-Network](http://159.89.115.24) site to do this.  The seeds for the agents are defined in the config.toml file for each site.
 
 Examples:
 
 ```
-http://138.197.170.136/register?seed=bc_registries_agent_000000000000
-http://138.197.170.136/register?seed=worksafe_bc_agent_00000000000000
+http://159.89.115.24/register?seed=bc_registries_agent_000000000000
+http://159.89.115.24/register?seed=worksafe_bc_agent_00000000000000
 ```
 
 ### On dev machines
