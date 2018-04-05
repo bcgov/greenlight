@@ -9,21 +9,32 @@ SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 usage () {
   cat <<-EOF
 
-  Manage the permitify pods within a given (the current) OpenShift environment.
+  Manage the permitify pods within a given OpenShift environment.
 
   Usage: 
-    $0 {scaleUp|scaleDown|reset}
+    $0 [options] [commands]
+
+  Example:
+    $0 -e test scaleDown
+    - This will scale down all of the pods in the permitify TEST environment.
 
   Options:
+  ========
+    -h prints the usage for the script
+    -e <Environment> the environment (dev/test/prod) into which you are deploying (default: ${DEPLOYMENT_ENV_NAME})
+    -l apply local settings and parameters
+    -p <profile> load a specific settings profile; setting.<profile>.sh
+    -P Use the default settings profile; settings.sh.  Use this flag to ignore all but the default 
+       settings profile when there is more than one settings profile defined for a project.
+    -x run the script in debug mode to see what's happening
 
+  Commands:
+  ========
     scaleUp
       - Scale down one or more pods.
 
     scaleDown
       - Scale up one or more pods.
-
-    deleteWallet
-      - Delete the wallet file(s) from one or more pods.
 
     reset
       - Reset one or more pods.
@@ -33,44 +44,63 @@ exit 1
 }
 
 # -----------------------------------------------------------------------------------------------------------------
+# Initialization:
+# -----------------------------------------------------------------------------------------------------------------
+while getopts p:Pe:lxh FLAG; do
+  case $FLAG in
+    p ) export PROFILE=$OPTARG ;;
+    P ) export IGNORE_PROFILES=1 ;;    
+    e ) export DEPLOYMENT_ENV_NAME=$OPTARG ;;
+    l ) export APPLY_LOCAL_SETTINGS=1 ;;
+    x ) export DEBUG=1 ;;
+    h ) usage ;;
+    \? ) #unrecognized option - show help
+      echo -e \\n"Invalid script option: -${OPTARG}"\\n
+      usage
+      ;;
+  esac
+done
+shift $((OPTIND-1))
+
+if [ ! -z "${DEBUG}" ]; then
+  set -x
+fi
+
+# Check for required options ...
+if [ -z "${DEPLOYMENT_ENV_NAME}" ]; then
+  _red='\033[0;31m'
+  _nc='\033[0m' # No Color
+  echo -e "${_red}You MUST specify an environment name using the '-e' flag.${_nc}"
+  echo -e "${_red}Assuming a default would have unwanted consequences.${_nc}"
+  usage
+fi
+
+# Load the project settings and functions ...
+_includeFile="ocFunctions.inc"
+_settingsFile="settings.sh"
+if [ ! -z $(type -p ${_includeFile}) ]; then
+  _includeFilePath=$(type -p ${_includeFile})
+  export OCTOOLSBIN=$(dirname ${_includeFilePath})
+
+  if [ -f ${OCTOOLSBIN}/${_settingsFile} ]; then
+    . ${OCTOOLSBIN}/${_settingsFile}
+  fi
+
+  if [ -f ${OCTOOLSBIN}/${_includeFile} ]; then
+    . ${OCTOOLSBIN}/${_includeFile}
+  fi
+else
+  _red='\033[0;31m'
+  _yellow='\033[1;33m'
+  _nc='\033[0m' # No Color
+  echo -e \\n"${_red}${_includeFile} could not be found on the path.${_nc}"
+  echo -e "${_yellow}Please ensure the openshift-developer-tools are installed on and registered on your path.${_nc}"
+  echo -e "${_yellow}https://github.com/BCDevOps/openshift-developer-tools${_nc}"
+fi
+
+# -----------------------------------------------------------------------------------------------------------------
 # Functions:
 # -----------------------------------------------------------------------------------------------------------------
-scaleUp() {
-  _pods=${@}
-  if [ -z "${_pods}" ]; then
-    echo -e \\n"scaleUp; Missing parameter!"\\n
-    exit 1
-  fi
-
-  for _pod in ${_pods}; do
-    scaleDeployment ${_pod} 1
-  done  
-}
-
-scaleDown() {
-  _pods=${@}
-  if [ -z "${_pods}" ]; then
-    echo -e \\n"scaleDown; Missing parameter!"\\n
-    exit 1
-  fi
-
-  for _pod in ${_pods}; do
-    scaleDeployment ${_pod}
-  done  
-}
-
-deleteWallets() {
-  _pods=${@}
-  if [ -z "${_pods}" ]; then
-    echo -e \\n"deleteWallets; Missing parameter!"\\n
-    exit 1
-  fi
-
-  for _pod in ${_pods}; do
-    deleteWallet ${_pod}
-  done
-}
-
 reset() {
   _pods=${@}
   if [ -z "${_pods}" ]; then
@@ -79,70 +109,29 @@ reset() {
   fi
 
   for _pod in ${_pods}; do
-    deleteWallet ${_pod}
+    deleteFromPods "/app/.indy_client/wallet/*" ${_pod}
     exitOnError
-    scaleDeployment ${_pod}
+    scaleDown ${_pod}
   done
 }
-
-scaleDeployment() {
-  _deplymentConfigName=${1}
-  _numReplicas=${2:-0}
-  if [ -z "${_deplymentConfigName}" ] || [ -z "${_numReplicas}" ]; then
-    echo -e \\n"scaleDeployment; Missing parameter!"\\n
-    exit 1
-  fi
-
-  oc scale --replicas=${_numReplicas} dc ${_deplymentConfigName}
-}
-
-deleteWallet() {
-  _podName=${1}
-  _cmd=${2:-"rm -rf /app/.indy_client/wallet/*"}
-  if [ -z "${_podName}" ] || [ -z "${_cmd}" ]; then
-    echo -e \\n"deleteWallet; Missing parameter!"\\n
-    exit 1
-  fi
-
-  runInContainer.sh "${_podName}" "${_cmd}"
-}
-
-getAllPods() {
-  _pods=${@}
-  if [ ! -z "${_pods}" ]; then
-    echo "${_pods}"
-  else
-    oc get dc | awk '{if(NR>1)print $1}'
-  fi  
-}
-
-exitOnError() {
-  rtnCd=$?
-  if [ ${rtnCd} -ne 0 ]; then
-	echo "An error has occured.  Please check the previous output message(s) for details."
-    exit ${rtnCd}
-  fi
-}
 # =================================================================================================================
-
 pushd ${SCRIPT_HOME} >/dev/null
 _cmd=${1}
 shift
 
 case "${_cmd}" in
   scaleUp)
+    switchProject
     PODS=$(getAllPods ${@})
     scaleUp ${PODS}
     ;;
   scaleDown)
+    switchProject
     PODS=$(getAllPods ${@})
     scaleDown ${PODS}
     ;;
-  deleteWallet)
-    PODS=$(getAllPods ${@})
-    deleteWallets ${PODS}
-    ;;
   reset)
+    switchProject
     PODS=$(getAllPods ${@})
     reset ${PODS}
     ;;
