@@ -104,6 +104,10 @@ class SchemaManager():
         async def run(schema, claim):
             logger.warn("schema_manager.submit_claim() >>> start")
             start_time = time.time()
+
+            # TODO we have a legal_entity_id at this point so we can put everything in a virtual wallet
+            # TODO this will stop the nonce from stepping on each other when multi-threading
+
             async with Issuer() as issuer:
                 claim_def_json = None
 
