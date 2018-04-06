@@ -16,20 +16,14 @@ import logging
 logger = logging.getLogger(__name__)
 
 # TODO fix this global variable, badly implemented :-(
-
 remote_wallet_token = None
-
-
 tob_did = None
-
 
 def get_tob_did():
     return tob_did
 
-
 def get_remote_wallet_token():
     return remote_wallet_token
-
 
 def wallet_auth():
     async def run():
@@ -67,6 +61,9 @@ class VonConnectorConfig(AppConfig):
     name = 'von_connector'
 
     def ready(self):
+        logger.error("startup code ...")
+
+        TOB_INDY_SEED = os.getenv('TOB_INDY_SEED')
 
         logger.error("startup code ...")
 
