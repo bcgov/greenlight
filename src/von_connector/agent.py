@@ -36,7 +36,7 @@ class Issuer:
     def __init__(self, legal_entity_id: str = None):
         logger.debug("Issuer __init__>>>")
         genesis_config = genesis.config()
-        # thread_id = threading.get_ident()
+        thread_id = threading.get_ident()
         self.pool = NodePool(
             # 'permitify-issuer-' + str(thread_id),
             'permitify-issuer',
@@ -45,12 +45,11 @@ class Issuer:
 
         issuer_type = os.environ.get('INDY_WALLET_TYPE')
         if issuer_type == 'remote':
-            # wallet_name = wallet_name + "$$" + str(thread_id)
+            wallet_name = wallet_name + "$$" + str(thread_id)
             holder_url = os.environ.get('INDY_WALLET_URL')
             issuer_config = {'endpoint': holder_url, 'ping': 'schema/',
                              'auth': 'api-token-auth/', 'keyval': 'keyval/', 'freshness_time': 0}
-            issuer_creds = {'auth_token': apps.get_remote_wallet_token(
-            ), 'virtual_wallet': legal_entity_id}
+            issuer_creds = {'auth_token': apps.get_remote_wallet_token(), 'virtual_wallet': legal_entity_id}
             logger.debug('Using remote Cfg: {} Creds: {}'.format(
                 issuer_config, issuer_creds))
         else:

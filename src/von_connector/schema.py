@@ -105,10 +105,11 @@ class SchemaManager():
             logger.warn("schema_manager.submit_claim() >>> start")
             start_time = time.time()
 
-            # TODO we have a legal_entity_id at this point so we can put everything in a virtual wallet
-            # TODO this will stop the nonce from stepping on each other when multi-threading
+            # we have a legal_entity_id at this point so we can put everything in a virtual wallet
+            # this will stop the nonce from stepping on each other when multi-threading
+            organizationId = claim["legal_entity_id"]
 
-            async with Issuer() as issuer:
+            async with Issuer(organizationId) as issuer:
                 claim_def_json = None
 
                 for key, value in claim.items():
