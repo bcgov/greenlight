@@ -30,7 +30,7 @@ title = "Incorporation"
 
   [[forms.hidden]]
   name = "schema"
-  value = "incorporation.on_biz"
+  value = "incorporation.onbis"
 
   [[forms.inputs]]
   type = "text"
@@ -51,7 +51,7 @@ title = "Incorporation"
 
 
 [[schema_mappers]]
-for = "incorporation.on_biz"
+for = "incorporation.onbis"
   [[schema_mappers.attributes]]
   name = "legal_entity_id"
   from ="helper"

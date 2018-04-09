@@ -13,4 +13,4 @@ export builds=""
 export images="permitify"
 
 # The routes for the project
-export routes="bc-registries worksafe-bc"
+export routes="bc-registries worksafe-bc onbis"

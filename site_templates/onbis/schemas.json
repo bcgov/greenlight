@@ -1,6 +1,6 @@
 [
     {
-        "name": "incorporation.on_biz",
+        "name": "incorporation.onbis",
         "version": "1.0.0",
         "attr_names": [
             "legal_entity_id",
@@ -19,7 +19,7 @@
         ]
     },
     {
-        "name": "doing_business_as.on_biz",
+        "name": "doing_business_as.onbis",
         "version": "1.0.0",
         "attr_names": [
             "legal_entity_id",

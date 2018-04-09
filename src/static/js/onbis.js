@@ -1,6 +1,6 @@
 /* global FORM_HANDLERS, $ */
 
-FORM_HANDLERS['incorporation.on_biz'] = function (form, response) {
+FORM_HANDLERS['incorporation.onbis'] = function (form, response) {
   console.log('here')
   if (response.success === true) {
     $(form).find('.legal-entity-id').remove()

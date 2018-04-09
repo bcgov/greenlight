@@ -122,18 +122,18 @@ Prerequisites:
 
 Data Convention:
  - Make sure to include the word “Reg” in the service name in order for the claims issued by the service to be processed as foundational claims (i.e. OntarioReg)
- - Include “incorporation” in the schema name for the claims issued by the new service in order for the claims to be processed as foundational claims (I.e. “incorporation.on_biz”, “incorporation.bc_regisgries”)
+ - Include “incorporation” in the schema name for the claims issued by the new service in order for the claims to be processed as foundational claims (I.e. “incorporation.onbis”, “incorporation.bc_regisgries”)
   - the province's abbreviation (i.e. "Ont") should be included in the data directory name (i.e. OntClaims) and the name of the test data json file (i.e.OntClaims_XXXX.json). **The scripts are case-sensitive.**
 
 1. Create a subdirectory with the name of the new service under ‘permitify/site_templates’
 
   ```
-  mkdir on_biz
+  mkdir onbis
   ```
 
-2.  Copy config.toml and schema.json file into the “on_biz” directory from the directory of another service that issues foundational claims (i.e. bc_registries):
+2.  Copy config.toml and schema.json file into the “onbis” directory from the directory of another service that issues foundational claims (i.e. bc_registries):
 
-```cd on_biz
+```cd onbis
    cd bc_registries/congif.toml 
    cd bc_Registries/shema.json
 ```
@@ -153,7 +153,7 @@ OntClaims_1.json
             "legal_name": "Schroeder Dive",
             "postal_code": "N0N 0N0",
             "province": "ON",
-            "schema": "incorporation.on_biz"
+            "schema": "incorporation.onbis"
         }
     ]
 }
@@ -162,7 +162,7 @@ OntClaims_1.json
 schema.json
 [
     {
-        "name": "incorporation.on_biz",
+        "name": "incorporation.onbis",
         "version": "1.0.0",
         "attr_names": [
             "legal_entity_id",
@@ -189,14 +189,14 @@ Modify config.toml to make the input forms fields match the fields in the schema
 **Note: Make sure the port assigned to the new service does not conflict with the ports assigned to other services**
 **
 ```
-on_biz:
+onbis:
     image: permitify
     environment:
       PYTHON_ENV: development
       THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
       THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
-      TEMPLATE_NAME: on_biz
+      TEMPLATE_NAME: onbis
       APPLICATION_IP: 0.0.0.0
       APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5000
@@ -204,7 +204,7 @@ on_biz:
       TOB_INDY_SEED: ${TOB_INDY_SEED}
       LEDGER_URL: ${LEDGER_URL}
     volumes:
-      - on_biz_wallet:/app/.indy_client/wallet
+      - onbis_wallet:/app/.indy_client/wallet
     ports:
       - 5006:8080
 ```
@@ -218,7 +218,7 @@ volumes:
   fraser_valley_health_authority_wallet:
   city_of_surrey_wallet:
   liquor_control_and_licensing_branch_wallet:
-  on_biz_wallet:
+  onbis_wallet:
 ```
 4. Add a Docker container for the new service to permitify/docker/manage.sh script:
 ```
@@ -229,11 +229,11 @@ ALL_CONTAINERS="\
     fraser_valley_health_authority\
     city_of_surrey\
     liquor_control_and_licensing_branch\
-    on_biz\
+    onbis\
 "
 ```
 
-Optional: if you want to create an input form for the new service and submit claims manually. Create src/static/js/onbis.js,  src/templates/on_biz.index.html, src/templates/ongov.admin.index.html and src/templates/ongov.index.html by copying other issuing service’s files and modify for the new service.
+Optional: if you want to create an input form for the new service and submit claims manually. Create src/static/js/onbis.js,  src/templates/onbis.index.html, src/templates/ongov.admin.index.html and src/templates/ongov.index.html by copying other issuing service’s files and modify for the new service.
 
 5. Add a URL for the new service to the load script in TheOrgBook
 
@@ -257,7 +257,7 @@ URLS = {
         'City': 'http://localhost:5004',
         # liquor_control_and_licensing_branch
         'Liquor': 'http://localhost:5005',
-        # on_biz
+        # onbis
         'OntarioReg': "http://localhost:5006"
     },
 ....

@@ -75,10 +75,8 @@ def index(request):
 def submit_claim(request):
     # Get json request body
     body = json.loads(request.body.decode('utf-8'))
-    print(schema_manager.schemas)
     # Get the schema we care about by 'schema'
     # passed in request
-    print(schema_manager)
     try:
         schema = next(
             schema for
