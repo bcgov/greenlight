@@ -1,4 +1,5 @@
 import json
+import time
 from importlib import import_module
 
 from django.http import JsonResponse
@@ -73,6 +74,7 @@ def index(request):
 
 
 def submit_claim(request):
+    start_time = time.time()
     # Get json request body
     body = json.loads(request.body.decode('utf-8'))
 
@@ -153,6 +155,9 @@ def submit_claim(request):
             raise Exception('Unkown mapper type "%s"' % attribute['from'])
 
     claim = schema_manager.submit_claim(schema, claim)
+
+    elapsed_time = time.time() - start_time
+    logger.warn('Claim elapsed time >>> {}'.format(elapsed_time))
 
     return JsonResponse({'success': True, 'result': claim})
 
