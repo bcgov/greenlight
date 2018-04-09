@@ -367,14 +367,14 @@
         "displayName": "Indy Wallet Seed",
         "description": "The seed that the indy wallet uses to generate predictable keys.",
         "required": true,
-        "value": "onbis_dev_00000000000000"
+        "value": "onbis_dev_0000000000000000000000"
       },
       {
         "name": "TOB_INDY_SEED",
         "displayName": "TheOrgBook Indy Wallet Seed",
         "description": "The seed that TheOrgBook uses to generate predictable keys.",
         "required": true,
-        "value": "the_org_book_ondev_000000000000000"
+        "value": "the_org_book_ondev_0000000000000"
       },
       {
         "name": "LEDGER_URL",
