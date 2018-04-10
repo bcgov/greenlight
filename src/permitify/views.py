@@ -77,7 +77,6 @@ def submit_claim(request):
     start_time = time.time()
     # Get json request body
     body = json.loads(request.body.decode('utf-8'))
-
     # Get the schema we care about by 'schema'
     # passed in request
     try:
