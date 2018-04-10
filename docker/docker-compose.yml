@@ -16,15 +16,17 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}1
       TOB_INDY_SEED: ${TOB_INDY_SEED}
       LEDGER_URL: ${LEDGER_URL}
+      INDY_WALLET_URL: ${INDY_WALLET_URL}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}<<<<<<< master
     links:
       - redis
-    
-    # links:
-    #   - postgres
     volumes:
       - ../src:/app
       - ../site_templates:/app/site_templates
       - bc_registries_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
+      - tob_wallet-tob
     ports:
       - 5000:8080
 
@@ -32,7 +34,6 @@ services:
     image: permitify
     environment:
       PYTHON_ENV: development
-      # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
       THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -43,15 +44,15 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}2
       TOB_INDY_SEED: ${TOB_INDY_SEED}
       LEDGER_URL: ${LEDGER_URL}
+      INDY_WALLET_URL: ${INDY_WALLET_URL}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}<<<<<<< master
     links:
       - redis
-     
-    # links:
-    #   - postgres
     volumes:
-      # - ./src:/app
-      # - ./site_templates:/app/site_templates
       - worksafe_bc_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
+      - tob_wallet-tob
     ports:
       - 5001:8080
 
@@ -59,7 +60,6 @@ services:
     image: permitify
     environment:
       PYTHON_ENV: development
-      # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
       THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -70,15 +70,15 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}3
       TOB_INDY_SEED: ${TOB_INDY_SEED}
       LEDGER_URL: ${LEDGER_URL}
+      INDY_WALLET_URL: ${INDY_WALLET_URL}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
     links:
       - redis
-
-    # links:
-    #   - postgres
     volumes:
-      # - ./src:/app
-      # - ./site_templates:/app/site_templates
       - ministry_of_finance_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
+      - tob_wallet-tob
     ports:
       - 5002:8080
 
@@ -86,7 +86,6 @@ services:
     image: permitify
     environment:
       PYTHON_ENV: development
-      # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
       THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -97,15 +96,15 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}4
       TOB_INDY_SEED: ${TOB_INDY_SEED}
       LEDGER_URL: ${LEDGER_URL}
+      INDY_WALLET_URL: ${INDY_WALLET_URL}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
     links:
       - redis
-   
-    # links:
-    #   - postgres
     volumes:
-      # - ../src:/app
-      # - ../site_templates:/app/site_templates
       - fraser_valley_health_authority_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
+      - tob_wallet-tob
     ports:
       - 5003:8080
 
@@ -113,7 +112,6 @@ services:
     image: permitify
     environment:
       PYTHON_ENV: development
-      # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
       THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -124,15 +122,15 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}5
       TOB_INDY_SEED: ${TOB_INDY_SEED}
       LEDGER_URL: ${LEDGER_URL}
+      INDY_WALLET_URL: ${INDY_WALLET_URL}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
     links:
       - redis
-
-    # links:
-    #   - postgres
     volumes:
-      # - ../src:/app
-      # - ../site_templates:/app/site_templates
       - city_of_surrey_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
+      - tob_wallet-tob
     ports:
       - 5004:8080
 
@@ -140,7 +138,6 @@ services:
     image: permitify
     environment:
       PYTHON_ENV: development
-      # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
       THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -151,15 +148,15 @@ services:
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}6
       TOB_INDY_SEED: ${TOB_INDY_SEED}
       LEDGER_URL: ${LEDGER_URL}
+      INDY_WALLET_URL: ${INDY_WALLET_URL}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
     links:
       - redis
-  
-    # links:
-    #   - postgres
     volumes:
-      # - ../src:/app
-      # - ../site_templates:/app/site_templates
       - liquor_control_and_licensing_branch_wallet:/app/.indy_client/wallet
+    networks:
+      - tob_tob
+      - tob_wallet-tob
     ports:
       - 5005:8070
 
@@ -168,6 +165,40 @@ services:
     ports:
       - 6379:6379
 
+  onbis:
+    image: permitify
+    environment:
+      PYTHON_ENV: development
+      # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
+      THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
+      THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
+      DISCONNECTED: '${DISCONNECTED-false}'
+      TEMPLATE_NAME: onbis
+      APPLICATION_IP: 0.0.0.0
+      APPLICATION_PORT: 8080
+      APPLICATION_URL: ${APPLICATION_URL}:5000
+      INDY_WALLET_SEED: ${INDY_WALLET_SEED}7
+      TOB_INDY_SEED: ${TOB_INDY_SEED}
+      LEDGER_URL: ${LEDGER_URL}
+    # links:
+    #   - postgres
+    volumes:
+      # - ../src:/app
+      # - ../site_templates:/app/site_templates
+      - on_biz_wallet:/app/.indy_client/wallet
+    ports:
+      - 5006:8080
+  # postgres:
+  #   image: postgres
+  #   ports:
+  #     - '5432:5432'
+
+networks:
+  tob_tob:
+    external: true
+  tob_wallet-tob:
+    external: true
+
 volumes:
   worksafe_bc_wallet:
   bc_registries_wallet:
@@ -175,3 +206,4 @@ volumes:
   fraser_valley_health_authority_wallet:
   city_of_surrey_wallet:
   liquor_control_and_licensing_branch_wallet:
+  on_biz_wallet:
