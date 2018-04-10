@@ -58,6 +58,9 @@ usage () {
         - Delete the persistent indy wallet information.
         - Scale down the pod.
         - Register the environment's DID with the ledger.
+
+    registerDids
+      - Register/re-register the services's DIDs with the ledger.
 EOF
 exit 1
 }
