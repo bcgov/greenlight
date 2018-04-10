@@ -374,7 +374,7 @@
         "displayName": "TheOrgBook Indy Wallet Seed",
         "description": "The seed that TheOrgBook uses to generate predictable keys.",
         "required": true,
-        "value": "the_org_book_ondev_0000000000000"
+        "value": "the_org_book_on_dev_000000000000"
       },
       {
         "name": "LEDGER_URL",
@@ -385,4 +385,3 @@
       }
     ]
   }
-  

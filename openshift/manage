@@ -157,7 +157,8 @@ getDidNames() {
     fraser_valley
     liquor_control
     ministry_of_finance
-    worksafe_bc"
+    worksafe_bc
+    onbis"
   
   echo ${_didNames}
 }
