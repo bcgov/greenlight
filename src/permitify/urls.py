@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin', views.admin),
     path ('process_request', views.process_request),
     path('submit_claim', views.submit_claim),
-    path('verify_dba', views.verify_dba),
+    path('verify_dba', views.verify_dba)
 ]
