@@ -182,16 +182,16 @@ getLedgerAddress() {
 }
 # =================================================================================================================
 pushd ${SCRIPT_HOME} >/dev/null
-_cmd=${1}
+_cmd=$(toLower ${1})
 shift
 
 case "${_cmd}" in
-  scaleUp)
+  scaleup)
     switchProject
     PODS=$(getAllPods ${@})
     scaleUp ${PODS}
     ;;
-  scaleDown)
+  scaledown)
     switchProject
     PODS=$(getAllPods ${@})
     scaleDown ${PODS}
@@ -206,11 +206,13 @@ case "${_cmd}" in
     PODS=$(getAllPods ${@})
     reset ${PODS}
     ;;
-  registerDids)
+  registerdids)
     registerDids $(getDidNames)
     ;;    
   *)
-      usage;;
+    echoWarning "Unrecognized command; ${_cmd}"
+    usage
+    ;;
 esac
 
 popd >/dev/null
