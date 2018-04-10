@@ -203,6 +203,9 @@ case "${_cmd}" in
     PODS=$(getAllPods ${@})
     reset ${PODS}
     ;;
+  registerDids)
+    registerDids $(getDidNames)
+    ;;    
   *)
       usage;;
 esac
