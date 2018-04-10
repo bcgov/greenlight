@@ -48,14 +48,14 @@ $(function () {
       $(form).find('button[type=submit]').toggleClass('loading')
      
 
-      console.log('asdasdasd')
+      console.log('submit function works')
 
 
       if (response.result == null) {
         
                 // $(".message").append(" <b>Your request is being processed by one of our representative</b>.");
 
-                alert('Your request is being processed by one of our representative')
+                alert('Your request has been flagged as requiring additional review by the BC Registries Service Team. You will be notified when the review process is complete and informed of any further steps needed to complete the process.')
                 
                 var delay=2000;
                 var url = THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=';
@@ -84,7 +84,7 @@ $(function () {
       .done(function (response) { 
         $('.approve').find('button[class=approve]').toggleClass('loading')
 
-        console.log('sdfddsg')
+        console.log('approve function works')
 
         if (response.result != null){
                 var delay=0;
@@ -93,7 +93,7 @@ $(function () {
                   window.location.href = url;
                 }, delay);
 
-            console.log('sdfddsg')
+            console.log('response returns value')
         }
       })
         
