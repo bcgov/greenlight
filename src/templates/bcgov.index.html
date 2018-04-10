@@ -29,6 +29,8 @@
     <script type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.4/jquery.typeahead.js"></script>
     <!-- link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.4/jquery.typeahead.css" -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     {% for include in css_includes %}
         <link rel="stylesheet" href="{% static include.src %}">
     {% endfor %}
@@ -46,6 +48,7 @@
                src="{% static "img/bc-logo.svg" %}">
         </a>
         <span class="title" role="banner">{{ title }}</span>
+
       </div>
     </header>
     {% endblock %}
@@ -56,14 +59,19 @@
         <div class="col-sm-10 col-sm-push-1">
             <h2>{{ description }}</h2>
             <p>{{ explanation }}</p>
+            <!-- <p>Hello</p> -->
 
             {% for form in forms %}
                 {% include "bootstrap.form.html" %}
             {% endfor %}
         </div>
+             <!-- <div class="message  page-content col-sm-10 col-sm-push-1">
+                  <p></p>
+             </div> -->
         {% if not foundational %}
         {% if proof_response.success == True %}
         <div class="col-sm-10 col-sm-push-1">
+            <p>Hello</p>
             <div class="row margin-lg">
                 <div class="col-sm-10 col-sm-push-1">
                     <div class="panel panel-success padding-md">
@@ -79,6 +87,7 @@
                         <p>
                             <pre>{{ proof_response.proof | jsonify }}</pre>
                         </p>
+                        <!-- <p>Hello</p> -->
                     </div>
                 </div>
             </div>
@@ -97,6 +106,7 @@
         </div>
         {% endif %}
         {% endif %}
+ 
     </div>
     </main>
     {% endblock %}
