@@ -346,14 +346,14 @@
         "displayName": "TheOrgBook API Base URL",
         "description": "The base URL for TheOrgBook's API.",
         "required": true,
-        "value": "https://django-ontvon-von-dev.pathfinder.gov.bc.ca/api/v1/"
+        "value": "https://django-ontvon-von-dev.pathfinder.gov.bc.ca/api/v1"
       },
       {
         "name": "THE_ORG_BOOK_APP_URL",
         "displayName": "TheOrgBook APP Base URL",
         "description": "The base URL for TheOrgBook.",
         "required": true,
-        "value": "https://ontvon-von-dev.pathfinder.gov.bc.ca/"
+        "value": "https://ontvon-von-dev.pathfinder.gov.bc.ca"
       },
       {
         "name": "APPLICATION_URL",
