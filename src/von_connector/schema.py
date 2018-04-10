@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 import requests
 
@@ -78,7 +79,7 @@ class SchemaManager():
                 )
 
                 # If not, send the schema to the ledger, then get result
-                if not json.loads(schema_json):
+                if not json.loads(schema_json): 
                     schema_json = await issuer.send_schema(json.dumps(schema))
                 
                 schema = json.loads(schema_json)
@@ -101,7 +102,15 @@ class SchemaManager():
 
     def submit_claim(self, schema, claim):
         async def run(schema, claim):
+            logger.warn("schema_manager.submit_claim() >>> start")
+            start_time = time.time()
+
+            # TODO we have a legal_entity_id at this point so we can put everything in a virtual wallet
+            # TODO this will stop the nonce from stepping on each other when multi-threading
+
             async with Issuer() as issuer:
+                claim_def_json = None
+
                 for key, value in claim.items():
                     claim[key] = claim_value_pair(value) if value else \
                         claim_value_pair("")
@@ -110,6 +119,16 @@ class SchemaManager():
                 self.__log_json('Schema:', schema)
 
                 # We need schema from ledger
+                elapsed_time = time.time() - start_time
+                start_time = time.time()
+                logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 0.19
+                logger.warn("schema_manager.submit_claim() >>> get schema from ledger")
+                schema_key = schema_key_for(
+                        {
+                            'origin_did': issuer.did,
+                            'name': schema['name'],
+                            'version': schema['version']
+                        })
                 schema_json = await issuer.get_schema(
                     schema_key_for(
                         {
@@ -123,6 +142,11 @@ class SchemaManager():
 
                 self.__log_json('Schema:', schema)
 
+                elapsed_time = time.time() - start_time
+                start_time = time.time()
+                logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 1.00
+                logger.warn("schema_manager.submit_claim() >>> get claim definition")
+                claim_def_key = str(schema['seqNo']) + ":" + issuer.did
                 claim_def_json = await issuer.get_claim_def(
                     schema['seqNo'], issuer.did)
                 claim_def = json.loads(claim_def_json)
@@ -134,6 +158,10 @@ class SchemaManager():
                 self.__log('TheOrgBook DID:', tob_did)
 
                 # We create a claim offer
+                elapsed_time = time.time() - start_time
+                start_time = time.time()
+                logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 1.05
+                logger.warn("schema_manager.submit_claim() >>> create a claim offer")
                 claim_offer_json = await issuer.create_claim_offer(schema_json, tob_did)
                 claim_offer = json.loads(claim_offer_json)
 
@@ -145,6 +173,10 @@ class SchemaManager():
                         'claim_def': claim_def
                     })
 
+                elapsed_time = time.time() - start_time
+                start_time = time.time()
+                logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 0.01
+                logger.warn("schema_manager.submit_claim() >>> bcovrin generate claim request: " + TOB_BASE_URL + '/bcovrin/generate-claim-request')
                 response = requests.post(
                     TOB_BASE_URL + '/bcovrin/generate-claim-request',
                     json={
@@ -159,12 +191,20 @@ class SchemaManager():
                 claim_request_json = json.dumps(claim_request)
                 self.__log_json('Claim Request Json:', claim_request)
 
+                elapsed_time = time.time() - start_time
+                start_time = time.time()
+                logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 1.53
+                logger.warn("schema_manager.submit_claim() >>> issuer create claim")
                 (_, claim_json) = await issuer.create_claim(
                     claim_request_json, claim)
 
                 self.__log_json('Claim Json:', json.loads(claim_json))
 
                 # Send claim
+                elapsed_time = time.time() - start_time
+                start_time = time.time()
+                logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 0.07
+                logger.warn("schema_manager.submit_claim() >>> send claim to bcovrin")
                 response = requests.post(
                     TOB_BASE_URL + '/bcovrin/store-claim',
                     json={
@@ -172,6 +212,10 @@ class SchemaManager():
                         'claim_data': json.loads(claim_json)
                     }
                 )
+                elapsed_time = time.time() - start_time
+                start_time = time.time()
+                logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 0.46
+                logger.warn("schema_manager.submit_claim() >>> return")
 
                 return response.json()
 
