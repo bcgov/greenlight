@@ -4,6 +4,7 @@ export DOCKERHOST=${APPLICATION_URL-$(docker run --net=host codenvy/che-ip)}
 set -e
 
 SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
+export COMPOSE_PROJECT_NAME="permitify"
 
 # =================================================================================================================
 # Usage:
@@ -11,9 +12,9 @@ SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 usage () {
   cat <<-EOF
 
-  Usage: $0 {start|stop|build|rebuild|shell}
+  Usage: $0 [command] [options]
 
-  Options:
+  Commands:
 
   build - Build the docker images for the project.
           You need to do this first.
@@ -34,6 +35,8 @@ usage () {
          are not deleted so they will be reused the next time you run start.
 
   rebuild - Rebuild the docker images.
+
+  rm - Remove project containers and associated volumes.
 EOF
 exit 1
 }
@@ -174,6 +177,23 @@ rebuild() {
         -f 'permitify/Dockerfile' \
         ..
 }
+
+deleteVolumes() {
+  _projectName=${COMPOSE_PROJECT_NAME:-docker}
+
+  echo "Stopping and removing any running containers ..."
+  docker-compose rm -svf >/dev/null
+
+  _pattern="^${_projectName}_\|^docker_"
+  _volumes=$(docker volume ls -q | grep ${_pattern})
+
+  if [ ! -z "${_volumes}" ]; then
+    echo "Removing project volumes ..."
+    echo ${_volumes} |  xargs docker volume rm
+  else
+    echo "No project volumes exist."
+  fi
+}
 # =================================================================================================================
 
 pushd ${SCRIPT_HOME} >/dev/null
@@ -194,12 +214,15 @@ case "$1" in
   rebuild)
       rebuild
     ;;
-  shell)
-      docker-compose run web bash
-    ;;
   rm)
-      docker-compose rm -f
-      docker volume rm -f docker_bc_registries_wallet docker_city_of_surrey_wallet docker_fraser_valley_health_authority_wallet docker_liquor_control_and_licensing_branch_wallet docker_ministry_of_finance_wallet docker_worksafe_bc_wallet docker_acme_corp_apply_wallet docker_acme_corp_wallet docker_faber_college_wallet docker_thrift_bank_wallet
+      # =========================================================
+      # Suppress unnecessary messages
+      # ---------------------------------------------------------
+      export seed=fake_seed_0000000000000000000000
+      export TOB_INDY_SEED=the_org_book_0000000000000000000
+      configureEnvironment $@
+      # =========================================================
+      deleteVolumes
     ;;
   *)
       usage;;
