@@ -1,6 +1,6 @@
 #!/bin/bash
 export MSYS_NO_PATHCONV=1
-export DOCKERHOST=${APPLICATION_URL-$(docker run --net=host codenvy/che-ip)}
+export DOCKERHOST=${APPLICATION_URL:-$(docker run --net=host codenvy/che-ip)}
 set -e
 
 SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
@@ -26,10 +26,10 @@ usage () {
           inject the url for the API using the tob-url flag.
 
           Examples:
-          $0 start seed=my_seed
-          $0 start seed=my_seed THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
-          $0 start bc_registries seed=my_seed
-          $0 start bc_registries seed=my_seed THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
+          $0 start seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
+          $0 start seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000 THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
+          $0 start bc_registries seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
+          $0 start bc_registries seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000 THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
 
   stop - Stops the services.  This is a non-destructive process.  The containers
          are not deleted so they will be reused the next time you run start.
@@ -37,6 +37,14 @@ usage () {
   rebuild - Rebuild the docker images.
 
   rm - Remove project containers and associated volumes.
+
+  registerDids - Register the DIDs for the issuer services.
+                 This is intended for development use.
+
+                 Examples:
+                 $0 registerDids seed=issuer_service_00000000000000000
+                 - This will register DIDs using seeds from issuer_service_00000000000000001 to issuer_service_0000000000000000<issuerServiceCout>
+                   with the locally running von-network instance.
 EOF
 exit 1
 }
@@ -66,16 +74,15 @@ configureEnvironment () {
     esac
   done
 
-  export APPLICATION_URL=${APPLICATION_URL-http://localhost}
+  export APPLICATION_URL=${APPLICATION_URL:-http://localhost}
   # export THE_ORG_BOOK_API_URL=${THE_ORG_BOOK_API_URL-https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1}
   # export THE_ORG_BOOK_APP_URL=${THE_ORG_BOOK_APP_URL-https://devex-von-dev.pathfinder.gov.bc.ca}
-  export THE_ORG_BOOK_API_URL="http://tob-api:8080/api/v1"
-  export THE_ORG_BOOK_APP_URL="http://${DOCKERHOST}:8080"
+  export THE_ORG_BOOK_API_URL=${THE_ORG_BOOK_API_URL:-http://tob-api:8080/api/v1}
+  export THE_ORG_BOOK_APP_URL=${THE_ORG_BOOK_APP_URL:-http://${DOCKERHOST}:8080}
   
   # Hacky - we trim the length of the string by 1 then
   # append unique numbers to each service in docker-compose.yml.
-  # Each service needs a unique wallet seed, but we only
-  # want the developer to have to set it once.
+  # Each service needs a unique wallet seed, but we only want the developer to have to set it once.
   if [ -z "$seed" ]; then
     echo "You must provide a seed parameter. For example: seed=my_seed_000000000000000000000000."
     exit 1
@@ -96,11 +103,11 @@ configureEnvironment () {
     exit 1
   fi
 
-  export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
+  export LEDGER_URL=${LEDGER_URL:-http://$DOCKERHOST:9000}
   export INDY_WALLET_SEED=${seed%?}
   export TOB_INDY_SEED=${TOB_INDY_SEED}
 
-  export INDY_WALLET_URL=${INDY_WALLET_URL-http://$DOCKERHOST:6000/api/v1/}
+  export INDY_WALLET_URL=${INDY_WALLET_URL:-http://$DOCKERHOST:6000/api/v1/}
   export INDY_WALLET_TYPE=${wallet}
 
   if [ "$COMMAND" == "start" ]; then
@@ -194,6 +201,65 @@ deleteVolumes() {
     echo "No project volumes exist."
   fi
 }
+
+registerDids() {
+  _seeds=${@}
+  if [ -z "${_seeds}" ]; then
+    echo -e \\n"registerDids; Missing parameter!"\\n
+    exit 1
+  fi
+
+  for _seed in ${_seeds}; do
+    registerDid ${_seed}
+  done
+}
+
+registerDid() {
+  _seed=${1}
+  if [ -z "${_seed}" ]; then
+    echo -e \\n"registerDid; Missing parameter!"\\n
+    exit 1
+  fi
+  _seedJson=$(getSeedJson ${_seed})
+  _ledgerUri=$(getLedgerRegistrationUrl)
+
+  echo -e \\n"Registering ${_seed} with the ledger ..."
+  curl -X POST \
+    ${_ledgerUri} \
+    -H 'content-type: application/json' \
+    -d "${_seedJson}"
+}
+
+getSeedJson() {
+  _seed=${1}
+  if [ -z "${_seed}" ]; then
+    echo -e \\n"getSeedJson; Missing parameter!"\\n
+    exit 1
+  fi
+
+  echo "{\"seed\": \"${_seed}\"}"
+}
+
+generateSeeds() {
+  _array=( $ALL_CONTAINERS )
+  _endNumber=${#_array[@]}  
+  unset _seeds
+  for i in $(seq 1 $_endNumber); do
+    _seeds="${_seeds} ${INDY_WALLET_SEED}${i}"
+  done
+
+  echo ${_seeds}
+}
+
+getLedgerRegistrationUrl() {
+  if [[ ("${LEDGER_URL}" == "http://${DOCKERHOST}:9000") && ("${DOCKERHOST}" != "localhost") ]]; then
+    _ledgerUrl="http://localhost:9000"  
+  else
+    _ledgerUrl="${LEDGER_URL}"
+  fi
+
+  echo "${_ledgerUrl}/register"
+}
 # =================================================================================================================
 
 pushd ${SCRIPT_HOME} >/dev/null
@@ -223,6 +289,15 @@ case "$1" in
       configureEnvironment $@
       # =========================================================
       deleteVolumes
+    ;;
+  registerDids)
+      # =========================================================
+      # Suppress unnecessary messages
+      # ---------------------------------------------------------
+      export TOB_INDY_SEED=the_org_book_0000000000000000000
+      configureEnvironment $@
+      # =========================================================
+      registerDids $(generateSeeds)
     ;;
   *)
       usage;;
