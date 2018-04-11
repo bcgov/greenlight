@@ -50,6 +50,7 @@ ALL_CONTAINERS="\
     fraser_valley_health_authority\
     city_of_surrey\
     liquor_control_and_licensing_branch\
+    redis \
     onbis\
 "
 DEFAULT_CONTAINERS="bc_registries"
