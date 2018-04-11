@@ -23,13 +23,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"
       type="text/javascript" charset="utf-8" async defer></script>
-    <script type="text/javascript"> 
+    <script type="text/javascript">
        THE_ORG_BOOK_APP_URL = '{{ THE_ORG_BOOK_APP_URL }}'
     </script>
     <script type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.4/jquery.typeahead.js"></script>
     <!-- link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.4/jquery.typeahead.css" -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     {% for include in css_includes %}
         <link rel="stylesheet" href="{% static include.src %}">
@@ -106,7 +105,7 @@
         </div>
         {% endif %}
         {% endif %}
- 
+
     </div>
     </main>
     {% endblock %}
