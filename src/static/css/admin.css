@@ -1,6 +1,13 @@
 .header {
     padding-bottom: 20px;
     padding-top: 20px;
+    overflow: hidden;
+}
+.row {
+    margin-left: 5px; 
+    margin-right: 5px; 
+    padding-block-start: 5px; 
+    padding-block-end: 5px; 
 }
 .background{ 
     width: 100%;
@@ -10,7 +17,14 @@
     /* background-image: url('./static/img/Admin.jpg'); */
     position: relative;
     /* background-size: cover; */
-    background-image: url('../img/Admin.jpg'); background-size: cover; background-position: center;
+    background-image: url('../img/Admins.jpg'); background-size: contain; background-position: center;
+    /* To Enable Parallex Effect
+    background-attachment: fixed;
+    background-repeat: no-repeat; */
+
+}
+tr:hover  {
+    box-shadow: 0 2px 12px 2px yellow;
 }
 .page-content {
 	padding-bottom: auto;

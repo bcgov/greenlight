@@ -160,5 +160,5 @@ $RECYCLE.BIN/
 *.sqlite
 
 # Visual Studio Code
-.vscode
+.vscode/*
 .idea/*
