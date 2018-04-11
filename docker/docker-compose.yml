@@ -5,7 +5,6 @@ services:
     image: permitify
     environment:
       PYTHON_ENV: development
-      # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
       THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -21,12 +20,11 @@ services:
     links:
       - redis
     volumes:
-      - ../src:/app
-      - ../site_templates:/app/site_templates
       - bc_registries_wallet:/app/.indy_client/wallet
     networks:
       - tob_tob
       - tob_wallet-tob
+      - permitify
     ports:
       - 5000:8080
 
@@ -53,6 +51,7 @@ services:
     networks:
       - tob_tob
       - tob_wallet-tob
+      - permitify
     ports:
       - 5001:8080
 
@@ -79,6 +78,7 @@ services:
     networks:
       - tob_tob
       - tob_wallet-tob
+      - permitify
     ports:
       - 5002:8080
 
@@ -105,6 +105,7 @@ services:
     networks:
       - tob_tob
       - tob_wallet-tob
+      - permitify
     ports:
       - 5003:8080
 
@@ -131,6 +132,7 @@ services:
     networks:
       - tob_tob
       - tob_wallet-tob
+      - permitify
     ports:
       - 5004:8080
 
@@ -157,11 +159,14 @@ services:
     networks:
       - tob_tob
       - tob_wallet-tob
+      - permitify
     ports:
       - 5005:8070
 
   redis:
     image: redis
+    networks:
+      - permitify
     ports:
       - 6379:6379
 
@@ -187,6 +192,7 @@ services:
     networks:
       - tob_tob
       - tob_wallet-tob
+      - permitify
     ports:
       - 5006:8080
       
@@ -195,6 +201,7 @@ networks:
     external: true
   tob_wallet-tob:
     external: true
+  permitify:
 
 volumes:
   worksafe_bc_wallet:

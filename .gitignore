@@ -1,6 +1,7 @@
 *_DeploymentConfig.json
 *_BuildConfig.json
 *.local.*
+genesis
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
