@@ -1,44 +1,102 @@
+from datetime import datetime
 import json
 import time
 from importlib import import_module
 
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.http import Http404
 
 from von_connector.config import Configurator
 from von_connector.schema import SchemaManager
 from von_connector.proof import ProofRequestManager
+from django.contrib import messages
+from django.contrib.messages import get_messages
+from django.db.models import CharField
+from django.db.models.functions import Length
 
 import logging
 logger = logging.getLogger(__name__)
 
+# Get redis connection
+import redis
+r = redis.StrictRedis(host='redis', port=6379, db=0)
+r_history = redis.StrictRedis(host='redis', port=6379, db=1)
+
 schema_manager = SchemaManager()
 configurator = Configurator()
-
-def admin(request ):
-    print('\n\n\n\n\n\n')
-    print(json.dumps(configurator.config))
-    return render(request, 'admin.index.html', {})
-#configurator.config['temp_root_admin']
-
-# get pending requests from redis
-
-# render page
-
-# render(request, admin.html, { 'pending_requests': [ *requests from redis* ] })
-
-# 2. /process_request controller
-
-# continue submit claim...
+CharField.register_lookup(Length, 'length')
 
 
+def admin(request):
+
+    # Get all keys in redis
+    pending_requests = []
+    rkeys = r.scan()[1]
+    rkeys = [byte.decode("utf-8") for byte in rkeys]
+    # # logger.info('------rkeys-----')
+    # logger.info(rkeys)
+    for key in rkeys:
+        pending_request = r.get(key).decode("utf-8")
+        pending_request=json.loads(pending_request)
+        pending_requests.append(pending_request)
+     
+    # For Approved Requests
+    approved_reqs = []
+    app_keys = r_history.scan()[1]
+    logger.info('-----app-----')
+    logger.info(app_keys)
+    app_keys = [byte.decode("utf-8") for byte in app_keys]
+        
+    for key in app_keys: 
+        approved_req = r_history.get(key).decode("utf-8")
+        approved_req = json.loads(approved_req)
+        logger.info('------Approved------')
+        logger.info(approved_req)
+        approved_reqs.append(approved_req)
+        
+    logger.info('\n\n\n\n\n\n')
+    logger.info('--------pending requests-------')
+    for req in pending_requests:
+        logger.info(req)
+    logger.info('-------------------------------')
+
+    logger.info('\n\n\n\n\n\n')
+    logger.info(json.dumps(configurator.config))
+    return render(request, 'admin.index.html', {'pending_requests': pending_requests, 'approved_reqs': approved_reqs, 'rkeys': rkeys})
+
+def process_request(request):   
+    
+    body = json.loads(request.body.decode('utf-8'))
+    schema = schema_manager.schemas[0]
+    logger.info('----------------body')
+    logger.info(body)
+    # process_reqs = []
+
+    for rkey in body: 
+        # logger.info(rkey)
+        # rkey_str = rkey.decode('utf-8')
+        # logger.info(rkey)
+        process_req=r.get(rkey).decode('utf-8')
+        process_req = json.loads(process_req)
+        logger.info('-----------process-------')
+        logger.info(process_req)
+        current_time = datetime.now().isoformat() 
+        r_history.set(current_time, json.dumps(process_req))
+        claim = schema_manager.submit_claim(schema, process_req)
+        r.delete(rkey)
+    
+    # # expired_keys = r.scan()[1]
+    # # for rkey in expired_keys:
+    #     r.delete(rkey)
+    
+    return JsonResponse({'success': True, 'result': claim})
 
 def index(request):
 
     # If this is the form for the foundational claim,
-    # we have no prequisites so just render.
+    # we have no prequisites so just render.e
     if 'foundational' in configurator.config and \
             configurator.config['foundational']:
         return render(
@@ -77,6 +135,14 @@ def submit_claim(request):
     start_time = time.time()
     # Get json request body
     body = json.loads(request.body.decode('utf-8'))
+    logger.info('-------------Int------')
+    logger.info(body)
+
+    logger.info('---------Body--------')
+    for claim in body:
+        logger.info(claim)
+    logger.info('---------------------')
+
     # Get the schema we care about by 'schema'
     # passed in request
     try:
@@ -89,19 +155,6 @@ def submit_claim(request):
         raise Exception(
             'Schema type "%s" in request did not match any schemas.' %
             body['schema'])
-
-
-
-
-    # if address = 123 fake st:
-        # key = current time
-        # value = body
-
-        # save in redis
-        
-        # return 'message'
-
-
 
     # Build schema body skeleton
     claim = {}
@@ -152,14 +205,21 @@ def submit_claim(request):
                     'Cannot find previous value "%s"' % attribute['source'])
         else:
             raise Exception('Unkown mapper type "%s"' % attribute['from'])
+    
+    if 'addressee' in claim and claim["addressee"]: 
+    # is not 0/None does not include the empty string case.
+      
+        current_time = datetime.now().isoformat() 
+        r.set(current_time, json.dumps(claim))
+       
+        return JsonResponse({'success': True, 'result': None})
+    else:
+        claim = schema_manager.submit_claim(schema, claim)
+        logger.info('---------claim-------')
+        logger.info(claim)
+        logger.info('---------End of Claim-')
 
-    claim = schema_manager.submit_claim(schema, claim)
-
-    elapsed_time = time.time() - start_time
-    logger.warn('Claim elapsed time >>> {}'.format(elapsed_time))
-
-    return JsonResponse({'success': True, 'result': claim})
-
+        return JsonResponse({'success': True, 'result': claim})         
 
 def verify_dba(request):
     # Get json request body
