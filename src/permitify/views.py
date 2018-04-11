@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+import time
 from importlib import import_module
 
 from django.http import JsonResponse
@@ -131,6 +132,7 @@ def index(request):
 
 
 def submit_claim(request):
+    start_time = time.time()
     # Get json request body
     body = json.loads(request.body.decode('utf-8'))
     logger.info('-------------Int------')
@@ -203,13 +205,11 @@ def submit_claim(request):
                     'Cannot find previous value "%s"' % attribute['source'])
         else:
             raise Exception('Unkown mapper type "%s"' % attribute['from'])
-   
     
     if 'address_line_2' in claim and claim["address_line_2"]: 
       
         current_time = datetime.now().isoformat() 
         r.set(current_time, json.dumps(claim))
-    # is not 0/None does not include the empty string case.
        
         return JsonResponse({'success': True, 'result': None})
     else:

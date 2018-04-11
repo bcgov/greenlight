@@ -7,6 +7,7 @@ import requests
 from .schema import SchemaManager
 from .config import Configurator
 from .agent import Issuer
+from .agent import convert_seed_to_did
 from . import eventloop
 
 from django.apps import AppConfig
@@ -14,10 +15,61 @@ from django.apps import AppConfig
 import logging
 logger = logging.getLogger(__name__)
 
+# TODO fix this global variable, badly implemented :-(
+remote_wallet_token = None
+tob_did = None
+
+def get_tob_did():
+    return tob_did
+
+def get_remote_wallet_token():
+    return remote_wallet_token
+
+def wallet_auth():
+    async def run():
+        # If wallet type is "remote" then login to get  token
+        WALLET_TYPE = os.environ.get('INDY_WALLET_TYPE')
+        if WALLET_TYPE == 'remote':
+            WALLET_USERID = 'wall-e'    # TODO hardcode for now
+            WALLET_PASSWD = 'pass1234'  # TODO hardcode for now
+            WALLET_BASE_URL = os.environ.get('INDY_WALLET_URL')
+            logger.debug("Wallet URL: " + WALLET_BASE_URL)
+
+            try:
+                my_url = WALLET_BASE_URL + "api-token-auth/"
+                response = requests.post(
+                    my_url, data={"username": WALLET_USERID, "password": WALLET_PASSWD})
+                json_data = response.json()
+                remote_token = json_data["token"]
+                logger.debug(
+                    "Authenticated remote wallet server: " + remote_token)
+            except:
+                raise Exception(
+                    'Could not login to wallet. '
+                    'Is the Wallet Service running?')
+        else:
+            remote_token = None
+
+        return remote_token
+
+    # TODO fix must be a better way
+    global remote_wallet_token
+    remote_wallet_token = eventloop.do(run())
+
+
 class VonConnectorConfig(AppConfig):
     name = 'von_connector'
 
     def ready(self):
+        logger.error("startup code ...")
+
+        TOB_INDY_SEED = os.getenv('TOB_INDY_SEED')
+
+        logger.error("startup code ...")
+
+        wallet_auth()
+
+        TOB_INDY_SEED = os.getenv('TOB_INDY_SEED')
 
         config = Configurator().config
         now = datetime.now().strftime("%Y-%m-%d")
@@ -27,8 +79,14 @@ class VonConnectorConfig(AppConfig):
         issuer_service_id = None
 
         async def run():
+            logger.debug("running in run ...")
             async with Issuer() as agent:
+                logger.debug("running with Issuer() ...")
                 issuer_service_id = None
+
+                global tob_did
+                tob_did = await convert_seed_to_did(TOB_INDY_SEED)
+                logger.debug("TheOrgBook DID:" + tob_did)
 
                 # Check if my jurisdiction exists by name
                 jurisdictions = requests.get(
@@ -79,6 +137,7 @@ class VonConnectorConfig(AppConfig):
 
                 return issuer_service_id
 
+        logger.debug("running ...")
         issuer_service_id = eventloop.do(run())
 
         # Publish the schemas I care about to the ledger
