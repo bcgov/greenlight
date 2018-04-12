@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 import json
 import time
 from importlib import import_module
@@ -19,18 +20,28 @@ from django.db.models.functions import Length
 import logging
 logger = logging.getLogger(__name__)
 
-# Get redis connection
 import redis
-r = redis.StrictRedis(host='redis', port=6379, db=0)
-r_history = redis.StrictRedis(host='redis', port=6379, db=1)
+
+# Get redis configuration
+redis_service_name = os.getenv('REDIS_SERVICE_NAME')
+
+# Get redis connection
+if redis_service_name:
+    redis_key_name = redis_service_name.upper().replace('-', '_')
+    redis_host = os.getenv('{}_SERVICE_HOST'.format(redis_key_name), redis_service_name)
+    redis_port = os.getenv('{}_SERVICE_PORT'.format(redis_key_name), '6379')
+    r = redis.StrictRedis(host=redis_host, port=redis_port, db=0)
+    r_history = redis.StrictRedis(host=redis_host, port=redis_port, db=1)
 
 schema_manager = SchemaManager()
 configurator = Configurator()
 CharField.register_lookup(Length, 'length')
 
-
 def admin(request):
 
+    if not redis_service_name:
+        raise Exception('The REDIS_SERVICE_NAME environment variable must be defined.  REDIS_SERVICE_NAME=redis.')
+    
     # Get all keys in redis
     pending_requests = []
     rkeys = r.scan()[1]
@@ -68,6 +79,9 @@ def admin(request):
 
 def process_request(request):   
     
+    if not redis_service_name:
+        raise Exception('The REDIS_SERVICE_NAME environment variable must be defined.  REDIS_SERVICE_NAME=redis.')
+
     body = json.loads(request.body.decode('utf-8'))
     schema = schema_manager.schemas[0]
     logger.info('----------------body')
@@ -208,6 +222,9 @@ def submit_claim(request):
     
     if 'address_line_2' in claim and claim["address_line_2"]: 
       
+        if not redis_service_name:
+            raise Exception('The REDIS_SERVICE_NAME environment variable must be defined.  REDIS_SERVICE_NAME=redis.')
+
         current_time = datetime.now().isoformat() 
         r.set(current_time, json.dumps(claim))
        

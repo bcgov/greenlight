@@ -17,6 +17,7 @@ services:
       LEDGER_URL: ${LEDGER_URL}
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
     links:
       - redis
     volumes:
@@ -44,6 +45,7 @@ services:
       LEDGER_URL: ${LEDGER_URL}
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
     links:
       - redis
     volumes:
@@ -71,6 +73,7 @@ services:
       LEDGER_URL: ${LEDGER_URL}
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
     links:
       - redis
     volumes:
@@ -98,6 +101,7 @@ services:
       LEDGER_URL: ${LEDGER_URL}
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
     links:
       - redis
     volumes:
@@ -125,6 +129,7 @@ services:
       LEDGER_URL: ${LEDGER_URL}
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
     links:
       - redis
     volumes:
@@ -152,6 +157,7 @@ services:
       LEDGER_URL: ${LEDGER_URL}
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
     links:
       - redis
     volumes:
@@ -174,7 +180,6 @@ services:
     image: permitify
     environment:
       PYTHON_ENV: development
-      # DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
       THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
@@ -187,6 +192,7 @@ services:
       LEDGER_URL: ${LEDGER_URL}
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
     volumes:
       - on_biz_wallet:/app/.indy_client/wallet
     networks:
