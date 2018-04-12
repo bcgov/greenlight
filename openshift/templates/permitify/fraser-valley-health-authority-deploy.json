@@ -213,6 +213,19 @@
                   {
                     "name": "LEDGER_URL",
                     "value": "${LEDGER_URL}"
+                  },
+                  {
+                    "name": "REDIS_SERVICE_NAME",
+                    "value": "${REDIS_SERVICE_NAME}"
+                  },
+                  {
+                    "name": "REDIS_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${REDIS_SERVICE_NAME}",
+                        "key": "database-password"
+                      }
+                    }
                   }
                 ],
                 "resources": {
@@ -382,6 +395,13 @@
       "description": "The URL for a running instance of von-network.",
       "required": true,
       "value": "http://159.89.115.24"
+    },
+    {
+      "name": "REDIS_SERVICE_NAME",
+      "displayName": "Redis Service Name",
+      "description": "The Redis service (host) name.",
+      "required": true,
+      "value": "redis"
     }
   ]
 }
