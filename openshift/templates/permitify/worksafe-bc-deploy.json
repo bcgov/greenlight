@@ -57,24 +57,19 @@
     {
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
-      "metadata":
-      {
+      "metadata": {
         "name": "${NAME}",
-        "labels":
-        {
+        "labels": {
           "app": "${NAME}",
           "template": "${NAME}-deployment-template"
         }
       },
-      "spec":
-      {
+      "spec": {
         "accessModes": [
           "ReadWriteOnce"
         ],
-        "resources":
-        {
-          "requests":
-          {
+        "resources": {
+          "requests": {
             "storage": "${PERSISTENT_VOLUME_SIZE}"
           }
         }
@@ -127,8 +122,7 @@
             "volumes": [
               {
                 "name": "${NAME}-data",
-                "persistentVolumeClaim":
-                {
+                "persistentVolumeClaim": {
                   "claimName": "${NAME}"
                 }
               }
@@ -213,6 +207,19 @@
                   {
                     "name": "LEDGER_URL",
                     "value": "${LEDGER_URL}"
+                  },
+                  {
+                    "name": "REDIS_SERVICE_NAME",
+                    "value": "${REDIS_SERVICE_NAME}"
+                  },
+                  {
+                    "name": "REDIS_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${REDIS_SERVICE_NAME}",
+                        "key": "database-password"
+                      }
+                    }
                   }
                 ],
                 "resources": {
@@ -299,7 +306,7 @@
       "required": true,
       "value": "False"
     },
-	  {
+    {
       "name": "TAG_NAME",
       "displayName": "Environment TAG name",
       "description": "The TAG name for this environment, e.g., dev, test, prod",
@@ -382,6 +389,13 @@
       "description": "The URL for a running instance of von-network.",
       "required": true,
       "value": "http://159.89.115.24"
+    },
+    {
+      "name": "REDIS_SERVICE_NAME",
+      "displayName": "Redis Service Name",
+      "description": "The Redis service (host) name.",
+      "required": true,
+      "value": "redis"
     }
   ]
 }

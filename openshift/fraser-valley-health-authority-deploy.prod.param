@@ -23,3 +23,4 @@ APPLICATION_URL=https://fraser-valley-health-authority-devex-von-permitify-prod.
 INDY_WALLET_SEED=fraser_valley_prod_0000000000000
 TOB_INDY_SEED=the_org_book_prod_00000000000000
 LEDGER_URL=http://159.89.125.134
+# REDIS_SERVICE_NAME=redis
