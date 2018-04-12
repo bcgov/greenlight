@@ -270,7 +270,6 @@ shift
 
 case "${COMMAND}" in
   start)
-      shift
       _startupParams=$(getStartupParams $@)
       configureEnvironment $@
       docker-compose up ${_startupParams}
