@@ -30,8 +30,9 @@ if redis_service_name:
     redis_key_name = redis_service_name.upper().replace('-', '_')
     redis_host = os.getenv('{}_SERVICE_HOST'.format(redis_key_name), redis_service_name)
     redis_port = os.getenv('{}_SERVICE_PORT'.format(redis_key_name), '6379')
-    r = redis.StrictRedis(host=redis_host, port=redis_port, db=0)
-    r_history = redis.StrictRedis(host=redis_host, port=redis_port, db=1)
+    redis_password = os.getenv('REDIS_PASSWORD')
+    r = redis.StrictRedis(host=redis_host, port=redis_port, db=0, password=redis_password)
+    r_history = redis.StrictRedis(host=redis_host, port=redis_port, db=1, password=redis_password)
 
 schema_manager = SchemaManager()
 configurator = Configurator()
