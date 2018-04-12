@@ -74,8 +74,6 @@ configureEnvironment () {
   done
 
   export APPLICATION_URL=${APPLICATION_URL:-http://localhost}
-  # export THE_ORG_BOOK_API_URL=${THE_ORG_BOOK_API_URL-https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v1}
-  # export THE_ORG_BOOK_APP_URL=${THE_ORG_BOOK_APP_URL-https://devex-von-dev.pathfinder.gov.bc.ca}
   export THE_ORG_BOOK_API_URL=${THE_ORG_BOOK_API_URL:-http://tob-api:8080/api/v1}
   export THE_ORG_BOOK_APP_URL=${THE_ORG_BOOK_APP_URL:-http://${DOCKERHOST}:8080}
   
@@ -259,11 +257,17 @@ getLedgerRegistrationUrl() {
 
   echo "${_ledgerUrl}/register"
 }
+
+toLower() {
+  echo $(echo ${@} | tr '[:upper:]' '[:lower:]')
+}
 # =================================================================================================================
 
 pushd ${SCRIPT_HOME} >/dev/null
+COMMAND=$(toLower ${1})
+shift
 
-case "$1" in
+case "${COMMAND}" in
   start)
       shift
       _startupParams=$(getStartupParams $@)
@@ -289,7 +293,7 @@ case "$1" in
       # =========================================================
       deleteVolumes
     ;;
-  registerDids)
+  registerdids)
       # =========================================================
       # Suppress unnecessary messages
       # ---------------------------------------------------------
