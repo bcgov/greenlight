@@ -1,0 +1,247 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "${NAME}-template"
+    },
+    "objects": [
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}"
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Recreate",
+                    "recreateParams": {
+                        "timeoutSeconds": 600
+                    },
+                    "resources": {},
+                    "activeDeadlineSeconds": 21600
+                },
+                "triggers": [
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "${NAME}"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "namespace": "${IMAGE_NAMESPACE}",
+                                "name": "${SOURCE_IMAGE_NAME}:${TAG_NAME}"
+                            }
+                        }
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
+                "replicas": 1,
+                "selector": {
+                    "name": "${NAME}"
+                },
+                "template": {
+                    "metadata": {
+                        "name": "${NAME}",
+                        "labels": {
+                            "name": "${NAME}"
+                        }
+                    },
+                    "spec": {
+                        "volumes": [
+                            {
+                                "name": "${NAME}-data",
+                                "persistentVolumeClaim": {
+                                    "claimName": "${NAME}"
+                                }
+                            }
+                        ],
+                        "containers": [
+                            {
+                                "name": "${NAME}",
+                                "image": " ",
+                                "ports": [
+                                    {
+                                        "containerPort": 6379,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "REDIS_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "name": "${NAME}",
+                                                "key": "database-password"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "resources": {
+                                    "limits": {
+                                        "memory": "${MEMORY_LIMIT}"
+                                    }
+                                },
+                                "volumeMounts": [
+                                    {
+                                        "name": "${NAME}-data",
+                                        "mountPath": "${MOUNT_PATH}"
+                                    }
+                                ],
+                                "livenessProbe": {
+                                    "tcpSocket": {
+                                        "port": 6379
+                                    },
+                                    "initialDelaySeconds": 30,
+                                    "timeoutSeconds": 1,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "failureThreshold": 3
+                                },
+                                "readinessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "/bin/sh",
+                                            "-i",
+                                            "-c",
+                                            "test \"$(redis-cli -h 127.0.0.1 -a $REDIS_PASSWORD ping)\" == \"PONG\""
+                                        ]
+                                    },
+                                    "initialDelaySeconds": 5,
+                                    "timeoutSeconds": 1,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "failureThreshold": 3
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "imagePullPolicy": "IfNotPresent",
+                                "securityContext": {
+                                    "capabilities": {},
+                                    "privileged": false
+                                }
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "terminationGracePeriodSeconds": 30,
+                        "dnsPolicy": "ClusterFirst",
+                        "securityContext": {},
+                        "schedulerName": "default-scheduler"
+                    }
+                }
+            }
+        },
+        {
+            "kind": "PersistentVolumeClaim",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}"
+            },
+            "spec": {
+                "accessModes": [
+                    "ReadWriteOnce"
+                ],
+                "resources": {
+                    "requests": {
+                        "storage": "${PERSISTENT_VOLUME_SIZE}"
+                    }
+                }
+            }
+        },
+        {
+            "kind": "Secret",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}"
+            },
+            "data": {
+                "database-password": "${DATABASE_PASSWORD}"
+            },
+            "type": "Opaque"
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "6379-tcp",
+                        "protocol": "TCP",
+                        "port": 6379,
+                        "targetPort": 6379
+                    }
+                ],
+                "selector": {
+                    "name": "${NAME}"
+                },
+                "type": "ClusterIP",
+                "sessionAffinity": "None"
+            }
+        }
+    ],
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "The name assigned to all of the OpenShift resources associated to the deployment.",
+            "required": true,
+            "value": "redis"
+        },
+        {
+            "name": "DATABASE_PASSWORD",
+            "displayName": "Database Connection Password",
+            "description": "Password used to secure connections to te databse.  Needs to be basee64 encoded.",
+            "required": true,
+            "generate": "expression",
+            "from": "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
+        },
+        {
+            "name": "IMAGE_NAMESPACE",
+            "displayName": "Image Namespace",
+            "required": true,
+            "description": "The namespace of the OpenShift project containing the imagestream for the application.",
+            "value": "devex-von-permitify-tools"
+        },
+        {
+            "name": "SOURCE_IMAGE_NAME",
+            "displayName": "Source Image Name",
+            "description": "The name of the image to use for this resource.",
+            "required": true,
+            "value": "redis"
+        },
+        {
+            "name": "TAG_NAME",
+            "displayName": "Environment TAG name",
+            "description": "The TAG name for this environment, e.g., dev, test, prod",
+            "required": true,
+            "value": "dev"
+        },
+        {
+            "name": "MOUNT_PATH",
+            "displayName": "Mount Path",
+            "description": "The path to mount the persistent volume.",
+            "required": true,
+            "value": "/var/lib/redis/data"
+        },
+        {
+            "name": "PERSISTENT_VOLUME_SIZE",
+            "displayName": "Persistent Volume Size",
+            "description": "The size of the persistent volume , e.g. 512Mi, 1Gi, 2Gi.",
+            "required": true,
+            "value": "1Gi"
+        },
+        {
+            "name": "MEMORY_LIMIT",
+            "displayName": "Memory Limit",
+            "description": "Maximum amount of memory the container can use.",
+            "required": true,
+            "value": "512Mi"
+        }
+    ]
+}

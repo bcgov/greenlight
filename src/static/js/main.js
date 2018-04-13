@@ -46,17 +46,58 @@ $(function () {
       contentType: 'application/json'
     }).done(function (response) {
       $(form).find('button[type=submit]').toggleClass('loading')
-      // This is used allow each template to implement its own response handler
-      // if (FORM_HANDLERS[$(form).attr('name')]) {
-      //   FORM_HANDLERS[$(form).attr('name')](form, response)
-      // }
+     
 
-      console.log('asdasdasd', THE_ORG_BOOK_APP_URL)
+      console.log('submit function works')
 
-      window.location.replace(
-        THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=' +
-        response.result.id
-      )
+
+      if (response.result == null) {
+        
+                // $(".message").append(" <b>Your request is being processed by one of our representative</b>.");
+
+                alert('Your request has been flagged as requiring additional review by the BC Registries Service Team. You will be notified when the review process is complete and informed of any further steps needed to complete the process.')
+                
+                var delay=2000;
+                var url = THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=';
+                var timeoutID = setTimeout(function(){
+                  window.location.href = url;
+                }, delay);
+        }
+      if (response.result != null) {
+            window.location.replace(
+          THE_ORG_BOOK_APP_URL + '/en/recipe/start_a_restaurant?record=' +
+          response.result.id) 
+        }    
     })
+  })
+
+  $('.approve').click(function (event) {
+      
+      
+     var selected_keys = $('#ckbox:checked').map(function() { return $(this).val(); }).get()
+      $.ajax({
+        method: 'POST',
+        url: "/process_request",
+        data: JSON.stringify(selected_keys),
+        contentType: 'application/json'
+      })
+      .done(function (response) { 
+        $('.approve').find('button[class=approve]').toggleClass('loading')
+
+        console.log('approve function works')
+
+        if (response.result != null){
+                var delay=0;
+                var url = '/admin';
+                var timeoutID = setTimeout(function(){
+                  window.location.href = url;
+                }, delay);
+
+            console.log('response returns value')
+        }
+      })
+        
+
+      
   })
 })

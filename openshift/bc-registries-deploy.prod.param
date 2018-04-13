@@ -23,3 +23,4 @@ APPLICATION_URL=https://bc-registries-devex-von-permitify-prod.pathfinder.gov.bc
 INDY_WALLET_SEED=bc_registries_prod_0000000000000
 TOB_INDY_SEED=the_org_book_prod_00000000000000
 LEDGER_URL=http://159.89.125.134
+# REDIS_SERVICE_NAME=redis

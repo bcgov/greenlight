@@ -1,0 +1,218 @@
+#!/bin/bash
+export MSYS_NO_PATHCONV=1
+set -e
+SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
+
+# =================================================================================================================
+# Usage:
+# -----------------------------------------------------------------------------------------------------------------
+usage () {
+  cat <<-EOF
+
+  Manage the permitify pods within a given OpenShift environment.
+
+  Usage: 
+    $0 [options] [commands]
+
+  Example:
+    $0 -e test scaleDown
+    - This will scale down all of the pods in the permitify TEST environment.
+
+  Options:
+  ========
+    -h prints the usage for the script
+    -e <Environment> the environment (dev/test/prod) into which you are deploying (default: ${DEPLOYMENT_ENV_NAME})
+    -l apply local settings and parameters
+    -p <profile> load a specific settings profile; setting.<profile>.sh
+    -P Use the default settings profile; settings.sh.  Use this flag to ignore all but the default 
+       settings profile when there is more than one settings profile defined for a project.
+    -x run the script in debug mode to see what's happening
+
+  Commands:
+  ========
+    scaleUp
+      - Scale down one or more pods.  By default all pods are affected.
+        To scale select pods list them following the command.
+        For example;
+          $0 -e test scaleUp bc-registries worksafe-bc
+
+    scaleDown
+      - Scale up one or more pods.  By default all pods are affected.
+        To scale select pods list them following the command.
+        For example;
+          $0 -e test scaleDown bc-registries worksafe-bc
+
+    recycle
+      - Recycle up one or more pods.  By default all pods are affected.
+        To recycle select pods list them following the command.
+        For example;
+          $0 -e test recycle bc-registries worksafe-bc
+
+    reset
+      - Reset one or more pods.  By default all pods are affected.
+        To reset select pods list them following the command.
+        For example;
+          $0 -e test reset bc-registries worksafe-bc
+        
+        Performs the following operations:
+        - Delete the persistent indy wallet information.
+        - Scale down the pod.
+        - Register the environment's DID with the ledger.
+
+    registerDids
+      - Register/re-register the services's DIDs with the ledger.
+EOF
+exit 1
+}
+
+# -----------------------------------------------------------------------------------------------------------------
+# Initialization:
+# -----------------------------------------------------------------------------------------------------------------
+while getopts p:Pe:lxh FLAG; do
+  case $FLAG in
+    p ) export PROFILE=$OPTARG ;;
+    P ) export IGNORE_PROFILES=1 ;;    
+    e ) export DEPLOYMENT_ENV_NAME=$OPTARG ;;
+    l ) export APPLY_LOCAL_SETTINGS=1 ;;
+    x ) export DEBUG=1 ;;
+    h ) usage ;;
+    \? ) #unrecognized option - show help
+      echo -e \\n"Invalid script option: -${OPTARG}"\\n
+      usage
+      ;;
+  esac
+done
+shift $((OPTIND-1))
+
+if [ ! -z "${DEBUG}" ]; then
+  set -x
+fi
+
+# Check for required options ...
+if [ -z "${DEPLOYMENT_ENV_NAME}" ]; then
+  _red='\033[0;31m'
+  _nc='\033[0m' # No Color
+  echo -e "${_red}You MUST specify an environment name using the '-e' flag.${_nc}"
+  echo -e "${_red}Assuming a default would have unwanted consequences.${_nc}"
+  usage
+fi
+
+# Load the project settings and functions ...
+_includeFile="ocFunctions.inc"
+_settingsFile="settings.sh"
+if [ ! -z $(type -p ${_includeFile}) ]; then
+  _includeFilePath=$(type -p ${_includeFile})
+  export OCTOOLSBIN=$(dirname ${_includeFilePath})
+
+  if [ -f ${OCTOOLSBIN}/${_settingsFile} ]; then
+    . ${OCTOOLSBIN}/${_settingsFile}
+  fi
+
+  if [ -f ${OCTOOLSBIN}/${_includeFile} ]; then
+    . ${OCTOOLSBIN}/${_includeFile}
+  fi
+else
+  _red='\033[0;31m'
+  _yellow='\033[1;33m'
+  _nc='\033[0m' # No Color
+  echo -e \\n"${_red}${_includeFile} could not be found on the path.${_nc}"
+  echo -e "${_yellow}Please ensure the openshift-developer-tools are installed on and registered on your path.${_nc}"
+  echo -e "${_yellow}https://github.com/BCDevOps/openshift-developer-tools${_nc}"
+fi
+
+# -----------------------------------------------------------------------------------------------------------------
+# Functions:
+# -----------------------------------------------------------------------------------------------------------------
+reset() {
+  _pods=${@}
+  if [ -z "${_pods}" ]; then
+    echo -e \\n"reset; Missing parameter!"\\n
+    exit 1
+  fi
+
+  for _pod in ${_pods}; do
+    deleteFromPods "/app/.indy_client/wallet/*" ${_pod}
+    exitOnError
+    scaleDown ${_pod}
+  done
+
+  printAndWait "If you are resetting the ledger, wait for the ledger to completely start up before continuing."
+
+  registerDids $(getDidNames)
+}
+
+recycle() {
+  _pods=${@}
+  if [ -z "${_pods}" ]; then
+    echo -e \\n"recycle; Missing parameter!"\\n
+    exit 1
+  fi
+
+  scaleDown ${_pods}
+  printAndWait "Wait for all of the pods to scale down completely before continuing."
+  scaleUp ${_pods}  
+}
+
+getDidNames() {
+  _didNames="
+    bc_registries
+    city_of_surrey
+    fraser_valley
+    liquor_control
+    ministry_of_finance
+    worksafe_bc
+    onbis"
+  
+  echo ${_didNames}
+}
+
+getLedgerAddress() {
+  case "${DEPLOYMENT_ENV_NAME}" in
+    dev)
+      _ledgerAddress="159.89.115.24";;
+    test)
+      _ledgerAddress="159.89.125.134";;
+    prod)
+      _ledgerAddress="159.89.125.134";;
+    *)
+      return 1;;
+  esac
+
+  echo ${_ledgerAddress}
+}
+# =================================================================================================================
+pushd ${SCRIPT_HOME} >/dev/null
+_cmd=$(toLower ${1})
+shift
+
+case "${_cmd}" in
+  scaleup)
+    switchProject
+    PODS=$(getAllPods ${@})
+    scaleUp ${PODS}
+    ;;
+  scaledown)
+    switchProject
+    PODS=$(getAllPods ${@})
+    scaleDown ${PODS}
+    ;;
+  recycle)
+    switchProject
+    PODS=$(getAllPods ${@})
+    recycle ${PODS}
+    ;;
+  reset)
+    switchProject
+    PODS=$(getAllPods ${@})
+    reset ${PODS}
+    ;;
+  registerdids)
+    registerDids $(getDidNames)
+    ;;    
+  *)
+    echoWarning "Unrecognized command; ${_cmd}"
+    usage
+    ;;
+esac
+
+popd >/dev/null

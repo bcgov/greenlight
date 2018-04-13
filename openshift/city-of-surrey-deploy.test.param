@@ -23,3 +23,4 @@ APPLICATION_URL=https://city-of-surrey-devex-von-permitify-test.pathfinder.gov.b
 INDY_WALLET_SEED=city_of_surrey_test_000000000000
 TOB_INDY_SEED=the_org_book_test_00000000000000
 LEDGER_URL=http://159.89.125.134
+# REDIS_SERVICE_NAME=redis
