@@ -25,6 +25,7 @@ RUN curl -o rustup https://sh.rustup.rs
 RUN chmod +x rustup
 RUN ./rustup -y
 
+# RUN git clone https://github.com/ianco/indy-sdk.git
 RUN git clone https://github.com/ianco/indy-sdk.git
 WORKDIR $HOME/indy-sdk/libindy
 RUN git fetch

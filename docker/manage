@@ -197,7 +197,7 @@ case "$1" in
     ;;
   rm)
       docker-compose rm -f
-      docker volume rm -f docker_bc_registries_wallet docker_city_of_surrey_wallet docker_fraser_valley_health_authority_wallet docker_liquor_control_and_licensing_branch_wallet docker_ministry_of_finance_wallet docker_worksafe_bc_wallet docker_acme_corp_apply_wallet docker_acme_corp_wallet docker_faber_college_wallet docker_thrift_bank_wallet
+      # docker volume rm -f docker_bc_registries_wallet docker_city_of_surrey_wallet docker_fraser_valley_health_authority_wallet docker_liquor_control_and_licensing_branch_wallet docker_ministry_of_finance_wallet docker_worksafe_bc_wallet docker_acme_corp_apply_wallet docker_acme_corp_wallet docker_faber_college_wallet docker_thrift_bank_wallet
     ;;
   *)
       usage;;
