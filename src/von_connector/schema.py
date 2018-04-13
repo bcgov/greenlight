@@ -88,10 +88,10 @@ class SchemaManager():
 
                 # Check if claim definition has been published.
                 # If not then publish.
-                claim_def_json = await issuer.get_claim_def(
-                    schema['seqNo'], issuer.did)
-                if not json.loads(claim_def_json):
-                    claim_def_json = await issuer.send_claim_def(schema_json)
+                # claim_def_json = await issuer.get_claim_def(
+                #     schema['seqNo'], issuer.did)
+                # if not json.loads(claim_def_json):
+                claim_def_json = await issuer.send_claim_def(schema_json)
 
                 claim_def = json.loads(claim_def_json)
                 self.__log_json('claim_def:', claim_def)
