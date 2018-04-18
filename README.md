@@ -5,6 +5,10 @@ Includes a "roadmap" site which the user can follow like a checklist.
 
 Also includes the precursor to the von-connector. The goal is to allow all issuers and verifiers to be declaratively configurable.
 
+## Quick Start Guide
+
+A **Quick Start Guide** for a working set of applications is maintained here; [Running a Complete Provisional VON Network](https://github.com/bcgov/TheOrgBook/blob/master/docker/README.md#running-a-complete-provisional-von-network).  This is a great way to see the **Permitify** services in action.
+
 ## Running in OpenShift
 
 This project uses the scripts found in [openshift-project-tools](https://github.com/BCDevOps/openshift-project-tools) to setup and maintain OpenShift environments (both local and hosted).  Refer to the [OpenShift Scripts](https://github.com/BCDevOps/openshift-project-tools/blob/master/bin/README.md) documentation for details.
