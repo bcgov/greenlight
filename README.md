@@ -269,5 +269,5 @@ URLS = {
 
 ```
 cd TheOrgBook/APISpec/TestData
-./load-all.sh local Ont
+./load-all.sh --evn local --prefix Ont
 ```
