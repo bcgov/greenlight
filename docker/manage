@@ -106,6 +106,8 @@ configureEnvironment () {
   export INDY_WALLET_SEED=${seed%?}
   export TOB_INDY_SEED=${TOB_INDY_SEED}
 
+  export WALLET_USER_ID=${WALLET_USER_ID:-wall-e}
+  export WALLET_PASSWORD=${WALLET_PASSWORD:-pass1234}
   export INDY_WALLET_URL=${INDY_WALLET_URL:-http://$DOCKERHOST:6000/api/v1/}
   export INDY_WALLET_TYPE=${wallet}
 
