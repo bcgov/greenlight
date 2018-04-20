@@ -1,7 +1,7 @@
 #=========================================================
 # OpenShift template parameters for:
 # Component: .
-# JSON Template File: templates/permitify/onbis.json
+# JSON Template File: templates/permitify/onbis-deploy.json
 #=========================================================
 NAME=onbis
 SOURCE_IMAGE_NAME=permitify
@@ -24,3 +24,6 @@ INDY_WALLET_SEED=onbis_dev_0000000000000000000000
 TOB_INDY_SEED=the_org_book_on_dev_000000000000
 LEDGER_URL=http://159.89.115.24
 REDIS_SERVICE_NAME=redis
+INDY_WALLET_TYPE=virtual
+INDY_WALLET_URL=http://wallet:8080/api/v1/
+WALLET_DEPLOYMENT_NAME=wallet

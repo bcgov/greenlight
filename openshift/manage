@@ -1,6 +1,5 @@
 #!/bin/bash
 export MSYS_NO_PATHCONV=1
-set -e
 SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 
 # =================================================================================================================
@@ -61,6 +60,28 @@ usage () {
 
     registerDids
       - Register/re-register the services's DIDs with the ledger.
+
+    createDeployConfig
+      - Create one or more deployment configurations in an OpenShift environment 
+        using pre-generated deployment configuration files.
+        
+        Examples;
+          $0 -e dev createDeployConfig
+          - This will create deployment configurations from all of the existing deployment configuration files.
+
+          $0 -e dev createDeployConfig ./bc-registries-deploy_DeploymentConfig.json
+          - This will create a deployment configurations from the specified deployment configuration file.
+
+    replaceDeployConfig
+      - Replace one or more deployment configurations in an OpenShift environment 
+        using pre-generated deployment configuration files.
+        
+        Examples;
+          $0 -e dev replaceDeployConfig
+          - This will replace deployment configurations for all of the existing deployment configuration files.
+
+          $0 -e dev replaceDeployConfig ./bc-registries-deploy_DeploymentConfig.json
+          - This will replace the deployment configurations for the specified deployment configuration file.
 EOF
 exit 1
 }
@@ -208,7 +229,14 @@ case "${_cmd}" in
     ;;
   registerdids)
     registerDids $(getDidNames)
-    ;;    
+    ;;
+  createdeployconfig)
+    deployConfigs ${@}
+    ;;
+  replacedeployconfig)
+    export OC_ACTION=replace
+    deployConfigs ${@}
+    ;;
   *)
     echoWarning "Unrecognized command; ${_cmd}"
     usage
