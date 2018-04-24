@@ -38,7 +38,7 @@ def wallet_auth():
             try:
                 my_url = WALLET_BASE_URL + "api-token-auth/"
                 response = requests.post(
-                    my_url, data={"username": WALLET_USERID, "password": WALLET_PASSWD})
+                    my_url, data={"username": WALLET_USER_ID, "password": WALLET_PASSWORD})
                 json_data = response.json()
                 remote_token = json_data["token"]
                 logger.debug(
@@ -62,15 +62,8 @@ class VonConnectorConfig(AppConfig):
 
     def ready(self):
         logger.error("startup code ...")
-
-        TOB_INDY_SEED = os.getenv('TOB_INDY_SEED')
-
-        logger.error("startup code ...")
-
         wallet_auth()
-
         TOB_INDY_SEED = os.getenv('TOB_INDY_SEED')
-
         config = Configurator().config
         now = datetime.now().strftime("%Y-%m-%d")
         # Register myself with TheOrgBook
