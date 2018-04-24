@@ -306,7 +306,7 @@ case "${_cmd}" in
     ;;
   recycle)
     switchProject
-    PODS=$(getAgetIssuerServicePodsllPods ${@})
+    PODS=$(getIssuerServicePods ${@})
     recycle ${PODS}
     ;;
   reset)
