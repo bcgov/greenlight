@@ -82,6 +82,9 @@ usage () {
 
           $0 -e dev replaceDeployConfig ./bc-registries-deploy_DeploymentConfig.json
           - This will replace the deployment configurations for the specified deployment configuration file.
+
+    getIssuerServicePods
+      - Get a list of issuer service pods running in a given environment.
 EOF
 exit 1
 }
@@ -323,6 +326,9 @@ case "${_cmd}" in
   replacedeployconfig)
     export OC_ACTION=replace
     deployConfigs ${@}
+    ;;
+  getpods)
+    getIssuerServicePods ${@}
     ;;
   *)
     echoWarning "Unrecognized command; ${_cmd}"
