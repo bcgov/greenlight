@@ -26,10 +26,18 @@ usage () {
           inject the url for the API using the tob-url flag.
 
           Examples:
-          $0 start seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
-          $0 start seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000 THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
-          $0 start bc_registries seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
-          $0 start bc_registries seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000 THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
+          
+          - Start ALL issuer services
+            $0 start all seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
+          
+          - Start just the default (bc_registries) issuer service
+            $0 start seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
+          
+          - Point the issuer services at a locally running instance of the tob-api
+            $0 start seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000 THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
+          
+          - Start specific issuer services
+            $0 start bc_registries worksafe_bc seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
 
   stop - Stops the services.  This is a non-destructive process.  The containers
          are not deleted so they will be reused the next time you run start.
