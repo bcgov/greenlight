@@ -152,18 +152,6 @@ getStartupParams() {
 }
 
 build() {
-    echo -e "\nBuilding libindy image ..."
-    docker build \
-        -t 'libindy' \
-        -f 'libindy/Dockerfile' \
-        .
-
-    echo -e "\nBuilding python-libindy image ..."
-    docker build \
-        -t 'python-libindy' \
-        -f 'python-libindy/Dockerfile' \
-        .
-
     echo -e "\nBuilding permitify image ..."
     docker build \
         -t 'permitify' \
@@ -172,20 +160,6 @@ build() {
 }
 
 rebuild() {
-    echo -e "\nRebuilding libindy image ..."
-    docker build \
-        --no-cache \
-        -t 'libindy' \
-        -f 'libindy/Dockerfile' \
-        .
-
-    echo -e "\nRebuilding python-libindy image ..."
-    docker build \
-        --no-cache \
-        -t 'python-libindy' \
-        -f 'python-libindy/Dockerfile' \
-        .
-
     echo -e "\nRebuilding permitify image ..."
     docker build \
         --no-cache \

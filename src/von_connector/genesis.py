@@ -15,7 +15,7 @@ def getGenesisData():
     if not ledgerUrl:
         raise Exception('LEDGER_URL must be set.')
 
-    logger.info('Using genesis transaction file from {}/genesis'.format(ledgerUrl))
+    logger.info('Using genesis transaction file from {}/genesis ...'.format(ledgerUrl))
     response = requests.get('{}/genesis'.format(ledgerUrl))
     return response.text
 
@@ -28,19 +28,21 @@ def checkGenesisFile(genesis_txn_path):
         if not genesis_txn_file.parent.exists():
           genesis_txn_file.parent.mkdir(parents = True)
         data = getGenesisData()
+        logger.info('Writing genesis transaction file to, {} ...'.format(genesis_txn_path))
         with open(genesis_txn_path, 'x') as genesisFile:
             genesisFile.write(data)
-
+    else:
+        logger.info('The genesis transaction file ({}) already exists.'.format(genesis_txn_path))
+ 
 def config():
     """
     Get the hyperledger configuration settings for the environment.
     """
-    genesis_txn_path = "/app/genesis"
-    platform_name = platform.system()
+    appRoot = os.getenv('APP_ROOT')
+    if not appRoot:
+        appRoot = os.getenv('HOME', '/home/indy')
 
-    # if platform_name == "Windows":
-        # genesis_txn_path = os.path.realpath("/app/genesis")
-    
+    genesis_txn_path = os.path.join(appRoot, 'genesis')
     checkGenesisFile(genesis_txn_path)
 
     return {
