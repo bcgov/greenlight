@@ -35,7 +35,7 @@ ADD ./docker/docker-entrypoint.sh /usr/local/bin/enter
 RUN chown indy:indy $HOME/* /usr/local/bin/enter && \
     chown -R indy:indy $HOME/site_templates/* $HOME/permitify/* $HOME/static/* $HOME/templates/* $HOME/von_connector/* && \
     chmod -R a+rwx /usr/local/bin $HOME/permitify $HOME/von_connector && \
-    chgrp -R 0 $HOME
+    chmod a+rw $HOME
 # =======================================================================
 
 USER 1001
