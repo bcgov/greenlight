@@ -221,7 +221,7 @@ onbis:
       TOB_INDY_SEED: ${TOB_INDY_SEED}
       LEDGER_URL: ${LEDGER_URL}
     volumes:
-      - onbis_wallet:/app/.indy_client/wallet
+      - onbis_wallet:/home/indy/.indy_client/wallet
     ports:
       - 5006:8080
 ```

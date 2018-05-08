@@ -23,7 +23,7 @@ services:
     links:
       - redis
     volumes:
-      - bc_registries_wallet:/app/.indy_client/wallet
+      - bc_registries_wallet:/home/indy/.indy_client/wallet
     networks:
       - tob_tob
       - tob_wallet-tob
@@ -53,7 +53,7 @@ services:
     links:
       - redis
     volumes:
-      - worksafe_bc_wallet:/app/.indy_client/wallet
+      - worksafe_bc_wallet:/home/indy/.indy_client/wallet
     networks:
       - tob_tob
       - tob_wallet-tob
@@ -83,7 +83,7 @@ services:
     links:
       - redis
     volumes:
-      - ministry_of_finance_wallet:/app/.indy_client/wallet
+      - ministry_of_finance_wallet:/home/indy/.indy_client/wallet
     networks:
       - tob_tob
       - tob_wallet-tob
@@ -113,7 +113,7 @@ services:
     links:
       - redis
     volumes:
-      - fraser_valley_health_authority_wallet:/app/.indy_client/wallet
+      - fraser_valley_health_authority_wallet:/home/indy/.indy_client/wallet
     networks:
       - tob_tob
       - tob_wallet-tob
@@ -143,7 +143,7 @@ services:
     links:
       - redis
     volumes:
-      - city_of_surrey_wallet:/app/.indy_client/wallet
+      - city_of_surrey_wallet:/home/indy/.indy_client/wallet
     networks:
       - tob_tob
       - tob_wallet-tob
@@ -173,7 +173,7 @@ services:
     links:
       - redis
     volumes:
-      - liquor_control_and_licensing_branch_wallet:/app/.indy_client/wallet
+      - liquor_control_and_licensing_branch_wallet:/home/indy/.indy_client/wallet
     networks:
       - tob_tob
       - tob_wallet-tob
@@ -208,7 +208,7 @@ services:
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
     volumes:
-      - on_biz_wallet:/app/.indy_client/wallet
+      - on_biz_wallet:/home/indy/.indy_client/wallet
     networks:
       - tob_tob
       - tob_wallet-tob

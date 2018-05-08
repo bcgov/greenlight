@@ -172,7 +172,7 @@ deleteWallets() {
     exit 1
   fi
 
-  deleteFromPods "/app/.indy_client/wallet/*" ${_podName}
+  deleteFromPods "/home/indy/.indy_client/wallet/*" ${_podName}
   if hasEnterpriseWallet ${_podName}; then
     deleteEnterpriseWallet ${_podName}
   fi
