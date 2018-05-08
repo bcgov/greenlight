@@ -4,6 +4,8 @@ FROM andrewwhitehead/von-image:py36-indy1.3.1-dev-441-ew-s2i
 
 USER root
 
+RUN mkdir -p $HOME/.indy_client/wallet
+
 # =======================================================================
 # Our OpenShift 3.7/3.9 environments don't support the --chown flag.
 # ---
@@ -15,17 +17,23 @@ USER root
 # Openshift 3.9 => docker engine 1.13
 # -----------------------------------------------------------------------
 #
-# ADD --chown=indy:indy ./src/requirements.txt $HOME/
+# COPY --chown=indy:indy ./src/requirements.txt $HOME/
+# RUN pip install -r requirements.txt
+#
 # ADD --chown=indy:indy ./src $HOME
 # ADD --chown=indy:indy ./site_templates $HOME/site_templates
 # ADD --chown=indy:indy ./docker/docker-entrypoint.sh /usr/local/bin/enter
 # 
-# RUN chmod -R a+rwx /usr/local/bin $HOME/permitify $HOME/von_connector
-#
+# RUN chown -R indy:indy $HOME/.indy_client && \
+#     chmod -R a+rwx /usr/local/bin && \
+#     chmod -R a+rw $HOME/.indy_client && \
+#     chmod a+rw $HOME#
 # -----------------------------------------------------------------------
 # The workaround ...
 # -----------------------------------------------------------------------
-ADD ./src/requirements.txt $HOME/
+COPY ./src/requirements.txt $HOME/
+RUN pip install -r requirements.txt
+
 ADD ./src $HOME
 ADD ./site_templates $HOME/site_templates
 ADD ./docker/docker-entrypoint.sh /usr/local/bin/enter
@@ -33,12 +41,12 @@ ADD ./docker/docker-entrypoint.sh /usr/local/bin/enter
 # Selectively chown the files we just added.
 # Doing a recursive chown on $HOME would be redundant and time consuming.
 RUN chown indy:indy $HOME/* /usr/local/bin/enter && \
-    chown -R indy:indy $HOME/site_templates/* $HOME/permitify/* $HOME/static/* $HOME/templates/* $HOME/von_connector/* && \
+    chown -R indy:indy $HOME/.indy_client $HOME/site_templates $HOME/permitify $HOME/static $HOME/templates $HOME/von_connector && \
     chmod -R a+rwx /usr/local/bin && \
+    chmod -R a+rw $HOME/.indy_client && \
     chmod a+rw $HOME
 # =======================================================================
 
 USER 1001
-RUN pip install -r requirements.txt
 
 ENTRYPOINT ["enter"]
