@@ -20,7 +20,7 @@ USER root
 # ADD --chown=indy:indy ./site_templates $HOME/site_templates
 # ADD --chown=indy:indy ./docker/docker-entrypoint.sh /usr/local/bin/enter
 # 
-# RUN chmod -R g+rwx /usr/local/bin $HOME/permitify $HOME/von_connector
+# RUN chmod -R a+rwx /usr/local/bin $HOME/permitify $HOME/von_connector
 #
 # -----------------------------------------------------------------------
 # The workaround ...
@@ -34,7 +34,7 @@ ADD ./docker/docker-entrypoint.sh /usr/local/bin/enter
 # Doing a recursive chown on $HOME would be redundant and time consuming.
 RUN chown indy:indy $HOME/* /usr/local/bin/enter & \
     chown -R indy:indy $HOME/site_templates/* $HOME/permitify/* $HOME/static/* $HOME/templates/* $HOME/von_connector/* & \
-    chmod -R g+rwx /usr/local/bin $HOME/permitify $HOME/von_connector
+    chmod -R a+rwx /usr/local/bin $HOME/permitify $HOME/von_connector
 # =======================================================================
 
 USER 1001
