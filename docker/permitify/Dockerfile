@@ -34,7 +34,7 @@ ADD ./docker/docker-entrypoint.sh /usr/local/bin/enter
 # Doing a recursive chown on $HOME would be redundant and time consuming.
 RUN chown indy:indy $HOME/* /usr/local/bin/enter && \
     chown -R indy:indy $HOME/site_templates/* $HOME/permitify/* $HOME/static/* $HOME/templates/* $HOME/von_connector/* && \
-    chmod -R a+rwx /usr/local/bin $HOME/permitify $HOME/von_connector && \
+    chmod -R a+rwx /usr/local/bin && \
     chmod a+rw $HOME
 # =======================================================================
 
