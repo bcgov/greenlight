@@ -25,9 +25,9 @@ RUN mkdir -p $HOME/.indy_client/wallet
 # ADD --chown=indy:indy ./docker/docker-entrypoint.sh /usr/local/bin/enter
 # 
 # RUN chown -R indy:indy $HOME/.indy_client && \
-#     chmod -R g+rwx /usr/local/bin && \
-#     chmod -R g+rw $HOME/.indy_client && \
-#     chmod g+rw $HOME#
+#     chmod -R a+rwx /usr/local/bin && \
+#     chmod -R a+rw $HOME/.indy_client && \
+#     chmod a+rw $HOME#
 # -----------------------------------------------------------------------
 # The workaround ...
 # -----------------------------------------------------------------------
@@ -42,9 +42,9 @@ ADD ./docker/docker-entrypoint.sh /usr/local/bin/enter
 # Doing a recursive chown on $HOME would be redundant and time consuming.
 RUN chown indy:indy $HOME/* /usr/local/bin/enter && \
     chown -R indy:indy $HOME/.indy_client $HOME/site_templates $HOME/permitify $HOME/static $HOME/templates $HOME/von_connector && \
-    chmod -R g+rwx /usr/local/bin && \
-    chmod -R g+rw $HOME/.indy_client && \
-    chmod g+rw $HOME
+    chmod -R a+rwx /usr/local/bin && \
+    chmod -R a+rw $HOME/.indy_client && \
+    chmod a+rw $HOME
 # =======================================================================
 
 USER 1001
