@@ -137,7 +137,7 @@ configureEnvironment () {
     
     if [ "${INDY_WALLET_TYPE}" == "remote" ]; then
       # If we're using an enterprise wallet, it's safe to run multi-process.
-      # However Premitify does not support it just yet.
+      # However Premitify does not support it well just yet.
       export WEB_CONCURRENCY=${WEB_CONCURRENCY:-1}
     else
       # If we're using a virtual wallet we can't run multi-process
@@ -172,26 +172,32 @@ getStartupParams() {
 }
 
 build() {
-    echo -e "\nBuilding permitify base image ..."
+    echo -e "\nBuilding the permitify s2i base image ..."
     docker build \
-        -t 'permitify-base' \
-        -f 'permitify/Dockerfile' \
+        -t 'permitify-s2i' \
+        -f 'permitify-s2i/Dockerfile' \
         ..
 
-    echo -e "\nBuilding permitify base image ..."
+    echo -e "\nBuilding the permitify run-time image ..."
     ${S2I_EXE} build \
       '../src' \
-      'permitify-base' \
+      'permitify-s2i' \
       'permitify'
 }
 
 rebuild() {
-    echo -e "\nRebuilding permitify image ..."
+    echo -e "\nRebuilding the permitify s2i base image ..."
     docker build \
         --no-cache \
-        -t 'permitify' \
-        -f 'permitify/Dockerfile' \
+        -t 'permitify-s2i' \
+        -f 'permitify-s2i/Dockerfile' \
         ..
+
+    echo -e "\nRebuilding the permitify run-time image ..."
+    ${S2I_EXE} build \
+      '../src' \
+      'permitify-s2i' \
+      'permitify'
 }
 
 deleteVolumes() {

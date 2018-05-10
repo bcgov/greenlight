@@ -28,6 +28,7 @@ echoWarning "-------------------------------------------------------------------
 echo
 echoWarning "TEMPLATE_NAME: ${TEMPLATE_NAME}"
 echoWarning "INDY_WALLET_SEED: ${INDY_WALLET_SEED}"
+echoWarning "WEB_CONCURRENCY: ${WEB_CONCURRENCY}"
 echoWarning "DEBUG: ${DEBUG}"
 echoWarning "Cmd: ${@}"
 echoWarning "=================================================================================="
