@@ -159,7 +159,7 @@
       "displayName": "Resources Memory Request",
       "description": "The resources Memory request (in Mi, Gi, etc) for this build.",
       "required": true,
-      "value": "0mi"
+      "value": "0Mi"
     }
   ]
 }
