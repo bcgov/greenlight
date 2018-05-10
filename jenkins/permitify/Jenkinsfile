@@ -1,14 +1,21 @@
 // Edit your app's name below
+def BASE_APP_NAME = 'permitify-s2i'
 def APP_NAME = 'permitify'
 
 // Edit your environment TAG names below
 def TAG_NAMES = ['dev', 'test', 'prod']
 
 // You shouldn't have to edit these if you're following the conventions
+def BASE_BUILD_CONFIG = BASE_APP_NAME
 def BUILD_CONFIG = APP_NAME
 def IMAGESTREAM_NAME = APP_NAME
 
 node {
+  stage('build ' + BASE_BUILD_CONFIG) {
+    echo "Building: " + BASE_BUILD_CONFIG
+    openshiftBuild bldCfg: BASE_BUILD_CONFIG, showBuildLogs: 'true'
+  }
+  
   stage('build ' + BUILD_CONFIG) {
     echo "Building: " + BUILD_CONFIG
     openshiftBuild bldCfg: BUILD_CONFIG, showBuildLogs: 'true'
