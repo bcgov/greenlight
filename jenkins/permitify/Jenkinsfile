@@ -1,5 +1,5 @@
 // Edit your app's name below
-def APP_NAME = 'permitify-s2i'
+def BASE_APP_NAME = 'permitify-s2i'
 def APP_NAME = 'permitify'
 
 // Edit your environment TAG names below
