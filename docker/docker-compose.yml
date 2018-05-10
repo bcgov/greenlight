@@ -20,6 +20,9 @@ services:
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY}
+      DEBUG: ${DEBUG}
+      RUST_LOG: ${RUST_LOG}
     links:
       - redis
     volumes:
@@ -50,6 +53,9 @@ services:
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY}
+      DEBUG: ${DEBUG}
+      RUST_LOG: ${RUST_LOG}
     links:
       - redis
     volumes:
@@ -80,6 +86,9 @@ services:
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY}
+      DEBUG: ${DEBUG}
+      RUST_LOG: ${RUST_LOG}
     links:
       - redis
     volumes:
@@ -110,6 +119,9 @@ services:
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY}
+      DEBUG: ${DEBUG}
+      RUST_LOG: ${RUST_LOG}
     links:
       - redis
     volumes:
@@ -140,6 +152,9 @@ services:
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY}
+      DEBUG: ${DEBUG}
+      RUST_LOG: ${RUST_LOG}
     links:
       - redis
     volumes:
@@ -170,6 +185,9 @@ services:
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY}
+      DEBUG: ${DEBUG}
+      RUST_LOG: ${RUST_LOG}
     links:
       - redis
     volumes:
@@ -207,6 +225,9 @@ services:
       INDY_WALLET_URL: ${INDY_WALLET_URL}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       REDIS_SERVICE_NAME: ${REDIS_SERVICE_NAME}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY}
+      DEBUG: ${DEBUG}
+      RUST_LOG: ${RUST_LOG}
     volumes:
       - on_biz_wallet:/home/indy/.indy_client/wallet
     networks:

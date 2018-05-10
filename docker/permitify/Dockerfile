@@ -1,11 +1,3 @@
-FROM andrewwhitehead/von-image:py36-indy1.3.1-dev-441-ew-s2i
-
-# The indy (1001) user has already been setup for us at this point.
-
-USER root
-
-RUN mkdir -p $HOME/.indy_client/wallet
-
 # =======================================================================
 # Our OpenShift 3.7/3.9 environments don't support the --chown flag.
 # ---
@@ -15,38 +7,30 @@ RUN mkdir -p $HOME/.indy_client/wallet
 #
 # Openshift 3.7 => docker engine 1.12
 # Openshift 3.9 => docker engine 1.13
-# -----------------------------------------------------------------------
-#
-# COPY --chown=indy:indy ./src/requirements.txt $HOME/
-# RUN pip install -r requirements.txt
-#
-# ADD --chown=indy:indy ./src $HOME
-# ADD --chown=indy:indy ./site_templates $HOME/site_templates
-# ADD --chown=indy:indy ./docker/docker-entrypoint.sh /usr/local/bin/enter
-# 
-# RUN chown -R indy:indy $HOME/.indy_client && \
-#     chmod -R a+rwx /usr/local/bin && \
-#     chmod -R a+rw $HOME/.indy_client && \
-#     chmod a+rw $HOME#
-# -----------------------------------------------------------------------
-# The workaround ...
-# -----------------------------------------------------------------------
-COPY ./src/requirements.txt $HOME/
-RUN pip install -r requirements.txt
-
-ADD ./src $HOME
-ADD ./site_templates $HOME/site_templates
-ADD ./docker/docker-entrypoint.sh /usr/local/bin/enter
-
-# Selectively chown the files we just added.
-# Doing a recursive chown on $HOME would be redundant and time consuming.
-RUN chown indy:indy $HOME/* /usr/local/bin/enter && \
-    chown -R indy:indy $HOME/.indy_client $HOME/site_templates $HOME/permitify $HOME/static $HOME/templates $HOME/von_connector && \
-    chmod -R a+rwx /usr/local/bin && \
-    chmod -R a+rw $HOME/.indy_client && \
-    chmod a+rw $HOME
 # =======================================================================
 
-USER 1001
+# Make some modifications to the python-s2i image to support
+# dynamic creation of issuer services based on the container's
+# deployment configuration.
+FROM andrewwhitehead/von-image:py36-indy1.3.1-dev-441-ew-s2i
 
-ENTRYPOINT ["enter"]
+USER root
+
+# We don't need to collect any static files from the Permitify Django app during the s2i build
+# and the application does not use a database.
+ENV DISABLE_COLLECTSTATIC=true
+ENV DISABLE_MIGRATE=true
+
+# Create a wallet directory so we can set the permissions for any volumes mounted to it.
+RUN mkdir -p $HOME/.indy_client/wallet
+
+# Mount our issuer service initialization process in front of the s2i run script.
+RUN mv ${STI_SCRIPTS_PATH}/run ${STI_SCRIPTS_PATH}/s2i_run
+ADD ./docker/docker-entrypoint.sh ${STI_SCRIPTS_PATH}/run
+
+RUN chmod -R ug+rwx $STI_SCRIPTS_PATH && \
+    chmod -R ug+rw $HOME/.indy_client
+
+ADD ./site_templates $HOME/site_templates
+
+USER 1001

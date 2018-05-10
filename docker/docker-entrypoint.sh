@@ -1,49 +1,48 @@
 #!/bin/bash
 
 echoWarning (){
-  _msg=${1}
+  _msg=${@}
   _yellow='\033[1;33m'
   _nc='\033[0m' # No Color
   echo -e "${_yellow}${_msg}${_nc}"
 }
 
-if [ -z "$@" ]; then
+if [ -z "${@}" ]; then
   TEMPLATE_NAME=${TEMPLATE_NAME:-bc_registries}
-  APPLICATION_IP=${APPLICATION_IP:-0.0.0.0}
-  APPLICATION_PORT=${APPLICATION_PORT:-8080}
 
-  echoWarning "----------------------------------------------------------------------------------"
-  echoWarning "No command line parameters were provided to the entry point."
-  echoWarning "Using the values specified for the environment, or defaults if none are provided."
-  echo
-  echoWarning "TEMPLATE_NAME: ${TEMPLATE_NAME}"
-  echoWarning "APPLICATION_IP: ${APPLICATION_IP}"
-  echoWarning "APPLICATION_PORT: ${APPLICATION_PORT}"
-  echoWarning "INDY_WALLET_SEED: ${INDY_WALLET_SEED}"
-  echoWarning "----------------------------------------------------------------------------------"  
-
-  set "${TEMPLATE_NAME}" "python" "manage.py" "runserver" "${APPLICATION_IP}:${APPLICATION_PORT}"
+  if [ $DEBUG ] && [ "$DEBUG" == "true" ]; then
+    # Support for running in debug mode.
+    set "${TEMPLATE_NAME}" "python" "manage.py" "runserver" "--noreload" "--nothreading" "0.0.0.0:8080"
+  else
+    set "${TEMPLATE_NAME}" "${STI_SCRIPTS_PATH}/s2i_run"
+  fi
 fi
 
 TEMPLATE_NAME=${TEMPLATE_NAME:-$1}
 TEMPLATE_DIRECTORY="${HOME}/site_templates/$TEMPLATE_NAME"
 shift
 
-echo "================================================================================"
-echo "Using template: $TEMPLATE_NAME"
-echo "Cmd: $@"
-echo "================================================================================"
+echoWarning "=================================================================================="
+echoWarning "Initializing issuer service."
+echoWarning "----------------------------------------------------------------------------------"
+echo
+echoWarning "TEMPLATE_NAME: ${TEMPLATE_NAME}"
+echoWarning "INDY_WALLET_SEED: ${INDY_WALLET_SEED}"
+echoWarning "DEBUG: ${DEBUG}"
+echoWarning "Cmd: ${@}"
+echoWarning "=================================================================================="
+echo
 
 if [ -d "${TEMPLATE_DIRECTORY}" ]; then
     echo "Copying template directory; ${TEMPLATE_DIRECTORY} ..."
+    echo
     cp "${TEMPLATE_DIRECTORY}"/* . 
 else
-    echo "Directory ${TEMPLATE_DIRECTORY} doesn't exist."
+    echoWarning "The issuer service template directory, ${TEMPLATE_DIRECTORY}, doesn't exist."
+    echo
     exit 1
 fi
 
-export RUST_LOG=debug
-
-# python3 manage.py migrate
 echo "Starting server ..."
-exec "$@"
+echo
+exec "${@}"
