@@ -177,14 +177,6 @@
                     "value": "${TEMPLATE_NAME}"
                   },
                   {
-                    "name": "APPLICATION_IP",
-                    "value": "${APPLICATION_IP}"
-                  },
-                  {
-                    "name": "APPLICATION_PORT",
-                    "value": "${APPLICATION_PORT}"
-                  },
-                  {
                     "name": "THE_ORG_BOOK_API_URL",
                     "value": "${THE_ORG_BOOK_API_URL}"
                   },
@@ -341,20 +333,6 @@
       "description": "The name of the site template to use for the application instance.",
       "required": true,
       "value": "city_of_surrey"
-    },
-    {
-      "name": "APPLICATION_IP",
-      "displayName": "Application IP",
-      "description": "The internal IP address to use when hosting the application instance.",
-      "required": true,
-      "value": "0.0.0.0"
-    },
-    {
-      "name": "APPLICATION_PORT",
-      "displayName": "Application Port",
-      "description": "The internal port to use when hosting the application instance.",
-      "required": true,
-      "value": "8080"
     },
     {
       "name": "THE_ORG_BOOK_API_URL",

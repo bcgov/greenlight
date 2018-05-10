@@ -53,15 +53,16 @@ When you run the services, each service will use a seed derived from the seed yo
 You can see which seed value each service using by looking at the logs like this:
 
 ```
+==================================================================================
+Initializing issuer service.
 ----------------------------------------------------------------------------------
-No command line parameters were provided to the entry point.
-Using the values specified for the environment, or defaults if none are provided.
-
+bc_registries_1                        |
 TEMPLATE_NAME: bc_registries
-APPLICATION_IP: 0.0.0.0
-APPLICATION_PORT: 8080
-INDY_WALLET_SEED: my_seed_000000000000000000000001
-----------------------------------------------------------------------------------
+INDY_WALLET_SEED: issuer_service_00000000000000001
+WEB_CONCURRENCY: 1
+DEBUG:
+Cmd: /usr/libexec/s2i/s2i_run
+==================================================================================
 ```
 
 Each seed, must be authorized on the indy ledger! If you are using the https://github.com/bcgov/von-network network locally, you can visit the webserver running on your local machine to authorize the did for each seed. If you are using the shared development Indy ledger (which is an instance of von-network), you can visit this page to authorize your did: http://159.89.115.24
@@ -214,8 +215,6 @@ onbis:
       THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
       TEMPLATE_NAME: onbis
-      APPLICATION_IP: 0.0.0.0
-      APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5000
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}7
       TOB_INDY_SEED: ${TOB_INDY_SEED}
