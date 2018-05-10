@@ -24,3 +24,4 @@ git+https://github.com/bcgov/von_agent#egg=von-agent
 
 # Web Server
 gunicorn==19.7.1
+whitenoise>=3.3.1
