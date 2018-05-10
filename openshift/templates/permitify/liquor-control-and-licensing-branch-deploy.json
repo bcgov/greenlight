@@ -238,6 +238,10 @@
                         "key": "wallet-password"
                       }
                     }
+                  },
+                  {
+                    "name": "WEB_CONCURRENCY",
+                    "value": "${WEB_CONCURRENCY}"
                   }
                 ],
                 "resources": {
@@ -403,6 +407,13 @@
       "description": "The name associated to the wallet deployment resources.  In particular, this is used to wire up the credentials associated to the wallet.",
       "required": true,
       "value": "wallet"
+    },
+    {
+      "name": "WEB_CONCURRENCY",
+      "displayName": "Web Concurrency",
+      "description": "This setting controlls the number of gunicorn processes that get started.  If left blank the system will calculate the value.  Set to 1 for applications that don't work well with multiple processes, otherwise leave it blank.",
+      "required": false,
+      "value": "1"
     }
   ]
 }
