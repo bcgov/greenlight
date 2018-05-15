@@ -1,6 +1,5 @@
 #!/bin/bash
 export MSYS_NO_PATHCONV=1
-set -e
 SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 
 # =================================================================================================================
@@ -9,14 +8,14 @@ SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 usage () {
   cat <<-EOF
 
-  Manage the permitify pods within a given OpenShift environment.
+  Manage the permitify issuer services within a given OpenShift environment.
 
   Usage: 
     $0 [options] [commands]
 
   Example:
     $0 -e test scaleDown
-    - This will scale down all of the pods in the permitify TEST environment.
+    - This will scale down all of the issuer services in the permitify TEST environment.
 
   Options:
   ========
@@ -31,26 +30,26 @@ usage () {
   Commands:
   ========
     scaleUp
-      - Scale down one or more pods.  By default all pods are affected.
-        To scale select pods list them following the command.
+      - Scale down one or more issuer service.  By default all issuer services are affected.
+        To scale select issuer services list them following the command.
         For example;
           $0 -e test scaleUp bc-registries worksafe-bc
 
     scaleDown
-      - Scale up one or more pods.  By default all pods are affected.
-        To scale select pods list them following the command.
+      - Scale up one or more issuer services.  By default all issuer services are affected.
+        To scale select issuer services list them following the command.
         For example;
           $0 -e test scaleDown bc-registries worksafe-bc
 
     recycle
-      - Recycle up one or more pods.  By default all pods are affected.
-        To recycle select pods list them following the command.
+      - Recycle up one or more issuer services.  By default all issuer services are affected.
+        To recycle select issuer services list them following the command.
         For example;
           $0 -e test recycle bc-registries worksafe-bc
 
     reset
-      - Reset one or more pods.  By default all pods are affected.
-        To reset select pods list them following the command.
+      - Reset one or more issuer services.  By default all issuer services are affected.
+        To reset select issuer services list them following the command.
         For example;
           $0 -e test reset bc-registries worksafe-bc
         
@@ -60,7 +59,32 @@ usage () {
         - Register the environment's DID with the ledger.
 
     registerDids
-      - Register/re-register the services's DIDs with the ledger.
+      - Register/re-register the issuer services's DIDs with the ledger.
+
+    createDeployConfig
+      - Create one or more deployment configurations in an OpenShift environment 
+        using pre-generated deployment configuration files.
+        
+        Examples;
+          $0 -e dev createDeployConfig
+          - This will create deployment configurations from all of the existing deployment configuration files.
+
+          $0 -e dev createDeployConfig ./bc-registries-deploy_DeploymentConfig.json
+          - This will create a deployment configurations from the specified deployment configuration file.
+
+    replaceDeployConfig
+      - Replace one or more deployment configurations in an OpenShift environment 
+        using pre-generated deployment configuration files.
+        
+        Examples;
+          $0 -e dev replaceDeployConfig
+          - This will replace deployment configurations for all of the existing deployment configuration files.
+
+          $0 -e dev replaceDeployConfig ./bc-registries-deploy_DeploymentConfig.json
+          - This will replace the deployment configurations for the specified deployment configuration file.
+
+    getIssuerServicePods
+      - Get a list of issuer service pods running in a given environment.
 EOF
 exit 1
 }
@@ -131,7 +155,7 @@ reset() {
   fi
 
   for _pod in ${_pods}; do
-    deleteFromPods "/app/.indy_client/wallet/*" ${_pod}
+    deleteWallets ${_pod}
     exitOnError
     scaleDown ${_pod}
   done
@@ -139,6 +163,83 @@ reset() {
   printAndWait "If you are resetting the ledger, wait for the ledger to completely start up before continuing."
 
   registerDids $(getDidNames)
+}
+
+deleteWallets() {
+  _podName=${1}
+  if [ -z "${_podName}" ]; then
+    echo -e \\n"deleteWallets; Missing parameter!"\\n
+    exit 1
+  fi
+
+  deleteFromPods "/home/indy/.indy_client/wallet/*" ${_podName}
+  if hasEnterpriseWallet ${_podName}; then
+    deleteEnterpriseWallet ${_podName}
+  fi
+}
+
+deleteEnterpriseWallet() {
+  _podName=${1}
+  _walletDbPodName=${WALLET_DB_POD_NAME:-wallet-db}
+  if [ -z "${_podName}" ]; then
+    echo -e \\n"deleteEnterpriseWallet; Missing parameter!"\\n
+    exit 1
+  fi
+
+  if [ -z "${WALLET_DB_INSTANCE_NAME}" ]; then
+    export WALLET_DB_INSTANCE_NAME=$(getPodByName.sh ${_walletDbPodName})
+  fi
+
+  if [ ! -z "${WALLET_DB_INSTANCE_NAME}" ]; then
+    _walletName=$(getWalletName ${_podName})
+    _sql="delete from api_walletitem where wallet_name LIKE '${_walletName}%';"
+    _pSqlCmd="psql -U\${POSTGRESQL_USER} -d \${POSTGRESQL_DATABASE} -ac \"${_sql}\""
+
+    runInContainer \
+      ${_walletDbPodName} \
+      "${_pSqlCmd}"
+  else
+    echo -e "No enterprise wallet instance was found in this environment ..."
+  fi
+}
+
+hasEnterpriseWallet() {
+  _podName=${1}
+  if [ -z "${_podName}" ]; then
+    echo -e \\n"hasEnterpriseWallet; Missing parameter!"\\n
+    exit 1
+  fi
+
+  _walletType=$(getWalletType ${_podName})
+  if [ "${_walletType}" == "remote" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+getWalletType() {
+  _podName=${1}
+  if [ -z "${_podName}" ]; then
+    echo -e \\n"getWalletType; Missing parameter!"\\n
+    exit 1
+  fi
+
+  runInContainer \
+    "${_podName}" \
+    "env | grep INDY_WALLET_TYPE | sed 's~INDY_WALLET_TYPE=\(.*\)$~\1~'"
+}
+
+getWalletName() {
+  _podName=${1}
+  if [ -z "${_podName}" ]; then
+    echo -e \\n"getWalletName; Missing parameter!"\\n
+    exit 1
+  fi
+
+  runInContainer \
+    "${_podName}" \
+    "cat config.toml | grep ^name | sed 's~^name\s*=\s*\"\(.*\)\"\s*$~\1~' | head -n 1"
 }
 
 recycle() {
@@ -180,7 +281,17 @@ getLedgerAddress() {
 
   echo ${_ledgerAddress}
 }
+
+# Add any non-issurer service pods to this list
+NON_ISSURER_SERVICE_PODS="redis wallet wallet-db"
+
+getIssuerServicePods() {
+  _pods=$(getAllPods ${@})
+  _issuerServicePods=$(removeFromList "${_pods}" "${NON_ISSURER_SERVICE_PODS}")
+  echo "${_issuerServicePods}"
+}
 # =================================================================================================================
+
 pushd ${SCRIPT_HOME} >/dev/null
 _cmd=$(toLower ${1})
 shift
@@ -188,27 +299,37 @@ shift
 case "${_cmd}" in
   scaleup)
     switchProject
-    PODS=$(getAllPods ${@})
+    PODS=$(getIssuerServicePods ${@})
     scaleUp ${PODS}
     ;;
   scaledown)
     switchProject
-    PODS=$(getAllPods ${@})
+    PODS=$(getIssuerServicePods ${@})
     scaleDown ${PODS}
     ;;
   recycle)
     switchProject
-    PODS=$(getAllPods ${@})
+    PODS=$(getIssuerServicePods ${@})
     recycle ${PODS}
     ;;
   reset)
     switchProject
-    PODS=$(getAllPods ${@})
+    PODS=$(getIssuerServicePods ${@})
     reset ${PODS}
     ;;
   registerdids)
     registerDids $(getDidNames)
-    ;;    
+    ;;
+  createdeployconfig)
+    deployConfigs ${@}
+    ;;
+  replacedeployconfig)
+    export OC_ACTION=replace
+    deployConfigs ${@}
+    ;;
+  getpods)
+    getIssuerServicePods ${@}
+    ;;
   *)
     echoWarning "Unrecognized command; ${_cmd}"
     usage
