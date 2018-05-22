@@ -1,7 +1,15 @@
 #!/bin/bash
 export MSYS_NO_PATHCONV=1
-export DOCKERHOST=${APPLICATION_URL:-$(docker run --net=host codenvy/che-ip)}
+export DOCKERHOST=${APPLICATION_URL:-$(docker run  --rm --net=host codenvy/che-ip)}
 set -e
+
+S2I_EXE=s2i
+if [ -z $(type -P "$S2I_EXE") ]; then
+  echo -e "The ${S2I_EXE} executable is needed and not on your path."
+  echo -e "It can be downloaded from here: https://github.com/openshift/source-to-image"
+  echo -e "Make sure you place it in a directory on your path."
+  exit 1
+fi
 
 SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 export COMPOSE_PROJECT_NAME="permitify"
@@ -26,10 +34,18 @@ usage () {
           inject the url for the API using the tob-url flag.
 
           Examples:
-          $0 start seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
-          $0 start seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000 THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
-          $0 start bc_registries seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
-          $0 start bc_registries seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000 THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
+          
+          - Start ALL issuer services
+            $0 start all seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
+          
+          - Start just the default (bc_registries) issuer service
+            $0 start seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
+          
+          - Point the issuer services at a locally running instance of the tob-api
+            $0 start seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000 THE_ORG_BOOK_API_URL=http://docker.for.win.localhost:56325/api/v1
+          
+          - Start specific issuer services
+            $0 start bc_registries worksafe_bc seed=issuer_service_00000000000000000 TOB_INDY_SEED=the_org_book_0000000000000000000
 
   stop - Stops the services.  This is a non-destructive process.  The containers
          are not deleted so they will be reused the next time you run start.
@@ -106,12 +122,26 @@ configureEnvironment () {
   export INDY_WALLET_SEED=${seed%?}
   export TOB_INDY_SEED=${TOB_INDY_SEED}
 
+  export RUST_LOG=${RUST_LOG:-debug}
+  export DEBUG=${DEBUG}
+
+  export WALLET_USER_ID=${WALLET_USER_ID:-wall-e}
+  export WALLET_PASSWORD=${WALLET_PASSWORD:-pass1234}
   export INDY_WALLET_URL=${INDY_WALLET_URL:-http://$DOCKERHOST:6000/api/v1/}
   export INDY_WALLET_TYPE=${wallet}
 
   if [ "$COMMAND" == "start" ]; then
     if [ -z "$wallet" ]; then
       export INDY_WALLET_TYPE="virtual"
+    fi
+    
+    if [ "${INDY_WALLET_TYPE}" == "remote" ]; then
+      # If we're using an enterprise wallet, it's safe to run multi-process.
+      # However Premitify does not support it well just yet.
+      export WEB_CONCURRENCY=${WEB_CONCURRENCY:-1}
+    else
+      # If we're using a virtual wallet we can't run multi-process
+      export WEB_CONCURRENCY=1
     fi
   fi
 }
@@ -142,46 +172,32 @@ getStartupParams() {
 }
 
 build() {
-    echo -e "\nBuilding libindy image ..."
+    echo -e "\nBuilding the permitify s2i base image ..."
     docker build \
-        -t 'libindy' \
-        -f 'libindy/Dockerfile' \
-        .
-
-    echo -e "\nBuilding python-libindy image ..."
-    docker build \
-        -t 'python-libindy' \
-        -f 'python-libindy/Dockerfile' \
-        .
-
-    echo -e "\nBuilding permitify image ..."
-    docker build \
-        -t 'permitify' \
-        -f 'permitify/Dockerfile' \
+        -t 'permitify-s2i' \
+        -f 'permitify-s2i/Dockerfile' \
         ..
+
+    echo -e "\nBuilding the permitify run-time image ..."
+    ${S2I_EXE} build \
+      '../src' \
+      'permitify-s2i' \
+      'permitify'
 }
 
 rebuild() {
-    echo -e "\nRebuilding libindy image ..."
+    echo -e "\nRebuilding the permitify s2i base image ..."
     docker build \
         --no-cache \
-        -t 'libindy' \
-        -f 'libindy/Dockerfile' \
-        .
-
-    echo -e "\nRebuilding python-libindy image ..."
-    docker build \
-        --no-cache \
-        -t 'python-libindy' \
-        -f 'python-libindy/Dockerfile' \
-        .
-
-    echo -e "\nRebuilding permitify image ..."
-    docker build \
-        --no-cache \
-        -t 'permitify' \
-        -f 'permitify/Dockerfile' \
+        -t 'permitify-s2i' \
+        -f 'permitify-s2i/Dockerfile' \
         ..
+
+    echo -e "\nRebuilding the permitify run-time image ..."
+    ${S2I_EXE} build \
+      '../src' \
+      'permitify-s2i' \
+      'permitify'
 }
 
 deleteVolumes() {

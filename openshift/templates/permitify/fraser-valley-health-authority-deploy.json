@@ -57,24 +57,19 @@
     {
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
-      "metadata":
-      {
+      "metadata": {
         "name": "${NAME}",
-        "labels":
-        {
+        "labels": {
           "app": "${NAME}",
           "template": "${NAME}-deployment-template"
         }
       },
-      "spec":
-      {
+      "spec": {
         "accessModes": [
           "ReadWriteOnce"
         ],
-        "resources":
-        {
-          "requests":
-          {
+        "resources": {
+          "requests": {
             "storage": "${PERSISTENT_VOLUME_SIZE}"
           }
         }
@@ -127,8 +122,7 @@
             "volumes": [
               {
                 "name": "${NAME}-data",
-                "persistentVolumeClaim":
-                {
+                "persistentVolumeClaim": {
                   "claimName": "${NAME}"
                 }
               }
@@ -183,14 +177,6 @@
                     "value": "${TEMPLATE_NAME}"
                   },
                   {
-                    "name": "APPLICATION_IP",
-                    "value": "${APPLICATION_IP}"
-                  },
-                  {
-                    "name": "APPLICATION_PORT",
-                    "value": "${APPLICATION_PORT}"
-                  },
-                  {
                     "name": "THE_ORG_BOOK_API_URL",
                     "value": "${THE_ORG_BOOK_API_URL}"
                   },
@@ -226,6 +212,36 @@
                         "key": "database-password"
                       }
                     }
+                  },
+                  {
+                    "name": "INDY_WALLET_TYPE",
+                    "value": "${INDY_WALLET_TYPE}"
+                  },
+                  {
+                    "name": "INDY_WALLET_URL",
+                    "value": "${INDY_WALLET_URL}"
+                  },
+                  {
+                    "name": "WALLET_USER_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${WALLET_DEPLOYMENT_NAME}",
+                        "key": "wallet-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "WALLET_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${WALLET_DEPLOYMENT_NAME}",
+                        "key": "wallet-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "WEB_CONCURRENCY",
+                    "value": "${WEB_CONCURRENCY}"
                   }
                 ],
                 "resources": {
@@ -237,24 +253,6 @@
             ]
           }
         }
-      }
-    },
-    {
-      "kind": "HorizontalPodAutoscaler",
-      "apiVersion": "autoscaling/v1",
-      "metadata": {
-        "name": "${NAME}",
-        "labels": {
-          "app": "${NAME}"
-        }
-      },
-      "spec": {
-        "scaleTargetRef": {
-          "kind": "DeploymentConfig",
-          "name": "${NAME}"
-        },
-        "minReplicas": 1,
-        "maxReplicas": 1
       }
     }
   ],
@@ -312,7 +310,7 @@
       "required": true,
       "value": "False"
     },
-	  {
+    {
       "name": "TAG_NAME",
       "displayName": "Environment TAG name",
       "description": "The TAG name for this environment, e.g., dev, test, prod",
@@ -331,7 +329,7 @@
       "displayName": "Mount Path",
       "description": "The path to mount the persistent volume.",
       "required": true,
-      "value": "/app/.indy_client/wallet"
+      "value": "/home/indy/.indy_client/wallet"
     },
     {
       "name": "TEMPLATE_NAME",
@@ -339,20 +337,6 @@
       "description": "The name of the site template to use for the application instance.",
       "required": true,
       "value": "fraser_valley_health_authority"
-    },
-    {
-      "name": "APPLICATION_IP",
-      "displayName": "Application IP",
-      "description": "The internal IP address to use when hosting the application instance.",
-      "required": true,
-      "value": "0.0.0.0"
-    },
-    {
-      "name": "APPLICATION_PORT",
-      "displayName": "Application Port",
-      "description": "The internal port to use when hosting the application instance.",
-      "required": true,
-      "value": "8080"
     },
     {
       "name": "THE_ORG_BOOK_API_URL",
@@ -402,6 +386,34 @@
       "description": "The Redis service (host) name.",
       "required": true,
       "value": "redis"
+    },
+    {
+      "name": "INDY_WALLET_TYPE",
+      "displayName": "Indy Wallet Type",
+      "description": "The wallet type to use; remote (enterprise) or virtual (local), defaults to virtual.",
+      "required": true,
+      "value": "virtual"
+    },
+    {
+      "name": "INDY_WALLET_URL",
+      "displayName": "Indy Wallet URL",
+      "description": "The URL to the wallet provider.  Used only when using a remote (enterprise) wallet.",
+      "required": true,
+      "value": "http://wallet:8080/api/v1/"
+    },
+    {
+      "name": "WALLET_DEPLOYMENT_NAME",
+      "displayName": "Wallet Deployment Name",
+      "description": "The name associated to the wallet deployment resources.  In particular, this is used to wire up the credentials associated to the wallet.",
+      "required": true,
+      "value": "wallet"
+    },
+    {
+      "name": "WEB_CONCURRENCY",
+      "displayName": "Web Concurrency",
+      "description": "This setting controlls the number of gunicorn processes that get started.  If left blank the system will calculate the value.  Set to 1 for applications that don't work well with multiple processes, otherwise leave it blank.",
+      "required": false,
+      "value": "1"
     }
   ]
 }

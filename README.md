@@ -5,6 +5,10 @@ Includes a "roadmap" site which the user can follow like a checklist.
 
 Also includes the precursor to the von-connector. The goal is to allow all issuers and verifiers to be declaratively configurable.
 
+## Quick Start Guide
+
+A **Quick Start Guide** for a working set of applications is maintained here; [Running a Complete Provisional VON Network](https://github.com/bcgov/TheOrgBook/blob/master/docker/README.md#running-a-complete-provisional-von-network).  This is a great way to see the **Permitify** services in action.
+
 ## Running in OpenShift
 
 This project uses the scripts found in [openshift-project-tools](https://github.com/BCDevOps/openshift-project-tools) to setup and maintain OpenShift environments (both local and hosted).  Refer to the [OpenShift Scripts](https://github.com/BCDevOps/openshift-project-tools/blob/master/bin/README.md) documentation for details.
@@ -49,15 +53,16 @@ When you run the services, each service will use a seed derived from the seed yo
 You can see which seed value each service using by looking at the logs like this:
 
 ```
+==================================================================================
+Initializing issuer service.
 ----------------------------------------------------------------------------------
-No command line parameters were provided to the entry point.
-Using the values specified for the environment, or defaults if none are provided.
-
+bc_registries_1                        |
 TEMPLATE_NAME: bc_registries
-APPLICATION_IP: 0.0.0.0
-APPLICATION_PORT: 8080
-INDY_WALLET_SEED: my_seed_000000000000000000000001
-----------------------------------------------------------------------------------
+INDY_WALLET_SEED: issuer_service_00000000000000001
+WEB_CONCURRENCY: 1
+DEBUG:
+Cmd: /usr/libexec/s2i/s2i_run
+==================================================================================
 ```
 
 Each seed, must be authorized on the indy ledger! If you are using the https://github.com/bcgov/von-network network locally, you can visit the webserver running on your local machine to authorize the did for each seed. If you are using the shared development Indy ledger (which is an instance of von-network), you can visit this page to authorize your did: http://159.89.115.24
@@ -110,6 +115,19 @@ http://159.89.115.24/register?seed=worksafe_bc_agent_00000000000000
 - For Django's hot-reloading to work in development, the src directory needs to mounted as a volume. This only works when one "service" is defined in the docker-compose.yml since multiple services will clobber each other's config files that get copied in.
 
 - The wallet directory must be mounted in an internal volume. See docker-compose.yml for example.
+
+## Running a Complete Provisional VON Network
+
+A "complete" provisional VON Network consists of the following components;
+- A Provisional Ledger Node Pool; [von-network](https://github.com/bcgov/von-network)
+- An instance of TheOrgBook; [TheOrgBook](https://github.com/bcgov/TheOrgBook)
+- And a set of Issuer Services; [Permitify](https://github.com/bcgov/permitify)
+
+Refer to the docker compose documentation in each of the projects for specific details.
+
+### Quick Start Guide
+
+A [Quick Start Guide](https://github.com/bcgov/TheOrgBook/tree/master/docker#quick-start-guide) can be found in the [bcgov/TheOrgBook](https://github.com/bcgov/TheOrgBook) repository.
 
 ## Setting up a new issuing service in Permitify
 
@@ -197,14 +215,12 @@ onbis:
       THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
       DISCONNECTED: '${DISCONNECTED-false}'
       TEMPLATE_NAME: onbis
-      APPLICATION_IP: 0.0.0.0
-      APPLICATION_PORT: 8080
       APPLICATION_URL: ${APPLICATION_URL}:5000
       INDY_WALLET_SEED: ${INDY_WALLET_SEED}7
       TOB_INDY_SEED: ${TOB_INDY_SEED}
       LEDGER_URL: ${LEDGER_URL}
     volumes:
-      - onbis_wallet:/app/.indy_client/wallet
+      - onbis_wallet:/home/indy/.indy_client/wallet
     ports:
       - 5006:8080
 ```
