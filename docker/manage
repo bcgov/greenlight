@@ -180,6 +180,8 @@ build() {
 
     echo -e "\nBuilding the permitify run-time image ..."
     ${S2I_EXE} build \
+      -e "HTTP_PROXY=${HTTP_PROXY}" \
+      -e "HTTPS_PROXY=${HTTPS_PROXY}" \
       '../src' \
       'permitify-s2i' \
       'permitify'
@@ -195,6 +197,8 @@ rebuild() {
 
     echo -e "\nRebuilding the permitify run-time image ..."
     ${S2I_EXE} build \
+      -e "HTTP_PROXY=${HTTP_PROXY}" \
+      -e "HTTPS_PROXY=${HTTPS_PROXY}" \
       '../src' \
       'permitify-s2i' \
       'permitify'
