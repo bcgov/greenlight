@@ -1,0 +1,49 @@
+issuers:
+  BC-REG:
+    jurisdiction:
+      name: British Columbia
+      abbreviation: BC
+
+    name: BC Corporate Registry
+    abbreviation: BCReg
+    url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/\
+      ministries-organizations/ministries/citizens-services/bc-registries-online-services"
+    email: bcreg.test.issuer@example.ca
+    url: $APPLICATION_URL
+
+    wallet:
+      seed: $WALLET_SEED_BCREG
+
+    credential_types:
+      - description: Incorporation
+        schema: incorporation.bc_registries
+        issuer_url: $APPLICATION_URL_INCORP
+
+      - description: Doing Business As
+        schema: doing_business_as.bc_registries
+        issuer_url: $APPLICATION_URL_DBA
+
+proof_requests:
+  registration:
+    version: '1.0.0'
+    filters:
+      - legal_entity_id
+    schemas:
+      - key:
+          # did: DtjQTjwNq7ZyStCE7zwL4r
+          name: incorporation.bc_registries
+          version: '1.0.31'
+        attributes:
+          - legal_entity_id
+          - corp_num
+          - legal_name
+          - org_type
+          - addressee
+          - address_line_1
+          - address_line_2
+          - city
+          - province
+          - postal_code
+          - country
+          - effective_date
+          - end_date

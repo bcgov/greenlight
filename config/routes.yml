@@ -1,0 +1,109 @@
+static:
+  bc-assets:
+    path: /bcreg/assets
+    target: ../assets
+
+proxy:
+  bc-tob:
+    url: $TOB_API_URL/api/v1
+
+issuers:
+  BC-REG:
+    path: /bcreg
+
+forms:
+  bcreg-incorp:
+    path: /bcreg/incorporation
+    type: submit-credential
+    schema_name: incorporation.bc_registries
+    page_title: BC Corporate Registry
+    title: Incorporation
+    template: bcgov.index.html
+    description: >
+      BC Registries and Online Services administers and supports the legal framework
+      used for operating a business, not-for-profit society, cooperative association
+      or financial institution in B.C. Organizations need to register, file documents
+      and update records, which are kept as a matter of public record.
+    explanation: Use the form below to register a BC corporation.
+
+    js_includes:
+      - src: js/bc_registries.js
+
+    fields:
+      - name: legal_name
+        label: Legal Name
+        type: text
+        required: true
+
+      - name: address
+        label: Mailing Address
+        type: address
+        required: true
+
+    mapping:
+      attributes:
+        - name: legal_entity_id
+          from: helper
+          source: uuid
+
+        - name: corp_num
+          from: previous
+          source: legal_entity_id
+
+        - name: org_type
+          from: literal
+          source: CO
+
+        - name: effective_date
+          from: helper
+          source: now
+
+        - name: end_date
+          from: literal
+          source: null
+
+  bcreg-dba:
+    path: /bcreg/dba
+    type: submit-credential
+    schema_name: doing_business_as.bc_registries
+    page_title: BC Corporate Registry
+    title: Doing Business As
+    template: bcgov.index.html
+    description: >
+      BC Registries and Online Services administers and supports the legal framework
+      used for operating a business, not-for-profit society, cooperative association
+      or financial institution in B.C. Organizations need to register, file documents
+      and update records, which are kept as a matter of public record.
+    explanation: Use the form below to add a Doing Business As name for your business.
+
+    proof_request:
+      name: registration
+      filters:
+        legal_entity_id: org_id
+
+    js_includes:
+      - src: js/bc_registries.js
+
+    hidden:
+      - legal_entity_id
+
+    fields:
+      - name: doing_business_as_name
+        label: Doing Business As Name
+        type: text
+        required: true
+
+      - name: address
+        label: Mailing Address
+        type: address
+        required: true
+
+    mapping:
+      attributes:
+        - name: effective_date
+          from: helper
+          source: now
+
+        - name: end_date
+          from: literal
+          source: null

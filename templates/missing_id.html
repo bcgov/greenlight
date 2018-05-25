@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <!-- <script src="{% static "js/main.js" %}"></script> -->
+    {% for include in js_includes %}
+        <script src="{% static include.src %}"></script>
+    {% endfor %}
+    <link rel="stylesheet" href="{% static "css/mygovbc-bootstrap-theme.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/bcgov.css" %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% for include in css_includes %}
+        <link rel="stylesheet" href="{% static include.src %}"></script>
+    {% endfor %}
+</head>
+<body>
+    <header>
+      <div class="container">
+        <a href="http://www2.gov.bc.ca/" tabindex="-1">
+          <img class="header-logo"
+               tabindex="-1" alt="B.C. Government Logo"
+               src="{% static "img/bc-logo.svg" %}">
+        </a>
+        <span class="title" role="banner">{{ title }}</span>
+      </div>
+    </header>
+
+    <main class="container page-content">
+    <div class="row">
+        <div class="col-sm-10 col-sm-push-1">
+            <h2>
+                The Legal Entity ID {{ legal_entity_id }}
+                does not exist.
+            </h2>
+            <p>Please provide a valid Legal Entity ID.</p>
+            <form action="/" method="get" accept-charset="utf-8" name="" class="form well">
+                <fieldset>
+                    <legend>Legal Entity ID</legend>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label required" for="one-input"><span class="field-name">Legal Entity ID</span> <span class="required">(required)</span></label>
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    name="org_id"
+                                    id="legal_entity_id-input"
+                                    required
+                                >
+                            </div>
+                            <button type="submit" class="btn btn-primary"><span class="fa fa-check"></span> Submit</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    </main>
+
+    <footer>
+      <nav class="navbar navbar-default navbar-footer navbar-static-bottom">
+        <div class="container">
+          <ul class="nav navbar-nav">
+            <li><a href="http://www2.gov.bc.ca/gov/content/home/disclaimer" target="_blank">Disclaimer</a></li>
+            <li><a href="http://www2.gov.bc.ca/gov/content/home/privacy" target="_blank">Privacy</a></li>
+            <li><a href="http://www2.gov.bc.ca/gov/content/home/accessibility" target="_blank">Accessibility</a></li>
+            <li><a href="http://www2.gov.bc.ca/gov/content/home/copyright" target="_blank">Copyright</a></li>
+            <li><a href="http://www2.gov.bc.ca/gov/content/home/contact-us"
+                   target="_blank">Contact Us</a></li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+</body>
+</html>
+

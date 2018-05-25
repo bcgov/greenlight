@@ -1,0 +1,37 @@
+version: '3'
+services:
+
+  bcreg-agent:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      CONFIG_ROOT: ../config
+      ENVIRONMENT: ${ENVIRONMENT:-default}
+      INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
+      FORMS: ${FORMS:-}
+      ISSUERS: ${ISSUERS:-}
+      LOG_LEVEL: ${LOG_LEVEL:-}
+      PYTHON_ENV: ${PYTHON_ENV:-development}
+      TOB_API_URL: ${TOB_API_URL:-}
+      TOB_APP_URL: ${TOB_APP_URL:-}
+      TOB_INDY_DID: ${TOB_INDY_DID:-}
+      TOB_INDY_SEED: ${TOB_INDY_SEED:-}
+      WALLET_SEED_BCREG: ${WALLET_SEED_BCREG:-}
+      WEB_BASE_HREF: ${WEB_BASE_HREF:-/}
+    external_links:
+       - tob_tob-api_1:tob-api
+    networks:
+      - orgbook
+    volumes:
+      - bcreg-agent-wallet:/home/indy/.indy_client/wallet
+    ports:
+      - ${WEB_HTTP_PORT:-5000}:8000
+
+volumes:
+  bcreg-agent-wallet:
+networks:
+  orgbook:
+    external:
+      name: tob_tob
