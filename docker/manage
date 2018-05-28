@@ -321,7 +321,7 @@ case "${COMMAND}" in
       export TOB_INDY_SEED=the_org_book_0000000000000000000
       configureEnvironment $@
       # =========================================================
-      registerDids "$(generateSeeds) ${TOB_INDY_SEED}"
+      registerDids $(generateSeeds)
     ;;
   *)
       usage;;
