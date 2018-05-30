@@ -16,11 +16,13 @@
 #
 #pylint: disable=invalid-name
 
+import os
+
 capture_output = True
 daemon = False
 enable_stdio_inheritance = True
-preload_app = False
-workers = 2
+preload_app = True
+workers = 5
 worker_class = 'aiohttp.GunicornWebWorker'
 worker_connections = 60
 timeout = 60
@@ -35,12 +37,12 @@ access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
 
 
 def on_starting(server):
-    server.log.debug('importing services')
+    server.log.debug('Importing von-x services: pid %s', os.getpid())
     # import the shared manager instance before any processes are forked
     # this is necessary for the pipes and locks to be inherited
-    from vonx.services import shared
-    server.service_mgr = shared.MANAGER
+    from permitify.common import MANAGER
+    server.service_mgr = MANAGER
 
 def when_ready(server):
-    server.log.debug('starting services')
+    server.log.debug('Starting von-x services: pid %s', os.getpid())
     server.service_mgr.start()

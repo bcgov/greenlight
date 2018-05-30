@@ -9,6 +9,7 @@ services:
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config
       ENVIRONMENT: ${ENVIRONMENT:-default}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-}
       INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
       FORMS: ${FORMS:-}
       ISSUERS: ${ISSUERS:-}

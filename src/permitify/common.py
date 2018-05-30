@@ -24,6 +24,7 @@ to be properly initialized before the webserver process has forked.
 import logging.config
 
 from vonx.services import common, config
+from vonx.web import init_web
 
 
 # Load application settings (environment)
@@ -34,3 +35,13 @@ LOG_CONFIG = config.load_config(ENV.get('LOG_CONFIG_PATH'))
 logging.config.dictConfig(LOG_CONFIG)
 
 MANAGER = common.StandardServiceManager(ENV)
+
+
+def pre_init():
+    MANAGER.start()
+
+async def init_app():
+    return await init_web(MANAGER)
+
+def shutdown():
+    MANAGER.stop()

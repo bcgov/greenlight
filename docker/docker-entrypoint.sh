@@ -23,7 +23,7 @@ if [ -z "$CMD" ]; then
 	if [ -z "$ENABLE_GUNICORN" ]; then
 		CMD="python ${APP_NAME}.py"
 	else
-    CMD="gunicorn --bind ${HOST_IP}:${HOST_PORT} -c gunicorn_config.py vonx.web:init_web"
+    CMD="gunicorn --bind ${HOST_IP}:${HOST_PORT} -c gunicorn_config.py permitify.common:init_app"
   fi
 fi
 

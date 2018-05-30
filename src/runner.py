@@ -25,10 +25,9 @@ import logging
 APP = None
 
 try:
-    from permitify.common import ENV, MANAGER
-    MANAGER.start()
-    from vonx.web import init_web
-    APP = init_web(MANAGER)
+    from permitify.common import ENV, init_app, pre_init, shutdown
+    pre_init()
+    APP = init_app()
 
 except Exception:
     LOGGER = logging.getLogger(__name__)
@@ -47,4 +46,4 @@ if __name__ == '__main__' and APP:
     except Exception:
         LOGGER.exception('Error while running server:')
 
-    MANAGER.stop()
+    shutdown()
