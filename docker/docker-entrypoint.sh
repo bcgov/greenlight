@@ -20,7 +20,7 @@ export HOST_PORT=${HOST_PORT:-8000}
 
 CMD="$@"
 if [ -z "$CMD" ]; then
-	if [ -z "$ENABLE_GUNICORN" ]; then
+	if [ -z "$ENABLE_GUNICORN" ] || [ "$ENABLE_GUNICORN" = "0" ]; then
 		CMD="python ${APP_NAME}.py"
 	else
     CMD="gunicorn --bind ${HOST_IP}:${HOST_PORT} -c gunicorn_config.py permitify.common:init_app"

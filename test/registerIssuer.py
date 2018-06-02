@@ -28,7 +28,7 @@ import sys
 
 import aiohttp
 
-TOB_URL = os.environ.get('TOB_URL', 'http://localhost:8080/api')
+TOB_URL = os.environ.get("TOB_URL", "http://localhost:8080/api")
 
 if len(sys.argv) < 2:
     raise ValueError("Expected JSON file path(s)")
@@ -36,42 +36,43 @@ ISSUER_PATHS = sys.argv[1:]
 
 
 ISSUER_JSON_SCHEMA = {
-  '$schema': 'http://json-schema.org/draft-04/schema',
-  'type': 'object',
-  'properties': {
-    'issuer': {
-      'type': 'object',
-      'properties': {
-        'did': {'type': 'string', 'minLength': 1}, # check length + valid characters?
-        'name': {'type': 'string', 'minLength': 1},
-        'abbreviation': {'type': 'string'},
-        'endpoint': {'type': 'string'}
-      },
-      'required': ['did', 'name']
-    },
-    'jurisdiction': {
-      'type': 'object',
-      'properties': {
-        'name': {'type': 'string', 'minLength': 1},
-        'abbreviation': {'type': 'string'}
-      },
-      'required': ['name']
-    },
-    'claim-types': {
-      'type': 'array',
-      'items': {
-        'type': 'object',
-        'properties': {
-          'name': {'type': 'string', 'minLength': 1},
-          'schema': {'type': 'string', 'minLength': 1},
-          'version': {'type': 'string', 'minLength': 1},
-          'endpoint': {'type': 'string'}
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "type": "object",
+    "properties": {
+        "issuer": {
+            "type": "object",
+            "properties": {
+                # check length + valid characters?
+                "did": {"type": "string", "minLength": 1},
+                "name": {"type": "string", "minLength": 1},
+                "abbreviation": {"type": "string"},
+                "endpoint": {"type": "string"},
+            },
+            "required": ["did", "name"],
         },
-        'required': ['name', 'schema', 'version']
-      }
-    }
-  },
-  'required': ['issuer', 'jurisdiction']
+        "jurisdiction": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string", "minLength": 1},
+                "abbreviation": {"type": "string"},
+            },
+            "required": ["name"],
+        },
+        "credential_types": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string", "minLength": 1},
+                    "schema": {"type": "string", "minLength": 1},
+                    "version": {"type": "string", "minLength": 1},
+                    "endpoint": {"type": "string"},
+                },
+                "required": ["name", "schema", "version"],
+            },
+        },
+    },
+    "required": ["issuer", "jurisdiction"],
 }
 
 
@@ -79,33 +80,35 @@ async def register_issuer(http_client, issuer_path):
     with open(issuer_path) as issuer_file:
         issuer = json.load(issuer_file)
     if not issuer:
-        raise ValueError('Issuer could not be parsed')
+        raise ValueError("Issuer could not be parsed")
 
     jsonschema.validate(ISSUER_JSON_SCHEMA, issuer)
 
-    print('Submitting issuer registration {}'.format(issuer_path))
+    print("Submitting issuer registration {}".format(issuer_path))
 
     try:
         response = await http_client.post(
-            '{}/bcovrin/register-issuer'.format(TOB_URL),
-            json=issuer
+            "{}/indy/register-issuer".format(TOB_URL), json=issuer
         )
         if response.status != 200:
             raise RuntimeError(
-                'Issuer registration could not be processed: {}'.format(await response.text())
+                "Issuer registration could not be processed: {}".format(
+                    await response.text()
+                )
             )
         result_json = await response.json()
     except Exception as exc:
         raise Exception(
-            'Could not register issuer. '
-            'Is TheOrgBook running?') from exc
+            "Could not register issuer. " "Is TheOrgBook running?"
+        ) from exc
 
-    print('Response from TheOrgBook:\n\n{}\n'.format(result_json))
+    print("Response from TheOrgBook:\n\n{}\n".format(result_json))
 
 
 async def submit_all(issuer_paths):
     async with aiohttp.ClientSession() as http_client:
         for issuer_path in issuer_paths:
             await register_issuer(http_client, issuer_path)
+
 
 asyncio.get_event_loop().run_until_complete(submit_all(ISSUER_PATHS))
