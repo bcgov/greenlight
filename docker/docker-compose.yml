@@ -1,15 +1,35 @@
 version: '3'
 services:
 
+  caddy:
+    image: abiosoft/caddy
+    environment:
+      ENABLE_TELEMETRY: "false"
+      TOB_API_URL: ${TOB_API_URL:-}
+      WEB_BASE_HREF: ${WEB_BASE_HREF:-/}
+      WEB_HOST_NAME: ${WEB_HOST_NAME:-localhost}
+    links:
+      - bcreg-agent:agent
+    networks:
+      - vonx
+    ports:
+      - ${WEB_HTTP_PORT:-5000}:80
+      - ${WEB_HTTPS_PORT:-5443}:443
+    volumes:
+      - ../caddy/Caddyfile:/etc/Caddyfile
+      - ../assets:/srv/assets
+      - caddy-data:/root/.caddy
+      - caddy-logs:/srv/logs
+
   bcreg-agent:
     build:
       context: ..
       dockerfile: docker/Dockerfile
     environment:
-      APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      APPLICATION_URL: ${APPLICATION_URL:-https://localhost:5000}
       CONFIG_ROOT: ../config
       ENVIRONMENT: ${ENVIRONMENT:-default}
-      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-1}
       INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
       FORMS: ${FORMS:-}
       ISSUERS: ${ISSUERS:-}
@@ -20,19 +40,21 @@ services:
       TOB_INDY_DID: ${TOB_INDY_DID:-}
       TOB_INDY_SEED: ${TOB_INDY_SEED:-}
       WALLET_SEED_BCREG: ${WALLET_SEED_BCREG:-}
-      WEB_BASE_HREF: ${WEB_BASE_HREF:-/}
     external_links:
        - tob_tob-api_1:tob-api
     networks:
       - orgbook
+      - vonx
     volumes:
       - bcreg-agent-wallet:/home/indy/.indy_client/wallet
-    ports:
-      - ${WEB_HTTP_PORT:-5000}:8000
 
 volumes:
+  caddy-data:
+  caddy-logs:
   bcreg-agent-wallet:
+
 networks:
+  vonx:
   orgbook:
     external:
       name: tob_tob

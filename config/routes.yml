@@ -1,12 +1,3 @@
-static:
-  bc-assets:
-    path: /bcreg/assets
-    target: ../assets
-
-proxy:
-  bc-tob:
-    url: $TOB_API_URL/api/v1
-
 issuers:
   BC-REG:
     path: /bcreg
