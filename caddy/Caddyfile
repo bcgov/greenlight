@@ -1,20 +1,20 @@
 {%WEB_HOST_NAME%}:80, {%WEB_HOST_NAME%}:443 {
-	log logs/access.log
-	root /srv/
-	tls self_signed
+    log logs/access.log
+    root /srv/
+    tls self_signed
 
     rewrite {
-		r ^/bcreg/assets/(.*)$
-		to /assets/{1}
-	}
+        r ^/bcreg/assets/(.*)$
+        to /assets/{1}
+    }
 
-	proxy /bc-tob {%TOB_API_URL%}/api/v1 {
-		without /bc-tob
-	}
+    proxy /bc-tob {%TOB_API_URL%}/api/v1 {
+        without /bc-tob
+    }
 
     proxy / agent:8000 {
-		except /assets
-		# health_check /health  # return 502 bad gateway if not synced
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
         transparent
     }
 }
