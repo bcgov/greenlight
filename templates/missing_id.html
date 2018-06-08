@@ -8,15 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title }}</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
-    <!-- <script src="{% static "js/main.js" %}"></script> -->
+    <!-- <script src="{{ static("js/main.js") }}"></script> -->
     {% for include in js_includes %}
-        <script src="{% static include.src %}"></script>
+        <script src="{{ static(include.src) }}"></script>
     {% endfor %}
-    <link rel="stylesheet" href="{% static "css/mygovbc-bootstrap-theme.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/bcgov.css" %}">
+    <link rel="stylesheet" href="{{ static("css/mygovbc-bootstrap-theme.min.css") }}">
+    <link rel="stylesheet" href="{{ static("css/bcgov.css") }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     {% for include in css_includes %}
-        <link rel="stylesheet" href="{% static include.src %}"></script>
+        <link rel="stylesheet" href="{{ static(include.src) }}"></script>
     {% endfor %}
 </head>
 <body>
@@ -25,7 +25,7 @@
         <a href="http://www2.gov.bc.ca/" tabindex="-1">
           <img class="header-logo"
                tabindex="-1" alt="B.C. Government Logo"
-               src="{% static "img/bc-logo.svg" %}">
+               src="{{ static("img/bc-logo.svg") }}">
         </a>
         <span class="title" role="banner">{{ title }}</span>
       </div>

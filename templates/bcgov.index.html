@@ -11,13 +11,13 @@
       src="https://code.jquery.com/jquery-3.2.1.min.js"
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"></script>
-    <script src="{% static "js/main.js" %}"></script>
+    <script src="{{ static("js/main.js") }}"></script>
     {% for include in js_includes %}
-        <script src="{% static include.src %}"></script>
+        <script src="{{ static(include.src) }}"></script>
     {% endfor %}
-    <link rel="shortcut icon" href="{% static "img/bc-logo.ico" %}">
-    <link rel="stylesheet" href="{% static "css/mygovbc-bootstrap-theme.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/bcgov.css" %}">
+    <link rel="shortcut icon" href="{{ static("img/bc-logo.ico") }}">
+    <link rel="stylesheet" href="{{ static("css/mygovbc-bootstrap-theme.min.css") }}">
+    <link rel="stylesheet" href="{{ static("css/bcgov.css") }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"
       type="text/javascript" charset="utf-8" async defer></script>
@@ -28,7 +28,7 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.4/jquery.typeahead.js"></script>
     <!-- link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.4/jquery.typeahead.css" -->
     {% for include in css_includes %}
-        <link rel="stylesheet" href="{% static include.src %}">
+        <link rel="stylesheet" href="{{ static(include.src) }}">
     {% endfor %}
     {% endblock %}
     {% block extrahead %}{% endblock %}
@@ -41,7 +41,7 @@
         <a href="http://www2.gov.bc.ca/" tabindex="-1">
           <img class="header-logo"
                tabindex="-1" alt="B.C. Government Logo"
-               src="{% static "img/bc-logo.svg" %}">
+               src="{{ static("img/bc-logo.svg") }}">
         </a>
         <span class="title" role="banner">{{ page_title|default(title) }}</span>
       </div>

@@ -45,4 +45,4 @@ def on_starting(server):
 
 def when_ready(server):
     server.log.debug('Starting von-x services: pid %s', os.getpid())
-    server.service_mgr.start()
+    server.service_mgr.start_process()

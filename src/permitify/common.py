@@ -38,7 +38,7 @@ MANAGER = common.StandardServiceManager(ENV)
 
 
 def pre_init():
-    MANAGER.start()
+    MANAGER.start_process()
 
 async def init_app():
     return await init_web(MANAGER)
