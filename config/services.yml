@@ -26,8 +26,6 @@ issuers:
 proof_requests:
   registration:
     version: '1.0.0'
-    filters:
-      - legal_entity_id
     schemas:
       - key:
           # did: DtjQTjwNq7ZyStCE7zwL4r

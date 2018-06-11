@@ -69,8 +69,8 @@ forms:
 
     proof_request:
       name: registration
-      filters:
-        legal_entity_id: org_id
+      params:
+        source_id: org_id
 
     js_includes:
       - src: js/bc_registries.js
