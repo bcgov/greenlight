@@ -2,9 +2,8 @@ version: '3'
 services:
 
   caddy:
-    image: abiosoft/caddy
+    image: "abiosoft/caddy:no-stats"
     environment:
-      ENABLE_TELEMETRY: "false"
       TOB_API_URL: ${TOB_API_URL:-}
       WEB_BASE_HREF: ${WEB_BASE_HREF:-/}
       WEB_HOST_NAME: ${WEB_HOST_NAME:-localhost}
