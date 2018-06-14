@@ -33,12 +33,12 @@ if len(sys.argv) < 2:
     raise ValueError("Expected legal_entity_id(s)")
 ENTITY_IDS = sys.argv[1:]
 
-async def construct_proof(http_client, proof_name, proof_filters):
+async def request_proof(http_client, proof_name, proof_filters):
     print('Requesting proof: {} {}'.format(proof_name, proof_filters))
 
     try:
         response = await http_client.post(
-            '{}/construct-proof'.format(AGENT_URL),
+            '{}/request-proof'.format(AGENT_URL),
             params={'name': proof_name},
             json={'filters': proof_filters},
         )
@@ -57,6 +57,6 @@ async def construct_proof(http_client, proof_name, proof_filters):
 async def request_all(entity_ids):
     async with aiohttp.ClientSession() as http_client:
         for entity_id in entity_ids:
-            await construct_proof(http_client, 'registration', {'legal_entity_id': entity_id})
+            await request_proof(http_client, 'registration', {'legal_entity_id': entity_id})
 
 asyncio.get_event_loop().run_until_complete(request_all(ENTITY_IDS))
