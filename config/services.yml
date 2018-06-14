@@ -18,10 +18,55 @@ issuers:
       - description: Incorporation
         schema: incorporation.bc_registries
         issuer_url: $APPLICATION_URL_INCORP
+        source_claim: legal_entity_id
+        mapping:
+          - model: name
+            fields:
+              text:
+                input: legal_name
+                from: claim
+              type:
+                input: legal_name
+                from: value
+          - model: address
+            cardinality_fields:
+            - civic_address
+            - city
+            - province
+            - postal_code
+            - country
+            - type
+            fields:
+              addressee:
+                input: addressee
+                from: claim
+              civic_address:
+                input: address_line_1
+                from: claim
+              city:
+                input: city
+                from: claim
+              province:
+                input: province
+                from: claim
+              postal_code:
+                input: postal_code
+                from: claim
+              country:
+                input: country
+                from: claim
+              end_date:
+                input: end_date
+                from: claim
+              address_type:
+                input: operating
+                from: value
 
       - description: Doing Business As
         schema: doing_business_as.bc_registries
         issuer_url: $APPLICATION_URL_DBA
+        source_claim: legal_entity_id
+
 
 proof_requests:
   registration:
