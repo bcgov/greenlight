@@ -26,12 +26,12 @@ issuers:
                 from: value
           - model: address
             cardinality_fields:
-            - civic_address
-            - city
-            - province
-            - postal_code
-            - country
-            - type
+              - civic_address
+              - city
+              - province
+              - postal_code
+              - country
+              - type
             fields:
               addressee:
                 input: addressee
@@ -54,7 +54,7 @@ issuers:
               end_date:
                 input: end_date
                 from: claim
-              address_type:
+              type:
                 input: operating
                 from: value
 
