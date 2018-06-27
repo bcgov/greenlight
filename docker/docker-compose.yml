@@ -25,13 +25,13 @@ services:
       context: ..
       dockerfile: docker/Dockerfile
     environment:
+      AGENTS: ${AGENTS:-}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config
       ENVIRONMENT: ${ENVIRONMENT:-default}
       ENABLE_GUNICORN: ${ENABLE_GUNICORN:-1}
       INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
       FORMS: ${FORMS:-}
-      ISSUERS: ${ISSUERS:-}
       LOG_LEVEL: ${LOG_LEVEL:-}
       PYTHON_ENV: ${PYTHON_ENV:-development}
       TOB_API_URL: ${TOB_API_URL:-}

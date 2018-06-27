@@ -7,6 +7,9 @@ issuers:
     email: bcreg.test.issuer@example.ca
     url: $APPLICATION_URL
 
+    connection:
+      type: TheOrgBook
+      api_url: $TOB_API_URL
     wallet:
       seed: $WALLET_SEED_BCREG
 
@@ -51,9 +54,6 @@ issuers:
               country:
                 input: country
                 from: claim
-              end_date:
-                input: end_date
-                from: claim
               type:
                 input: operating
                 from: value
@@ -64,14 +64,24 @@ issuers:
         source_claim: legal_entity_id
 
 
+verifiers:
+  BC-TOB:
+    name: BC OrgBook
+    wallet:
+      seed: "tob-verifier-wallet-000000000001"
+    connection:
+      type: TheOrgBook
+      api_url: $TOB_API_URL
+
+
 proof_requests:
   registration:
-    version: '1.0.0'
+    version: "1.0.0"
     schemas:
       - key:
           # did: DtjQTjwNq7ZyStCE7zwL4r
           name: incorporation.bc_registries
-          version: '1.0.31'
+          version: "1.0.31"
         attributes:
           - legal_entity_id
           - corp_num

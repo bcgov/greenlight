@@ -46,3 +46,7 @@ def on_starting(server):
 def when_ready(server):
     server.log.debug('Starting von-x services: pid %s', os.getpid())
     server.service_mgr.start_process()
+
+def on_exit(server):
+    server.log.debug('Shutting down von-x services')
+    server.service_mgr.stop()

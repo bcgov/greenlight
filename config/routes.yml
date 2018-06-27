@@ -1,6 +1,3 @@
-issuers:
-  BC-REG:
-    path: /bcreg
 
 forms:
   bcreg-incorp:
@@ -68,7 +65,8 @@ forms:
     explanation: Use the form below to add a Doing Business As name for your business.
 
     proof_request:
-      name: registration
+      id: registration
+      connection_id: BC-TOB
       params:
         source_id: org_id
 
