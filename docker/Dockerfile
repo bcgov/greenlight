@@ -3,9 +3,9 @@ FROM bcgovimages/von-image:py36-1.0rc3
 
 WORKDIR $HOME
 
-#ADD --chown=indy:indy src/requirements.txt $HOME/src/
-#RUN pip --no-cache-dir install -r src/requirements.txt
-RUN pip install git+https://github.com/PSPC-SPAC-buyandsell/von-x.git#master
+RUN pip --no-cache-dir install \
+  gunicorn \
+  git+https://github.com/PSPC-SPAC-buyandsell/von-x.git@v2#
 
 ADD --chown=indy:indy . $HOME
 

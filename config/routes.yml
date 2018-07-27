@@ -66,7 +66,7 @@ forms:
 
     proof_request:
       id: registration
-      connection_id: BC-TOB
+      connection_id: bctob
       params:
         source_id: org_id
 
