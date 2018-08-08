@@ -1,0 +1,159 @@
+issuers:
+  BC-REG:
+    name: BC Corporate Registry
+    abbreviation: BCReg
+    url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/\
+      ministries-organizations/ministries/citizens-services/bc-registries-online-services"
+    email: bcreg.test.issuer@example.ca
+    url: $APPLICATION_URL
+
+    connection:
+      type: TheOrgBook
+      api_url: $TOB_API_URL
+    wallet:
+      seed: $WALLET_SEED_BCREG
+
+    credential_types:
+      - description: Incorporation
+        schema: incorporation.bc_registries
+        issuer_url: $APPLICATION_URL_INCORP
+        topic: 
+          source_id:
+            input: corp_num
+            from: claim
+          type:
+            input: incorporation
+            from: value
+        mapping:
+          - model: name
+            fields:
+              text:
+                input: legal_name
+                from: claim
+              type:
+                input: legal_name
+                from: value
+          - model: category
+            fields:
+              value:
+                input: topic.status_active
+                from: value
+              type:
+                input: topic_status
+                from: value
+
+
+      - description: Doing Business As
+        schema: doing_business_as.bc_registries
+        issuer_url: $APPLICATION_URL_DBA
+        topic: 
+          parent_source_id:
+            input: org_registry_id
+            from: claim
+          parent_type:
+            input: incorporation
+            from: value
+          source_id:
+            input: dba_corp_num
+            from: claim
+          type:
+            input: doing_business_as
+            from: value
+        mapping:
+          - model: name
+            fields:
+              text:
+                input: dba_name
+                from: claim
+                processor:
+                  - string_helpers.lowercase
+              type:
+                input: dba_name
+                from: value
+
+      - description: Corporate Address
+        schema: address.bc_registries
+        issuer_url: $APPLICATION_URL_ADDRESS
+        topic:
+          -
+            parent_source_id:
+              input: org_registry_id
+              from: claim
+            parent_type:
+              input: incorporation
+              from: value
+            source_id:
+              input: dba_corp_num
+              from: claim
+            type:
+              input: doing_business_as
+              from: value
+          -
+            source_id:
+              input: org_registry_id
+              from: claim
+            type:
+              input: incorporation
+              from: value
+        cardinality_fields:
+          - addr_type
+        mapping:
+          - model: address
+            fields:
+              addressee:
+                input: addressee
+                from: claim
+              civic_address:
+                input: local_address
+                from: claim
+              city:
+                input: municipality
+                from: claim
+              province:
+                input: province
+                from: claim
+              postal_code:
+                input: postal_code
+                from: claim
+              country:
+                input: country
+                from: claim
+              type:
+                input: addr_type
+                from: claim
+              end_date:
+                input: end_date
+                from: claim
+
+verifiers:
+  BC-TOB:
+    name: BC OrgBook
+    wallet:
+      seed: "tob-verifier-wallet-000000000001"
+    connection:
+      type: TheOrgBook
+      api_url: $TOB_API_URL
+
+
+proof_requests:
+  registration:
+    version: "1.0.0"
+    schemas:
+      - key:
+          # did: DtjQTjwNq7ZyStCE7zwL4r
+          name: incorporation.bc_registries
+          version: "1.0.32"
+        attributes:
+          - legal_entity_id
+          - corp_num
+          - legal_name
+          - org_type
+          - addressee
+          - address_line_1
+          - address_line_2
+          - city
+          - province
+          - postal_code
+          - country
+          - effective_date
+          - end_date

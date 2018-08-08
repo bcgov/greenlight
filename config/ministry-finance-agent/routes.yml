@@ -1,0 +1,74 @@
+issuers:
+  MINISTRY-FINANCE:
+    path: /finance
+
+forms:
+  finance-pst:
+    path: /finance/pst
+    type: issue-credential
+    schema_name: pst_number.ministry_of_finance
+    page_title: Ministry of Finance
+    title: PST Number
+    template: bcgov.index.html
+    description: >
+      Obtain a PST numb.er
+    explanation: Use the form below to obtain a PST number.
+
+    fields:
+      - name: legal_entity_id
+        label: Legal Entity ID
+        type: text
+        required: true
+
+      - name: legal_name
+        label: Legal Name
+        type: text
+        required: true
+
+      - name: doing_business_as_name
+        label: Doing Business As Name
+        type: text
+        required: false
+
+
+    mapping:
+      attributes:
+        - name: legal_entity_id
+          from: request
+          source: legal_entity_id
+
+        - name: legal_name
+          from: request
+          source: legal_name
+          
+        - name: doing_business_as_name
+          from: request
+          source: doing_business_as_name
+
+        - name: pst_number
+          from: helper
+          source: pst
+          
+        - name: effective_date
+          from: helper
+          source: now
+          
+        - name: end_date
+          from: helper
+          source: one_year
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

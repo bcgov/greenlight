@@ -1,0 +1,50 @@
+- name: incorporation.bc_registries
+  version: '1.0.32'
+  attributes:
+    - legal_entity_id
+    - corp_num
+    - legal_name
+    - legal_name_effective
+    - org_name_assumed
+    - org_name_assumed_effective
+    - org_name_trans
+    - org_name_trans_effective
+    - org_reg_status
+    - org_status_effective
+    - org_type
+    - registered_jurisdiction
+    - registration_type
+    - home_jurisdiction
+    - effective_date
+    - end_date
+
+- name: address.bc_registries
+  version: '1.0.32'
+  attributes:
+    - legal_entity_id
+    - org_registry_id
+    - addressee
+    - dba_name
+    - dba_corp_num
+    - registered_jurisdiction
+    - addr_type
+    - local_address
+    - municipality
+    - province
+    - postal_code
+    - country
+    - effective_date
+    - end_date
+
+- name: doing_business_as.bc_registries
+  version: '1.0.32'
+  attributes:
+    - legal_entity_id
+    - org_registry_id
+    - org_name
+    - registered_jurisdiction
+    - dba_name
+    - dba_corp_num
+    - effective_date
+    - end_date
+

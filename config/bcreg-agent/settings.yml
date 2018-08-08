@@ -1,0 +1,7 @@
+default:
+  APPLICATION_URL_INCORP: $APPLICATION_URL/bcreg/incorporation
+  APPLICATION_URL_DBA: $APPLICATION_URL/bcreg/dba
+  TEMPLATE_PATH: ../templates
+  TOB_API_URL: http://tob-api:8080/api/v2
+  TOB_APP_URL: http://localhost:8080
+  WALLET_SEED_BCREG: bc_registries_dev_00000000000000

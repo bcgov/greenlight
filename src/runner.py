@@ -42,7 +42,7 @@ if __name__ == '__main__' and APP:
         LOGGER.info('Running server on %s:%s', HOST, PORT)
 
         from aiohttp import web
-        web.run_app(APP, host=HOST, port=PORT, keep_alive=75)
+        web.run_app(APP, host=HOST, port=PORT)
     except Exception:
         LOGGER.exception('Error while running server:')
 

@@ -1,0 +1,6 @@
+default:
+  APPLICATION_URL_INCORP: $APPLICATION_URL/finance/pst
+  TEMPLATE_PATH: ../templates
+  TOB_API_URL: http://tob-api:8080/api/v2
+  TOB_APP_URL: http://localhost:8080
+  WALLET_SEED_BCREG: ministry_finance_dev_00000000000

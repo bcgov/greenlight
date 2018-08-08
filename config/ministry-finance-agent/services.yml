@@ -1,0 +1,54 @@
+issuers:
+
+  MINISTRY-OF-FINANCE:
+    name: BC Ministry of Finance
+    abbreviation: Ministry of Finance
+    email: minfinance.test.issuer@example.ca
+
+    wallet:
+      seed: $WALLET_SEED_BCREG
+
+    credential_types:
+      - description: PST Number
+        schema: pst_number.ministry_of_finance
+        issuer_url: $APPLICATION_URL_INCORP
+        topic: 
+          source_id:
+            input: legal_entity_id
+            from: claim
+          type:
+            input: incorporation
+            from: value
+        mapping:
+          - model: name
+            fields:
+              text:
+                input: TEST
+                from: value
+              type:
+                input: legal_name
+                from: value
+
+
+proof_requests:
+  registration:
+    version: '1.0.0'
+    schemas:
+      - key:
+          # did: DtjQTjwNq7ZyStCE7zwL4r
+          name: incorporation.bc_registries
+          version: '1.0.32'
+        attributes:
+          - legal_entity_id
+          - corp_num
+          - legal_name
+          - org_type
+          - addressee
+          - address_line_1
+          - address_line_2
+          - city
+          - province
+          - postal_code
+          - country
+          - effective_date
+          - end_date
