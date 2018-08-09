@@ -1,0 +1,91 @@
+forms:
+  finance-pst:
+    path: /fraser-valley/permit
+    type: issue-credential
+    schema_name: operating_permit.permitify
+    page_title: Fraser Valley Health Authority
+    title: Fraser Valley Health Authority
+    template: fraser_valley_health_authority.index.html
+    description: >
+      Operating Permit
+    explanation: Use the form below to obtain an operating permit.
+
+    proof_request:
+      id: registration
+      connection_id: bctob
+      params:
+        source_id: org_id
+
+    fields:
+      - name: corp_num
+        label: Corporation ID
+        type: text
+        required: true
+        disabled: true
+
+      - name: dba_corp_num
+        label: Doing Business As ID
+        type: text
+        required: true
+        disabled: true
+
+      - name: legal_name
+        label: Legal Name
+        type: text
+        required: true
+        disabled: true
+
+      - name: doing_business_as_name
+        label: Doing Business As Name
+        type: text
+        required: true
+        disabled: true
+
+      - name: application_type
+        label: Application Type
+        type: select
+        options:
+          - New Facility
+          - Owner Change
+          - Address Change
+          - Fee Category Change
+          - Services Change
+          - Name Change
+          - Months of Operation Change
+          - Status Change
+          - Permit Corrections
+        required: true
+
+      - name: capacity
+        label: Capacity
+        type: number
+        required: true
+
+      - name: tobacco
+        label: Tobacco
+        type: checkbox
+        required: true
+
+      - name: months_of_operation
+        label: Months of Operation
+        type: select
+        multiple: true
+        options:
+          - January
+          - February
+          - March
+          - April
+          - May
+          - June
+          - July
+          - August
+          - September
+          - October
+          - November
+          - December
+        required: true
+
+      - name: effective_date
+        label: Effective Date
+        type: date
+        required: true

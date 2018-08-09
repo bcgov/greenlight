@@ -23,4 +23,28 @@
         # health_check /health  # return 502 bad gateway if not synced
         transparent
     }
+
+    proxy /surrey city-surrey-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
+
+    proxy /fraser-valley fraser-valley-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
+
+    proxy /liquor liquor-control-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
+
+    proxy /worksafe worksafe-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
 }

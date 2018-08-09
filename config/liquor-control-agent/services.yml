@@ -1,8 +1,8 @@
 issuers:
   ministry-finance:
-    name: BC Ministry of Finance
-    abbreviation: Ministry of Finance
-    email: minfinance.test.issuer@example.ca
+    name: Liquor Control and Licensing Branch
+    abbreviation: LCLB
+    email: lclb.test.issuer@example.ca
 
     connection:
       type: TheOrgBook
@@ -12,8 +12,8 @@ issuers:
       seed: $WALLET_SEED
 
     credential_types:
-      - description: PST Number
-        schema: pst_number.permitify
+      - description: Liquor License
+        schema: operating_permit.permitify
         issuer_url: $APPLICATION_URL_INCORP
         topic: 
           source_id:
@@ -33,11 +33,3 @@ proof_requests:
           version: '1.0.0'
         attributes:
           - corp_num
-          - address_line_1
-          - address_line_2
-          - addressee
-          - city
-          - country
-          - legal_name
-          - postal_code
-          - province

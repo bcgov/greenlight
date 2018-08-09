@@ -1,6 +1,6 @@
 default:
-  APPLICATION_URL_INCORP: $APPLICATION_URL/finance/pst
+  APPLICATION_URL_INCORP: $APPLICATION_URL/worksafe/clearance-letter
   TEMPLATE_PATH: ../templates
   TOB_API_URL: http://tob-api:8080/api/v2
   TOB_APP_URL: http://localhost:8080
-  WALLET_SEED: ministry_finance_dev_00000000000
+  WALLET_SEED: worksafe_bc_dev_0000000000000000

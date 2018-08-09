@@ -12,7 +12,7 @@ issuers:
       api_url: $TOB_API_URL
 
     wallet:
-      seed: $WALLET_SEED_BCREG
+      seed: $WALLET_SEED
 
     credential_types:
       - description: Incorporation
