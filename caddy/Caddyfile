@@ -12,7 +12,13 @@
         without /bc-tob
     }
 
-    proxy / agent:8000 {
+    proxy /bcreg bcreg-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
+
+    proxy /finance ministry-finance-agent:8000 {
         except /assets
         # health_check /health  # return 502 bad gateway if not synced
         transparent

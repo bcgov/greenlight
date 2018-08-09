@@ -1,12 +1,8 @@
-issuers:
-  BC-REG:
-    path: /bcreg
-
 forms:
   bcreg-incorp:
     path: /bcreg/incorporation
     type: issue-credential
-    schema_name: incorporation.bc_registries
+    schema_name: incorporation.permitify
     page_title: BC Corporate Registry
     title: Incorporation
     template: bcgov.index.html
@@ -33,30 +29,14 @@ forms:
 
     mapping:
       attributes:
-        - name: legal_entity_id
+        - name: corp_num
           from: helper
           source: uuid
-
-        - name: corp_num
-          from: previous
-          source: legal_entity_id
-
-        - name: org_type
-          from: literal
-          source: CO
-
-        - name: effective_date
-          from: helper
-          source: now
-
-        - name: end_date
-          from: literal
-          source: null
 
   bcreg-dba:
     path: /bcreg/dba
     type: issue-credential
-    schema_name: doing_business_as.bc_registries
+    schema_name: doing_business_as.permitify
     page_title: BC Corporate Registry
     title: Doing Business As
     template: bcgov.index.html
@@ -68,7 +48,8 @@ forms:
     explanation: Use the form below to add a Doing Business As name for your business.
 
     proof_request:
-      name: registration
+      id: registration
+      connection_id: bctob
       params:
         source_id: org_id
 
@@ -76,7 +57,8 @@ forms:
       - src: js/bc_registries.js
 
     hidden:
-      - legal_entity_id
+      - corp_num
+      - dba_corp_num
 
     fields:
       - name: doing_business_as_name
@@ -91,10 +73,10 @@ forms:
 
     mapping:
       attributes:
-        - name: effective_date
+        - name: corp_num
           from: helper
-          source: now
+          source: uuid
 
-        - name: end_date
-          from: literal
-          source: null
+        - name: dba_corp_num
+          from: helper
+          source: uuid
