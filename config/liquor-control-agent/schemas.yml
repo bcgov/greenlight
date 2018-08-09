@@ -1,4 +1,4 @@
-- name: operating_permit.permitify
+- name: liquor_license.permitify
   version: '1.0.0'
   attributes:
     - corp_num

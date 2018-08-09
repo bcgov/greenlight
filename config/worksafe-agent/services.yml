@@ -1,0 +1,43 @@
+issuers:
+  ministry-finance:
+    name: WorkSafe BC
+    abbreviation: WorkSafe BC"
+    email: worksafe.test.issuer@example.ca
+
+    connection:
+      type: TheOrgBook
+      api_url: $TOB_API_URL
+      
+    wallet:
+      seed: $WALLET_SEED
+
+    credential_types:
+      - description: Clearance Letter
+        schema: worksafe.permitify
+        issuer_url: $APPLICATION_URL_INCORP
+        topic: 
+          source_id:
+            input: corp_num
+            from: claim
+          type:
+            input: incorporation
+            from: value
+
+proof_requests:
+  registration:
+    version: '1.0.0'
+    schemas:
+      - key:
+          did: 6qnvgJtqwK44D8LFYnV5Yf
+          name: incorporation.permitify
+          version: '1.0.0'
+        attributes:
+          - corp_num
+          - address_line_1
+          - address_line_2
+          - addressee
+          - city
+          - country
+          - legal_name
+          - postal_code
+          - province
