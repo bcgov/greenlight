@@ -12,6 +12,7 @@ services:
       - ministry-finance-agent
       - city-surrey-agent
       - fraser-valley-agent
+      - liquor-control-agent
     networks:
       - vonx
     ports:
@@ -132,6 +133,33 @@ services:
     volumes:
       - fraser-valley-agent-wallet:/home/indy/.indy_client/wallet
 
+  liquor-control-agent:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      AGENTS: ${AGENTS:-}
+      APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      CONFIG_ROOT: ../config/liquor-control-agent
+      ENVIRONMENT: ${ENVIRONMENT:-default}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-1}
+      INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
+      FORMS: ${FORMS:-}
+      LOG_LEVEL: ${LOG_LEVEL:-}
+      PYTHON_ENV: ${PYTHON_ENV:-development}
+      TOB_API_URL: ${TOB_API_URL:-}
+      TOB_APP_URL: ${TOB_APP_URL:-}
+      TOB_INDY_DID: ${TOB_INDY_DID:-}
+      TOB_INDY_SEED: ${TOB_INDY_SEED:-}
+      WALLET_SEED_BCREG: ${WALLET_SEED_BCREG:-}
+    external_links:
+       - tob_tob-api_1:tob-api
+    networks:
+      - orgbook
+      - vonx
+    volumes:
+      - liquor-control-agent-wallet:/home/indy/.indy_client/wallet
+
 volumes:
   caddy-data:
   caddy-logs:
@@ -139,6 +167,7 @@ volumes:
   ministry-finance-agent-wallet:
   city-surrey-agent-wallet:
   fraser-valley-agent-wallet:
+  liquor-control-agent-wallet:
 
 networks:
   vonx:
