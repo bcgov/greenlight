@@ -40,3 +40,13 @@ forms:
         type: text
         required: true
         disabled: true
+
+      - name: number_of_employees
+        label: Number of Employees
+        type: number
+        required: true
+
+      - name: effective_date
+        label: Effective Date
+        type: date
+        required: true
