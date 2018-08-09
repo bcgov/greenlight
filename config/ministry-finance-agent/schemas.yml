@@ -1,9 +1,6 @@
-- name: pst_number.ministry_of_finance
-  version: '1.0.32'
+- name: pst_number.permitify
+  version: '1.0.0'
   attributes:
-    - legal_entity_id
-    - legal_name
-    - doing_business_as_name
+    - corp_num
+    - dba_corp_num
     - pst_number
-    - effective_date
-    - end_date
