@@ -29,4 +29,10 @@
         # health_check /health  # return 502 bad gateway if not synced
         transparent
     }
+
+    proxy /fraser-valley fraser-valley-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
 }
