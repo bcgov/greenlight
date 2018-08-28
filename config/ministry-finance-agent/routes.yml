@@ -13,8 +13,6 @@ forms:
     proof_request:
       id: registration
       connection_id: bctob
-      params:
-        source_id: org_id
 
     fields:
       - name: corp_num
@@ -40,7 +38,6 @@ forms:
         type: text
         required: true
         disabled: true
-
 
     mapping:
       attributes:

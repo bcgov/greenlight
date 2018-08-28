@@ -7,15 +7,15 @@ issuers:
     connection:
       type: TheOrgBook
       api_url: $TOB_API_URL
-      
+
     wallet:
       seed: $WALLET_SEED
 
     credential_types:
       - description: Liquor License
-        schema: operating_permit.permitify
+        schema: liquor_license.permitify
         issuer_url: $APPLICATION_URL_INCORP
-        topic: 
+        topic:
           source_id:
             input: corp_num
             from: claim

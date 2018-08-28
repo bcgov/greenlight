@@ -81,21 +81,7 @@ configureEnvironment () {
     esac
   done
 
-  if [ "$COMMAND" == "start" ]; then
-    if [ -z "$TOB_INDY_DID" ]; then
-      seed="${TOB_INDY_SEED}"
-      if [ -z "$seed" ]; then
-        echo "You must provide an Indy seed parameter for TheOrgBook. For example: TOB_INDY_SEED=my_seed_000000000000000000000000."
-        exit 1
-      fi
-      if [ ${#seed} -ne 32 ]; then
-        echo "The seed parameter must be 32 characters long exactly."
-        exit 1
-      fi
-    fi
-  fi
-
-  export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-"vonx"}
+  export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-"permitify"}
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export APPLICATION_URL=${APPLICATION_URL-http://localhost:${WEB_HTTP_PORT:-5000}}
 }

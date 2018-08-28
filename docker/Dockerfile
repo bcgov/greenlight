@@ -1,13 +1,7 @@
 #FROM vonx-base
-FROM bcgovimages/von-image:py36-1.0rc3
+FROM bcgovimages/von-image:py36-1.6-0
 
 WORKDIR $HOME
-
-RUN echo 74289197
-
-RUN pip --no-cache-dir install \
-  gunicorn \
-  git+https://github.com/nrempel/von-x.git@v2#
 
 ADD --chown=indy:indy . $HOME
 

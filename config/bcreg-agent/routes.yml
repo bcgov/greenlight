@@ -50,8 +50,6 @@ forms:
     proof_request:
       id: registration
       connection_id: bctob
-      params:
-        source_id: org_id
 
     js_includes:
       - src: js/bc_registries.js
@@ -73,10 +71,6 @@ forms:
 
     mapping:
       attributes:
-        - name: corp_num
-          from: helper
-          source: uuid
-
         - name: dba_corp_num
           from: helper
           source: uuid

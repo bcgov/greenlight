@@ -34,7 +34,7 @@ services:
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/bcreg-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
-      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-1}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
       INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
       FORMS: ${FORMS:-}
       LOG_LEVEL: ${LOG_LEVEL:-}
@@ -61,7 +61,7 @@ services:
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/ministry-finance-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
-      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-1}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
       INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
       FORMS: ${FORMS:-}
       LOG_LEVEL: ${LOG_LEVEL:-}
@@ -88,7 +88,7 @@ services:
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/city-surrey-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
-      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-1}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
       INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
       FORMS: ${FORMS:-}
       LOG_LEVEL: ${LOG_LEVEL:-}
@@ -116,7 +116,7 @@ services:
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/fraser-valley-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
-      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-1}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
       INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
       FORMS: ${FORMS:-}
       LOG_LEVEL: ${LOG_LEVEL:-}
@@ -143,7 +143,7 @@ services:
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/liquor-control-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
-      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-1}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
       INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
       FORMS: ${FORMS:-}
       LOG_LEVEL: ${LOG_LEVEL:-}
@@ -170,7 +170,7 @@ services:
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/worksafe-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
-      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-1}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
       INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
       FORMS: ${FORMS:-}
       LOG_LEVEL: ${LOG_LEVEL:-}
