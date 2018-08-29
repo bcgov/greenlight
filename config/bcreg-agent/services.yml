@@ -18,7 +18,7 @@ issuers:
       - description: Incorporation
         schema: incorporation.permitify
         issuer_url: $APPLICATION_URL_INCORP
-        topic: 
+        topic:
           source_id:
             input: corp_num
             from: claim
@@ -38,17 +38,17 @@ issuers:
       - description: Doing Business As
         schema: doing_business_as.permitify
         issuer_url: $APPLICATION_URL_DBA
-        topic: 
-          parent_source_id:
+        topic:
+          source_id:
             input: corp_num
             from: claim
-          parent_type:
+          type:
             input: incorporation
             from: value
-          source_id:
+          related_source_id:
             input: dba_corp_num
             from: claim
-          type:
+          related_type:
             input: doing_business_as
             from: value
         mapping:
