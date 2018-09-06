@@ -18,7 +18,7 @@
         to /assets/html/demo-start.html
     }
 
-    proxy /bc-tob {%TOB_API_URL%}/api/v1 {
+    proxy /bc-tob {%TOB_API_URL%} {
         without /bc-tob
     }
 

@@ -4,7 +4,7 @@ services:
   caddy:
     image: "abiosoft/caddy:no-stats"
     environment:
-      TOB_API_URL: ${TOB_API_URL:-}
+      TOB_API_URL: ${TOB_API_URL:-http://tob-api:8080/api/v2}
       WEB_BASE_HREF: ${WEB_BASE_HREF:-/}
       WEB_HOST_NAME: ${WEB_HOST_NAME:-localhost}
     links:
@@ -14,7 +14,10 @@ services:
       - fraser-valley-agent
       - liquor-control-agent
       - worksafe-agent
+    external_links:
+      - tob_tob-api_1:tob-api
     networks:
+      - orgbook
       - vonx
     ports:
       - ${WEB_HTTP_PORT:-5000}:80
