@@ -8,6 +8,16 @@
         to /assets/{1}
     }
 
+    rewrite {
+        r ^/demo/?$
+        to /assets/html/demo.html
+    }
+
+    rewrite {
+        r ^/demo/start/?$
+        to /assets/html/demo-start.html
+    }
+
     proxy /bc-tob {%TOB_API_URL%}/api/v1 {
         without /bc-tob
     }
