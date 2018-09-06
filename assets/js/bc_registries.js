@@ -1,7 +1,6 @@
 /* global FORM_HANDLERS, $ */
 
 FORM_HANDLERS['incorporation.bc_registries'] = function (form, response) {
-  console.log('here')
   if (response.success === true) {
     $(form).find('.legal-entity-id').remove()
     $(form).append(
