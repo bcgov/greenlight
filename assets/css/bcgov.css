@@ -1,3 +1,7 @@
+header {
+  margin-bottom: 2rem;
+}
+
 .page-content {
 	padding-bottom: 8rem;
 }
@@ -6,6 +10,10 @@
 }
 .form + .form {
 	margin-top: 4rem;
+}
+
+.mrgn-tp-md {
+  margin-top: 1.5rem;
 }
 
 .control-label.required::before {
