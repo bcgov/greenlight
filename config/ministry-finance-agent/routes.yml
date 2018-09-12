@@ -44,22 +44,3 @@ forms:
         - name: pst_number
           from: helper
           source: pst
-
-verifiers:
-  bctob:
-    name: BC OrgBook
-    connection:
-      type: TheOrgBook
-      api_url: $TOB_API_URL
-    wallet:
-      seed: "tob-verifier-wallet-000000000001"
-
-proof_requests:
-  registration:
-    version: "1.0.0"
-    schemas:
-      - key:
-          name: incorporation.permitify
-          version: "1.0.0"
-        attributes:
-          - corp_num
