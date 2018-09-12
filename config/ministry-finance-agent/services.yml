@@ -1,5 +1,6 @@
 issuers:
   ministry-finance:
+    logo_path: ''
     name: BC Ministry of Finance
     abbreviation: Ministry of Finance
     email: minfinance.test.issuer@example.ca
@@ -33,11 +34,14 @@ verifiers:
       seed: "tob-verifier-wallet-000000000001"
 
 proof_requests:
+  # inputs:
+  #   legal_name: legal_name
+  #   corp_num: corp_num
   registration:
     version: '1.0.0'
     schemas:
       - key:
-          # did: 6qnvgJtqwK44D8LFYnV5Yf
+          did: 6qnvgJtqwK44D8LFYnV5Yf
           name: incorporation.permitify
           version: '1.0.0'
         attributes:
@@ -47,6 +51,6 @@ proof_requests:
           # - addressee
           # - city
           # - country
-          # - legal_name
+          - legal_name
           # - postal_code
           # - province

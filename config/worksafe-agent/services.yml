@@ -1,5 +1,6 @@
 issuers:
   ministry-finance:
+    logo_path: ''
     name: WorkSafe BC
     abbreviation: WorkSafe BC"
     email: worksafe.test.issuer@example.ca

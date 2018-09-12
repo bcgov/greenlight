@@ -1,5 +1,6 @@
 issuers:
   ministry-finance:
+    logo_path: ''
     name: City of Surrey
     abbreviation: SUR
     email: surrey.test.issuer@example.ca

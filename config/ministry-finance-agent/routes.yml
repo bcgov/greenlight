@@ -19,25 +19,25 @@ forms:
         label: Corporation ID
         type: text
         required: true
-        disabled: true
+        # disabled: true
 
-      - name: dba_corp_num
-        label: Doing Business As ID
-        type: text
-        required: true
-        disabled: true
+      # - name: dba_corp_num
+      #   label: Doing Business As ID
+      #   type: text
+      #   required: true
+      #   disabled: true
 
       - name: legal_name
         label: Legal Name
         type: text
         required: true
-        disabled: true
+        # disabled: true
 
-      - name: doing_business_as_name
-        label: Doing Business As Name
-        type: text
-        required: true
-        disabled: true
+      # - name: doing_business_as_name
+      #   label: Doing Business As Name
+      #   type: text
+      #   required: true
+      #   disabled: true
 
     mapping:
       attributes:

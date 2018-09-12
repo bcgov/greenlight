@@ -1,5 +1,6 @@
 issuers:
   bcreg:
+    logo_path: ''
     name: BC Corporate Registry
     abbreviation: BCReg
     url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/\

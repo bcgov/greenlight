@@ -1,5 +1,6 @@
 issuers:
   ministry-finance:
+    logo_path: ''
     name: Fraser Valley Health Authority
     abbreviation: FRV
     email: frv.test.issuer@example.ca

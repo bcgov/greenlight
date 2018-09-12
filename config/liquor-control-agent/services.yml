@@ -1,5 +1,6 @@
 issuers:
   ministry-finance:
+    logo_path: ''
     name: Liquor Control and Licensing Branch
     abbreviation: LCLB
     email: lclb.test.issuer@example.ca
