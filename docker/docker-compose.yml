@@ -5,6 +5,7 @@ services:
     image: "abiosoft/caddy:no-stats"
     environment:
       TOB_API_URL: ${TOB_API_URL:-http://tob-api:8080/api/v2}
+      TOB_APP_URL: ${TOB_APP_URL:-http://localhost:8080}
       WEB_BASE_HREF: ${WEB_BASE_HREF:-/}
       WEB_HOST_NAME: ${WEB_HOST_NAME:-localhost}
     links:

@@ -34,6 +34,34 @@ issuers:
               type:
                 input: legal_name
                 from: value
+          - model: category
+            fields:
+              type:
+                input: topic_type
+                from: value
+              value:
+                input: CO
+                from: value
+          - model: address
+            fields:
+              addressee:
+                input: addressee
+                from: claim
+              civic_address:
+                input: address_line_1
+                from: claim
+              city:
+                input: city
+                from: claim
+              province:
+                input: province
+                from: claim
+              postal_code:
+                input: postal_code
+                from: claim
+              country:
+                input: country
+                from: claim
 
       - description: Doing Business As
         schema: doing_business_as.permitify

@@ -28,7 +28,7 @@ proof_requests:
     version: '1.0.0'
     schemas:
       - key:
-          did: 6qnvgJtqwK44D8LFYnV5Yf
+          # did: 6qnvgJtqwK44D8LFYnV5Yf
           name: incorporation.permitify
           version: '1.0.0'
         attributes:
