@@ -1,28 +1,135 @@
-$(() => {
-  const params = new URL(location).searchParams;
-  const topicId = params.get("topic");
-
-  if (!topicId) {
-    window.location = "/demo/start";
-  }
-
-  $.ajax({
-    method: "GET",
-    url: `/bc-tob/topic/${topicId}/formatted`,
-    contentType: "application/json"
-  })
-    .done(function(response) {
-      inflateUI(response);
-    })
-    .fail(response => {
-      try {
-        showError(response.responseJSON.detail);
-      } catch (err) {
-        console.error(err);
-        showError("Error");
+const PANEL_ISSUER_DATA = [
+  // BC Reg
+  {
+    did: "6qnvgJtqwK44D8LFYnV5Yf",
+    credentialName: "BC Registries Business Incorporation",
+    dependencies: [
+      {
+        credentialId: "",
+        name: ""
       }
-    });
-});
+    ]
+  },
+  // Ministry Finance
+  {
+    did: "CYnWiuEtJJuhpWvVz3kY9D",
+    credentialName: "BC Provincial Sales Tax Number",
+    dependencies: [
+      {
+        credentialId: "",
+        name: ""
+      }
+    ]
+  },
+  // Worksafe BC
+  {
+    did: "MAcounf9HxhgnqqhzReTLC",
+    credentialName: "Worksafe BC Clearance Letter",
+    dependencies: [
+      {
+        credentialId: "",
+        name: ""
+      }
+    ]
+  },
+  // Fraser Valley
+  {
+    did: "L6SJy7gNRCLUp8dV94hfex",
+    credentialName: "Fraser Valley Health Operating Permit",
+    dependencies: [
+      {
+        credentialId: "",
+        name: ""
+      }
+    ]
+  },
+  // Liquor
+  {
+    did: "ScrMddP9C426QPrp1KViZB",
+    credentialName: "BC Liquor License",
+    dependencies: [
+      {
+        credentialId: "",
+        name: ""
+      }
+    ]
+  },
+  // Surrey
+  {
+    did: "A9Rsuu7FNquw8Ne2Smu5Nr",
+    credentialName: "City of Surrey Business License",
+    dependencies: [
+      {
+        credentialId: "",
+        name: ""
+      }
+    ]
+  }
+];
+
+let credentials = null;
+function getCredentialsByTopic(topicId) {
+  return new Promise((resolve, reject) => {
+    if (credentials) return resolve(credentials);
+    $.ajax({
+      method: "GET",
+      url: `/bc-tob/topic/${topicId}/credential/active`,
+      contentType: "application/json"
+    })
+      .done(response => {
+        credentials = response;
+        return resolve(credentials);
+      })
+      .fail(reject);
+  });
+}
+
+function getCredentialByDid(credentials, did) {
+  for (cred of credentials) {
+    if (cred.issuer.did === did) {
+      return cred;
+    }
+  }
+  return null;
+}
+
+function getTopicById(id) {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      method: "GET",
+      url: `/bc-tob/topic/${id}/formatted`,
+      contentType: "application/json"
+    })
+      .done(resolve)
+      .fail(reject);
+  });
+}
+
+let issuers = null;
+function getIssuers(id) {
+  return new Promise((resolve, reject) => {
+    if (issuers) return resolve(issuers);
+    $.ajax({
+      method: "GET",
+      url: `/bc-tob/issuer`,
+      contentType: "application/json"
+    })
+      .done(response => {
+        issuers = response;
+        return resolve(issuers);
+      })
+      .fail(reject);
+  });
+}
+
+function getIssuerByDid(issuers, did) {
+  for (issuer of issuers) {
+    if (issuer.did === did) {
+      return issuer;
+    }
+  }
+  return null;
+}
 
 function inflateUI(topic) {
   $.get("/bcreg/assets/html/snippets/content.html").done(response => {
@@ -67,18 +174,64 @@ function inflateOrgInfo(topic) {
 }
 
 function inflatePanels(topic) {
-  console.log(topic);
   $.get("/bcreg/assets/html/snippets/cert-panel.html").done(response => {
-    const snippet = $(response);
+    let promise = null;
+    getIssuers().then(issuers => {
+      for (data of PANEL_ISSUER_DATA) {
+        let did = data.did;
+        let credentialName = data.credentialName;
+        (promise || (promise = getCredentialsByTopic(topic.id))).then(function(
+          credentials
+        ) {
+          const issuer = getIssuerByDid(issuers, did);
+          const cred = getCredentialByDid(credentials, did);
 
-    $("#cert-panels").append(snippet);
+          const snippet = inflatePanel(
+            issuer,
+            cred,
+            credentialName,
+            $(response)
+          );
+          $("#cert-panels").append(snippet);
+        });
+      }
+    });
   });
 }
 
-function showError(message) {
+function inflatePanel(issuer, credential, credentialName, panel) {
+  panel.find("#credential-name").text(credentialName);
+
+  if (credential) {
+    panel.find("#issuer-link").attr("href", issuer.url);
+    panel.find("#issuer-link").text(issuer.name);
+    panel.find("#effective-date").text(credential.effective_date);
+  } else {
+    panel.find("#cert-body").html($("<i>Certificate not found</i>"));
+  }
+
+  return panel;
+}
+
+function showError(err) {
+  let errorMessage = "Error";
+  try {
+    errorMessage = err.responseJSON.detail;
+  } catch (e) {}
+
   $.get("/bcreg/assets/html/snippets/error.html").done(response => {
     const snippet = $(response);
-    snippet.html(message);
+    snippet.html(errorMessage);
     $("#content").html(snippet);
   });
 }
+
+$(() => {
+  const params = new URL(location).searchParams;
+  const topicId = params.get("topic");
+  if (!topicId) window.location = "/demo/start";
+
+  getTopicById(topicId)
+    .then(inflateUI)
+    .catch(showError);
+});
