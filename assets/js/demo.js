@@ -228,6 +228,7 @@ function inflatePanel(
         const depsSnippet = $(response);
 
         let buttonDisabled = false;
+        let credIds = ""
 
         for (dep of dependencies) {
           const depName = getIssuerByDid(issuers, dep).name;
@@ -240,6 +241,9 @@ function inflatePanel(
             certExistsClass = "missing";
             certIconClass = "fa-times";
             buttonDisabled = true;
+          } else {
+            console.log(cred)
+            credIds += `${cred.wallet_id},`
           }
 
           const snippet = `
@@ -254,7 +258,8 @@ function inflatePanel(
         panel.find("#cert-body").html(depsSnippet);
 
         panel.find("#cta").text(`Enroll with ${issuer.name}`);
-        panel.find("#cta").attr("href", issuer.url);
+        panel.find("#cta").attr("href", `${issuer.url}?credential_ids=${credIds}`);
+        panel.find("#cta").attr("target", null);
 
         if (buttonDisabled) {
           panel.find("#cta").attr("href", null);

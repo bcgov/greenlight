@@ -35,9 +35,6 @@ verifiers:
       seed: "tob-verifier-wallet-000000000001"
 
 proof_requests:
-  # inputs:
-  #   legal_name: legal_name
-  #   corp_num: corp_num
   registration:
     version: '1.0.0'
     schemas:

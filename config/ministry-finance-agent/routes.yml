@@ -19,7 +19,6 @@ forms:
         label: Corporation ID
         type: text
         required: true
-        # disabled: true
 
       # - name: dba_corp_num
       #   label: Doing Business As ID
@@ -31,7 +30,6 @@ forms:
         label: Legal Name
         type: text
         required: true
-        # disabled: true
 
       # - name: doing_business_as_name
       #   label: Doing Business As Name

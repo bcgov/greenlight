@@ -264,7 +264,7 @@
                             name="{{ field.name }}"
                             size="{{ field.size }}"
                             id="{{ field.name }}-input"
-                            value="{{ inputs|attr(field.name) }}"
+                            value="{{ inputs[field.name] }}"
                             {% if field.required %}required{% endif %}
                             {% if field.disabled %}disabled{% endif %}
                         >
