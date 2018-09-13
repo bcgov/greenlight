@@ -58,3 +58,9 @@
         transparent
     }
 }
+
+{%WEB_HOST_NAME%}:80/topic {
+    redir 302 {
+        / {%TOB_APP_URL%}/en/topic{rewrite_path}
+    }
+}

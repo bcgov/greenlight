@@ -146,7 +146,7 @@ function inflateOrgInfo(topic) {
     const snippet = $(response);
 
     // TODO: figure out a way to redirect to external host
-    snippet.find("#canonical-url").attr("href", "");
+    snippet.find("#canonical-url").attr("href", `/topic/${topic.id}`);
 
     name = topic.names[0].text;
     id = topic.source_id;
@@ -189,6 +189,7 @@ function inflatePanels(topic) {
           const cred = getCredentialByDid(credentials, did);
 
           const snippet = inflatePanel(
+            topic,
             credentials,
             issuers,
             issuer,
@@ -205,6 +206,7 @@ function inflatePanels(topic) {
 }
 
 function inflatePanel(
+  topic,
   credentials,
   issuers,
   issuer,
@@ -219,6 +221,7 @@ function inflatePanel(
     panel.find("#issuer-link").attr("href", issuer.url);
     panel.find("#issuer-link").text(issuer.name);
     panel.find("#effective-date").text(credential.effective_date);
+    panel.find("#cta").attr("href", `/topic/${topic.id}/cred/${credential.id}`);
   } else {
     $.get("/bcreg/assets/html/snippets/cert-dependencies.html").done(
       response => {
