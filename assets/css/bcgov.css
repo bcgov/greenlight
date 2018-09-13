@@ -143,3 +143,25 @@ header {
   visibility: visible;
 }
 
+.depends {
+  margin-top: 1rem;
+border-top: 1px solid #ddd;
+}
+
+.depends ul {
+  list-style: none;
+}
+
+.depends-item {
+  margin-top: 10px;
+  font-size: 1.1em;
+}
+
+.depends-item.missing .fa {
+  color: #a44;
+}
+
+.depends-item.found .fa {
+  color: #3a5;
+}
+

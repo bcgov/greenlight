@@ -4,6 +4,7 @@ issuers:
     name: WorkSafe BC
     abbreviation: WorkSafe BC"
     email: worksafe.test.issuer@example.ca
+    url: $APPLICATION_URL_INCORP
 
     connection:
       type: TheOrgBook

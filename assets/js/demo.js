@@ -3,22 +3,15 @@ const PANEL_ISSUER_DATA = [
   {
     did: "6qnvgJtqwK44D8LFYnV5Yf",
     credentialName: "BC Registries Business Incorporation",
-    dependencies: [
-      {
-        credentialId: "",
-        name: ""
-      }
-    ]
+    dependencies: []
   },
   // Ministry Finance
   {
     did: "CYnWiuEtJJuhpWvVz3kY9D",
     credentialName: "BC Provincial Sales Tax Number",
     dependencies: [
-      {
-        credentialId: "",
-        name: ""
-      }
+      // BC Reg
+      "6qnvgJtqwK44D8LFYnV5Yf"
     ]
   },
   // Worksafe BC
@@ -26,10 +19,8 @@ const PANEL_ISSUER_DATA = [
     did: "MAcounf9HxhgnqqhzReTLC",
     credentialName: "Worksafe BC Clearance Letter",
     dependencies: [
-      {
-        credentialId: "",
-        name: ""
-      }
+      // BC Reg
+      "6qnvgJtqwK44D8LFYnV5Yf"
     ]
   },
   // Fraser Valley
@@ -37,10 +28,10 @@ const PANEL_ISSUER_DATA = [
     did: "L6SJy7gNRCLUp8dV94hfex",
     credentialName: "Fraser Valley Health Operating Permit",
     dependencies: [
-      {
-        credentialId: "",
-        name: ""
-      }
+      // BC Reg
+      "6qnvgJtqwK44D8LFYnV5Yf",
+      // Worksafe BC
+      "MAcounf9HxhgnqqhzReTLC"
     ]
   },
   // Liquor
@@ -48,10 +39,14 @@ const PANEL_ISSUER_DATA = [
     did: "ScrMddP9C426QPrp1KViZB",
     credentialName: "BC Liquor License",
     dependencies: [
-      {
-        credentialId: "",
-        name: ""
-      }
+      // BC Reg
+      "6qnvgJtqwK44D8LFYnV5Yf",
+      // Ministry Finance,
+      "CYnWiuEtJJuhpWvVz3kY9D",
+      // Worksafe BC
+      "MAcounf9HxhgnqqhzReTLC",
+      // Fraser Valley
+      "L6SJy7gNRCLUp8dV94hfex"
     ]
   },
   // Surrey
@@ -59,10 +54,16 @@ const PANEL_ISSUER_DATA = [
     did: "A9Rsuu7FNquw8Ne2Smu5Nr",
     credentialName: "City of Surrey Business License",
     dependencies: [
-      {
-        credentialId: "",
-        name: ""
-      }
+      // BC Reg
+      "6qnvgJtqwK44D8LFYnV5Yf",
+      // Ministry Finance,
+      "CYnWiuEtJJuhpWvVz3kY9D",
+      // Worksafe BC
+      "MAcounf9HxhgnqqhzReTLC",
+      // Fraser Valley
+      "L6SJy7gNRCLUp8dV94hfex",
+      // Liquor
+      "ScrMddP9C426QPrp1KViZB"
     ]
   }
 ];
@@ -180,6 +181,7 @@ function inflatePanels(topic) {
       for (data of PANEL_ISSUER_DATA) {
         let did = data.did;
         let credentialName = data.credentialName;
+        let dependencies = data.dependencies;
         (promise || (promise = getCredentialsByTopic(topic.id))).then(function(
           credentials
         ) {
@@ -187,9 +189,12 @@ function inflatePanels(topic) {
           const cred = getCredentialByDid(credentials, did);
 
           const snippet = inflatePanel(
+            credentials,
+            issuers,
             issuer,
             cred,
             credentialName,
+            dependencies,
             $(response)
           );
           $("#cert-panels").append(snippet);
@@ -199,7 +204,15 @@ function inflatePanels(topic) {
   });
 }
 
-function inflatePanel(issuer, credential, credentialName, panel) {
+function inflatePanel(
+  credentials,
+  issuers,
+  issuer,
+  credential,
+  credentialName,
+  dependencies,
+  panel
+) {
   panel.find("#credential-name").text(credentialName);
 
   if (credential) {
@@ -207,7 +220,47 @@ function inflatePanel(issuer, credential, credentialName, panel) {
     panel.find("#issuer-link").text(issuer.name);
     panel.find("#effective-date").text(credential.effective_date);
   } else {
-    panel.find("#cert-body").html($("<i>Certificate not found</i>"));
+    $.get("/bcreg/assets/html/snippets/cert-dependencies.html").done(
+      response => {
+        const depsSnippet = $(response);
+
+        let buttonDisabled = false;
+
+        for (dep of dependencies) {
+          const depName = getIssuerByDid(issuers, dep).name;
+          const cred = getCredentialByDid(credentials, dep);
+
+          let certExistsClass = "found";
+          let certIconClass = "fa-check-circle";
+
+          if (!cred) {
+            certExistsClass = "missing";
+            certIconClass = "fa-times";
+            buttonDisabled = true;
+          }
+
+          const snippet = `
+            <li class="depends-item ${certExistsClass}">
+              <span class="fa ${certIconClass} icon"></span>
+              ${depName}
+            </li>
+          `;
+          depsSnippet.find(".depends-items").append(snippet);
+        }
+
+        panel.find("#cert-body").html(depsSnippet);
+
+        panel.find("#cta").text(`Enroll with ${issuer.name}`);
+        panel.find("#cta").attr("href", issuer.url);
+
+        if (buttonDisabled) {
+          panel.find("#cta").attr("href", null);
+          panel.find("#cta").attr("disabled", true);
+          panel.find("#cta").addClass("disabled");
+          panel.find("#cta").text("Dependencies Not Met");
+        }
+      }
+    );
   }
 
   return panel;
