@@ -25,6 +25,15 @@ issuers:
             input: incorporation
             from: value
 
+verifiers:
+  bctob:
+    name: BC OrgBook
+    connection:
+      type: TheOrgBook
+      api_url: $TOB_API_URL
+    wallet:
+      seed: "tob-verifier-wallet-000000000001"
+
 proof_requests:
   registration:
     version: '1.0.0'
@@ -35,11 +44,11 @@ proof_requests:
           version: '1.0.0'
         attributes:
           - corp_num
-          - address_line_1
-          - address_line_2
-          - addressee
-          - city
-          - country
+          # - address_line_1
+          # - address_line_2
+          # - addressee
+          # - city
+          # - country
           - legal_name
-          - postal_code
-          - province
+          # - postal_code
+          # - province
