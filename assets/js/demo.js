@@ -243,7 +243,9 @@ function inflatePanel(
             buttonDisabled = true;
           } else {
             console.log(cred)
-            credIds += `${cred.wallet_id},`
+            // TODO: use all credential ids once von-anchor has been fixed
+            if (!credIds) credIds = cred.wallet_id
+            // credIds += `${cred.wallet_id},`
           }
 
           const snippet = `
