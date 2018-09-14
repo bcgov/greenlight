@@ -1,0 +1,10 @@
+- name: operating_permit.permitify
+  version: '1.0.0'
+  attributes:
+    - corp_num
+    - dba_corp_num
+    - application_type
+    - capacity
+    - tobacco
+    - months_of_operation
+    - effective_date

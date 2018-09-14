@@ -1,59 +1,3 @@
-# Permitify
-A end-to-end demonstration of the VON in action.
-
-Includes a "roadmap" site which the user can follow like a checklist.
-
-Also includes the precursor to the von-connector. The goal is to allow all issuers and verifiers to be declaratively configurable.
-
-## Quick Start Guide
-
-A **Quick Start Guide** for a working set of applications is maintained here; [Running a Complete Provisional VON Network](https://github.com/bcgov/TheOrgBook/blob/master/docker/README.md#running-a-complete-provisional-von-network).  This is a great way to see the **Permitify** services in action.
-
-## Running in OpenShift
-
-This project uses the scripts found in [openshift-project-tools](https://github.com/BCDevOps/openshift-project-tools) to setup and maintain OpenShift environments (both local and hosted).  Refer to the [OpenShift Scripts](https://github.com/BCDevOps/openshift-project-tools/blob/master/bin/README.md) documentation for details.
-
-## Running Locally
-
-0. An instance of TheOrgBook must be running. By default, Permitify looks for TheOrgBook running on your local machine. Look here for instructions on running TheOrgBook: https://github.com/bcgov/TheOrgBook
-
-1. First, install Docker. Download the installer for your operating system [here](https://store.docker.com/search?type=edition&offering=community). Once it is installed, keep the Docker daemon running in the background.
-
-2. Linux users will also need to [install docker-compose](https://github.com/docker/compose/releases). Mac and Windows users will have this already. 
-
-3. Once Docker has been installed, open a terminal session and clone this repository:
-
-```bash
-git clone <repository url> permitify && cd permitify/docker
-```
-
-4. Now you can build the Dockerfile into an image which we will use to run containers (this process will take several minutes):
-
-```bash
-./manage build
-```
-
-5. Once the build process completes, you can test the build to make sure everything works properly:
-
-You will need to choose a unique seed value for development. Use a value that no one else is using. It must be 32 characters long exactly.
-
-```bash
-./manage start all seed=my_unique_seed_00000000000000000
-```
-
-When you run the services, each service will use a seed derived from the seed you pass in. Currently, it increments the last character value for each service. So for the example above, it will use the follow seeds for each service:
-
-- my_unique_seed_00000000000000001
-- my_unique_seed_00000000000000002
-- my_unique_seed_00000000000000003
-- my_unique_seed_00000000000000004
-- my_unique_seed_00000000000000005
-- my_unique_seed_00000000000000006
-
-You can see which seed value each service using by looking at the logs like this:
-
-```
-==================================================================================
 Initializing issuer service.
 ----------------------------------------------------------------------------------
 bc_registries_1                        |
@@ -287,3 +231,21 @@ URLS = {
 cd TheOrgBook/APISpec/TestData
 ./load-all.sh --evn local --prefix Ont
 ```
+=======
+# permitify-x
+
+This project demonstrates basic application for deploying the [VON-X](https://github.com/PSPC-SPAC-buyandsell/von-x) library, in order to enable issuer registration and credential submission to [TheOrgBook](https://github.com/bcgov/TheOrgBook).
+It includes Docker tooling for deployment of the application on gunicorn, behind a Caddy reverse proxy.
+
+To support this application you will need a local `von-network` instance as well as a compatible version of TheOrgBook running.
+See the [Quick-Start Guide](https://github.com/bcgov/TheOrgBook/blob/master/docker/README.md#running-a-complete-provisional-von-network) for details.
+
+Once the other components are running, you can build and run this application by executing the following inside the `docker` directory
+(assuming Docker and a compatible terminal are installed).
+
+```
+./manage.sh build
+./manage.sh start
+```
+
+The default registration form can then be found at `http://localhost:5000/bcreg/incorporation`

@@ -1,50 +1,31 @@
-#!/bin/bash
+#
+# Copyright 2017-2018 Government of Canada - Public Services and Procurement Canada - buyandsell.gc.ca
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
-echoWarning (){
-  _msg=${@}
-  _yellow='\033[1;33m'
-  _nc='\033[0m' # No Color
-  echo -e "${_yellow}${_msg}${_nc}"
-}
+export APP_NAME=${APP_NAME:-runner}
+export HOST_IP=${HOST_IP:-0.0.0.0}
+export HOST_PORT=${HOST_PORT:-8000}
 
-if [ -z "${@}" ]; then
-  TEMPLATE_NAME=${TEMPLATE_NAME:-bc_registries}
-
-  if [ $DEBUG ] && [ "$DEBUG" == "true" ]; then
-    # Support for running in debug mode.
-    set "${TEMPLATE_NAME}" "python" "manage.py" "runserver" "--noreload" "--nothreading" "0.0.0.0:8080"
-  else
-    set "${TEMPLATE_NAME}" "${STI_SCRIPTS_PATH}/s2i_run"
+CMD="$@"
+if [ -z "$CMD" ]; then
+	if [ -z "$ENABLE_GUNICORN" ] || [ "$ENABLE_GUNICORN" = "0" ]; then
+		CMD="python ${APP_NAME}.py"
+	else
+    CMD="gunicorn --bind ${HOST_IP}:${HOST_PORT} -c gunicorn_config.py permitify.common:init_app"
   fi
 fi
 
-TEMPLATE_NAME=${TEMPLATE_NAME:-$1}
-TEMPLATE_DIRECTORY="${HOME}/site_templates/$TEMPLATE_NAME"
-shift
-
-echoWarning "=================================================================================="
-echoWarning "Initializing issuer service."
-echoWarning "----------------------------------------------------------------------------------"
-echo
-echoWarning "TEMPLATE_NAME: ${TEMPLATE_NAME}"
-echoWarning "INDY_WALLET_SEED: ${INDY_WALLET_SEED}"
-echoWarning "INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}"
-echoWarning "WEB_CONCURRENCY: ${WEB_CONCURRENCY}"
-echoWarning "DEBUG: ${DEBUG}"
-echoWarning "Cmd: ${@}"
-echoWarning "=================================================================================="
-echo
-
-if [ -d "${TEMPLATE_DIRECTORY}" ]; then
-    echo "Copying template directory; ${TEMPLATE_DIRECTORY} ..."
-    echo
-    cp "${TEMPLATE_DIRECTORY}"/* . 
-else
-    echoWarning "The issuer service template directory, ${TEMPLATE_DIRECTORY}, doesn't exist."
-    echo
-    exit 1
-fi
-
 echo "Starting server ..."
-echo
-exec "${@}"
+exec $CMD

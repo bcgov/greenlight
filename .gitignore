@@ -163,3 +163,6 @@ $RECYCLE.BIN/
 # Visual Studio Code
 .vscode/*
 .idea/*
+__pycache__
+.env*
+.vscode
