@@ -1,0 +1,278 @@
+<form action="{{ path|default('.') }}" method="{{ method|default('post') }}"
+      accept-charset="utf-8" enctype="multipart/form-data" name="{{ form_name }}"
+      class="form well {{ form_class }}">
+    <fieldset>
+        <legend>{{ title }}</legend>
+        {% for field in hidden %}
+            <input type="hidden" name="{{ field }}" value="{{ inputs[field] }}">
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-8 col-md-push-2">
+                {% for field in fields %}
+                <div class="form-group">
+                    {% if field.required %}
+                        <label class="control-label required" for="{{ field.prefix }}line1-input"><span class="field-name">{{ field.label | safe }}</span>
+                        {% if field.type != "radio" %}<span class="required">(required)</span>{% endif %}</label>
+                    {% else %}
+                        <label class="control-label" for="{{ field.name }}-input"><span class="field-name">{{ field.label | safe}}</span></label>
+                    {% endif %}
+                    {% if field.type == "address" %}
+                        <div class="form-address" id="{{ field.name }}-input">
+                            <div class="row form-field">
+                                <div class="col-sm-12">
+                                    <label class="control-label" for="{{ field.prefix }}addressee-input"><span class="field-name">Attention</span></label>
+                                    <input class="form-control" type="text"
+                                        name="{{ field.prefix }}addressee"
+                                        id="{{ field.prefix }}addressee-input"
+                                        value="{{ inputs.addressee }}"
+                                        {% if field.disabled %}disabled{% endif %}>
+                                </div>
+                            </div>
+                            <div class="row form-field">
+                                <div class="col-sm-12">
+                                    <label class="control-label" for="{{ field.prefix }}line1-input"><span class="field-name">Street Address</span></label>
+                                    <div class="typeahead__container">
+                                      <input class="form-control js-typeahead" type="text"
+                                          name="{{ field.prefix }}address_line_1"
+                                          id="{{ field.prefix }}line1-input"
+                                          value="{{ inputs.address_line_1 }}"
+                                          autocomplete="off"
+                                          placeholder="Type to search"
+                                          {% if field.required %}required{% endif %}
+                                          {% if field.disabled %}disabled{% endif %}>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-field">
+                                <div class="col-sm-12">
+                                    <input class="form-control mrgn-tp-sm" type="text"
+                                        name="{{ field.prefix }}address_line_2"
+                                        id="{{ field.prefix }}line2-input"
+                                        value="{{ inputs.address_line_2 }}"
+                                        {% if field.disabled %}disabled{% endif %}>
+                                </div>
+                            </div>
+                            <div class="row form-field">
+                                <div class="col-sm-6">
+                                    <label class="control-label" for="{{ field.prefix }}city-input"><span class="field-name">City</span></label>
+                                    <input class="form-control" type="text"
+                                        name="{{ field.prefix }}city"
+                                        id="{{ field.prefix }}city-input"
+                                        value="{{ inputs.city }}"
+                                        {% if field.required %}required{% endif %}
+                                        {% if field.disabled %}disabled{% endif %}>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="control-label" for="{{ field.prefix }}province-input"><span class="field-name">Province</span></label>
+                                    <select class="form-control" type="text"
+                                        name="{{ field.prefix }}province"
+                                        id="{{ field.prefix }}province-input"
+                                        value="{{ inputs.province }}"
+                                        {% if field.required %}required{% endif %}
+                                        {% if field.disabled %}disabled{% endif %}>
+                                            <option value="AB">Alberta</option>
+                                            <option value="BC" selected>British Columbia</option>
+                                            <option value="MB">Manitoba</option>
+                                            <option value="NB">New Brunswick</option>
+                                            <option value="NL">Newfoundland and Labrador</option>
+                                            <option value="NT">Northwest Territories</option>
+                                            <option value="NS">Nova Scotia</option>
+                                            <option value="NU">Nunavut</option>
+                                            <option value="ON">Ontario</option>
+                                            <option value="PE">Prince Edward Island</option>
+                                            <option value="QC">Quebec</option>
+                                            <option value="SK">Saskatchewan</option>
+                                            <option value="YT">Yukon Territory</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-field">
+                                <div class="col-sm-6">
+                                    <label class="control-label" for="{{ field.prefix }}postal_code-input"><span class="field-name">Postal Code</span></label>
+                                    <input class="form-control" type="text"
+                                        name="{{ field.prefix }}postal_code"
+                                        id="{{ field.prefix }}postal_code-input"
+                                        value="{{ inputs.postal_code }}"
+                                        {% if field.required %}required{% endif %}
+                                        {% if field.disabled %}disabled{% endif %}>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="control-label" for="{{ field.prefix }}country-input"><span class="field-name">Country</span></label>
+                                    <select class="form-control"
+                                        name="{{ field.prefix }}country"
+                                        id="{{ field.prefix }}country-input"
+                                        value="{{ inputs.country }}"
+                                        {% if field.required %}required{% endif %}
+                                        {% if field.disabled %}disabled{% endif %}>
+                                            <option value="CA" selected>Canada</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                          var autocomplete_key = 'UP49-MX76-PT22-ZM49';
+                          $.typeahead({
+                            input: '#{{ field.prefix }}line1-input',
+                          {% raw %}
+                            dynamic: true,
+                            filter: false,
+                            //display: ['properties.fullAddress'],
+                            display: ['Text', 'Description'],
+                            source: {
+                              sites: {
+                                ajax: {
+                                  //delay: 150,
+
+                                  // BC Geocoder
+                                  /*url: 'https://apps.gov.bc.ca/pub/geocoder/addresses.json',
+                                  data: {
+                                    addressString: '{{query}}',
+                                    maxResults: 8,
+                                    interpolation: 'adaptive',
+                                    autoComplete: 'true',
+                                    minScore: 1,
+                                    provinceCode: 'BC',
+                                    echo: true
+                                  },
+                                  path: 'features',*/
+
+                                  url: 'https://ws1.postescanada-canadapost.ca/AddressComplete/Interactive/AutoComplete/v1.00/json3.ws',
+                                  data: {
+                                    SearchTerm: '{{query}}',
+                                    //Country: 'CAN',
+                                    LanguagePreference: 'EN',
+                                    Key: autocomplete_key
+                                  },
+                                  path: 'Items'
+                                }
+                              }
+                            },
+                            callback: {
+                              onInit: function (node) { console.log('ta init', node); },
+                              onSubmit: function (node, form, item, event) {
+                                console.log('submit', item);
+                              },
+                              onClickAfter (node, a, item, event)	{
+                                var form = node[0].form;
+                                var prefix = node[0].name.substring(0, node[0].name.length-14);
+                                /*var update = {
+                                  // street: fullSiteDescriptor -- civicNumber streetName streetType streetDirection
+                                  // city: item.properties.localityName
+                                };*/
+                                if(item.IsRetrievable) {
+                                  $.get('https://ws1.postescanada-canadapost.ca/AddressComplete/Interactive/Retrieve/v1.00/json3.ws',
+                                    {Key: autocomplete_key, Id: item.Id},
+                                    function(data) {
+                                      if(data && data.Items && data.Items.length) {
+                                        var item = data.Items[0]; // [1] for french record
+                                        var upd = {
+                                          'address_line1': item.Line1,
+                                          'address_line2': item.Line2,
+                                          'city': item.City,
+                                          'province': item.ProvinceCode,
+                                          'postal_code': item.PostalCode
+                                        };
+                                        for(var k in upd) {
+                                          var inp = form.elements[prefix + k];
+                                          if(inp) inp.value = upd[k] || '';
+                                        }
+                                      }
+                                    },
+                                    'json');
+                                }
+                              },
+                              onNavigateBefore: function (node, query, event) {
+                                if (~[38,40].indexOf(event.keyCode)) {
+                                  event.preventInputChange = true;
+                                }
+                              }
+                            },
+                            debug: true
+                          {% endraw %}
+                          });
+                        </script>
+                    {% elif field.type == "select" %}
+                        <select
+                            class="form-control"
+                            name="{{ field.name }}"
+                            id="{{ field.name }}-input"
+                            {% if field.multiple %}multiple{% endif %}
+                            {% if field.required %}required{% endif %}
+                            {% if field.disabled %}disabled{% endif %}>
+                            {% for option in field.options %}
+                                <option value="{{ option }}">
+                                    {{ option }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    {% elif field.type == "radio" %}
+                        {% for opt in field.options %}
+                        <div class="{{ field.type }}">
+                            <input
+                                name="{{ field.name }}"
+                                type="{{ field.type }}"
+                                id="{{ field.name }}-{{ opt.value }}-input"
+                                value="{{ opt.value }}"
+                                {% if opt.checked %}checked{% endif %}
+                                {% if field.disabled or opt.disabled %}disabled{% endif %}
+                            ><label for="{{ field.name }}-{{ opt.value }}-input">{{ opt.label }}</label>
+                        </div>
+                        {% endfor %}
+                    {% elif field.type == "checkbox" or field.type == "radio" %}
+                        <div class="{{ field.type }}">
+                            <input
+                                name="{{ field.name }}"
+                                type="{{ field.type }}"
+                                id="{{ field.name }}-input"
+                                {% if field.checked %}checked{% endif %}
+                                {% if field.disabled %}disabled{% endif %}
+                            ><label for="{{ field.name }}-input">{{ field.text }}</label>
+                        </div>
+                    {% elif field.type == "textarea" %}
+                        <textarea
+                            class="form-control"
+                            name="{{ field.name }}"
+                            type="{{ field.type }}"
+                            id="{{ field.name }}-input"
+                            {% if field.disabled %}disabled{% endif %}
+                            ></textarea>
+                    {% elif field.type == "open_close" %}
+                        <div class="form-inline">
+                        <input
+                            class="form-control"
+                            type="time"
+                            name="{{ field.name }}[]"
+                            size="5"
+                            id="{{ field.name }}-open-input"
+                            placeholder="open"
+                            {% if field.required %}required{% endif %}
+                            {% if field.disabled %}disabled{% endif %}
+                        ><span style="padding: 0 1.5em">to</span><input
+                            class="form-control"
+                            type="time"
+                            name="{{ field.name }}[]"
+                            size="5"
+                            id="{{ field.name }}-close-input"
+                            placeholder="close"
+                            {% if field.required %}required{% endif %}
+                            {% if field.disabled %}disabled{% endif %}
+                        ></div>
+                    {% else %}
+                        <input
+                            class="form-control"
+                            type="{{ field.type }}"
+                            name="{{ field.name }}"
+                            size="{{ field.size }}"
+                            id="{{ field.name }}-input"
+                            value="{{ inputs[field.name] }}"
+                            {% if field.required %}required{% endif %}
+                            {% if field.disabled %}disabled{% endif %}
+                        >
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary"><span class="fa fa-check"></span> Submit</button>
+            </div>
+        </div>
+    </fieldset>
+</form>

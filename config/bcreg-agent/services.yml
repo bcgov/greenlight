@@ -1,0 +1,120 @@
+issuers:
+  bcreg:
+    logo_path: ''
+    name: BC Corporate Registry
+    abbreviation: BCReg
+    url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/\
+      ministries-organizations/ministries/citizens-services/bc-registries-online-services"
+    email: bcreg.test.issuer@example.ca
+    url: $APPLICATION_URL_INCORP
+
+    connection:
+      type: TheOrgBook
+      api_url: $TOB_API_URL
+
+    wallet:
+      seed: $WALLET_SEED
+
+    credential_types:
+      - description: Incorporation
+        schema: incorporation.permitify
+        issuer_url: $APPLICATION_URL_INCORP
+        topic:
+          source_id:
+            input: corp_num
+            from: claim
+          type:
+            input: incorporation
+            from: value
+        mapping:
+          - model: name
+            fields:
+              text:
+                input: legal_name
+                from: claim
+              type:
+                input: legal_name
+                from: value
+          - model: category
+            fields:
+              type:
+                input: topic_type
+                from: value
+              value:
+                input: CO
+                from: value
+          - model: address
+            fields:
+              addressee:
+                input: addressee
+                from: claim
+              civic_address:
+                input: address_line_1
+                from: claim
+              city:
+                input: city
+                from: claim
+              province:
+                input: province
+                from: claim
+              postal_code:
+                input: postal_code
+                from: claim
+              country:
+                input: country
+                from: claim
+
+      # - description: Doing Business As
+      #   schema: doing_business_as.permitify
+      #   issuer_url: $APPLICATION_URL_DBA
+      #   topic:
+      #     source_id:
+      #       input: corp_num
+      #       from: claim
+      #     type:
+      #       input: incorporation
+      #       from: value
+      #     related_source_id:
+      #       input: dba_corp_num
+      #       from: claim
+      #     related_type:
+      #       input: doing_business_as
+      #       from: value
+      #   mapping:
+      #     - model: name
+      #       fields:
+      #         text:
+      #           input: doing_business_as_name
+      #           from: claim
+      #         type:
+      #           input: dba_name
+      #           from: value
+
+# verifiers:
+#   bctob:
+#     name: BC OrgBook
+#     connection:
+#       type: TheOrgBook
+#       api_url: $TOB_API_URL
+#     wallet:
+#       seed: "tob-verifier-wallet-000000000001"
+
+
+# proof_requests:
+#   registration:
+#     version: '1.0.0'
+#     schemas:
+#       - key:
+#           name: incorporation.permitify
+#           version: '1.0.0'
+#         attributes:
+#           - corp_num
+#           - address_line_1
+#           - address_line_2
+#           - addressee
+#           - city
+#           - country
+#           - legal_name
+#           - postal_code
+#           - province
+

@@ -1,0 +1,16 @@
+{
+  "schema": "incorporation.bc_registries",
+  "attributes": {
+    "legal_entity_id": "246801235",
+    "corp_num": "123459201",
+    "legal_name": "Iverson Kitchen",
+    "org_type": "Corporation",
+    "addressee": "Iverson Kitchen",
+    "address_line_1": "123 Fake St",
+    "city": "Lazytown",
+    "province": "BC",
+    "postal_code": "K0A2N0",
+    "country": "CA",
+    "effective_date": "1520214531"
+  }
+}

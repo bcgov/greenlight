@@ -1,0 +1,26 @@
+- name: incorporation.permitify
+  version: '1.0.0'
+  attributes:
+    - corp_num
+    - address_line_1
+    - address_line_2
+    - addressee
+    - city
+    - country
+    - legal_name
+    - postal_code
+    - province
+
+# - name: doing_business_as.permitify
+#   version: '1.0.0'
+#   attributes:
+#     - corp_num
+#     - dba_corp_num
+#     - doing_business_as_name
+#     - address_line_1
+#     - address_line_2
+#     - addressee
+#     - city
+#     - country
+#     - postal_code
+#     - province

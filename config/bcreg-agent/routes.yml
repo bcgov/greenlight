@@ -1,0 +1,76 @@
+forms:
+  bcreg-incorp:
+    path: /bcreg/incorporation
+    type: issue-credential
+    schema_name: incorporation.permitify
+    page_title: BC Corporate Registry
+    title: Incorporation
+    template: bcgov.index.html
+    description: >
+      BC Registries and Online Services administers and supports the legal framework
+      used for operating a business, not-for-profit society, cooperative association
+      or financial institution in B.C. Organizations need to register, file documents
+      and update records, which are kept as a matter of public record.
+    explanation: Use the form below to register a BC corporation.
+
+    js_includes:
+      - src: js/bc_registries.js
+
+    fields:
+      - name: legal_name
+        label: Legal Name
+        type: text
+        required: true
+
+      - name: address
+        label: Mailing Address
+        type: address
+        required: true
+
+    mapping:
+      attributes:
+        - name: corp_num
+          from: helper
+          source: uuid
+
+  # bcreg-dba:
+  #   path: /bcreg/dba
+  #   type: issue-credential
+  #   schema_name: doing_business_as.permitify
+  #   page_title: BC Corporate Registry
+  #   title: Doing Business As
+  #   template: bcgov.index.html
+  #   description: >
+  #     BC Registries and Online Services administers and supports the legal framework
+  #     used for operating a business, not-for-profit society, cooperative association
+  #     or financial institution in B.C. Organizations need to register, file documents
+  #     and update records, which are kept as a matter of public record.
+  #   explanation: Use the form below to add a Doing Business As name for your business.
+
+  #   proof_request:
+  #     id: registration
+  #     connection_id: bctob
+
+  #   js_includes:
+  #     - src: js/bc_registries.js
+
+  #   hidden:
+  #     - corp_num
+  #     - dba_corp_num
+
+  #   fields:
+  #     - name: doing_business_as_name
+  #       label: Doing Business As Name
+  #       type: text
+  #       required: true
+
+  #     - name: address
+  #       label: Mailing Address
+  #       type: address
+  #       required: true
+
+  #   mapping:
+  #     attributes:
+  #       - name: dba_corp_num
+  #         from: helper
+  #         source: uuid
