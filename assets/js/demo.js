@@ -68,26 +68,13 @@ const PANEL_ISSUER_DATA = [
   }
 ];
 
-let credentials = null;
 function getCredentialsByTopic(topicId) {
-  return new Promise((resolve, reject) => {
-    if (credentials) return resolve(credentials);
-    $.ajax({
-      method: "GET",
-      url: `/bc-tob/topic/${topicId}/credential/active`,
-      contentType: "application/json"
-    })
-      .done(response => {
-        credentials = response;
-        return resolve(credentials);
-      })
-      .fail(reject);
-  });
+  return loadRecordList(`/bc-tob/topic/${topicId}/credential/active`, true);
 }
 
 function getCredentialByDid(credentials, did) {
   for (cred of credentials) {
-    if (cred.issuer.did === did) {
+    if (cred.credential_type.issuer.did === did) {
       return cred;
     }
   }
@@ -106,21 +93,51 @@ function getTopicById(id) {
   });
 }
 
-let issuers = null;
-function getIssuers(id) {
+var recordCache = {};
+function loadRecordList(url, cache, prevLoad) {
+  if(cache && recordCache[url])
+    return recordCache[url];
+  var pageNum = prevLoad ? prevLoad.page + 1 : 1;
+  var results = prevLoad && prevLoad.results;
   return new Promise((resolve, reject) => {
-    if (issuers) return resolve(issuers);
     $.ajax({
       method: "GET",
-      url: `/bc-tob/issuer`,
+      url: url,
+      data: {
+        page: pageNum,
+      },
       contentType: "application/json"
     })
       .done(response => {
-        issuers = response;
-        return resolve(issuers);
+        if($.isArray(response)) {
+          if(cache)
+            recordCache[url] = results;
+          resolve(response);
+        }
+        else if(response["page"] && response["results"]) {
+          if(results) {
+            results = results.concat(response["results"]);
+          } else {
+            results = response["results"];
+          }
+          if(response["last_index"] < response["total"]) {
+            resolve(loadRecordList(url, cache, {page: pageNum, results: results}));
+          }
+          if(cache)
+            recordCache[url] = results;
+          resolve(results);
+        }
+        else {
+          console.error("Unexpected result from API: ", response);
+          resolve(null);
+        }
       })
       .fail(reject);
   });
+}
+
+function getIssuers(id) {
+  return loadRecordList("/bc-tob/issuer", true);
 }
 
 function getIssuerByDid(issuers, did) {
@@ -148,16 +165,17 @@ function inflateOrgInfo(topic) {
     // TODO: figure out a way to redirect to external host
     snippet.find("#canonical-url").attr("href", `/topic/${topic.id}`);
 
-    name = topic.names[0].text;
     id = topic.source_id;
-    orgType = topic.categories[0].value;
+    name = topic.names.length ? topic.names[0].text : '';
+    orgType = topic.categories.length ? topic.categories[0].value : '';
 
-    addressee = topic.addresses[0].addressee;
-    civic_address = topic.addresses[0].civic_address;
-    city = topic.addresses[0].city;
-    province = topic.addresses[0].province;
-    postal_code = topic.addresses[0].postal_code;
-    country = topic.addresses[0].country;
+    var address = topic.addresses.length ? topic.addresses[0] : {};
+    addressee = address.addressee || '';
+    civic_address = address.civic_address || '';
+    city = address.city || '';
+    province = address.province || '';
+    postal_code = address.postal_code || '';
+    country = address.country || '';
 
     snippet.find("#org-name").text(name);
     snippet.find("#org-id").text(id);
