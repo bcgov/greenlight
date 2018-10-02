@@ -167,7 +167,7 @@ function inflateOrgInfo(topic) {
 
     id = topic.source_id;
     name = topic.names.length ? topic.names[0].text : '';
-    orgType = topic.categories.length ? topic.categories[0].value : '';
+    orgType = topic.attributes.length ? topic.attributes[0].value : '';
 
     var address = topic.addresses.length ? topic.addresses[0] : {};
     addressee = address.addressee || '';
