@@ -1,68 +1,59 @@
-Initializing issuer service.
-----------------------------------------------------------------------------------
-bc_registries_1                        |
-TEMPLATE_NAME: bc_registries
-INDY_WALLET_SEED: issuer_service_00000000000000001
-WEB_CONCURRENCY: 1
-DEBUG:
-Cmd: /usr/libexec/s2i/s2i_run
-==================================================================================
+# Permitify
+
+This project demonstrates a basic application for deploying the [VON-X](https://github.com/PSPC-SPAC-buyandsell/von-x) library, in order to enable issuer registration, claims verification, and credential submission to [TheOrgBook](https://github.com/bcgov/TheOrgBook). It includes Docker tooling for deployment of the application behind a Caddy reverse proxy.
+
+## The Permitify Business Scenario
+
+The business problem addressed in this demo is a business trying to get a Business Licence in their local municipality so that they can open a Pub. Getting such a licence is a complicated question in most areas, requiring contacting multiple jurisdictions to acquire multiple credenitals - licenses, permits, registrations, etc., each of which may require the presentation of previously acquired credentials from other sources. Permitify simplifies the problem by:
+
+- Asking the user the business goal they are trying to achieve. In this case - a license for an alchohol serving restaurant.
+  - This is not yet part of the demo, but coming Real Soon Now.
+- Starting from the goal, evaluating the Hyperledger Indy prerequisite proof request to determine the credentials needed to acquire that credential.
+- Repeating that process for each pre-requisite credential until all the necessary licenses are determined
+- Presenting the user with a list of the credentials needed and the order of acquisition necessary to meet the prerequisites - e.g. starting from the credentials that have no prerequisites.
+- Allowing the user to click from the list of needed credentials screen to either the application for that credential (if not yet acquired), or to TheOrgBook screen to see the already acquired credential.
+
+## Running Locally
+
+To support this application you will need a local `von-network` instance as well as a compatible version of TheOrgBook running.
+See the [Quick-Start Guide](https://github.com/bcgov/TheOrgBook/blob/master/docker/README.md#running-a-complete-provisional-von-network) for details.
+
+Once the other components are running, you can build and run this application by executing the following inside the `docker` directory
+(assuming Docker and a compatible terminal are installed).
+
+```
+./manage build
+./manage start
 ```
 
-Each seed, must be authorized on the indy ledger! If you are using the https://github.com/bcgov/von-network network locally, you can visit the webserver running on your local machine to authorize the did for each seed. If you are using the shared development Indy ledger (which is an instance of von-network), you can visit this page to authorize your did: http://159.89.115.24
+The permitify demo can be started at: `http://localhost:5000/demo`.  The demo starts with registering a new company with BC Registries. Once completed, the list of additional credentials needed appears. The Happy Path for the demo is to walk through acquiring the credentials in order, noting the pre-completion of information (based on proof requests) from previous steps.
 
-You should now be able to visit the services on the following urls:
+To reset the demo, including removing the Indy wallets of the demo Issuers, run:
 
-- localhost:5000
-- localhost:5001
-- localhost:5002
-- localhost:5003
-- localhost:5004
-- localhost:5005
-
-And any other services that are later defined in docker-compose.yml.
-
-Services are defined using config files. See ./site_templates for examples of the existing services.
-
-During development, you can run
-
-```bash
-./manage start seed=my_unique_seed_00000000000000000
+```
+./manage rm
 ```
 
-which will only start the first service with the source directory mounted as a volume for quicker development.
+And then run the steps above to build (if necessary) and start Permitify.
 
+## Running a Shared Instance
+
+Permitify can be run on a server for multiple users. The `docker` folder provides guidance of what needs to be set up. Likewise, the `openshift` folder contains an example of deploying permitify to a `Red Hat OpenShift` instance.
+
+## Services
+
+Services are defined using config files. See ./config folders for examples of the existing services.
 
 ## Caveats
 
-### General
-
-You may receive errors that look something like this:
-
-```
-Casting error to ErrorCode: Rejected by pool: {"op":"REQNACK","reqId":1513638530415465900,"reason":"client request invalid: ColdNotAuthenticate('Can not find verkey for DID QmaAjcfw2HCgydR1daFg9V',)","identifier":"QmaAjcfw2HCgydR1daFg9V"}
-```
-
-This indicates the agent has not been registered and you need to authorize a new DID for the agent.  Use the [VON-Network](http://159.89.115.24) site to do this.  The seeds for the agents are defined in the config.toml file for each site.
-
-Examples:
-
-```
-http://159.89.115.24/register?seed=bc_registries_agent_000000000000
-http://159.89.115.24/register?seed=worksafe_bc_agent_00000000000000
-```
-
 ### On dev machines
 
-- If you get WalletNotFoundError when submitting a claim, try incrementing the schema version and fully restarting the server. This will re-publish the schema and related claim definition which should fix this. This can occur if the wallet didn't persist properly from a previous restart and the definition cannot be found in the wallet. **This will also be needed on first run.**
-
 - For Django's hot-reloading to work in development, the src directory needs to mounted as a volume. This only works when one "service" is defined in the docker-compose.yml since multiple services will clobber each other's config files that get copied in.
-
-- The wallet directory must be mounted in an internal volume. See docker-compose.yml for example.
 
 ## Running a Complete Provisional VON Network
 
 A "complete" provisional VON Network consists of the following components;
+
 - A Provisional Ledger Node Pool; [von-network](https://github.com/bcgov/von-network)
 - An instance of TheOrgBook; [TheOrgBook](https://github.com/bcgov/TheOrgBook)
 - And a set of Issuer Services; [Permitify](https://github.com/bcgov/permitify)
@@ -74,6 +65,8 @@ Refer to the docker compose documentation in each of the projects for specific d
 A [Quick Start Guide](https://github.com/bcgov/TheOrgBook/tree/master/docker#quick-start-guide) can be found in the [bcgov/TheOrgBook](https://github.com/bcgov/TheOrgBook) repository.
 
 ## Setting up a new issuing service in Permitify
+
+> **THIS INFORMATION NEEDS TO BE UPDATED TO REFLECT THE LATEST RELEASE**
 
 The steps below describe how to register a service (i.e. Ontario Corporate Registry, “OntarioReg”) that issues **foundational** claims (i.e. incorporation) for a business and loads test data for the new service into TheOrgBook using load scripts. The new service is added to the **local** instance of Permitify.
 
@@ -231,21 +224,3 @@ URLS = {
 cd TheOrgBook/APISpec/TestData
 ./load-all.sh --evn local --prefix Ont
 ```
-=======
-# permitify-x
-
-This project demonstrates basic application for deploying the [VON-X](https://github.com/PSPC-SPAC-buyandsell/von-x) library, in order to enable issuer registration and credential submission to [TheOrgBook](https://github.com/bcgov/TheOrgBook).
-It includes Docker tooling for deployment of the application on gunicorn, behind a Caddy reverse proxy.
-
-To support this application you will need a local `von-network` instance as well as a compatible version of TheOrgBook running.
-See the [Quick-Start Guide](https://github.com/bcgov/TheOrgBook/blob/master/docker/README.md#running-a-complete-provisional-von-network) for details.
-
-Once the other components are running, you can build and run this application by executing the following inside the `docker` directory
-(assuming Docker and a compatible terminal are installed).
-
-```
-./manage.sh build
-./manage.sh start
-```
-
-The default registration form can then be found at `http://localhost:5000/bcreg/incorporation`
