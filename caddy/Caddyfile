@@ -3,6 +3,11 @@
     root /srv/
     tls self_signed
 
+    redir 302 {
+        if {path} is /
+        / /demo/start
+    }
+
     rewrite {
         r ^/bcreg/assets/(.*)$
         to /assets/{1}
