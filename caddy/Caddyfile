@@ -1,0 +1,71 @@
+{%WEB_HOST_NAME%}:80, {%WEB_HOST_NAME%}:443 {
+    log logs/access.log
+    root /srv/
+    tls self_signed
+
+    redir 302 {
+        if {path} is /
+        / /demo/start
+    }
+
+    rewrite {
+        r ^/bcreg/assets/(.*)$
+        to /assets/{1}
+    }
+
+    rewrite {
+        r ^/demo/?$
+        to /assets/html/demo.html
+    }
+
+    rewrite {
+        r ^/demo/start/?$
+        to /assets/html/demo-start.html
+    }
+
+    proxy /bc-tob {%TOB_API_URL%} {
+        without /bc-tob
+    }
+
+    proxy /bcreg bcreg-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
+
+    proxy /finance ministry-finance-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
+
+    proxy /surrey city-surrey-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
+
+    proxy /fraser-valley fraser-valley-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
+
+    proxy /liquor liquor-control-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
+
+    proxy /worksafe worksafe-agent:8000 {
+        except /assets
+        # health_check /health  # return 502 bad gateway if not synced
+        transparent
+    }
+}
+
+{%WEB_HOST_NAME%}:80/topic {
+    redir 302 {
+        / {%TOB_APP_URL%}/en/topic/_{rewrite_path}
+    }
+}

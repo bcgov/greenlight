@@ -1,0 +1,7 @@
+- name: biz_license.permitify
+  version: '1.0.0'
+  attributes:
+    - corp_num
+    - dba_corp_num
+    - number_of_employees
+    - effective_date

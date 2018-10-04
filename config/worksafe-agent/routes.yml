@@ -1,0 +1,69 @@
+forms:
+  finance-pst:
+    path: /worksafe/clearance-letter
+    type: issue-credential
+    schema_name: worksafe.permitify
+    page_title: WorkSafe BC
+    title: WorkSafe BC
+    template: worksafe_bc.index.html
+    description: >
+      Get a clearance letter
+    explanation: >
+      While some exceptions exist, most types of clearance
+      letters can be accessed online using our clearance letter application.
+
+    proof_request:
+      id: registration
+      connection_id: bctob
+
+    fields:
+      - name: corp_num
+        label: Corporation ID
+        type: text
+        required: true
+        # disabled: true
+
+      # - name: dba_corp_num
+      #   label: Doing Business As ID
+      #   type: text
+      #   required: true
+      #   disabled: true
+
+      - name: legal_name
+        label: Legal Name
+        type: text
+        required: true
+        # disabled: true
+
+      # - name: doing_business_as_name
+      #   label: Doing Business As Name
+      #   type: text
+      #   required: true
+      #   disabled: true
+
+      - name: restaurant_name
+        label: Restaurant Name
+        type: text
+        required: true
+
+      - name: coverage_description
+        label: Coverage Description
+        type: textarea
+        required: true
+
+      - name: effective_date
+        label: Effective Date
+        type: date
+        required: true
+
+      - name: end_date
+        label: End Date
+        type: date
+        required: true
+
+
+    mapping:
+      attributes:
+        - name: pst_number
+          from: helper
+          source: pst
