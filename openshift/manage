@@ -10,7 +10,7 @@ usage () {
 
   Manage the permitify issuer services within a given OpenShift environment.
 
-  Usage: 
+  Usage:
     $0 [options] [commands]
 
   Example:
@@ -23,7 +23,7 @@ usage () {
     -e <Environment> the environment (dev/test/prod) into which you are deploying (default: ${DEPLOYMENT_ENV_NAME})
     -l apply local settings and parameters
     -p <profile> load a specific settings profile; setting.<profile>.sh
-    -P Use the default settings profile; settings.sh.  Use this flag to ignore all but the default 
+    -P Use the default settings profile; settings.sh.  Use this flag to ignore all but the default
        settings profile when there is more than one settings profile defined for a project.
     -x run the script in debug mode to see what's happening
 
@@ -52,7 +52,7 @@ usage () {
         To reset select issuer services list them following the command.
         For example;
           $0 -e test reset bc-registries worksafe-bc
-        
+
         Performs the following operations:
         - Delete the persistent indy wallet information.
         - Scale down the pod.
@@ -62,9 +62,9 @@ usage () {
       - Register/re-register the issuer services's DIDs with the ledger.
 
     createDeployConfig
-      - Create one or more deployment configurations in an OpenShift environment 
+      - Create one or more deployment configurations in an OpenShift environment
         using pre-generated deployment configuration files.
-        
+
         Examples;
           $0 -e dev createDeployConfig
           - This will create deployment configurations from all of the existing deployment configuration files.
@@ -73,9 +73,9 @@ usage () {
           - This will create a deployment configurations from the specified deployment configuration file.
 
     replaceDeployConfig
-      - Replace one or more deployment configurations in an OpenShift environment 
+      - Replace one or more deployment configurations in an OpenShift environment
         using pre-generated deployment configuration files.
-        
+
         Examples;
           $0 -e dev replaceDeployConfig
           - This will replace deployment configurations for all of the existing deployment configuration files.
@@ -95,7 +95,7 @@ exit 1
 while getopts p:Pe:lxh FLAG; do
   case $FLAG in
     p ) export PROFILE=$OPTARG ;;
-    P ) export IGNORE_PROFILES=1 ;;    
+    P ) export IGNORE_PROFILES=1 ;;
     e ) export DEPLOYMENT_ENV_NAME=$OPTARG ;;
     l ) export APPLY_LOCAL_SETTINGS=1 ;;
     x ) export DEBUG=1 ;;
@@ -251,7 +251,7 @@ recycle() {
 
   scaleDown ${_pods}
   printAndWait "Wait for all of the pods to scale down completely before continuing."
-  scaleUp ${_pods}  
+  scaleUp ${_pods}
 }
 
 getDidNames() {
@@ -263,7 +263,7 @@ getDidNames() {
     ministry_of_finance
     worksafe_bc
     onbis"
-  
+
   echo ${_didNames}
 }
 
