@@ -61,28 +61,6 @@ usage () {
     registerDids
       - Register/re-register the issuer services's DIDs with the ledger.
 
-    createDeployConfig
-      - Create one or more deployment configurations in an OpenShift environment
-        using pre-generated deployment configuration files.
-
-        Examples;
-          $0 -e dev createDeployConfig
-          - This will create deployment configurations from all of the existing deployment configuration files.
-
-          $0 -e dev createDeployConfig ./bc-registries-deploy_DeploymentConfig.json
-          - This will create a deployment configurations from the specified deployment configuration file.
-
-    replaceDeployConfig
-      - Replace one or more deployment configurations in an OpenShift environment
-        using pre-generated deployment configuration files.
-
-        Examples;
-          $0 -e dev replaceDeployConfig
-          - This will replace deployment configurations for all of the existing deployment configuration files.
-
-          $0 -e dev replaceDeployConfig ./bc-registries-deploy_DeploymentConfig.json
-          - This will replace the deployment configurations for the specified deployment configuration file.
-
     getIssuerServicePods
       - Get a list of issuer service pods running in a given environment.
 EOF
@@ -283,7 +261,7 @@ getLedgerAddress() {
 }
 
 # Add any non-issurer service pods to this list
-NON_ISSURER_SERVICE_PODS="redis wallet wallet-db"
+NON_ISSURER_SERVICE_PODS="redis proxy wallet-db"
 
 getIssuerServicePods() {
   _pods=$(getAllPods ${@})
