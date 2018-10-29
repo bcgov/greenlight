@@ -374,7 +374,7 @@
       "displayName": "Agent Host Name",
       "description": "The name of the Fraser Valley von-x agent associated with this proxy.",
       "required": true,
-      "value": "fraser-valley"
+      "value": "fraser-valley-health-authority"
     },
     {
       "name": "FRASER_VALLEY_AGENT_PORT",
