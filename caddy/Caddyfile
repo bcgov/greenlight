@@ -1,7 +1,13 @@
-{%WEB_HOST_NAME%}:80, {%WEB_HOST_NAME%}:443 {
-    log logs/access.log
+{%WEB_HOST_NAME%}:{%WEB_HOST_PORT%} {
+    # Uncomment the following to enable logging; requires a mounted volume.
+    # log logs/access.log
+
+    tls {%WEB_HOST_TLS%}  # Use `self_signed` to enable self_signed tls, or `off` to disable tls.  TLS not needed for OpenShift.
+
     root /srv/
-    tls self_signed
+
+    # Openly exposed health check endpoint for OpenShift
+    status 200 /health
 
     redir 302 {
         if {path} is /
@@ -27,44 +33,44 @@
         without /bc-tob
     }
 
-    proxy /bcreg bcreg-agent:8000 {
+    proxy /bcreg {%BCREG_AGENT_HOST%}:{%BCREG_AGENT_PORT%} {
         except /assets
         # health_check /health  # return 502 bad gateway if not synced
         transparent
     }
 
-    proxy /finance ministry-finance-agent:8000 {
+    proxy /finance {%MINISTRY_FINANCE_AGENT_HOST%}:{%MINISTRY_FINANCE_AGENT_PORT%} {
         except /assets
         # health_check /health  # return 502 bad gateway if not synced
         transparent
     }
 
-    proxy /surrey city-surrey-agent:8000 {
+    proxy /surrey {%CITY_SURREY_AGENT_HOST%}:{%CITY_SURREY_AGENT_PORT%} {
         except /assets
         # health_check /health  # return 502 bad gateway if not synced
         transparent
     }
 
-    proxy /fraser-valley fraser-valley-agent:8000 {
+    proxy /fraser-valley {%FRASER_VALLEY_AGENT_HOST%}:{%FRASER_VALLEY_AGENT_PORT%} {
         except /assets
         # health_check /health  # return 502 bad gateway if not synced
         transparent
     }
 
-    proxy /liquor liquor-control-agent:8000 {
+    proxy /liquor {%LIQUOR_CONTROL_AGENT_HOST%}:{%LIQUOR_CONTROL_AGENT_PORT%} {
         except /assets
         # health_check /health  # return 502 bad gateway if not synced
         transparent
     }
 
-    proxy /worksafe worksafe-agent:8000 {
+    proxy /worksafe {%WORKSAFE_AGENT_HOST%}:{%WORKSAFE_AGENT_PORT%} {
         except /assets
         # health_check /health  # return 502 bad gateway if not synced
         transparent
     }
 }
 
-{%WEB_HOST_NAME%}:80/topic {
+{%WEB_HOST_NAME%}:{%WEB_HOST_PORT%}/topic {
     redir 302 {
         / {%TOB_APP_URL%}/en/topic/_{rewrite_path}
     }

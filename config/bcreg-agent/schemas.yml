@@ -1,5 +1,5 @@
 - name: incorporation.permitify
-  version: '1.0.0'
+  version: '1.0.1'
   attributes:
     - corp_num
     - address_line_1

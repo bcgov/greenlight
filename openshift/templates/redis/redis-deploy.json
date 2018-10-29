@@ -9,7 +9,12 @@
             "kind": "DeploymentConfig",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}"
+                "name": "${NAME}",
+                "labels": {
+                  "app": "services",
+                  "name": "${NAME}",
+                  "app-group": "${APP_GROUP}"
+                }
             },
             "spec": {
                 "strategy": {
@@ -138,7 +143,12 @@
             "kind": "PersistentVolumeClaim",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}"
+                "name": "${NAME}",
+                "labels": {
+                  "app": "services",
+                  "name": "${NAME}",
+                  "app-group": "${APP_GROUP}"
+                }
             },
             "spec": {
                 "accessModes": [
@@ -155,7 +165,12 @@
             "kind": "Secret",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}"
+                "name": "${NAME}",
+                "labels": {
+                  "app": "services",
+                  "name": "${NAME}",
+                  "app-group": "${APP_GROUP}"
+                }
             },
             "data": {
                 "database-password": "${DATABASE_PASSWORD}"
@@ -166,7 +181,12 @@
             "kind": "Service",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}"
+                "name": "${NAME}",
+                "labels": {
+                  "app": "services",
+                  "name": "${NAME}",
+                  "app-group": "${APP_GROUP}"
+                }
             },
             "spec": {
                 "ports": [
@@ -192,6 +212,13 @@
             "description": "The name assigned to all of the OpenShift resources associated to the deployment.",
             "required": true,
             "value": "redis"
+        },
+        {
+          "name": "APP_GROUP",
+          "displayName": "App Group",
+          "description": "The name assigned to all of the deployments in this project.",
+          "required": true,
+          "value": "permitify"
         },
         {
             "name": "DATABASE_PASSWORD",

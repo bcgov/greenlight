@@ -68,7 +68,7 @@ configureEnvironment () {
   if [ -f .env ]; then
     while read line; do
       if [[ ! "$line" =~ ^\# ]] && [[ "$line" =~ .*= ]]; then
-        export $line
+        export ${line//[$'\r\n']}
       fi
     done < .env
   fi
@@ -84,6 +84,17 @@ configureEnvironment () {
   export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-"permitify"}
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export APPLICATION_URL=${APPLICATION_URL-http://localhost:${WEB_HTTP_PORT:-5000}}
+
+  # wallet-db
+  export POSTGRESQL_DATABASE="THE_ORG_BOOK"
+  export POSTGRESQL_USER="DB_USER"
+  export POSTGRESQL_PASSWORD="DB_PASSWORD"
+  export WALLET_TYPE="postgres"
+  export WALLET_ENCRYPTION_KEY="key"
+  export POSTGRESQL_WALLET_HOST="wallet-db"
+  export POSTGRESQL_WALLET_PORT="5432"
+  export POSTGRESQL_ADMIN_USER="postgres"
+  export POSTGRESQL_ADMIN_PASSWORD="mysecretpassword"
 }
 
 getStartupParams() {

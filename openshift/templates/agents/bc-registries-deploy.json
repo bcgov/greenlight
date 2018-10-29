@@ -1,0 +1,583 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "annotations": {
+      "description": "Deployment template for a ${NAME} instance.",
+      "tags": "${NAME}"
+    },
+    "name": "${NAME}-deployment-template"
+  },
+  "objects": [
+    {
+      "kind": "Secret",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${WALLET_CREDENTIAL_STORE_NAME}",
+        "labels": {
+          "app": "agents",
+          "name": "${NAME}",
+          "app-group": "${APP_GROUP}"
+        }
+      },
+      "data": {
+        "key": "${WALLET_ENCRYPTION_KEY}",
+        "holder-seed": "${HOLDER_WALLET_SEED}",
+        "holder-did": "${HOLDER_WALLET_DID}",
+        "verifier-seed": "${VERIFIER_WALLET_SEED}",
+        "verifier-did": "${VERIFIER_WALLET_DID}",
+        "issuer-seed": "${ISSUER_WALLET_SEED}",
+        "issuer-did": "${ISSUER_WALLET_DID}"
+      },
+      "type": "Opaque"
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "labels": {
+          "app": "agents",
+          "name": "${NAME}",
+          "app-group": "${APP_GROUP}"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "8080-tcp",
+            "protocol": "TCP",
+            "port": 8080,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "name": "${NAME}"
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "labels": {
+          "app": "agents",
+          "name": "${NAME}",
+          "app-group": "${APP_GROUP}"
+        },
+        "annotations": {
+          "description": "Defines how to deploy the container."
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling",
+          "rollingParams": {
+            "updatePeriodSeconds": 1,
+            "intervalSeconds": 1,
+            "timeoutSeconds": 600,
+            "maxUnavailable": "25%",
+            "maxSurge": "25%"
+          }
+        },
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "${NAME}"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "namespace": "${IMAGE_NAMESPACE}",
+                "name": "permitify:${TAG_NAME}"
+              }
+            }
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${NAME}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}",
+            "labels": {
+              "name": "${NAME}"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "${NAME}-data",
+                "persistentVolumeClaim": {
+                  "claimName": "${NAME}"
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "${NAME}",
+                "image": " ",
+                "ports": [
+                  {
+                    "containerPort": 8080,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "APPLICATION_URL",
+                    "value": "${APPLICATION_URL}"
+                  },
+                  {
+                    "name": "CONFIG_ROOT",
+                    "value": "${CONFIG_ROOT}"
+                  },
+                  {
+                    "name": "HOST_PORT",
+                    "value": "${HOST_PORT}"
+                  },
+                  {
+                    "name": "ENVIRONMENT",
+                    "value": "${ENVIRONMENT}"
+                  },
+                  {
+                    "name": "ENABLE_GUNICORN",
+                    "value": "${ENABLE_GUNICORN}"
+                  },
+                  {
+                    "name": "GENESIS_URL",
+                    "value": "${GENESIS_URL}"
+                  },
+                  {
+                    "name": "INDY_LEDGER_URL",
+                    "value": "${INDY_LEDGER_URL}"
+                  },
+                  {
+                    "name": "LEDGER_PROTOCOL_VERSION",
+                    "value": "${LEDGER_PROTOCOL_VERSION}"
+                  },
+                  {
+                    "name": "AUTO_REGISTER_DID",
+                    "value": "${AUTO_REGISTER_DID}"
+                  },
+                  {
+                    "name": "FORMS",
+                    "value": "${FORMS}"
+                  },
+                  {
+                    "name": "ISSUERS",
+                    "value": "${ISSUERS}"
+                  },
+                  {
+                    "name": "LOG_LEVEL",
+                    "value": "${LOG_LEVEL}"
+                  },
+                  {
+                    "name": "PYTHON_ENV",
+                    "value": "${PYTHON_ENV}"
+                  },
+                  {
+                    "name": "TOB_API_URL",
+                    "value": "${TOB_API_URL}"
+                  },
+                  {
+                    "name": "TOB_APP_URL",
+                    "value": "${TOB_APP_URL}"
+                  },
+                  {
+                    "name": "WALLET_TYPE",
+                    "value": "${WALLET_TYPE}"
+                  },
+                  {
+                    "name": "POSTGRESQL_WALLET_HOST",
+                    "value": "${POSTGRESQL_WALLET_HOST}"
+                  },
+                  {
+                    "name": "POSTGRESQL_WALLET_PORT",
+                    "value": "${POSTGRESQL_WALLET_PORT}"
+                  },
+                  {
+                    "name": "POSTGRESQL_WALLET_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${POSTGRESQL_WALLET_HOST}",
+                        "key": "database-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "POSTGRESQL_WALLET_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${POSTGRESQL_WALLET_HOST}",
+                        "key": "database-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "POSTGRESQL_WALLET_ADMIN_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${POSTGRESQL_WALLET_HOST}",
+                        "key": "admin-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "WALLET_ENCRYPTION_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${WALLET_CREDENTIAL_STORE_NAME}",
+                        "key": "key"
+                      }
+                    }
+                  },
+                  {
+                    "name": "WALLET_SEED",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${WALLET_CREDENTIAL_STORE_NAME}",
+                        "key": "issuer-seed"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ISSUER_WALLET_DID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${WALLET_CREDENTIAL_STORE_NAME}",
+                        "key": "issuer-did"
+                      }
+                    }
+                  }
+                ],
+                "readinessProbe": {
+                  "timeoutSeconds": 30,
+                  "initialDelaySeconds": 3,
+                  "httpGet": {
+                    "path": "/health",
+                    "port": 8080
+                  }
+                },
+                "livenessProbe": {
+                  "timeoutSeconds": 30,
+                  "initialDelaySeconds": 300,
+                  "httpGet": {
+                    "path": "/health",
+                    "port": 8080
+                  }
+                },
+                "resources": {
+                  "requests": {
+                    "cpu": "${CPU_REQUEST}",
+                    "memory": "${MEMORY_REQUEST}"
+                  },
+                  "limits": {
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "${NAME}-data",
+                    "mountPath": "${MOUNT_PATH}"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "labels": {
+          "app": "agents",
+          "name": "${NAME}",
+          "app-group": "${APP_GROUP}"
+        }
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "${PERSISTENT_VOLUME_SIZE}"
+          }
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "The name assigned to all of the objects defined in this template.",
+      "required": true,
+      "value": "bc-registries"
+    },
+    {
+      "name": "APP_GROUP",
+      "displayName": "App Group",
+      "description": "The name assigned to all of the deployments in this project.",
+      "required": true,
+      "value": "permitify"
+    },
+    {
+      "name": "IMAGE_NAMESPACE",
+      "displayName": "Image Namespace",
+      "required": true,
+      "description": "The namespace of the OpenShift project containing the imagestream for the application.",
+      "value": "devex-von-permitify-tools"
+    },
+    {
+      "name": "TAG_NAME",
+      "displayName": "Environment TAG name",
+      "description": "The TAG name for this environment, e.g., dev, test, prod",
+      "required": true,
+      "value": "dev"
+    },
+    {
+      "name": "APPLICATION_URL",
+      "displayName": "Application Url",
+      "description": "The application URL.",
+      "required": true,
+      "value": "https://proxy-devex-von-permitify-dev.pathfinder.gov.bc.ca"
+    },
+    {
+      "name": "CONFIG_ROOT",
+      "displayName": "Config Root",
+      "description": "The root directory containing the application configuration.",
+      "required": true,
+      "value": "../config/bcreg-agent"
+    },
+    {
+      "name": "HOST_PORT",
+      "displayName": "Host Port",
+      "description": "The port on which the agent service will listen.",
+      "required": true,
+      "value": "8080"
+    },
+    {
+      "name": "ENVIRONMENT",
+      "displayName": "Environment",
+      "description": "The application environment.",
+      "required": true,
+      "value": "default"
+    },
+    {
+      "name": "ENABLE_GUNICORN",
+      "displayName": "Enable gunicorn",
+      "description": "A flag to indicate whether or not to use the gunicorn server.",
+      "required": true,
+      "value": "0"
+    },
+    {
+      "name": "GENESIS_URL",
+      "displayName": "Genesis Url",
+      "description": "URL for downloading a copy of the genesis file defining the ledger connection for the environment.  Used when connecting the the Sovrin Ledger.",
+      "required": false,
+      "value": ""
+    },
+    {
+      "name": "INDY_LEDGER_URL",
+      "displayName": "Indy Ledger URL",
+      "description": "URL for a running instance of the von-network.  Used when connecting to the BCovrin Ledger.",
+      "required": false,
+      "value": "http://159.89.115.24"
+    },
+    {
+      "name": "LEDGER_PROTOCOL_VERSION",
+      "displayName": "Ledger Protocol Version",
+      "description": "Used to specify the protocol version for the ledger.  Defaults if left blank.",
+      "required": false,
+      "value": ""
+    },
+    {
+      "name": "AUTO_REGISTER_DID",
+      "displayName": "Auto Register DID",
+      "description": "Flag to indicate whether or not to auto-register with the ledger.  Only works with the BCovrin, which has an endpoint for self registration.",
+      "required": false,
+      "value": "1"
+    },
+    {
+      "name": "FORMS",
+      "displayName": "Forms",
+      "description": "Forms.",
+      "required": false,
+      "value": ""
+    },
+    {
+      "name": "ISSUERS",
+      "displayName": "Issuers",
+      "description": "Issuers.",
+      "required": false,
+      "value": ""
+    },
+    {
+      "name": "LOG_LEVEL",
+      "displayName": "Log Level",
+      "description": "Log Level.",
+      "required": false,
+      "value": ""
+    },
+    {
+      "name": "PYTHON_ENV",
+      "displayName": "Python Environment",
+      "description": "Python Environment.",
+      "required": true,
+      "value": "development"
+    },
+    {
+      "name": "TOB_API_URL",
+      "displayName": "TOB API URL",
+      "description": "The URL of the TOB API.",
+      "required": true,
+      "value": "https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v2"
+    },
+    {
+      "name": "TOB_APP_URL",
+      "displayName": "TOB Application URL",
+      "description": "The URL of the TOB application.",
+      "required": true,
+      "value": "https://devex-von-dev.pathfinder.gov.bc.ca"
+    },
+    {
+      "name": "WALLET_TYPE",
+      "displayName": "Wallet Storage Type",
+      "description": "The wallet storage type.  Your choice of 'postgres' or 'sqlite' at the moment.  If not defined, defaults to 'sqlite' for compatibility",
+      "required": false,
+      "value": "postgres"
+    },
+    {
+      "name": "POSTGRESQL_WALLET_HOST",
+      "displayName": "PostgreSql Wallet Hostname",
+      "required": true,
+      "description": "Hostname of the deployed database hosting the wallet.  Only used when WALLET_TYPE = postgre.",
+      "value": "wallet-db"
+    },
+    {
+      "name": "POSTGRESQL_WALLET_PORT",
+      "displayName": "PostgreSql Wallet Port",
+      "required": true,
+      "description": "The port number of the deployed database hosting the wallet.  Only used when WALLET_TYPE = postgre.",
+      "value": "5432"
+    },
+    {
+      "name": "WALLET_ENCRYPTION_KEY",
+      "displayName": "Wallet Encryption Key",
+      "description": "The encryption key to be used for the wallets.  Needs to be basee64 encoded.",
+      "required": true,
+      "generate": "expression",
+      "from": "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
+    },
+    {
+      "name": "HOLDER_WALLET_SEED",
+      "displayName": "Holder Wallet Seed",
+      "description": "The Seed used for the holder wallet.  Needs to be basee64 encoded.",
+      "required": true,
+      "generate": "expression",
+      "from": "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
+    },
+    {
+      "name": "VERIFIER_WALLET_SEED",
+      "displayName": "Verifier Wallet Seed",
+      "description": "The Seed used for the verifier wallet.  Needs to be basee64 encoded.",
+      "required": true,
+      "generate": "expression",
+      "from": "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
+    },
+    {
+      "name": "ISSUER_WALLET_SEED",
+      "displayName": "Issuer Wallet Seed",
+      "description": "The Seed used for the issuer wallet.  Needs to be basee64 encoded.",
+      "required": true,
+      "generate": "expression",
+      "from": "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
+    },
+    {
+      "name": "HOLDER_WALLET_DID",
+      "displayName": "Holder Wallet DID",
+      "description": "The DID associated to the holder wallet.  Needs to be basee64 encoded.",
+      "required": false,
+      "generate": "expression",
+      "from": "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
+    },
+    {
+      "name": "VERIFIER_WALLET_DID",
+      "displayName": "Verifier Wallet DID",
+      "description": "The DID associated to the verifier wallet.  Needs to be basee64 encoded.",
+      "required": false,
+      "generate": "expression",
+      "from": "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
+    },
+    {
+      "name": "ISSUER_WALLET_DID",
+      "displayName": "Issuer Wallet DID",
+      "description": "The DID associated to the issuer wallet.  Needs to be basee64 encoded.",
+      "required": false,
+      "generate": "expression",
+      "from": "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
+    },
+    {
+      "name": "WALLET_CREDENTIAL_STORE_NAME",
+      "displayName": "Wallet Credential Store Name",
+      "description": "The name of the wallet credential store (aka The name of the secret that contains the wallet credentials).",
+      "required": true,
+      "value": "bcreg-wallet-credentials"
+    },
+    {
+      "name": "MOUNT_PATH",
+      "displayName": "Mount Path",
+      "description": "The path to mount the persistent volume.",
+      "required": true,
+      "value": "/home/indy/.indy_client/wallet"
+    },
+    {
+      "name": "PERSISTENT_VOLUME_SIZE",
+      "displayName": "Persistent Volume Size",
+      "description": "The size of the persistent volume , e.g. 512Mi, 1Gi, 2Gi.",
+      "required": true,
+      "value": "1Gi"
+    },
+    {
+      "name": "CPU_LIMIT",
+      "displayName": "Resources CPU Limit",
+      "description": "The resources CPU limit (in cores) for this build.",
+      "required": true,
+      "value": "0"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "displayName": "Resources Memory Limit",
+      "description": "The resources Memory limit (in Mi, Gi, etc) for this build.",
+      "required": true,
+      "value": "0Mi"
+    },
+    {
+      "name": "CPU_REQUEST",
+      "displayName": "Resources CPU Request",
+      "description": "The resources CPU request (in cores) for this build.",
+      "required": true,
+      "value": "0"
+    },
+    {
+      "name": "MEMORY_REQUEST",
+      "displayName": "Resources Memory Request",
+      "description": "The resources Memory request (in Mi, Gi, etc) for this build.",
+      "required": true,
+      "value": "0Mi"
+    }
+  ]
+}
