@@ -102,7 +102,7 @@
       "displayName": "Docker File Path",
       "description": "The path to the docker file.",
       "required": true,
-      "value": "docker/Dockerfile"
+      "value": "docker/agent/Dockerfile"
     },
     {
       "name": "CPU_LIMIT",
