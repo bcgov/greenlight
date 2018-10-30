@@ -89,7 +89,7 @@ configureEnvironment () {
   export POSTGRESQL_DATABASE="THE_ORG_BOOK"
   export POSTGRESQL_USER="DB_USER"
   export POSTGRESQL_PASSWORD="DB_PASSWORD"
-  export WALLET_TYPE="postgres"
+  export INDY_WALLET_TYPE="postgres"
   export WALLET_ENCRYPTION_KEY="key"
   export POSTGRESQL_WALLET_HOST="wallet-db"
   export POSTGRESQL_WALLET_PORT="5432"
