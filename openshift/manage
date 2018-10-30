@@ -58,9 +58,6 @@ usage () {
         - Scale down the pod.
         - Register the environment's DID with the ledger.
 
-    registerDids
-      - Register/re-register the issuer services's DIDs with the ledger.
-
     getIssuerServicePods
       - Get a list of issuer service pods running in a given environment.
 EOF
@@ -133,14 +130,18 @@ reset() {
   fi
 
   for _pod in ${_pods}; do
-    deleteWallets ${_pod}
-    exitOnError
     scaleDown ${_pod}
   done
 
-  printAndWait "If you are resetting the ledger, wait for the ledger to completely start up before continuing."
+  printAndWait "Wait for the all the pods to completely scale down before continuing."
 
-  registerDids $(getDidNames)
+  for _pod in ${_pods}; do
+    deleteWallets ${_pod}
+    exitOnError
+    scaleUp ${_pod}
+  done
+
+  printAndWait "The wallets for the specified pods were reset, they will be re-created when the pods start up again."
 }
 
 deleteWallets() {
@@ -170,7 +171,7 @@ deleteEnterpriseWallet() {
 
   if [ ! -z "${WALLET_DB_INSTANCE_NAME}" ]; then
     _walletName=$(getWalletName ${_podName})
-    _sql="delete from api_walletitem where wallet_name LIKE '${_walletName}%';"
+    _sql="DROP DATABASE '${_walletName}%';"
     _pSqlCmd="psql -U\${POSTGRESQL_USER} -d \${POSTGRESQL_DATABASE} -ac \"${_sql}\""
 
     runInContainer \
@@ -217,7 +218,7 @@ getWalletName() {
 
   runInContainer \
     "${_podName}" \
-    "cat config.toml | grep ^name | sed 's~^name\s*=\s*\"\(.*\)\"\s*$~\1~' | head -n 1"
+    "env | grep POSTGRESQL_WALLET_NAME | awk -F "=" '{print $2}'"
 }
 
 recycle() {
@@ -230,34 +231,6 @@ recycle() {
   scaleDown ${_pods}
   printAndWait "Wait for all of the pods to scale down completely before continuing."
   scaleUp ${_pods}
-}
-
-getDidNames() {
-  _didNames="
-    bc_registries
-    city_of_surrey
-    fraser_valley
-    liquor_control
-    ministry_of_finance
-    worksafe_bc
-    onbis"
-
-  echo ${_didNames}
-}
-
-getLedgerAddress() {
-  case "${DEPLOYMENT_ENV_NAME}" in
-    dev)
-      _ledgerAddress="159.89.115.24";;
-    test)
-      _ledgerAddress="159.89.125.134";;
-    prod)
-      _ledgerAddress="159.89.125.134";;
-    *)
-      return 1;;
-  esac
-
-  echo ${_ledgerAddress}
 }
 
 # Add any non-issurer service pods to this list
@@ -294,16 +267,6 @@ case "${_cmd}" in
     switchProject
     PODS=$(getIssuerServicePods ${@})
     reset ${PODS}
-    ;;
-  registerdids)
-    registerDids $(getDidNames)
-    ;;
-  createdeployconfig)
-    deployConfigs ${@}
-    ;;
-  replacedeployconfig)
-    export OC_ACTION=replace
-    deployConfigs ${@}
     ;;
   getpods)
     getIssuerServicePods ${@}
