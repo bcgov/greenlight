@@ -129,16 +129,22 @@ reset() {
     exit 1
   fi
 
+  _wallets=()
   for _pod in ${_pods}; do
+    _walletName=$(getWalletName ${_pod})
+    _wallets+=($_walletName)
+    deleteWallets ${_pod} ${_wallets[$i]}
     scaleDown ${_pod}
   done
 
   printAndWait "Wait for the all the pods to completely scale down before continuing."
 
+  i=0
   for _pod in ${_pods}; do
-    deleteWallets ${_pod}
+    deleteEnterpriseWallet ${_pod} ${_wallets[$i]}
     exitOnError
     scaleUp ${_pod}
+    let "i++"
   done
 
   printAndWait "The wallets for the specified pods were reset, they will be re-created when the pods start up again."
@@ -147,21 +153,24 @@ reset() {
 deleteWallets() {
   _podName=${1}
   if [ -z "${_podName}" ]; then
-    echo -e \\n"deleteWallets; Missing parameter!"\\n
+    echo -e \\n"deleteWallets; Missing parameter [podName]!"\\n
     exit 1
   fi
 
   deleteFromPods "/home/indy/.indy_client/wallet/*" ${_podName}
-  if hasEnterpriseWallet ${_podName}; then
-    deleteEnterpriseWallet ${_podName}
-  fi
 }
 
 deleteEnterpriseWallet() {
   _podName=${1}
+  _walletName=${2}
   _walletDbPodName=${WALLET_DB_POD_NAME:-wallet-db}
   if [ -z "${_podName}" ]; then
-    echo -e \\n"deleteEnterpriseWallet; Missing parameter!"\\n
+    echo -e \\n"deleteEnterpriseWallet; Missing parameter [podName]!"\\n
+    exit 1
+  fi
+
+  if [ -z "${_walletName}" ]; then
+    echo -e \\n"deleteWallets; Missing parameter [walletName]!"\\n
     exit 1
   fi
 
@@ -170,8 +179,7 @@ deleteEnterpriseWallet() {
   fi
 
   if [ ! -z "${WALLET_DB_INSTANCE_NAME}" ]; then
-    _walletName=$(getWalletName ${_podName})
-    _sql="DROP DATABASE '${_walletName}%';"
+    _sql="DROP DATABASE ${_walletName};"
     _pSqlCmd="psql -U\${POSTGRESQL_USER} -d \${POSTGRESQL_DATABASE} -ac \"${_sql}\""
 
     runInContainer \
@@ -218,7 +226,7 @@ getWalletName() {
 
   runInContainer \
     "${_podName}" \
-    "env | grep POSTGRESQL_WALLET_NAME | awk -F "=" '{print $2}'"
+    "env | grep POSTGRESQL_WALLET_NAME | sed 's~POSTGRESQL_WALLET_NAME=\(.*\)$~\1~'"
 }
 
 recycle() {
