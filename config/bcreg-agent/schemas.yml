@@ -1,5 +1,5 @@
 - name: incorporation.permitify
-  version: '1.0.1'
+  version: '1.0.2'
   attributes:
     - corp_num
     - address_line_1
@@ -12,7 +12,7 @@
     - province
 
 # - name: doing_business_as.permitify
-#   version: '1.0.1'
+#   version: '1.0.2'
 #   attributes:
 #     - corp_num
 #     - dba_corp_num
