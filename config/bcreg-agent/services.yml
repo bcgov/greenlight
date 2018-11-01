@@ -77,6 +77,56 @@ issuers:
               country:
                 input: country
                 from: claim
+          - model: attribute
+            fields:
+              type:
+                input: registration_date
+                from: value
+              format:
+                input: datetime
+                from: value
+              value:
+                input: registration_date
+                from: claim
+          - model: attribute
+            fields:
+              type:
+                input: entity_type
+                from: value
+              value:
+                input: entity_type
+                from: claim
+          - model: attribute
+            fields:
+              type:
+                input: entity_status
+                from: value
+              value:
+                input: entity_status
+                from: claim
+          - model: attribute
+            fields:
+              type:
+                input: entity_status_effective
+                from: value
+              format:
+                input: datetime
+                from: value
+              value:
+                input: entity_status_effective
+                from: claim
+          - model: attribute
+            fields:
+              type:
+                input: entity_name_effective
+                from: value
+              format:
+                input: datetime
+                from: value
+              value:
+                input: entity_name_effective
+                from: claim
+
 
       # - description: Doing Business As
       #   schema: doing_business_as.permitify
@@ -116,11 +166,11 @@ issuers:
 
 # proof_requests:
 #   registration:
-#     version: '1.0.2'
+#     version: '1.0.3'
 #     schemas:
 #       - key:
 #           name: incorporation.permitify
-#           version: '1.0.2'
+#           version: '1.0.3'
 #         attributes:
 #           - corp_num
 #           - address_line_1

@@ -1,7 +1,12 @@
 - name: incorporation.permitify
-  version: '1.0.2'
+  version: '1.0.3'
   attributes:
     - corp_num
+    - registration_date
+    - entity_type
+    - entity_status
+    - entity_status_effective
+    - entity_name_effective
     - address_line_1
     - address_line_2
     - addressee
@@ -12,7 +17,7 @@
     - province
 
 # - name: doing_business_as.permitify
-#   version: '1.0.2'
+#   version: '1.0.3'
 #   attributes:
 #     - corp_num
 #     - dba_corp_num
