@@ -1,5 +1,5 @@
 # ========================================================================
-# Special Deployment Parameters needed for the onbis-x-proxy instance.
+# Special Deployment Parameters needed for the permitify-proxy instance.
 # ------------------------------------------------------------------------
 # The results need to be encoded as OpenShift template
 # parameters for use with oc process.

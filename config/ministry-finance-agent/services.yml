@@ -13,8 +13,8 @@ issuers:
 
     wallet:
       name: ${POSTGRESQL_WALLET_NAME:-mofi_issuer}
-      seed: $WALLET_SEED
-      type: $WALLET_TYPE
+      seed: $INDY_WALLET_SEED
+      type: $INDY_WALLET_TYPE
       params:
         storage_config:
           url: "$POSTGRESQL_WALLET_HOST:$POSTGRESQL_WALLET_PORT"
@@ -50,12 +50,12 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.0'
+    version: '1.0.3'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
           name: incorporation.permitify
-          version: '1.0.0'
+          version: '1.0.3'
         attributes:
           - corp_num
           # - address_line_1

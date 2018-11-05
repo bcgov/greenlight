@@ -17,6 +17,20 @@ forms:
       - src: js/bc_registries.js
 
     fields:
+      - name: entity_type
+        label: Registration Type
+        type: select
+        options:
+          - BC Company
+          - BC Unlimited Liability Company
+          - Continuation In
+          - Continuation In as a BC ULC
+          - Extraprovincial Company
+          - Limited Liability Company
+          - Miscellaneous Firm
+          - Sole Proprietorship
+        required: true
+
       - name: legal_name
         label: Legal Name
         type: text
@@ -32,6 +46,22 @@ forms:
         - name: corp_num
           from: helper
           source: uuid
+
+        - name: registration_date
+          from: helper
+          source: now_iso
+
+        - name: entity_status
+          from: literal
+          source: Active
+
+        - name: entity_status_effective
+          from: helper
+          source: now_iso
+
+        - name: entity_name_effective
+          from: helper
+          source: now_iso
 
   # bcreg-dba:
   #   path: /bcreg/dba
