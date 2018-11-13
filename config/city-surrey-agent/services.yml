@@ -1,5 +1,5 @@
 issuers:
-  ministry-finance:
+  city-surrey:
     logo_path: ''
     name: City of Surrey
     abbreviation: SUR
@@ -9,20 +9,34 @@ issuers:
     connection:
       type: TheOrgBook
       api_url: $TOB_API_URL
-      
+      sign_target: false
+
     wallet:
-      seed: $WALLET_SEED
+      name: ${POSTGRESQL_WALLET_NAME:-surrey_issuer}
+      seed: $INDY_WALLET_SEED
+      type: $INDY_WALLET_TYPE
+      params:
+        storage_config:
+          url: "$POSTGRESQL_WALLET_HOST:$POSTGRESQL_WALLET_PORT"
+      access_creds:
+        key: $WALLET_ENCRYPTION_KEY
+        storage_credentials:
+          account: $POSTGRESQL_WALLET_USER
+          password: $POSTGRESQL_WALLET_PASSWORD
+          admin_account: ${POSTGRESQL_WALLET_ADMIN_USER:-postgres}
+          admin_password: $POSTGRESQL_WALLET_ADMIN_PASSWORD
+        key_derivation_method: ARGON2I_MOD
 
     credential_types:
       - description: Business License
         schema: biz_license.permitify
         issuer_url: $APPLICATION_URL_INCORP
-        topic: 
+        topic:
           source_id:
             input: corp_num
             from: claim
           type:
-            input: incorporation
+            input: registration
             from: value
 
 
@@ -37,48 +51,48 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.0'
+    version: '1.0.4'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
-          name: incorporation.permitify
-          version: '1.0.0'
+          name: registration.permitify
+          version: '1.0.4'
         attributes:
           - corp_num
           - legal_name
   pst-number:
-    version: '1.0.0'
+    version: '1.0.4'
     schemas:
       - key:
           did: CYnWiuEtJJuhpWvVz3kY9D
           name: pst_number.permitify
-          version: '1.0.0'
+          version: '1.0.4'
         attributes:
           - corp_num
   clearance-letter:
-    version: '1.0.0'
+    version: '1.0.4'
     schemas:
       - key:
           did: MAcounf9HxhgnqqhzReTLC
           name: worksafe.permitify
-          version: '1.0.0'
+          version: '1.0.4'
         attributes:
           - corp_num
   operating-permit:
-    version: '1.0.0'
+    version: '1.0.4'
     schemas:
       - key:
           did: L6SJy7gNRCLUp8dV94hfex
           name: operating_permit.permitify
-          version: '1.0.0'
+          version: '1.0.4'
         attributes:
           - corp_num
   liquor-license:
-    version: '1.0.0'
+    version: '1.0.4'
     schemas:
       - key:
           did: ScrMddP9C426QPrp1KViZB
           name: liquor_license.permitify
-          version: '1.0.0'
+          version: '1.0.4'
         attributes:
           - corp_num

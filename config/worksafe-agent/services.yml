@@ -9,20 +9,34 @@ issuers:
     connection:
       type: TheOrgBook
       api_url: $TOB_API_URL
-      
+      sign_target: false
+
     wallet:
-      seed: $WALLET_SEED
+      name: ${POSTGRESQL_WALLET_NAME:-worksafe_issuer}
+      seed: $INDY_WALLET_SEED
+      type: $INDY_WALLET_TYPE
+      params:
+        storage_config:
+          url: "$POSTGRESQL_WALLET_HOST:$POSTGRESQL_WALLET_PORT"
+      access_creds:
+        key: $WALLET_ENCRYPTION_KEY
+        storage_credentials:
+          account: $POSTGRESQL_WALLET_USER
+          password: $POSTGRESQL_WALLET_PASSWORD
+          admin_account: ${POSTGRESQL_WALLET_ADMIN_USER:-postgres}
+          admin_password: $POSTGRESQL_WALLET_ADMIN_PASSWORD
+        key_derivation_method: ARGON2I_MOD
 
     credential_types:
       - description: Clearance Letter
         schema: worksafe.permitify
         issuer_url: $APPLICATION_URL_INCORP
-        topic: 
+        topic:
           source_id:
             input: corp_num
             from: claim
           type:
-            input: incorporation
+            input: registration
             from: value
 
 verifiers:
@@ -36,12 +50,12 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.0'
+    version: '1.0.4'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
-          name: incorporation.permitify
-          version: '1.0.0'
+          name: registration.permitify
+          version: '1.0.4'
         attributes:
           - corp_num
           # - address_line_1
