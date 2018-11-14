@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "web-demo": {
+    "dflow-demo": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/web-demo",
+            "outputPath": "dist/dflow-demo",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -61,18 +61,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "web-demo:build"
+            "browserTarget": "dflow-demo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "web-demo:build:production"
+              "browserTarget": "dflow-demo:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "web-demo:build"
+            "browserTarget": "dflow-demo:build"
           }
         },
         "test": {
@@ -106,7 +106,7 @@
         }
       }
     },
-    "web-demo-e2e": {
+    "dflow-demo-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -115,11 +115,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "web-demo:serve"
+            "devServerTarget": "dflow-demo:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "web-demo:serve:production"
+              "devServerTarget": "dflow-demo:serve:production"
             }
           }
         },
@@ -135,5 +135,5 @@
       }
     }
   },
-  "defaultProject": "web-demo"
+  "defaultProject": "dflow-demo"
 }

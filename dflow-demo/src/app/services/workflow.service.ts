@@ -91,6 +91,10 @@ export class WorkflowService {
       graph.setNode(node.did, {
         labelType: node.labelType,
         label: node.label,
+        paddingLeft: 0,
+        paddingRight: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
         rx: 5,
         ry: 5
       });

@@ -3,6 +3,7 @@ import { WorkflowService } from 'src/app/services/workflow.service';
 import { WorkflowNode, NodeLabelType } from '../../models/workflow-node';
 import { WorkflowLink } from 'src/app/models/workflow-link';
 import { WorkflowNodeResolverService } from 'src/app/services/workflow-node-resolver.service';
+import { TobService } from '../../services/tob.service';
 
 @Component({
   selector: 'app-recipe',
@@ -13,7 +14,10 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvasRoot') svgRoot;
 
-  constructor(private workflowService: WorkflowService, private nodeResolverService: WorkflowNodeResolverService) { }
+  constructor(
+    private workflowService: WorkflowService,
+    private nodeResolverService: WorkflowNodeResolverService,
+    private tobService: TobService) { }
 
   ngOnInit() {
     const html = this.nodeResolverService.getHTMLForNode(new WorkflowNode(1, 'BC Registries Business Incorporation'));
