@@ -8,9 +8,8 @@ from django.conf import settings
 
 from .agent import Issuer
 # from .agent import convert_seed_to_did
-from von_agent.codec import encode
-#from von_agent.schemakey import schema_key_for
-from von_agent.util import schema_id, schema_key
+from von_agent.util import encode
+from von_agent.schemakey import schema_key_for
 
 from . import eventloop, dev, apps
 
@@ -70,7 +69,13 @@ class SchemaManager():
 
                 # Check if schema exists on ledger
                 schema_json = await issuer.get_schema(
-                    schema_key(schema_id(issuer.did, schema['name'], schema['version']))
+                    schema_key_for(
+                        {
+                            'origin_did': issuer.did,
+                            'name': schema['name'],
+                            'version': schema['version']
+                        }
+                    )
                 )
 
                 # If not, send the schema to the ledger, then get result
@@ -83,10 +88,10 @@ class SchemaManager():
 
                 # Check if claim definition has been published.
                 # If not then publish.
-                # claim_def_json = await issuer.get_cred_def(
+                # claim_def_json = await issuer.get_claim_def(
                 #     schema['seqNo'], issuer.did)
                 # if not json.loads(claim_def_json):
-                claim_def_json = await issuer.send_cred_def(schema_json)
+                claim_def_json = await issuer.send_claim_def(schema_json)
 
                 claim_def = json.loads(claim_def_json)
                 self.__log_json('claim_def:', claim_def)
@@ -119,8 +124,20 @@ class SchemaManager():
                 start_time = time.time()
                 logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 0.19
                 logger.warn("schema_manager.submit_claim() >>> get schema from ledger")
+                schema_key = schema_key_for(
+                        {
+                            'origin_did': issuer.did,
+                            'name': schema['name'],
+                            'version': schema['version']
+                        })
                 schema_json = await issuer.get_schema(
-                    schema_key(schema_id(issuer.did, schema['name'], schema['version']))
+                    schema_key_for(
+                        {
+                            'origin_did': issuer.did,
+                            'name': schema['name'],
+                            'version': schema['version']
+                        }
+                    )
                 )
                 schema = json.loads(schema_json)
 
@@ -131,7 +148,7 @@ class SchemaManager():
                 logger.warn('Step elapsed time >>> {}'.format(elapsed_time)) # 1.00
                 logger.warn("schema_manager.submit_claim() >>> get claim definition")
                 claim_def_key = str(schema['seqNo']) + ":" + issuer.did
-                claim_def_json = await issuer.get_cred_def(
+                claim_def_json = await issuer.get_claim_def(
                     schema['seqNo'], issuer.did)
                 claim_def = json.loads(claim_def_json)
 
