@@ -6,4 +6,5 @@ $bcgov-font-path: "../node_modules/@bcgov/bootstrap-theme/dist/fonts/";
 $fa-font-path: "../node_modules/font-awesome/fonts/";
 @import "../node_modules/font-awesome/scss/font-awesome";
 
-@import './app/components/test-component/test-component.component.scss'
+@import './app/components/recipe/recipe.component.scss';
+@import './app/components/workflow/workflow-step/workflow-step.component.scss';

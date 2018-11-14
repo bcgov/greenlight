@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WorkflowService } from './workflow-service.service';
+import { WorkflowService } from './workflow.service';
 
 describe('WorkflowService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

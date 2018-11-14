@@ -12,7 +12,6 @@ import { WorkflowTopology } from '../models/workflow-topology';
 })
 export class WorkflowService {
 
-  private svgCanvas: any;
   private topology: WorkflowTopology;
 
   constructor() {
@@ -56,10 +55,7 @@ export class WorkflowService {
     const svg = d3.select(svgCanvas.nativeElement || svgCanvas);
 
     // Ensure we have a <g> element to append the graph to
-    let inner = svg.select('g');
-    if (inner.empty()) {
-      inner = svg.append('g');
-    }
+    const inner = svg.append('g');
 
     // Set up zoom support
     const zoom = d3.zoom().on('zoom', function() {
@@ -77,11 +73,16 @@ export class WorkflowService {
     // Run the renderer. This is what draws the final graph.
     render(inner, graph);
 
-    // Center the graph
-    const initialScale = 0.75;
-    const canvasWidth: any = svg.attr('width');
+    // Center the graph in the canvas
+    let initialScale = 0.75;
+    const canvasWidth: SVGAnimatedLength = svgCanvas.nativeElement.width; // We need to go through the native element
+
+    if (canvasWidth.baseVal.value < graph.graph().width) {
+      initialScale = canvasWidth.baseVal.value / graph.graph().width;
+    }
+
     svg.call(zoom.transform,
-        d3.zoomIdentity.translate((canvasWidth - graph.graph().width * initialScale) / 2, 20).scale(initialScale));
+        d3.zoomIdentity.translate((canvasWidth.baseVal.value - graph.graph().width * initialScale) / 2, 20).scale(initialScale));
     svg.attr('height', graph.graph().height * initialScale + 40);
   }
 
@@ -97,7 +98,7 @@ export class WorkflowService {
 
     this.topology.links.forEach((link) => {
       graph.setEdge(link.srcNodeId, link.destNodeId, {
-        arrowhead: 'normal'
+        arrowhead: 'vee'
       });
     });
   }
