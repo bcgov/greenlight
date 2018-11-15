@@ -4,30 +4,33 @@
 
     tls {%WEB_HOST_TLS%}  # Use `self_signed` to enable self_signed tls, or `off` to disable tls.  TLS not needed for OpenShift.
 
+    # enable gzip compression
+    gzip
+
     root /srv/
 
     # Openly exposed health check endpoint for OpenShift
     status 200 /health
 
-    redir 302 {
-        if {path} is /
-        / /demo/start
-    }
+    # redir 302 {
+    #     if {path} is /
+    #     / /demo/start
+    # }
 
-    rewrite {
-        r ^/bcreg/assets/(.*)$
-        to /assets/{1}
-    }
+    # rewrite {
+    #     r ^/bcreg/assets/(.*)$
+    #     to /assets/{1}
+    # }
 
-    rewrite {
-        r ^/demo/?$
-        to /assets/html/demo.html
-    }
+    # rewrite {
+    #     r ^/demo/?$
+    #     to /assets/html/demo.html
+    # }
 
-    rewrite {
-        r ^/demo/start/?$
-        to /assets/html/demo-start.html
-    }
+    # rewrite {
+    #     r ^/demo/start/?$
+    #     to /assets/html/demo-start.html
+    # }
 
     proxy /bc-tob {%TOB_API_URL%} {
         without /bc-tob

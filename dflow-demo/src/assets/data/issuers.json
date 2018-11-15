@@ -1,0 +1,77 @@
+{
+  "total": 6,
+  "page_size": 10,
+  "page": 1,
+  "first_index": 1,
+  "last_index": 6,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "has_logo": false,
+      "create_timestamp": "2018-11-14T19:45:21.781060Z",
+      "update_timestamp": "2018-11-14T19:45:21.802510Z",
+      "did": "ScrMddP9C426QPrp1KViZB",
+      "name": "Liquor Control and Licensing Branch",
+      "abbreviation": "LCLB",
+      "email": "lclb.test.issuer@example.ca",
+      "url": "http://localhost:5000/liquor/license"
+    },
+    {
+      "id": 2,
+      "has_logo": false,
+      "create_timestamp": "2018-11-14T19:45:23.735628Z",
+      "update_timestamp": "2018-11-14T19:45:23.750440Z",
+      "did": "MAcounf9HxhgnqqhzReTLC",
+      "name": "WorkSafe BC",
+      "abbreviation": "WorkSafe BC\"",
+      "email": "worksafe.test.issuer@example.ca",
+      "url": "http://localhost:5000/worksafe/clearance-letter"
+    },
+    {
+      "id": 3,
+      "has_logo": false,
+      "create_timestamp": "2018-11-14T19:45:31.675713Z",
+      "update_timestamp": "2018-11-14T19:45:31.687165Z",
+      "did": "A9Rsuu7FNquw8Ne2Smu5Nr",
+      "name": "City of Surrey",
+      "abbreviation": "SUR",
+      "email": "surrey.test.issuer@example.ca",
+      "url": "http://localhost:5000/surrey/biz"
+    },
+    {
+      "id": 4,
+      "has_logo": false,
+      "create_timestamp": "2018-11-14T19:45:48.356517Z",
+      "update_timestamp": "2018-11-14T19:45:48.359404Z",
+      "did": "CYnWiuEtJJuhpWvVz3kY9D",
+      "name": "BC Ministry of Finance",
+      "abbreviation": "Ministry of Finance",
+      "email": "minfinance.test.issuer@example.ca",
+      "url": "http://localhost:5000/finance/pst"
+    },
+    {
+      "id": 5,
+      "has_logo": false,
+      "create_timestamp": "2018-11-14T19:46:02.589928Z",
+      "update_timestamp": "2018-11-14T19:46:02.593904Z",
+      "did": "L6SJy7gNRCLUp8dV94hfex",
+      "name": "Fraser Valley Health Authority",
+      "abbreviation": "FRV",
+      "email": "frv.test.issuer@example.ca",
+      "url": "http://localhost:5000/fraser-valley/permit"
+    },
+    {
+      "id": 6,
+      "has_logo": false,
+      "create_timestamp": "2018-11-14T19:46:03.033737Z",
+      "update_timestamp": "2018-11-14T19:46:03.037122Z",
+      "did": "6qnvgJtqwK44D8LFYnV5Yf",
+      "name": "BC Corporate Registry",
+      "abbreviation": "BCReg",
+      "email": "bcreg.test.issuer@example.ca",
+      "url": "http://localhost:5000/bcreg/incorporation"
+    }
+  ]
+}

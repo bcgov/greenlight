@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Credential, CredentialIssuer } from 'src/app/models/credential';
+import { Step } from 'src/app/models/step';
 
 @Component({
   selector: 'app-workflow-step',
@@ -8,37 +8,39 @@ import { Credential, CredentialIssuer } from 'src/app/models/credential';
 })
 export class WorkflowStepComponent implements OnInit {
 
-  stepClass: any;
-  credential: Credential;
+  step: Step;
+  allDepsSatisfied = false;
+  isStart = false;
+  obtainedCert = false;
 
-  constructor() {
-    this.credential = new Credential();
-  }
+  actionURL: string;
+  actionTxt: string;
+
+  constructor() {  }
 
   ngOnInit() {
-    this.stepClass = {};
-    this.stepClass['card-default'] = true;
-    this.stepClass['card-warning'] = false;
-    this.stepClass['card-success'] = false;
-    this.stepClass['card-danger'] = false;
+    // generate component state variables
+    if (this.step.dependencies.length > 0) {
+      this.allDepsSatisfied = this.step.dependencies.map((item) => {
+        return item.isAvailable;
+      }).reduce((acc, cur) => {
+        return acc && cur;
+      });
+    } else {
+      this.isStart = true;
+    }
 
-    this.credential.name = 'Emiliano';
-    this.credential.effectiveDate = '2018-11-13';
-    this.credential.actionText = 'View Record';
-
-    // this.credential.issuer = new CredentialIssuer();
-    // this.credential.issuer.url = 'www.google.com';
-    // this.credential.issuer.name = 'Quartech';
-
-    this.credential.dependencies = new Array<any>();
-    this.credential.dependencies.push({
-      name: 'Italy',
-      isAvailable: true
-    });
-    this.credential.dependencies.push({
-      name: 'Canada',
-      isAvailable: false
-    });
+    // prepare actionURL and actionTxt
+    if (this.isStart || this.allDepsSatisfied) {
+      this.actionTxt = `Enroll with ${this.step.issuer.name}`;
+      this.actionURL = this.step.issuer.url;
+    } else if (this.obtainedCert) {
+      this.actionTxt = 'View record';
+      // this.actionURL = `/topic/${topic.id}/cred/${credential.id}`;
+    } else {
+      this.actionTxt = 'Dependencies not met';
+      this.actionURL = null;
+    }
   }
 
 }

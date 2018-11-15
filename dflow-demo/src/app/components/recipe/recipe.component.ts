@@ -4,6 +4,8 @@ import { WorkflowNode, NodeLabelType } from '../../models/workflow-node';
 import { WorkflowLink } from 'src/app/models/workflow-link';
 import { WorkflowNodeResolverService } from 'src/app/services/workflow-node-resolver.service';
 import { TobService } from '../../services/tob.service';
+import { Issuer } from 'src/app/models/issuer';
+import { Step } from '../../models/step';
 
 @Component({
   selector: 'app-recipe',
@@ -13,55 +15,48 @@ import { TobService } from '../../services/tob.service';
 export class RecipeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvasRoot') svgRoot;
+  issuers: Array<Issuer>;
+  graphLayout: Promise<any>;
 
   constructor(
     private workflowService: WorkflowService,
     private nodeResolverService: WorkflowNodeResolverService,
-    private tobService: TobService) { }
+    private tobService: TobService) {
+      this.issuers = new Array<Issuer>();
+    }
 
   ngOnInit() {
-    const html = this.nodeResolverService.getHTMLForNode(new WorkflowNode(1, 'BC Registries Business Incorporation'));
-    const bcreg = new WorkflowNode(1, html, NodeLabelType.HTML);
-    this.workflowService.addNode(bcreg);
+    // get issuer list
+    this.graphLayout = this.tobService.getIssuers().toPromise()
+    .then((data: any) => {
+      data.results.forEach(element => {
+        this.issuers.push(new Issuer(element));
+      });
+    }).then(() => {
+      // get topology and set-up graphing library
+      return this.tobService.getPathToStep().toPromise().then((result: any) => {
+        // add nodes
+        result.nodes.forEach(node => {
+          const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
+          const deps = this.tobService.getDependenciesByID(node.id, result.links);
+          const cred = new Step(node.schema_name, deps, issuer);
+          const nodeHTML = this.nodeResolverService.getHTMLForNode(cred);
+          this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
+        });
 
-    const mofi = new WorkflowNode(2, 'BC Provincial Sales Tax Number');
-    this.workflowService.addNode(mofi);
-
-    const worksafe = new WorkflowNode(3, 'Worksafe BC Clearance Letter');
-    this.workflowService.addNode(worksafe);
-
-    const fraser_health = new WorkflowNode(4, 'Fraser Valley Health Operating Permit');
-    this.workflowService.addNode(fraser_health);
-
-    const liquor = new WorkflowNode(5, 'BC Liquor License');
-    this.workflowService.addNode(liquor);
-
-    const surrey = new WorkflowNode(6, '<h1>END</h1><p>City of Surrey Business License</p>', NodeLabelType.HTML);
-    this.workflowService.addNode(surrey);
-
-    // const somethingelse = new WorkflowNode(7, 'Something Else');
-    // this.workflowService.addNode(somethingelse);
-
-    // const vipnode = new WorkflowNode(8, 'VIP Node');
-    // this.workflowService.addNode(vipnode);
-
-    // const annoyance = new WorkflowNode(9, 'Annoyance');
-    // this.workflowService.addNode(annoyance);
-
-    // build topology - links
-    this.workflowService.addLink(new WorkflowLink(1, 2));
-    this.workflowService.addLink(new WorkflowLink(1, 3));
-    this.workflowService.addLink(new WorkflowLink(2, 5));
-    this.workflowService.addLink(new WorkflowLink(3, 4));
-    this.workflowService.addLink(new WorkflowLink(4, 5));
-    this.workflowService.addLink(new WorkflowLink(5, 6));
-    // this.workflowService.addLink(new WorkflowLink(8, 7));
-    // this.workflowService.addLink(new WorkflowLink(7, 6));
-    // this.workflowService.addLink(new WorkflowLink(9, 4));
+        // add links
+        result.links.forEach(link => {
+          this.workflowService.addLink(new WorkflowLink(link.target, link.source));
+        });
+      });
+    });
   }
 
   ngAfterViewInit() {
-    this.workflowService.renderGraph(this.svgRoot);
+    // render graph
+    this.graphLayout.then(() => {
+      this.workflowService.renderGraph(this.svgRoot);
+    });
   }
 
 }

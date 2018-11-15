@@ -1,40 +1,57 @@
-<div class="workflow-node card" [ngClass]="stepClass">
+<div class="workflow-node card"
+  [ngClass]="{
+    'card-default': isStart,
+    'card-danger': !allDepsSatisfied,
+    'card-warning': allDepsSatisfied && !obtainedCert,
+    'card-success': allDepsSatisfied && obtainedCert
+  }">
     <div class="card-header">
-      <h5 class="my-0">{{ credential.name }}</h5>
+      <h5 class="my-0">{{ step.issuer.name }}</h5>
     </div>
     <div class="card-body">
         <div id="cert-body" class="claim-body">
-            <ng-container *ngIf="credential.issuer; else certNotFoundTemplate">
+
+            <ng-container *ngIf="step.effectiveDate; else certNotFoundTemplate">
               <div class="row form-group">
                 <label class="col-sm-4 control-label" translate="">Issuer</label>
                 <div class="col-sm-8 form-field">
-                    <a id="issuer-link" rel="external" href="{{credential.issuer.url}}">{{ credential.issuer.name }}</a>
+                    <a id="issuer-link" rel="external" href="{{step.issuer.url}}">{{ step.issuer.name }}</a>
                     <small><span class="fa fa-external-link"></span></small>
                 </div>
               </div>
               <div class="row form-group">
                   <label class="col-sm-4 control-label" translate="">Effective Date</label>
-                  <div id="effective-date" class="col-sm-8 form-field">{{ credential.effectiveDate }}</div>
+                  <div id="effective-date" class="col-sm-8 form-field">{{ step.effectiveDate }}</div>
               </div>
             </ng-container>
+
             <ng-template #certNotFoundTemplate>
                 <em class="text-muted">Certificate not found</em>
+            </ng-template>
+
+            <ng-container *ngIf="step.dependencies.length > 0">
+                <hr/>
+
                 <div class="depends">
                     <h4 class="depends-title text-muted" translate="">Depends on</h4>
-                    <ul class="depends-items" *ngFor="let dep of credential.dependencies">
+                    <ul class="depends-items" *ngFor="let dep of step.dependencies">
                       <li class="depends-item">
-                        <span [ngClass]="{'badge-pill': true, 'badge-success': dep.isAvailable, 'badge-danger': !dep.isAvailable}">
+                        <span class="badge-pill" [ngClass]="{'badge-success': dep.isAvailable, 'badge-danger': !dep.isAvailable}">
                           <span class="fa" [ngClass]="{'fa-check-circle': dep.isAvailable, 'fa-times': !dep.isAvailable}"></span> {{ dep.name }}
                         </span>
                       </li>
                     </ul>
                 </div>
-            </ng-template>
+            </ng-container>
+
         </div>
 
+        <hr/>
+
         <div class="panel-footer text-right">
-            <a id="cta" target="_blank" class="btn btn-primary" href="{{credential.actionURL}}"><span class="fa fa-arrow-right"></span>
-                {{ credential.actionText }}
+            <a id="cta" target="_blank" class="btn btn-primary" [ngClass]="{'disabled': !actionURL }" href="{{actionURL}}">
+              <span class="fa fa-arrow-right" *ngIf="actionURL"></span>
+                {{ actionTxt }}
             </a>
         </div>
     </div>
