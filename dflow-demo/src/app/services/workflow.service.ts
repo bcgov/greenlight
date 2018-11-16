@@ -61,7 +61,7 @@ export class WorkflowService {
     const zoom = d3.zoom().on('zoom', function() {
       inner.attr('transform', d3.event.transform);
     });
-    svg.call(zoom);
+    // svg.call(zoom);
 
     // Create the graph object and process topology
     const graph = new dagreD3.graphlib.Graph().setGraph({});

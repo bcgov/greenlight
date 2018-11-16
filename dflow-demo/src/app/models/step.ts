@@ -9,6 +9,7 @@ export class Step {
   // optional
   issuer: Issuer;
   effectiveDate: string;
+  credentialId: number;
 
   // computed
   actionText: string;
@@ -19,13 +20,16 @@ export class Step {
     name: string,
     dependencies: Array<StepDependency>,
     issuer?: Issuer,
-    effectiveDate?: string
+    credData?: any
     ) {
       this.topicId = topicId;
       this.name = name;
       this.dependencies = dependencies;
       this.issuer = issuer;
-      this.effectiveDate = effectiveDate;
+      if (credData) {
+        this.credentialId = credData.id;
+        this.effectiveDate = credData.effective_date;
+      }
     }
 }
 

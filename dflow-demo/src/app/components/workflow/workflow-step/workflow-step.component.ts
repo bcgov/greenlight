@@ -30,13 +30,15 @@ export class WorkflowStepComponent implements OnInit {
       this.isStart = true;
     }
 
+    this.obtainedCert = this.step.credentialId ? true : false;
+
     // prepare actionURL and actionTxt
-    if (this.isStart || this.allDepsSatisfied) {
+    if (this.obtainedCert) {
+      this.actionTxt = 'View record';
+      this.actionURL = `/topic/${this.step.topicId}/cred/${this.step.credentialId}`;
+    } else if (this.isStart || this.allDepsSatisfied) {
       this.actionTxt = `Enroll with ${this.step.issuer.name}`;
       this.actionURL = this.step.issuer.url;
-    } else if (this.obtainedCert) {
-      this.actionTxt = 'View record';
-      // this.actionURL = `/topic/${topic.id}/cred/${credential.id}`;
     } else {
       this.actionTxt = 'Dependencies not met';
       this.actionURL = null;

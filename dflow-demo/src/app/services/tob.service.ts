@@ -50,6 +50,13 @@ export class TobService {
     return this.http.get(reqURL);
   }
 
+  getCredentialsByTopic (topicId) {
+    // const reqURL = `/bc-tob/topic/${topicId}/credential/active`;
+    const reqURL = '/assets/data/credentials-by-topic.json';
+    // TODO: use types if possible
+    return this.http.get(reqURL);
+  }
+
   /**
    * Returns the @Issuer matching the given did. If no issuer matches the DID, it returns null.
    * @param did the did of the issuer
@@ -65,12 +72,33 @@ export class TobService {
    * @param id the id of the step being processed.
    * @param links the data structure representing the topology links.
    */
-  getDependenciesByID (id: string, links: any) {
-    const deps = links.filter((link) => {
-      return link.source === id;
+  getDependenciesByID (id: string, links: any, creds: any) {
+    return links.map((link) => {
+      // straighten the tree
+      const newLink = {
+        source: link.target,
+        target: link.source
+      };
+      return newLink;
+    }).filter((link) => {
+      // find dependencies for this step: anywhere the link is a target
+      return link.target === id;
+    }).map((dep) => {
+      // create new dep
+      const isAvailable = this.isCredentialAvailable(dep.source, creds);
+      return new StepDependency(dep.source, isAvailable);
     });
-    return deps.map((dep) => {
-      return new StepDependency(dep.source);
+  }
+
+  /**
+   * Returns true if the credential corresponding to the given id is available, false otherwise.
+   * @param id the id of the credential to check.
+   * @param creds the list of credentials to check.
+   */
+  private isCredentialAvailable(id: string, creds: any) {
+    const result = creds.filter((cred) => {
+      return id.indexOf(cred.credential_type.issuer.did) > -1;
     });
+    return result.length > 0;
   }
 }

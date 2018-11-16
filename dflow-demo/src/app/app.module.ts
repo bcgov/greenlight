@@ -10,12 +10,14 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { RecipeComponent } from './components/recipe/recipe.component';
 import { WorkflowStepComponent } from './components/workflow/workflow-step/workflow-step.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
     HeaderComponent,
+    HomeComponent,
     RecipeComponent,
     WorkflowStepComponent
   ],

@@ -1,9 +1,9 @@
 <div class="workflow-node card"
   [ngClass]="{
     'card-default': isStart,
-    'card-danger': !allDepsSatisfied,
+    'card-success': obtainedCert,
     'card-warning': allDepsSatisfied && !obtainedCert,
-    'card-success': allDepsSatisfied && obtainedCert
+    'card-danger': !allDepsSatisfied
   }">
     <div class="card-header">
       <h5 class="my-0">{{ step.issuer.name }}</h5>
