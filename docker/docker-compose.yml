@@ -2,7 +2,6 @@ version: '3'
 services:
 
   caddy:
-    # image: "abiosoft/caddy:no-stats"
     build:
       context: ..
       dockerfile: docker/proxy/Dockerfile
@@ -27,11 +26,11 @@ services:
       WORKSAFE_AGENT_PORT: ${WORKSAFE_AGENT_PORT:-8000}
     links:
       - bcreg-agent:bcreg
-#       - ministry-finance-agent:mofi
-#       - city-surrey-agent:city-surrey
-#       - fraser-valley-agent:fraser-valley
-#       - liquor-control-agent:liquor-control
-#       - worksafe-agent:worksafe
+      - ministry-finance-agent:mofi
+      - city-surrey-agent:city-surrey
+      - fraser-valley-agent:fraser-valley
+      - liquor-control-agent:liquor-control
+      - worksafe-agent:worksafe
     external_links:
       - tob_tob-api_1:tob-api
     networks:
@@ -41,7 +40,7 @@ services:
       - ${WEB_HTTP_PORT:-5000}:${WEB_HOST_PORT:-8080}
     volumes:
       - ../caddy/Caddyfile:/etc/Caddyfile
-      - ../dflow-demo/dist/dflow-demo:/srv/
+      # - ../dflow-demo/dist/dflow-demo:/srv/
       - caddy-data:/root/.caddy
       - caddy-logs:/srv/logs
 

@@ -34,7 +34,8 @@ export class TobService {
    * @param topicId the id of the topic being requested
    */
   getTopicById (topicId: number) {
-    const reqURL = `/bc-tob/topic/${topicId}/formatted`;
+    // const reqURL = `/bc-tob/topic/${topicId}/formatted`;
+    const reqURL = '/assets/data/topic.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
   }

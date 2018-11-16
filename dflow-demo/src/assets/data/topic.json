@@ -1,0 +1,88 @@
+{
+  "id": 1,
+  "source_id": "92d4bf4e-715a-40a3-95af-8a4059516703",
+  "type": "registration",
+  "names": [
+    {
+      "id": 1,
+      "credential_id": 1,
+      "last_updated": "2018-11-14T19:46:50.444999Z",
+      "inactive": false,
+      "text": "Mr. Sune Inc.",
+      "language": null,
+      "issuer": {
+          "id": 6,
+          "did": "6qnvgJtqwK44D8LFYnV5Yf",
+          "name": "BC Corporate Registry",
+          "abbreviation": "BCReg",
+          "email": "bcreg.test.issuer@example.ca",
+          "url": "http://localhost:5000/bcreg/incorporation",
+          "has_logo": false
+      }
+    }
+],
+"addresses": [
+    {
+      "id": 1,
+      "create_timestamp": "2018-11-14T19:46:50.479639Z",
+      "update_timestamp": "2018-11-14T19:46:50.479656Z",
+      "addressee": "Mr. Sune Inc.",
+      "civic_address": "123-1405 Guisachan Pl",
+      "city": "Kelowna",
+      "province": "BC",
+      "postal_code": "V1Y 9X8",
+      "country": "CA",
+      "credential": 1,
+      "credential_id": 1,
+      "last_updated": "2018-11-14T19:46:50.444999Z",
+      "inactive": false
+    }
+],
+"attributes": [
+    {
+      "id": 1,
+      "credential_id": 1,
+      "last_updated": "2018-11-14T19:46:50.444999Z",
+      "inactive": false,
+      "type": "registration_date",
+      "format": "datetime",
+      "value": "2018-11-14T19:46:49.898202"
+    },
+    {
+      "id": 2,
+      "credential_id": 1,
+      "last_updated": "2018-11-14T19:46:50.444999Z",
+      "inactive": false,
+      "type": "entity_type",
+      "format": null,
+      "value": "BC Company"
+    },
+    {
+      "id": 3,
+      "credential_id": 1,
+      "last_updated": "2018-11-14T19:46:50.444999Z",
+      "inactive": false,
+      "type": "entity_status",
+      "format": null,
+      "value": "Active"
+    },
+    {
+      "id": 4,
+      "credential_id": 1,
+      "last_updated": "2018-11-14T19:46:50.444999Z",
+      "inactive": false,
+      "type": "entity_status_effective",
+      "format": "datetime",
+      "value": "2018-11-14T19:46:49.898214"
+    },
+    {
+      "id": 5,
+      "credential_id": 1,
+      "last_updated": "2018-11-14T19:46:50.444999Z",
+      "inactive": false,
+      "type": "entity_name_effective",
+      "format": "datetime",
+      "value": "2018-11-14T19:46:49.898217"
+    }
+  ]
+}

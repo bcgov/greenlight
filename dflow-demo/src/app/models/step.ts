@@ -2,6 +2,7 @@ import { Issuer } from './issuer';
 
 export class Step {
   // mandatory
+  topicId: number;
   name: string;
   dependencies: Array<StepDependency>;
 
@@ -14,11 +15,13 @@ export class Step {
   actionURL: string;
 
   constructor (
+    topicId: number,
     name: string,
     dependencies: Array<StepDependency>,
     issuer?: Issuer,
     effectiveDate?: string
     ) {
+      this.topicId = topicId;
       this.name = name;
       this.dependencies = dependencies;
       this.issuer = issuer;
