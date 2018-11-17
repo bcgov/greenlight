@@ -75,6 +75,10 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * Returns the credential issued by the specified issuer, if available.
+   * @param issuer the issuer issuing the credential.
+   */
   private availableCredForIssuer (issuer: Issuer) {
     let result;
     this.credentials.forEach(cred => {
