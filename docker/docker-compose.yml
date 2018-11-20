@@ -31,8 +31,6 @@ services:
       - fraser-valley-agent:fraser-valley
       - liquor-control-agent:liquor-control
       - worksafe-agent:worksafe
-    external_links:
-      - tob_tob-api_1:tob-api
     networks:
       - orgbook
       - vonx
@@ -67,8 +65,6 @@ services:
       WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       INDY_WALLET_SEED: ${BCREG_WALLET_SEED:-}
-    external_links:
-       - tob_tob-api_1:tob-api
     networks:
       - orgbook
       - vonx
@@ -101,8 +97,6 @@ services:
       WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       INDY_WALLET_SEED: ${MOFI_WALLET_SEED:-}
-    external_links:
-       - tob_tob-api_1:tob-api
     networks:
       - orgbook
       - vonx
@@ -135,8 +129,6 @@ services:
       WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       INDY_WALLET_SEED: ${SURREY_WALLET_SEED:-}
-    external_links:
-       - tob_tob-api_1:tob-api
     networks:
       - orgbook
       - vonx
@@ -170,8 +162,6 @@ services:
       WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       INDY_WALLET_SEED: ${FRASER_WALLET_SEED:-}
-    external_links:
-       - tob_tob-api_1:tob-api
     networks:
       - orgbook
       - vonx
@@ -204,8 +194,6 @@ services:
       WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       INDY_WALLET_SEED: ${LIQUOR_WALLET_SEED:-}
-    external_links:
-       - tob_tob-api_1:tob-api
     networks:
       - orgbook
       - vonx
@@ -238,8 +226,6 @@ services:
       WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
       INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
       INDY_WALLET_SEED: ${WORKSAFE_WALLET_SEED:-}
-    external_links:
-       - tob_tob-api_1:tob-api
     networks:
       - orgbook
       - vonx
