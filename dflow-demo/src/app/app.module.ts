@@ -11,6 +11,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { RecipeComponent } from './components/recipe/recipe.component';
 import { WorkflowStepComponent } from './components/workflow/workflow-step/workflow-step.component';
 import { HomeComponent } from './components/home/home.component';
+import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HomeComponent } from './components/home/home.component';
     HeaderComponent,
     HomeComponent,
     RecipeComponent,
-    WorkflowStepComponent
+    WorkflowStepComponent,
+    HighlightDirective
   ],
   entryComponents: [
     WorkflowStepComponent

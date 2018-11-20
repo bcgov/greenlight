@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { WorkflowService } from 'src/app/services/workflow.service';
 import { WorkflowNode, NodeLabelType } from '../../models/workflow-node';
 import { WorkflowLink } from 'src/app/models/workflow-link';
@@ -23,6 +23,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private cd: ChangeDetectorRef,
     private workflowService: WorkflowService,
     private nodeResolverService: WorkflowNodeResolverService,
     private tobService: TobService) {
@@ -51,9 +52,9 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         return this.tobService.getPathToStep().toPromise();
       }).then((result: any) => {
         // add nodes
-        result.nodes.forEach(node => {
+        result.result.nodes.forEach(node => {
           const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
-          const deps = this.tobService.getDependenciesByID(node.id, result.links, this.credentials);
+          const deps = this.tobService.getDependenciesByID(node.id, result.result.links, this.credentials);
           const credData = this.availableCredForIssuer(issuer);
           const step = new Step(this.topic, node.schema_name, deps, issuer, credData);
           const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
@@ -61,7 +62,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         });
 
         // add links
-        result.links.forEach(link => {
+        result.result.links.forEach(link => {
           this.workflowService.addLink(new WorkflowLink(link.target, link.source));
         });
       });
@@ -72,6 +73,8 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     // render graph
     this.graphLayout.then(() => {
       this.workflowService.renderGraph(this.svgRoot);
+
+      this.cd.detectChanges();
     });
   }
 

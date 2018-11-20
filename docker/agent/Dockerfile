@@ -5,7 +5,11 @@ WORKDIR $HOME
 
 # `ADD --chown=` is not available in OpenShift yet.
 # ADD --chown=indy:indy . $HOME
-ADD . $HOME
+ADD assets $HOME/assets
+ADD config $HOME/config
+ADD docker $HOME/docker
+ADD src $HOME/src
+ADD templates $HOME/templates
 
 USER root
 
