@@ -16,7 +16,7 @@
       "name": "Liquor Control and Licensing Branch",
       "abbreviation": "LCLB",
       "email": "lclb.test.issuer@example.ca",
-      "url": "http://localhost:4200/liquor/license"
+      "url": "http://localhost:5000/liquor/license"
     },
     {
       "id": 2,
@@ -27,7 +27,7 @@
       "name": "WorkSafe BC",
       "abbreviation": "WorkSafe BC\"",
       "email": "worksafe.test.issuer@example.ca",
-      "url": "http://localhost:4200/worksafe/clearance-letter"
+      "url": "http://localhost:5000/worksafe/clearance-letter"
     },
     {
       "id": 3,
@@ -38,7 +38,7 @@
       "name": "City of Surrey",
       "abbreviation": "SUR",
       "email": "surrey.test.issuer@example.ca",
-      "url": "http://localhost:4200/surrey/biz"
+      "url": "http://localhost:5000/surrey/biz"
     },
     {
       "id": 4,
@@ -49,7 +49,7 @@
       "name": "BC Ministry of Finance",
       "abbreviation": "Ministry of Finance",
       "email": "minfinance.test.issuer@example.ca",
-      "url": "http://localhost:4200/finance/pst"
+      "url": "http://localhost:5000/finance/pst"
     },
     {
       "id": 5,
@@ -60,7 +60,7 @@
       "name": "Fraser Valley Health Authority",
       "abbreviation": "FRV",
       "email": "frv.test.issuer@example.ca",
-      "url": "http://localhost:4200/fraser-valley/permit"
+      "url": "http://localhost:5000/fraser-valley/permit"
     },
     {
       "id": 6,
@@ -71,7 +71,7 @@
       "name": "BC Corporate Registry",
       "abbreviation": "BCReg",
       "email": "bcreg.test.issuer@example.ca",
-      "url": "http://localhost:4200/bcreg/incorporation"
+      "url": "http://localhost:5000/bcreg/incorporation"
     }
   ]
 }

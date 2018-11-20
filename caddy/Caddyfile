@@ -17,15 +17,15 @@
     #     / /demo/start
     # }
 
-    # rewrite {
-    #     r ^/bcreg/assets/(.*)$
-    #     to /assets/{1}
-    # }
+    rewrite {
+        r ^/bcreg/assets/(.*)$
+        to /assets/{1}
+    }
 
-    # rewrite {
-    #     r ^/demo/?$
-    #     to /assets/html/demo.html
-    # }
+    rewrite {
+        r ^/demo/?$
+        to /
+    }
 
     # rewrite {
     #     r ^/demo/start/?$
