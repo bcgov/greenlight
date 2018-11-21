@@ -15,6 +15,7 @@ export class WorkflowStepComponent implements OnInit {
 
   actionURL: string;
   actionTxt: string;
+  actionTarget: string;
 
   constructor() {  }
 
@@ -36,12 +37,15 @@ export class WorkflowStepComponent implements OnInit {
     if (this.obtainedCert) {
       this.actionTxt = 'View record';
       this.actionURL = `/topic/${this.step.topicId}/cred/${this.step.credentialId}`;
+      this.actionTarget = '_blank';
     } else if (this.isStart || this.allDepsSatisfied) {
       this.actionTxt = `Enroll with ${this.step.issuer.name}`;
       this.actionURL = this.step.issuer.url;
+      this.actionTarget = '_self'
     } else {
       this.actionTxt = 'Dependencies not met';
       this.actionURL = null;
+      this.actionTarget = '';
     }
   }
 

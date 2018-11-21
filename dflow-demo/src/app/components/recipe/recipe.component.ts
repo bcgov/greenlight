@@ -33,40 +33,36 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     // get topicId from route
     this.activatedRoute.queryParams.subscribe((params) => {
       this.topic = params['topic'];
-      if (this.topic) {
-        // create a promise that will be resolved once the graph is ready to be rendered
-        // start with retrieving all the credentials that have been issued so far
-        this.graphLayout = this.tobService.getCredentialsByTopic(this.topic).toPromise()
-        .then((creds) => {
-          this.credentials = creds;
-          // get issuer list
-          return this.tobService.getIssuers().toPromise();
-        }).then((data: any) => {
-            data.results.forEach(element => {
-              this.issuers.push(new Issuer(element));
-            });
-        }).then(() => {
-          // get topology and set-up graphing library
-          return this.tobService.getPathToStep().toPromise();
-        }).then((result: any) => {
-          // add nodes
-          result.result.nodes.forEach(node => {
-            const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
-            const deps = this.tobService.getDependenciesByID(node.id, result.result.links, this.credentials);
-            const credData = this.availableCredForIssuer(issuer);
-            const step = new Step(this.topic, node.schema_name, deps, issuer, credData);
-            const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
-            this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
+      // create a promise that will be resolved once the graph is ready to be rendered
+      // start with retrieving all the credentials that have been issued so far
+      this.graphLayout = this.tobService.getCredentialsByTopic(this.topic).toPromise()
+      .then((creds) => {
+        this.credentials = creds;
+        // get issuer list
+        return this.tobService.getIssuers().toPromise();
+      }).then((data: any) => {
+          data.results.forEach(element => {
+            this.issuers.push(new Issuer(element));
           });
-
-          // add links
-          result.result.links.forEach(link => {
-            this.workflowService.addLink(new WorkflowLink(link.target, link.source));
-          });
+      }).then(() => {
+        // get topology and set-up graphing library
+        return this.tobService.getPathToStep().toPromise();
+      }).then((result: any) => {
+        // add nodes
+        result.result.nodes.forEach(node => {
+          const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
+          const deps = this.tobService.getDependenciesByID(node.id, result.result.links, this.credentials);
+          const credData = this.availableCredForIssuer(issuer);
+          const step = new Step(this.topic, node.schema_name, deps, issuer, credData);
+          const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
+          this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
         });
-      } else {
-        this.graphLayout = Promise.reject('No topicId');
-      }
+
+        // add links
+        result.result.links.forEach(link => {
+          this.workflowService.addLink(new WorkflowLink(link.target, link.source));
+        });
+      });
     });
   }
 
@@ -74,8 +70,6 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     // render graph
     this.graphLayout.then(() => {
       this.workflowService.renderGraph(this.svgRoot);
-    }, () => {
-      console.log('shoot');
     });
   }
 

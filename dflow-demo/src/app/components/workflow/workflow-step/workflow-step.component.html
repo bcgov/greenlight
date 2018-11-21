@@ -50,7 +50,7 @@
         <hr class="cert-panel-divider"/>
 
         <div class="panel-footer text-right">
-            <a id="cta" class="btn btn-primary" [ngClass]="{'disabled': !actionURL }" href="{{actionURL}}">
+            <a id="cta" target="{{actionTarget}}" class="btn btn-primary" [ngClass]="{'disabled': !actionURL }" href="{{actionURL}}">
               <span class="fa fa-arrow-right" *ngIf="actionURL"></span>
                 {{ actionTxt }}
             </a>
