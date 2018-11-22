@@ -57,7 +57,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         // add nodes
         result.result.nodes.forEach(node => {
           const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
-          const deps = this.tobService.getDependenciesByID(node.id, result.result.links, this.credentials);
+          const deps = this.tobService.getDependenciesByID(node.id, result.result.links, this.credentials, this.issuers);
           const credData = this.availableCredForIssuer(issuer);
           const step = new Step(this.topic, this.walletId, node.schema_name, deps, issuer, credData);
           const nodeHTML = this.nodeResolverService.getHTMLForNode(step);

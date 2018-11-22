@@ -71,10 +71,13 @@ export class TobService {
    * Returns the list of @StepDependency for teh specified id.
    * @param id the id of the step being processed.
    * @param links the data structure representing the topology links.
+   * @param creds the available credentials to be processed
+   * @param issuers the list of issuers
    */
-  getDependenciesByID (id: string, links: any, creds: any) {
+  getDependenciesByID (id: string, links: any, creds: any, issuers: Array<Issuer>) {
     return links.map((link) => {
-      // straighten the tree
+      // straighten the tree: it is provided from the point of view of the destination,
+      // we want it the other way around
       const newLink = {
         source: link.target,
         target: link.source
@@ -85,13 +88,16 @@ export class TobService {
       return link.target === id;
     }).map((dep) => {
       // create new dep
+      const depIssuer = issuers.find((issuer) => {
+        return dep.source.indexOf(issuer.did) > -1
+      });
       const isAvailable = this.isCredentialAvailable(dep.source, creds);
-      return new StepDependency(dep.source, isAvailable);
+      return new StepDependency(depIssuer.name, isAvailable);
     });
   }
 
   /**
-   * Returns true if the credential corresponding to the given id is available, false otherwise.
+   * Returns true if the credential corresponding to the given id if available, false otherwise.
    * @param id the id of the credential to check.
    * @param creds the list of credentials to check.
    */
