@@ -30,6 +30,15 @@ export class TobService {
   }
 
   /**
+   * Queries ToB and returns the list of @Schema objects that are currently registered.
+   */
+  getSchemas () {
+    const reqURL = '/bc-tob/schema';
+    // TODO: use types if possible
+    return this.http.get(reqURL);
+  })
+
+  /**
    * Returns a JSON structure representing the requested topic (e.g.: Incorporated Company)
    * @param topicId the id of the topic being requested
    */
