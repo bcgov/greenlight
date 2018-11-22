@@ -40,7 +40,7 @@ export class WorkflowStepComponent implements OnInit {
       this.actionTarget = '_blank';
     } else if (this.isStart || this.allDepsSatisfied) {
       this.actionTxt = `Enroll with ${this.step.issuer.name}`;
-      this.actionURL = this.step.issuer.url;
+      this.actionURL = `${this.step.issuer.url}?credential_ids=${this.step.walletId}`;
       this.actionTarget = '_self'
     } else {
       this.actionTxt = 'Dependencies not met';

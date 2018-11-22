@@ -7,6 +7,7 @@ import { WorkflowService } from 'src/app/services/workflow.service';
 import { Step } from '../../models/step';
 import { NodeLabelType, WorkflowNode } from '../../models/workflow-node';
 import { TobService } from '../../services/tob.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recipe',
@@ -19,6 +20,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   issuers: Array<Issuer>;
   topic: number;
   credentials: any;
+  walletId: string;
   graphLayout: Promise<any>;
 
   constructor(
@@ -37,23 +39,27 @@ export class RecipeComponent implements OnInit, AfterViewInit {
       // start with retrieving all the credentials that have been issued so far
       this.graphLayout = this.tobService.getCredentialsByTopic(this.topic).toPromise()
       .then((creds) => {
+        console.log('Credentials:', creds);
         this.credentials = creds;
+        this.walletId = this.getWalletId();
         // get issuer list
         return this.tobService.getIssuers().toPromise();
       }).then((data: any) => {
-          data.results.forEach(element => {
-            this.issuers.push(new Issuer(element));
-          });
+        console.log('Issuers:', data);
+        data.results.forEach(element => {
+          this.issuers.push(new Issuer(element));
+        });
       }).then(() => {
         // get topology and set-up graphing library
         return this.tobService.getPathToStep().toPromise();
       }).then((result: any) => {
+        console.log('Path:', result);
         // add nodes
         result.result.nodes.forEach(node => {
           const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
           const deps = this.tobService.getDependenciesByID(node.id, result.result.links, this.credentials);
           const credData = this.availableCredForIssuer(issuer);
-          const step = new Step(this.topic, node.schema_name, deps, issuer, credData);
+          const step = new Step(this.topic, this.walletId, node.schema_name, deps, issuer, credData);
           const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
           this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
         });
@@ -88,6 +94,14 @@ export class RecipeComponent implements OnInit, AfterViewInit {
       }
     });
     return result;
+  }
+
+  private getWalletId() {
+    let walletId = undefined;
+    if (this.credentials) {
+      walletId = this.credentials[0].wallet_id;
+    }
+    return walletId;
   }
 
 }

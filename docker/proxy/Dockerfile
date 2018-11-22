@@ -11,3 +11,4 @@ FROM abiosoft/caddy:no-stats
 ADD caddy/Caddyfile /etc/Caddyfile
 WORKDIR /srv
 COPY --from=angular-builder /app/dist/dflow-demo/ .
+ADD assets/ ./assets/

@@ -12,25 +12,16 @@
     # Openly exposed health check endpoint for OpenShift
     status 200 /health
 
-    # redir 302 {
-    #     if {path} is /
-    #     / /demo/start
-    # }
-
     rewrite {
         r ^/bcreg/assets/(.*)$
         to /assets/{1}
     }
 
     rewrite {
+        # required for Angular router to work properly
         r ^/demo/?$
         to /
     }
-
-    # rewrite {
-    #     r ^/demo/start/?$
-    #     to /assets/html/demo-start.html
-    # }
 
     proxy /bc-tob {%TOB_API_URL%} {
         without /bc-tob

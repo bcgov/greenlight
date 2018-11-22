@@ -10,6 +10,7 @@ export class Step {
   issuer: Issuer;
   effectiveDate: string;
   credentialId: number;
+  walletId: string;
 
   // computed
   actionText: string;
@@ -17,12 +18,14 @@ export class Step {
 
   constructor (
     topicId: number,
+    walletId: string,
     name: string,
     dependencies: Array<StepDependency>,
     issuer?: Issuer,
     credData?: any
     ) {
       this.topicId = topicId;
+      this.walletId = walletId;
       this.name = name;
       this.dependencies = dependencies;
       this.issuer = issuer;
