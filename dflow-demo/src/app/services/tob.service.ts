@@ -36,7 +36,7 @@ export class TobService {
     const reqURL = '/bc-tob/schema';
     // TODO: use types if possible
     return this.http.get(reqURL);
-  })
+  }
 
   /**
    * Returns a JSON structure representing the requested topic (e.g.: Incorporated Company)
