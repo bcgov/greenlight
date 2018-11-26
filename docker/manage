@@ -70,7 +70,7 @@ exit 1
 # Default Settings:
 # -----------------------------------------------------------------------------------------------------------------
 
-DEFAULT_CONTAINERS=""
+DEFAULT_CONTAINERS="agent-wallet-db bcreg-agent ministry-finance-agent city-surrey-agent fraser-valley-agent liquor-control-agent worksafe-agent"
 
 # -----------------------------------------------------------------------------------------------------------------
 # Functions:
@@ -97,6 +97,28 @@ configureEnvironment () {
   export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-"permitify"}
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export APPLICATION_URL=${APPLICATION_URL-http://localhost:${WEB_HTTP_PORT:-5000}}
+
+  # caddy
+  export TOB_API_URL=${TOB_API_URL:-http://tob-api:8080/api/v2}
+  export TOB_APP_URL=${TOB_APP_URL:-http://localhost:8080}
+  export WEB_BASE_HREF=${WEB_BASE_HREF:-/}
+  export WEB_HOST_NAME=${WEB_HOST_NAME:-0.0.0.0}
+  export WEB_HOST_PORT=${WEB_HOST_PORT:-8080}
+  export WEB_HOST_TLS=${WEB_HOST_TLS:-off}
+  export BCREG_AGENT_HOST=${BCREG_AGENT_HOST:-bcreg}
+  export BCREG_AGENT_PORT=${BCREG_AGENT_PORT:-8000}
+  export MINISTRY_FINANCE_AGENT_HOST=${MINISTRY_FINANCE_AGENT_HOST:-mofi}
+  export MINISTRY_FINANCE_AGENT_PORT=${MINISTRY_FINANCE_AGENT_PORT:-8000}
+  export CITY_SURREY_AGENT_HOST=${CITY_SURREY_AGENT_HOST:-city-surrey}
+  export CITY_SURREY_AGENT_PORT=${CITY_SURREY_AGENT_PORT:-8000}
+  export FRASER_VALLEY_AGENT_HOST=${FRASER_VALLEY_AGENT_HOST:-fraser-valley}
+  export FRASER_VALLEY_AGENT_PORT=${FRASER_VALLEY_AGENT_PORT:-8000}
+  export LIQUOR_CONTROL_AGENT_HOST=${LIQUOR_CONTROL_AGENT_HOST:-liquor-control}
+  export LIQUOR_CONTROL_AGENT_PORT=${LIQUOR_CONTROL_AGENT_PORT:-8000}
+  export WORKSAFE_AGENT_HOST=${WORKSAFE_AGENT_HOST:-worksafe}
+  export WORKSAFE_AGENT_PORT=${WORKSAFE_AGENT_PORT:-8000}
+  export WEB_HTTP_PORT=${WEB_HTTP_PORT:-5000}
+  export WEB_HOST_PORT=${WEB_HOST_PORT:-8080}
 
   # wallet-db
   export POSTGRESQL_DATABASE="THE_ORG_BOOK"
@@ -137,16 +159,49 @@ getStartupParams() {
 }
 
 build() {
-  # Build the angular app binaries first, as they are used later on by the caddy container
-  echo -e "\nBuilding dflow-angular-build image ..."
-  docker build -q \
-    -t 'dflow-angular' \
-    -f './angular-build/Dockerfile' '../'
-
   # Build all containers in the docker-compose file
-  echo -e "\nBuilding agent and wallet containers ..."
-  echo docker-compose build $@
-  docker-compose build $@
+  # echo -e "\nBuilding agent and wallet containers ..."
+  # echo docker-compose build $@
+  # docker-compose build $@
+
+  #
+  # The caddy-runtime image is used for the final runtime image.
+  # The nodejs-build image is used to build the artifacts for the angular distribution.
+  # The angular-on-nginx image is copy of the nginx-runtime image complete with a copy of the build artifacts.
+  #
+  echo -e "\nBuilding caddy-runtime image ..."
+  docker build -q \
+    -t 'caddy-runtime' \
+    -f './proxy/Dockerfile' '../'
+
+  # This image only exists to pre-create the npm cache directory
+  # so it can be properly used as a volume, it doesn't apply to openshift
+  echo -e "\nBuilding nodejs-build image ..."
+  docker build -q \
+    -t 'nodejs-build' \
+    -f './nodejs-build/Dockerfile' '../'
+
+  if [ -t 0 ]; then
+    # color npm output in interactive terminal
+	  NPM_COLOR="always"
+  else
+    NPM_COLOR="true"
+  fi
+
+
+  # NB: We build with DEV_MODE=true but run with DEV_MODE=false
+  echo -e "\nBuilding dFlow image ..."
+  ${S2I_EXE} build \
+    -e "DEV_MODE=true" \
+    -e "HTTP_PROXY=${HTTP_PROXY}" \
+    -e "HTTPS_PROXY=${HTTPS_PROXY}" \
+    -e "NG_BASE_HREF=${WEB_BASE_HREF}" \
+    -e "NG_DEPLOY_URL=${WEB_DEPLOY_URL}" \
+    --runtime-image "caddy-runtime" \
+    -a /opt/app-root/src/dist \
+    '../dflow-demo/' \
+    'nodejs-build' \
+    'dflow'
 }
 
 deleteVolumes() {
@@ -185,6 +240,7 @@ case "$COMMAND" in
   start|up)
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
+    $DEFAULT_CONTAINERS="caddy $DEFAULT_CONTAINERS"
     docker-compose up -d ${_startupParams}
     docker-compose logs -f
     ;;
