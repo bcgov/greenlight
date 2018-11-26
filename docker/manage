@@ -189,17 +189,16 @@ build() {
   fi
 
 
-  # NB: We build with DEV_MODE=true but run with DEV_MODE=false
   echo -e "\nBuilding dFlow image ..."
   ${S2I_EXE} build \
-    -e "DEV_MODE=true" \
     -e "HTTP_PROXY=${HTTP_PROXY}" \
     -e "HTTPS_PROXY=${HTTPS_PROXY}" \
     -e "NG_BASE_HREF=${WEB_BASE_HREF}" \
     -e "NG_DEPLOY_URL=${WEB_DEPLOY_URL}" \
+    -v "${COMPOSE_PROJECT_NAME}_dflow-npm-cache:/opt/app-root/src/.npm" \
     --runtime-image "caddy-runtime" \
-    -a /opt/app-root/src/dist \
-    '../dflow-demo/' \
+    -a /opt/app-root/src/dist:srv \
+    '../dflow-demo' \
     'nodejs-build' \
     'dflow'
 }
