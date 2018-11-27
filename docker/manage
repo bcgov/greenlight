@@ -160,9 +160,9 @@ getStartupParams() {
 
 build() {
   # Build all containers in the docker-compose file
-  # echo -e "\nBuilding agent and wallet containers ..."
-  # echo docker-compose build $@
-  # docker-compose build $@
+  echo -e "\nBuilding agent and wallet containers ..."
+  echo docker-compose build $@
+  docker-compose build $@
 
   #
   # The s2i-caddy image is used as base for the caddy-runtime runtime image.
