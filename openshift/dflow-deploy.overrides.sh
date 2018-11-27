@@ -7,10 +7,10 @@
 # The generated config map is used to update the Caddy configuration.
 # ========================================================================
 
-CONFIG_MAP_NAME=proxy-caddy-conf
+CONFIG_MAP_NAME=dflow-caddy-conf
 SOURCE_FILE=../caddy/Caddyfile
 OUTPUT_FORMAT=json
-OUTPUT_FILE=proxy-caddy-configmap_DeploymentConfig.json
+OUTPUT_FILE=dflow-caddy-configmap_DeploymentConfig.json
 
 generateConfigMap() {
   _config_map_name=${1}
