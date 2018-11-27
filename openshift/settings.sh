@@ -15,7 +15,7 @@ export -a skip_git_overrides=""
 export builds=""
 
 # The images to be tagged after build
-export images="permitify postgresql proxy redis"
+export images="permitify postgresql dflow redis"
 
 # The routes for the project
-export routes="proxy"
+export routes="dflow"

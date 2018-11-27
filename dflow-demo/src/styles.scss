@@ -1,0 +1,10 @@
+/* You can add global styles to this file, and also import other style files */
+
+$bcgov-font-path: "../node_modules/@bcgov/bootstrap-theme/dist/fonts/";
+@import "../node_modules/@bcgov/bootstrap-theme/dist/scss/bootstrap-theme";
+
+$fa-font-path: "../node_modules/font-awesome/fonts/";
+@import "../node_modules/font-awesome/scss/font-awesome";
+
+@import './app/components/recipe/recipe.component.scss';
+@import './app/components/workflow/workflow-step/workflow-step.component.scss';

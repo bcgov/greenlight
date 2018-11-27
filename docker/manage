@@ -19,6 +19,14 @@ export DOCKERHOST=${APPLICATION_URL-$(docker run --rm --net=host codenvy/che-ip)
 export MSYS_NO_PATHCONV=1
 set -e
 
+S2I_EXE=s2i
+if [ -z $(type -P "$S2I_EXE") ]; then
+  echo -e "The ${S2I_EXE} executable is needed and not on your path."
+  echo -e "It can be downloaded from here: https://github.com/openshift/source-to-image"
+  echo -e "Make sure you place it in a directory on your path."
+  exit 1
+fi
+
 SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 
 # =================================================================================================================
@@ -62,7 +70,7 @@ exit 1
 # Default Settings:
 # -----------------------------------------------------------------------------------------------------------------
 
-DEFAULT_CONTAINERS=""
+DEFAULT_CONTAINERS="agent-wallet-db bcreg-agent ministry-finance-agent city-surrey-agent fraser-valley-agent liquor-control-agent worksafe-agent"
 
 # -----------------------------------------------------------------------------------------------------------------
 # Functions:
@@ -89,6 +97,28 @@ configureEnvironment () {
   export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-"permitify"}
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export APPLICATION_URL=${APPLICATION_URL-http://localhost:${WEB_HTTP_PORT:-5000}}
+
+  # caddy
+  export TOB_API_URL=${TOB_API_URL:-http://tob-api:8080/api/v2}
+  export TOB_APP_URL=${TOB_APP_URL:-http://localhost:8080}
+  export WEB_BASE_HREF=${WEB_BASE_HREF:-/}
+  export WEB_HOST_NAME=${WEB_HOST_NAME:-0.0.0.0}
+  export WEB_HOST_PORT=${WEB_HOST_PORT:-8080}
+  export WEB_HOST_TLS=${WEB_HOST_TLS:-off}
+  export BCREG_AGENT_HOST=${BCREG_AGENT_HOST:-bcreg-agent}
+  export BCREG_AGENT_PORT=${BCREG_AGENT_PORT:-8000}
+  export MINISTRY_FINANCE_AGENT_HOST=${MINISTRY_FINANCE_AGENT_HOST:-ministry-finance-agent}
+  export MINISTRY_FINANCE_AGENT_PORT=${MINISTRY_FINANCE_AGENT_PORT:-8000}
+  export CITY_SURREY_AGENT_HOST=${CITY_SURREY_AGENT_HOST:-city-surrey-agent}
+  export CITY_SURREY_AGENT_PORT=${CITY_SURREY_AGENT_PORT:-8000}
+  export FRASER_VALLEY_AGENT_HOST=${FRASER_VALLEY_AGENT_HOST:-fraser-valley-agent}
+  export FRASER_VALLEY_AGENT_PORT=${FRASER_VALLEY_AGENT_PORT:-8000}
+  export LIQUOR_CONTROL_AGENT_HOST=${LIQUOR_CONTROL_AGENT_HOST:-liquor-control-agent}
+  export LIQUOR_CONTROL_AGENT_PORT=${LIQUOR_CONTROL_AGENT_PORT:-8000}
+  export WORKSAFE_AGENT_HOST=${WORKSAFE_AGENT_HOST:-worksafe-agent}
+  export WORKSAFE_AGENT_PORT=${WORKSAFE_AGENT_PORT:-8000}
+  export WEB_HTTP_PORT=${WEB_HTTP_PORT:-5000}
+  export WEB_HOST_PORT=${WEB_HOST_PORT:-8080}
 
   # wallet-db
   export POSTGRESQL_DATABASE="THE_ORG_BOOK"
@@ -130,9 +160,55 @@ getStartupParams() {
 
 build() {
   # Build all containers in the docker-compose file
-  echo -e "\nBuilding containers ..."
+  echo -e "\nBuilding agent and wallet containers ..."
   echo docker-compose build $@
   docker-compose build $@
+
+  #
+  # The s2i-caddy image is used as base for the caddy-runtime runtime image.
+  # The caddy-runtime image is used for the final runtime image.
+  # The nodejs-build image is used to build the artifacts for the angular distribution.
+  # The dflow image is copy of the s2i-caddy image complete with a copy of the build artifacts.
+  #
+  echo -e "\nBuilding bcgov-s2i-caddy image ..."
+  docker build -q \
+    -t 'bcgov-s2i-caddy' \
+    'https://github.com/BCDevOps/s2i-caddy.git'
+
+  echo -e "\nBuilding caddy-runtime image ..."
+  docker build -q \
+    -t 'caddy-runtime' \
+    -f './proxy/Dockerfile' '../'
+
+  # This image only exists to pre-create the npm cache directory
+  # so it can be properly used as a volume, it doesn't apply to openshift
+  echo -e "\nBuilding nodejs-build image ..."
+  docker build -q \
+    -t 'nodejs-build' \
+    -f './nodejs-build/Dockerfile' '../'
+
+  if [ -t 0 ]; then
+    # color npm output in interactive terminal
+	  NPM_COLOR="always"
+  else
+    NPM_COLOR="true"
+  fi
+
+
+  echo -e "\nBuilding dflow image ..."
+  ${S2I_EXE} build \
+    -e "NPM_CONFIG_COLOR=${NPM_COLOR}" \
+    -e "NPM_CONFIG_LOGLEVEL=timing" \
+    -e "HTTP_PROXY=${HTTP_PROXY}" \
+    -e "HTTPS_PROXY=${HTTPS_PROXY}" \
+    -e "NG_BASE_HREF=${WEB_BASE_HREF}" \
+    -e "NG_DEPLOY_URL=${WEB_DEPLOY_URL}" \
+    -v "${COMPOSE_PROJECT_NAME}_dflow-npm-cache:/opt/app-root/src/.npm" \
+    --runtime-image "caddy-runtime" \
+    -a /opt/app-root/src/dist/dflow-demo \
+    '../dflow-demo' \
+    'nodejs-build' \
+    'dflow'
 }
 
 deleteVolumes() {
@@ -169,6 +245,8 @@ shift || true
 
 case "$COMMAND" in
   start|up)
+    # also start caddy
+    DEFAULT_CONTAINERS="caddy $DEFAULT_CONTAINERS"
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
     docker-compose up -d ${_startupParams}
