@@ -34,6 +34,11 @@
         "strategy": {
           "type": "Docker",
           "dockerStrategy": {
+            "from": {
+              "kind": "${SOURCE_IMAGE_KIND}",
+              "namespace": "${SOURCE_IMAGE_NAMESPACE}",
+              "name": "${SOURCE_IMAGE_NAME}:${SOURCE_IMAGE_TAG}"
+            },
             "dockerfilePath": "${DOCKER_FILE_PATH}"
           }
         },
@@ -98,6 +103,34 @@
       "value": "latest"
     },
     {
+      "name": "SOURCE_IMAGE_KIND",
+      "displayName": "Source Image Kind",
+      "description": "The 'kind' (type) of the  source image; typically ImageStreamTag, or DockerImage.",
+      "required": true,
+      "value": "ImageStreamTag"
+    },
+    {
+      "name": "SOURCE_IMAGE_NAME",
+      "displayName": "Source Image Name",
+      "description": "The name of the source image.",
+      "required": true,
+      "value": "bcgov-s2i-caddy"
+    },
+    {
+      "name": "SOURCE_IMAGE_NAMESPACE",
+      "displayName": "Source Image Namespace",
+      "description": "The namespace containing the source image.",
+      "required": false,
+      "value": "openshift"
+    },
+    {
+      "name": "SOURCE_IMAGE_TAG",
+      "displayName": "Source Image Tag",
+      "description": "The tag of the source image.",
+      "required": true,
+      "value": "latest"
+    },
+        {
       "name": "DOCKER_FILE_PATH",
       "displayName": "Docker File Path",
       "description": "The path to the docker file.",
