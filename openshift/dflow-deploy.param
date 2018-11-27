@@ -1,9 +1,9 @@
 #=========================================================
 # OpenShift template parameters for:
 # Component: .
-# Template File: templates/proxy/proxy-deploy.json
+# Template File: templates/dflow/dflow-deploy.json
 #=========================================================
-NAME=proxy
+NAME=dflow
 APP_GROUP=permitify
 IMAGE_NAMESPACE=devex-von-permitify-tools
 TAG_NAME=dev
