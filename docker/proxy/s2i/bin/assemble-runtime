@@ -1,0 +1,4 @@
+#!/bin/bash
+echo 'Moving bits and pieces, please hold on...'
+
+mv /srv/dflow-demo/* /srv

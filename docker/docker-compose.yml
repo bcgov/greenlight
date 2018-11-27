@@ -2,7 +2,7 @@ version: '3'
 services:
 
   caddy:
-    image: caddy-runtime
+    image: dflow
     environment:
       TOB_API_URL: ${TOB_API_URL}
       TOB_APP_URL: ${TOB_APP_URL}
@@ -38,6 +38,8 @@ services:
       - ../caddy/Caddyfile:/etc/Caddyfile
       - caddy-data:/root/.caddy
       - caddy-logs:/srv/logs
+    command:
+      '/tmp/scripts/run'
 
   bcreg-agent:
     build:

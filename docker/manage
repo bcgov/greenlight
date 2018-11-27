@@ -165,10 +165,16 @@ build() {
   # docker-compose build $@
 
   #
+  # The s2i-caddy image is used as base for the caddy-runtime runtime image.
   # The caddy-runtime image is used for the final runtime image.
   # The nodejs-build image is used to build the artifacts for the angular distribution.
-  # The angular-on-nginx image is copy of the nginx-runtime image complete with a copy of the build artifacts.
+  # The dflow image is copy of the s2i-caddy image complete with a copy of the build artifacts.
   #
+  echo -e "\nBuilding bcdevops/s2i-caddy image ..."
+  docker build -q \
+    -t 'bcdevops/s2i-caddy' \
+    'https://github.com/BCDevOps/s2i-caddy.git'
+
   echo -e "\nBuilding caddy-runtime image ..."
   docker build -q \
     -t 'caddy-runtime' \
@@ -189,15 +195,17 @@ build() {
   fi
 
 
-  echo -e "\nBuilding dFlow image ..."
+  echo -e "\nBuilding dflow image ..."
   ${S2I_EXE} build \
+    -e "NPM_CONFIG_COLOR=${NPM_COLOR}" \
+    -e "NPM_CONFIG_LOGLEVEL=timing" \
     -e "HTTP_PROXY=${HTTP_PROXY}" \
     -e "HTTPS_PROXY=${HTTPS_PROXY}" \
     -e "NG_BASE_HREF=${WEB_BASE_HREF}" \
     -e "NG_DEPLOY_URL=${WEB_DEPLOY_URL}" \
     -v "${COMPOSE_PROJECT_NAME}_dflow-npm-cache:/opt/app-root/src/.npm" \
     --runtime-image "caddy-runtime" \
-    -a /opt/app-root/src/dist:srv \
+    -a /opt/app-root/src/dist/dflow-demo \
     '../dflow-demo' \
     'nodejs-build' \
     'dflow'
@@ -237,9 +245,10 @@ shift || true
 
 case "$COMMAND" in
   start|up)
+    # also start caddy
+    DEFAULT_CONTAINERS="caddy $DEFAULT_CONTAINERS"
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
-    $DEFAULT_CONTAINERS="caddy $DEFAULT_CONTAINERS"
     docker-compose up -d ${_startupParams}
     docker-compose logs -f
     ;;
