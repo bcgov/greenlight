@@ -20,6 +20,6 @@ RUN mkdir -p /usr/libexec/s2i \
 
 # assign the right permissions to the /srv folder (and subfolders)
 # so we can run the instructions in the assemble-runtime script
-#RUN chmod -R g+rwx /srv
+RUN chmod -R g+rwx /srv
 
-#USER 1001
+USER 1001
