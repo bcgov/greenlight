@@ -170,9 +170,9 @@ build() {
   # The nodejs-build image is used to build the artifacts for the angular distribution.
   # The dflow image is copy of the s2i-caddy image complete with a copy of the build artifacts.
   #
-  echo -e "\nBuilding bcdevops/s2i-caddy image ..."
+  echo -e "\nBuilding bcgov-s2i-caddy image ..."
   docker build -q \
-    -t 'bcdevops/s2i-caddy' \
+    -t 'bcgov-s2i-caddy' \
     'https://github.com/BCDevOps/s2i-caddy.git'
 
   echo -e "\nBuilding caddy-runtime image ..."

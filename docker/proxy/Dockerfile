@@ -1,4 +1,4 @@
-FROM bcdevops/s2i-caddy:latest
+FROM bcgov-s2i-caddy:latest
 
 USER root
 
