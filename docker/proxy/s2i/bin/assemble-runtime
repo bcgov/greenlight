@@ -2,4 +2,3 @@
 echo "Moving bits and pieces, please hold on..."
 
 cp -r /srv/dflow-demo/* /srv
-rm -r /srv/dflow-demo
