@@ -5,7 +5,7 @@ issuers:
     abbreviation: WorkSafe BC"
     email: worksafe.test.issuer@example.ca
     url: $APPLICATION_URL_INCORP
-    endpoint: $APPLICATION_URL
+    endpoint: http://$DOCKERHOST:5000/worksafe
 
     connection:
       type: TheOrgBook
@@ -32,6 +32,7 @@ issuers:
       - description: Clearance Letter
         schema: worksafe.permitify
         issuer_url: $APPLICATION_URL_INCORP
+        depends_on: registration
         topic:
           source_id:
             input: corp_num
