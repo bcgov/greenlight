@@ -5,7 +5,7 @@ issuers:
     abbreviation: Ministry of Finance
     email: minfinance.test.issuer@example.ca
     url: $APPLICATION_URL_INCORP
-    endpoint: $APPLICATION_URL
+    endpoint: ${APPLICATION_URL}/finance
 
     connection:
       type: TheOrgBook
@@ -32,6 +32,8 @@ issuers:
       - description: PST Number
         schema: pst_number.permitify
         issuer_url: $APPLICATION_URL_INCORP
+        depends_on:
+        - registration
         topic:
           source_id:
             input: corp_num

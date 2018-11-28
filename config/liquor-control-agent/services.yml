@@ -5,7 +5,7 @@ issuers:
     abbreviation: LCLB
     email: lclb.test.issuer@example.ca
     url: $APPLICATION_URL_INCORP
-    endpoint: $APPLICATION_URL
+    endpoint: ${APPLICATION_URL}/liquor
 
     connection:
       type: TheOrgBook
@@ -32,6 +32,11 @@ issuers:
       - description: Liquor License
         schema: liquor_license.permitify
         issuer_url: $APPLICATION_URL_INCORP
+        depends_on:
+        - registration
+        - pst-number
+        - clearance-letter
+        - operating-permit
         topic:
           source_id:
             input: corp_num
