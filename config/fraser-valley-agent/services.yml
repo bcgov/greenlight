@@ -5,7 +5,7 @@ issuers:
     abbreviation: FRV
     email: frv.test.issuer@example.ca
     url: $APPLICATION_URL_INCORP
-    endpoint: ${APPLICATION_URL}/fraser-valley
+    endpoint: ${ENDPOINT_URL}/fraser-valley
 
     connection:
       type: TheOrgBook
