@@ -7,7 +7,7 @@ issuers:
       ministries-organizations/ministries/citizens-services/bc-registries-online-services"
     email: bcreg.test.issuer@example.ca
     url: $APPLICATION_URL_INCORP
-    endpoint: http://$DOCKERHOST/bcreg
+    endpoint: http://$DOCKERHOST:5000/bcreg
 
     connection:
       type: TheOrgBook

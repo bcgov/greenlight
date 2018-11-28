@@ -5,7 +5,7 @@ issuers:
     abbreviation: Ministry of Finance
     email: minfinance.test.issuer@example.ca
     url: $APPLICATION_URL_INCORP
-    endpoint: http://$DOCKERHOST/finance
+    endpoint: http://$DOCKERHOST:5000/finance
 
     connection:
       type: TheOrgBook
