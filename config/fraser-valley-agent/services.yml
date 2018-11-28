@@ -5,7 +5,7 @@ issuers:
     abbreviation: FRV
     email: frv.test.issuer@example.ca
     url: $APPLICATION_URL_INCORP
-    endpoint: $APPLICATION_URL
+    endpoint: http://$DOCKERHOST/fraser-valley
 
     connection:
       type: TheOrgBook
@@ -32,6 +32,7 @@ issuers:
       - description: Operating Permit
         schema: operating_permit.permitify
         issuer_url: $APPLICATION_URL_INCORP
+        depends_on: clearance-letter
         topic:
           source_id:
             input: corp_num
