@@ -23,8 +23,8 @@ export class TobService {
    * Queries ToB and returns a list of @Issuer entities that are currently registered.
    */
   getIssuers () {
-    const reqURL = '/bc-tob/issuer';
-    // const reqURL = '/assets/data/issuers.json';
+    // const reqURL = '/bc-tob/issuer';
+    const reqURL = '/assets/data/issuers.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
   }
@@ -32,8 +32,9 @@ export class TobService {
   /**
    * Queries ToB and returns the list of @Schema objects that are currently registered.
    */
-  getSchemas () {
-    const reqURL = '/bc-tob/schema';
+  getLatestSchemas () {
+    // const reqURL = '/bc-tob/schema?inactive=false&latest=true&revoked=false';
+    const reqURL = '/assets/data/schemas.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
   }
@@ -43,8 +44,8 @@ export class TobService {
    * @param topicId the id of the topic being requested
    */
   getTopicById (topicId: number) {
-    const reqURL = `/bc-tob/topic/${topicId}/formatted`;
-    // const reqURL = '/assets/data/topic.json';
+    // const reqURL = `/bc-tob/topic/${topicId}/formatted`;
+    const reqURL = '/assets/data/topic.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
   }

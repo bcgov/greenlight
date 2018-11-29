@@ -2,5 +2,17 @@
   <h1>
       dFlow Demo
   </h1>
-  <a href="/bcreg/incorporation" class="btn btn-lg btn-primary">Begin</a>
+
+  <p>
+    Please select the issuer/credential you would like to obtain from the following list:
+  </p>
+
+  <select class="form-control" [(ngModel)]="selectedCred">
+    <option value="undefined">Select a credential</option>
+    <option *ngFor="let cred of availableCreds" [ngValue]="cred">
+      {{ cred.issuer.name }} - {{ cred.schema.name }}
+    </option>
+  </select>
+
+  <button class="btn btn-lg  btn-primary" type="button" (click)="doSomething()">Begin</button>
 </main>
