@@ -7,7 +7,7 @@ issuers:
       ministries-organizations/ministries/citizens-services/bc-registries-online-services"
     email: bcreg.test.issuer@example.ca
     url: $APPLICATION_URL_INCORP
-    endpoint: $APPLICATION_URL
+    endpoint: ${ENDPOINT_URL}/bcreg
 
     connection:
       type: TheOrgBook
