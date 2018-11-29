@@ -46,6 +46,7 @@ services:
       context: ..
       dockerfile: docker/agent/Dockerfile
     environment:
+      DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/bcreg-agent
@@ -79,6 +80,7 @@ services:
       context: ..
       dockerfile: docker/agent/Dockerfile
     environment:
+      DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/ministry-finance-agent
@@ -112,6 +114,7 @@ services:
       context: ..
       dockerfile: docker/agent/Dockerfile
     environment:
+      DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/city-surrey-agent
@@ -146,6 +149,7 @@ services:
       context: ..
       dockerfile: docker/agent/Dockerfile
     environment:
+      DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/fraser-valley-agent
@@ -179,6 +183,7 @@ services:
       context: ..
       dockerfile: docker/agent/Dockerfile
     environment:
+      DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/liquor-control-agent
@@ -212,6 +217,7 @@ services:
       context: ..
       dockerfile: docker/agent/Dockerfile
     environment:
+      DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
       ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/worksafe-agent
