@@ -256,6 +256,10 @@
                         "key": "did"
                       }
                     }
+                  },
+                  {
+                    "name": "ENDPOINT_URL",
+                    "value": "${ENDPOINT_URL}"
                   }
                 ],
                 "readinessProbe": {
@@ -354,6 +358,13 @@
       "description": "The application URL.",
       "required": true,
       "value": "https://proxy-devex-von-permitify-dev.pathfinder.gov.bc.ca"
+    },
+    {
+      "name": "ENDPOINT_URL",
+      "displayName": "Endpoint URL",
+      "description": "The public domain endpoint for the agent, which is registered on the ledger.",
+      "required": true,
+      "value": "https://devex-von-permitify-dev.pathfinder.gov.bc.ca"
     },
     {
       "name": "CONFIG_ROOT",
