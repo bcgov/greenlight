@@ -160,16 +160,10 @@ getStartupParams() {
 }
 
 build() {
-  # Build the angular app binaries first, as they are used later on by the caddy container
-  echo -e "\nBuilding dflow-angular-build image ..."
-  docker build -q \
-    -t 'dflow-angular' \
-    -f './angular-build/Dockerfile' '../'
-
   # Build all containers in the docker-compose file
-  # echo -e "\nBuilding agent and wallet containers ..."
-  # echo docker-compose build $@
-  # docker-compose build $@
+  echo -e "\nBuilding agent and wallet containers ..."
+  echo docker-compose build $@
+  docker-compose build $@
 
   #
   # The s2i-caddy image is used as base for the caddy-runtime runtime image.
