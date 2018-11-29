@@ -3,8 +3,6 @@ issuers:
     logo_path: ''
     name: BC Corporate Registry
     abbreviation: BCReg
-    url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/\
-      ministries-organizations/ministries/citizens-services/bc-registries-online-services"
     email: bcreg.test.issuer@example.ca
     url: $APPLICATION_URL_INCORP
     endpoint: ${ENDPOINT_URL}/bcreg
