@@ -48,6 +48,7 @@ services:
     environment:
       DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/bcreg-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
       ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
@@ -81,6 +82,7 @@ services:
     environment:
       DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/ministry-finance-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
       ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
@@ -114,6 +116,7 @@ services:
     environment:
       DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/city-surrey-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
       ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
@@ -148,6 +151,7 @@ services:
     environment:
       DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/fraser-valley-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
       ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
@@ -181,6 +185,7 @@ services:
     environment:
       DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/liquor-control-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
       ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
@@ -214,6 +219,7 @@ services:
     environment:
       DOCKERHOST: ${DOCKERHOST}
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
       CONFIG_ROOT: ../config/worksafe-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
       ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
