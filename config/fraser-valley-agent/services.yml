@@ -33,7 +33,6 @@ issuers:
         schema: operating_permit.permitify
         issuer_url: $APPLICATION_URL_INCORP
         depends_on:
-        - registration
         - clearance-letter
         topic:
           source_id:

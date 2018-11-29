@@ -33,10 +33,6 @@ issuers:
         schema: biz_license.permitify
         issuer_url: $APPLICATION_URL_INCORP
         depends_on:
-        - registration
-        - pst-number
-        - clearance-letter
-        - operating-permit
         - liquor-license
         topic:
           source_id:
