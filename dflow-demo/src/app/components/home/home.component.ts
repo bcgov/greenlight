@@ -45,6 +45,19 @@ export class HomeComponent implements OnInit {
         });
       });
 
+      // TODO: sort array in-place for now. A pipe will be better once dFlow is refactored.
+      this.availableCreds.sort((a, b) => {
+        const displayA = `${a.issuer.name} - ${a.schema.name}`;
+        const displayB = `${b.issuer.name} - ${b.schema.name}`;
+        if ( displayA < displayB ) {
+            return -1
+        }
+        if ( displayA > displayB ) {
+            return 1
+        }
+        return 0;
+      });
+
       console.log(this.availableCreds);
     });
   }
