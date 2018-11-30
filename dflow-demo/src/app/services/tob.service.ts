@@ -12,19 +12,22 @@ export class TobService {
 
   /**
    * Returns the path - described as step and dependencies - to a step.
+   * @param name The name of the shema being looked up.
+   * @param version The version of the schema being looked up.
+   * @param did The did of the issuer issuing the specified schema.
    */
-  getPathToStep () {
-    // TODO: make actual service call, based on input parameter rather than hard-coded data
-    const reqURL = '/assets/data/topology.json';
-    return this.http.get(reqURL);
+  getPathToStep (name: string, version: string, did: string) {
+    const reqURL = `get-credential-dependencies?schema_name=${name}&schema_version=${version}&origin_did=${did}`;
+    // const reqURL = '/assets/data/topology.json';
+    return this.http.post(reqURL, {});
   }
 
   /**
    * Queries ToB and returns a list of @Issuer entities that are currently registered.
    */
   getIssuers () {
-    // const reqURL = '/bc-tob/issuer';
-    const reqURL = '/assets/data/issuers.json';
+    const reqURL = '/bc-tob/issuer';
+    // const reqURL = '/assets/data/issuers.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
   }
@@ -33,8 +36,8 @@ export class TobService {
    * Queries ToB and returns the list of @Schema objects that are currently registered.
    */
   getLatestSchemas () {
-    // const reqURL = '/bc-tob/schema?inactive=false&latest=true&revoked=false';
-    const reqURL = '/assets/data/schemas.json';
+    const reqURL = '/bc-tob/schema?inactive=false&latest=true&revoked=false';
+    // const reqURL = '/assets/data/schemas.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
   }
@@ -44,8 +47,8 @@ export class TobService {
    * @param topicId the id of the topic being requested
    */
   getTopicById (topicId: number) {
-    // const reqURL = `/bc-tob/topic/${topicId}/formatted`;
-    const reqURL = '/assets/data/topic.json';
+    const reqURL = `/bc-tob/topic/${topicId}/formatted`;
+    // const reqURL = '/assets/data/topic.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
   }

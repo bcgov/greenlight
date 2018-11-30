@@ -51,7 +51,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         });
       }).then(() => {
         // get topology and set-up graphing library
-        return this.tobService.getPathToStep().toPromise();
+        return this.tobService.getPathToStep("biz_license.permitify", "1.0.4", "A9Rsuu7FNquw8Ne2Smu5Nr").toPromise();
       }).then((result: any) => {
         console.log('Path:', result);
         // add nodes

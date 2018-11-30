@@ -7,12 +7,16 @@
     Please select the issuer/credential you would like to obtain from the following list:
   </p>
 
-  <select class="form-control" [(ngModel)]="selectedCred">
-    <option value="undefined">Select a credential</option>
-    <option *ngFor="let cred of availableCreds" [ngValue]="cred">
-      {{ cred.issuer.name }} - {{ cred.schema.name }}
-    </option>
-  </select>
+  <div class="form-group">
+    <label class="control-label" for="credPicker">Credential:</label>
+    <select id="credPicker" class="form-control col-md-6" [(ngModel)]="selectedCred">
+      <option value="undefined">Select a credential</option>
+      <option *ngFor="let cred of availableCreds" [ngValue]="cred">
+        {{ cred.issuer.name }} - {{ cred.schema.name }}
+      </option>
+    </select>
+    <div class="invalid-feedback" *ngIf="error">Please pick an issuer/schema combination to proceed.</div>
+  </div>
 
-  <button class="btn btn-lg  btn-primary" type="button" (click)="doSomething()">Begin</button>
+  <button class="btn btn-primary" type="button" (click)="begin()">Begin</button>
 </main>

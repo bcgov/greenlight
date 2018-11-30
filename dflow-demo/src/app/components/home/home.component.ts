@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { TobService } from '../../services/tob.service';
 import { Schema } from '../../models/schema';
 import { Issuer } from 'src/app/models/issuer';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -16,8 +17,11 @@ export class HomeComponent implements OnInit {
 
   availableCreds: Array<any>;
   selectedCred: any;
+  error = false;
 
-  constructor( private tobService: TobService ) {
+  constructor(
+    private tobService: TobService,
+    private router: Router ) {
     this.availableCreds = new Array<any>();
    }
 
@@ -45,7 +49,16 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  doSomething() {
-    console.log(this.selectedCred.schema.name);
+  begin() {
+    if (!this.selectedCred) {
+      // don't proceed if a credential is not selected
+      this.error = true;
+    } else {
+      this.error = false;
+
+      const url = `/demo?name=${this.selectedCred.schema.name}&version=${this.selectedCred.schema.version}&did=${this.selectedCred.schema.origin_did}`;
+
+      this.router.navigateByUrl(url);
+    }
   }
 }
