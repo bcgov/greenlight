@@ -7,7 +7,6 @@ import { WorkflowService } from 'src/app/services/workflow.service';
 import { Step } from '../../models/step';
 import { NodeLabelType, WorkflowNode } from '../../models/workflow-node';
 import { TobService } from '../../services/tob.service';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recipe',
@@ -80,7 +79,19 @@ export class RecipeComponent implements OnInit, AfterViewInit {
           const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
           const deps = this.tobService.getDependenciesByID(node.id, this.links, this.credentials, this.issuers);
           const credData = this.availableCredForIssuer(issuer);
-          const step = new Step(this.topic, this.walletId, node.schema_name, deps, issuer, credData);
+          const step = new Step({
+            topicId: this.topic,
+            walletId: this.walletId,
+            stepName: node.schema_name,
+            dependencies: deps,
+            issuer: issuer,
+            credData: credData,
+            schema : {
+              name: this.targetName,
+              version: this.targetVersion,
+              did: this.targetDid
+            }
+          });
           const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
           this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
         });

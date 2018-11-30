@@ -11,27 +11,33 @@ export class Step {
   effectiveDate: string;
   credentialId: number;
   walletId: string;
+  // TODO: refactor requestedschema out of the step, if possible
+  requestedSchema: any;
 
   // computed
   actionText: string;
   actionURL: string;
 
-  constructor (
-    topicId: number,
-    walletId: string,
-    name: string,
-    dependencies: Array<StepDependency>,
-    issuer?: Issuer,
-    credData?: any
-    ) {
-      this.topicId = topicId;
-      this.walletId = walletId;
-      this.name = name;
-      this.dependencies = dependencies;
-      this.issuer = issuer;
-      if (credData) {
-        this.credentialId = credData.id;
-        this.effectiveDate = credData.effective_date;
+  constructor ( stepData: any ) {
+      this.topicId = stepData.topicId;
+      this.walletId = stepData.walletId;
+      this.name = stepData.stepName;
+      this.dependencies = stepData.dependencies;
+      this.issuer = stepData.issuer;
+      if (stepData.credData) {
+        this.credentialId = stepData.credData.id;
+        this.effectiveDate = stepData.credData.effective_date;
+      }
+
+      this.requestedSchema = {
+        name: '',
+        version: '',
+        did: ''
+      }
+      if (stepData.schema) {
+        this.requestedSchema.name = stepData.schema.name;
+        this.requestedSchema.version = stepData.schema.version;
+        this.requestedSchema.did = stepData.schema.did;
       }
     }
 }
