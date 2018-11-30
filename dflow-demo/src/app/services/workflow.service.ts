@@ -50,6 +50,10 @@ export class WorkflowService {
     this.topology.removeFromTopology(link);
   }
 
+  clearTopology () {
+    this.topology = new WorkflowTopology();
+  }
+
   renderGraph (svgCanvas: any) {
     // Wrap the svg root native element in a d3 object
     const svg = d3.select(svgCanvas.nativeElement || svgCanvas);
@@ -84,6 +88,9 @@ export class WorkflowService {
     svg.call(zoom.transform,
         d3.zoomIdentity.translate((canvasWidth.baseVal.value - graph.graph().width * initialScale) / 2, 20).scale(initialScale));
     svg.attr('height', graph.graph().height * initialScale + 40);
+
+    // clear topology after rendering to avoid having dirty data during next iteration
+    this.clearTopology();
   }
 
   private processTopology(graph: any) {
