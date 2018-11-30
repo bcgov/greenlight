@@ -17,9 +17,11 @@ export class TobService {
    * @param did The did of the issuer issuing the specified schema.
    */
   getPathToStep (name: string, version: string, did: string) {
-    const reqURL = `get-credential-dependencies?schema_name=${name}&schema_version=${version}&origin_did=${did}`;
+    // TODO: need a way of determining the baseURL for an agent
+    const baseURL = '/bcreg';
+    const reqURL = `${baseURL}/get-credential-dependencies?schema_name=${name}&schema_version=${version}&origin_did=${did}`;
     // const reqURL = '/assets/data/topology.json';
-    return this.http.post(reqURL, {});
+    return this.http.post(reqURL, null);
   }
 
   /**
