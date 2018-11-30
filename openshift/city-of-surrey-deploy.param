@@ -8,6 +8,7 @@ APP_GROUP=permitify
 IMAGE_NAMESPACE=devex-von-permitify-tools
 TAG_NAME=dev
 APPLICATION_URL=https://devex-von-permitify-dev.pathfinder.gov.bc.ca
+ENDPOINT_URL=https://devex-von-permitify-dev.pathfinder.gov.bc.ca
 CONFIG_ROOT=../config/city-surrey-agent
 HOST_PORT=8080
 ENVIRONMENT=default
@@ -25,6 +26,7 @@ TOB_APP_URL=https://devex-von-dev.pathfinder.gov.bc.ca
 INDY_WALLET_TYPE=postgres
 POSTGRESQL_WALLET_HOST=wallet-db
 POSTGRESQL_WALLET_PORT=5432
+POSTGRESQL_WALLET_NAME=city_of_surrey_issuer
 WALLET_ENCRYPTION_KEY=[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}
 INDY_WALLET_SEED=[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}
 INDY_WALLET_DID=[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}

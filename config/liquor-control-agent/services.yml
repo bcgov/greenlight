@@ -33,8 +33,8 @@ issuers:
         schema: liquor_license.permitify
         issuer_url: $APPLICATION_URL_INCORP
         depends_on:
-        - pst-number
-        - operating-permit
+          - pst-number
+          - operating-permit
         topic:
           source_id:
             input: corp_num
@@ -54,39 +54,39 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.4'
+    version: '1.0.5'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
           name: registration.permitify
-          version: '1.0.4'
+          version: '1.0.5'
         attributes:
           - corp_num
           - legal_name
   pst-number:
-    version: '1.0.4'
+    version: '1.0.5'
     schemas:
       - key:
           did: CYnWiuEtJJuhpWvVz3kY9D
           name: pst_number.permitify
-          version: '1.0.4'
+          version: '1.0.5'
         attributes:
           - corp_num
   clearance-letter:
-    version: '1.0.4'
+    version: '1.0.5'
     schemas:
       - key:
           did: MAcounf9HxhgnqqhzReTLC
           name: worksafe.permitify
-          version: '1.0.4'
+          version: '1.0.5'
         attributes:
           - corp_num
   operating-permit:
-    version: '1.0.4'
+    version: '1.0.5'
     schemas:
       - key:
           did: L6SJy7gNRCLUp8dV94hfex
           name: operating_permit.permitify
-          version: '1.0.4'
+          version: '1.0.5'
         attributes:
           - corp_num
