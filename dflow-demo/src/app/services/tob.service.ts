@@ -28,7 +28,7 @@ export class TobService {
    * Queries ToB and returns a list of @Issuer entities that are currently registered.
    */
   getIssuers () {
-    const reqURL = '/bc-tob/issuer';
+    const reqURL = '/bc-tob/issuer?inactive=false&latest=true&revoked=false&page_size=100';
     // const reqURL = '/assets/data/issuers.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
@@ -38,7 +38,7 @@ export class TobService {
    * Queries ToB and returns the list of @Schema objects that are currently registered.
    */
   getLatestSchemas () {
-    const reqURL = '/bc-tob/schema?inactive=false&latest=true&revoked=false';
+    const reqURL = '/bc-tob/schema?inactive=false&latest=true&revoked=false&page_size=100';
     // const reqURL = '/assets/data/schemas.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
