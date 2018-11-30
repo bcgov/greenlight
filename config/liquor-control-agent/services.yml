@@ -33,8 +33,8 @@ issuers:
         schema: liquor_license.permitify
         issuer_url: $APPLICATION_URL_INCORP
         depends_on:
-        - pst-number
-        - operating-permit
+          - pst-number
+          - operating-permit
         topic:
           source_id:
             input: corp_num

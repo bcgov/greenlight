@@ -33,7 +33,7 @@ issuers:
         schema: worksafe.permitify
         issuer_url: $APPLICATION_URL_INCORP
         depends_on:
-        - registration
+          - registration
         topic:
           source_id:
             input: corp_num
