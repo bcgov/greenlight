@@ -12,11 +12,16 @@ export class TobService {
 
   /**
    * Returns the path - described as step and dependencies - to a step.
+   * @param name The name of the shema being looked up.
+   * @param version The version of the schema being looked up.
+   * @param did The did of the issuer issuing the specified schema.
    */
-  getPathToStep () {
-    // TODO: make actual service call, based on input parameter rather than hard-coded data
-    const reqURL = '/assets/data/topology.json';
-    return this.http.get(reqURL);
+  getPathToStep (name: string, version: string, did: string) {
+    // TODO: need a way of determining the baseURL for an agent
+    const baseURL = '/bcreg';
+    const reqURL = `${baseURL}/get-credential-dependencies?schema_name=${name}&schema_version=${version}&origin_did=${did}`;
+    // const reqURL = '/assets/data/topology.json';
+    return this.http.post(reqURL, null);
   }
 
   /**
@@ -32,8 +37,9 @@ export class TobService {
   /**
    * Queries ToB and returns the list of @Schema objects that are currently registered.
    */
-  getSchemas () {
-    const reqURL = '/bc-tob/schema';
+  getLatestSchemas () {
+    const reqURL = '/bc-tob/schema?inactive=false&latest=true&revoked=false';
+    // const reqURL = '/assets/data/schemas.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
   }
