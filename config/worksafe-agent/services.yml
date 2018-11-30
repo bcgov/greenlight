@@ -53,12 +53,12 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.4'
+    version: '1.0.5'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
           name: registration.permitify
-          version: '1.0.4'
+          version: '1.0.5'
         attributes:
           - corp_num
           # - address_line_1

@@ -198,11 +198,11 @@ issuers:
 
 # proof_requests:
 #   registration:
-#     version: '1.0.4'
+#     version: '1.0.5'
 #     schemas:
 #       - key:
 #           name: registration.permitify
-#           version: '1.0.4'
+#           version: '1.0.5'
 #         attributes:
 #           - corp_num
 #           - address_line_1
