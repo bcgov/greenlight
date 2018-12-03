@@ -38,8 +38,8 @@ class Issuer:
         genesis_config = genesis.config()
         thread_id = threading.get_ident()
         self.pool = NodePool(
-            # 'permitify-issuer-' + str(thread_id),
-            'permitify-issuer',
+            # 'dflow-issuer-' + str(thread_id),
+            'dflow-issuer',
             genesis_config['genesis_txn_path'])
         wallet_name = config['name'] + '_Issuer_Wallet'
 
@@ -106,7 +106,7 @@ class Verifier:
         logger.debug("Verifier __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
-            'permitify-verifier',
+            'dflow-verifier',
             genesis_config['genesis_txn_path'])
         wallet_name = config['name'] + '_Verifier_Wallet'
 
@@ -166,7 +166,7 @@ class Holder:
         logger.debug("Holder __init__>>>")
         genesis_config = genesis.config()
         self.pool = NodePool(
-            'permitify-holder',
+            'dflow-holder',
             genesis_config['genesis_txn_path'])
         wallet_name = config['name'] + '_Holder_Wallet'
 

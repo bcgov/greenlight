@@ -25,7 +25,7 @@ import logging
 APP = None
 
 try:
-    from permitify.common import ENV, init_app, pre_init, shutdown
+    from dflow.common import ENV, init_app, pre_init, shutdown
     pre_init()
     APP = init_app()
 
