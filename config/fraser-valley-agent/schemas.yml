@@ -1,5 +1,5 @@
-- name: operating_permit.permitify
-  version: '1.0.5'
+- name: operating_permit.dflow
+  version: '1.0.0'
   attributes:
     - corp_num
     - dba_corp_num
