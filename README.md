@@ -1,10 +1,10 @@
-# Permitify
+# dFlow
 
 This project demonstrates a basic application for deploying the [VON-X](https://github.com/PSPC-SPAC-buyandsell/von-x) library, in order to enable issuer registration, claims verification, and credential submission to [TheOrgBook](https://github.com/bcgov/TheOrgBook). It includes Docker tooling for deployment of the application behind a Caddy reverse proxy.
 
-## The Permitify Business Scenario
+## The dFlow Business Scenario
 
-The business problem addressed in this demo is a business trying to get a Business Licence in their local municipality so that they can open a Pub. Getting such a licence is a complicated question in most areas, requiring contacting multiple jurisdictions to acquire multiple credenitals - licenses, permits, registrations, etc., each of which may require the presentation of previously acquired credentials from other sources. Permitify simplifies the problem by:
+The business problem addressed in this demo is a business trying to get a Business Licence in their local municipality so that they can open a Pub. Getting such a licence is a complicated question in most areas, requiring contacting multiple jurisdictions to acquire multiple credenitals - licenses, permits, registrations, etc., each of which may require the presentation of previously acquired credentials from other sources. dFlow simplifies the problem by:
 
 - Asking the user the business goal they are trying to achieve. In this case - a license for an alchohol serving restaurant.
   - This is not yet part of the demo, but coming Real Soon Now.
@@ -34,11 +34,11 @@ To reset the demo, including removing the Indy wallets of the demo Issuers, run:
 ./manage rm
 ```
 
-And then run the steps above to build (if necessary) and start Permitify.
+And then run the steps above to build (if necessary) and start dFlow.
 
 ## Running a Shared Instance
 
-Permitify can be run on a server for multiple users. The `docker` folder provides guidance of what needs to be set up. Likewise, the `openshift` folder contains an example of deploying permitify to a `Red Hat OpenShift` instance.
+dFlow can be run on a server for multiple users. The `docker` folder provides guidance of what needs to be set up. Likewise, the `openshift` folder contains an example of deploying permitify to a `Red Hat OpenShift` instance.
 
 ## Services
 
@@ -56,7 +56,7 @@ A "complete" provisional VON Network consists of the following components;
 
 - A Provisional Ledger Node Pool; [von-network](https://github.com/bcgov/von-network)
 - An instance of TheOrgBook; [TheOrgBook](https://github.com/bcgov/TheOrgBook)
-- And a set of Issuer Services; [Permitify](https://github.com/bcgov/permitify)
+- And a set of Issuer Services; [dFlow](https://github.com/bcgov/permitify)
 
 Refer to the docker compose documentation in each of the projects for specific details.
 
@@ -64,11 +64,11 @@ Refer to the docker compose documentation in each of the projects for specific d
 
 A [Quick Start Guide](https://github.com/bcgov/TheOrgBook/tree/master/docker#quick-start-guide) can be found in the [bcgov/TheOrgBook](https://github.com/bcgov/TheOrgBook) repository.
 
-## Setting up a new issuing service in Permitify
+## Setting up a new issuing service in dFlow
 
 > **THIS INFORMATION NEEDS TO BE UPDATED TO REFLECT THE LATEST RELEASE**
 
-The steps below describe how to register a service (i.e. Ontario Corporate Registry, “OntarioReg”) that issues **foundational** claims (i.e. incorporation) for a business and loads test data for the new service into TheOrgBook using load scripts. The new service is added to the **local** instance of Permitify.
+The steps below describe how to register a service (i.e. Ontario Corporate Registry, “OntarioReg”) that issues **foundational** claims (i.e. incorporation) for a business and loads test data for the new service into TheOrgBook using load scripts. The new service is added to the **local** instance of dFlow.
 
 Prerequisites:
  -  von-network and TheOrgBook local instances are running at http://localhost:9000 and http://localhost:8080 respectively
@@ -138,7 +138,7 @@ schema.json
 ]
 ```
 
-Modify config.toml to make the input forms fields match the fields in the schema.json if you plan to use the Permitify UI to manually issue a claim.
+Modify config.toml to make the input forms fields match the fields in the schema.json if you plan to use the dFlow UI to manually issue a claim.
 
 4. Register the new service in docker_compose.yml. 
 **Note: Make sure the port assigned to the new service does not conflict with the ports assigned to other services**
@@ -218,7 +218,7 @@ URLS = {
 
 6. Test that the new service is available at [http://localhost:5006](http://localhost:5006)
 
-7. Run the load script to load the data into TheOrgBook from OntClaims data directory using the **local** instance of the new service in Permitify
+7. Run the load script to load the data into TheOrgBook from OntClaims data directory using the **local** instance of the new service in dFlow
 
 ```
 cd TheOrgBook/APISpec/TestData
