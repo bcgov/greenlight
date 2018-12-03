@@ -30,31 +30,37 @@
     proxy /bcreg {%BCREG_AGENT_HOST%}:{%BCREG_AGENT_PORT%} {
         except /assets
         transparent
+        fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
     }
 
     proxy /finance {%MINISTRY_FINANCE_AGENT_HOST%}:{%MINISTRY_FINANCE_AGENT_PORT%} {
         except /assets
         transparent
+        fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
     }
 
     proxy /surrey {%CITY_SURREY_AGENT_HOST%}:{%CITY_SURREY_AGENT_PORT%} {
         except /assets
         transparent
+        fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
     }
 
     proxy /fraser-valley {%FRASER_VALLEY_AGENT_HOST%}:{%FRASER_VALLEY_AGENT_PORT%} {
         except /assets
         transparent
+        fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
     }
 
     proxy /liquor {%LIQUOR_CONTROL_AGENT_HOST%}:{%LIQUOR_CONTROL_AGENT_PORT%} {
         except /assets
         transparent
+        fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
     }
 
     proxy /worksafe {%WORKSAFE_AGENT_HOST%}:{%WORKSAFE_AGENT_PORT%} {
         except /assets
         transparent
+        fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
     }
 }
 

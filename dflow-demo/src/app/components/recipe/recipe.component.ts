@@ -17,6 +17,9 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvasRoot') svgRoot;
 
+  progress: number;
+  progressMsg: string;
+
   topic: number;
   targetName: string;
   targetVersion: string;
@@ -35,6 +38,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     private workflowService: WorkflowService,
     private nodeResolverService: WorkflowNodeResolverService,
     private tobService: TobService) {
+      this.setProgress(15, 'Loading steps...');
       this.issuers = new Array<Issuer>();
     }
 
@@ -47,9 +51,14 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
       this.topic = params['topic'];
 
+      this.setProgress(50, 'Loading steps...'); // this value is arbitrary, it just provides visual feedback for the user
+      console.log(this.progress);
+
       this.graphLayout = this.tobService.getIssuers().toPromise()
       .then((issuers: any) => {
         console.log('Issuers:', issuers);
+        this.setProgress(80, 'Retrieving issuer data...'); // this value is arbitrary, it just provides visual feedback for the user
+
         issuers.results.forEach(issuer => {
           this.issuers.push(new Issuer(issuer));
         });
@@ -58,18 +67,26 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         return this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid).toPromise();
       }).then((topology: any) => {
         console.log('Path:', topology);
+        this.setProgress(95, 'Generating graph...'); // this value is arbitrary, it just provides visual feedback for the user
+
         // store topology
         this.nodes = topology.result.nodes;
         this.links = topology.result.links;
       }).then(() => {
-        // grab the credentials if we already have a topic, otherwise return an empty array
-        if (this.topic) {
-          return this.tobService.getCredentialsByTopic(this.topic).toPromise();
-        } else {
-          return new Array<any>();
-        }
+        return new Promise<any>((resolve) => {
+          setTimeout(() => {
+            // grab the credentials if we already have a topic, otherwise return an empty array
+            if (this.topic) {
+              resolve(this.tobService.getCredentialsByTopic(this.topic).toPromise());
+            } else {
+              resolve(new Array<any>());
+            }
+          }, 1000);
+        });
       })
       .then((creds: any) => {
+        this.setProgress(99, 'Processing credentials...'); // this value is arbitrary, it just provides visual feedback for the user
+
         console.log('Credentials:', creds);
         this.credentials = creds;
         this.walletId = this.getWalletId();
@@ -107,6 +124,9 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     // render graph
     this.graphLayout.then(() => {
+      // hide progress-bar and show graph
+      this.setProgress(100, 'dFlow loaded!'); // this value is arbitrary, it just provides visual feedback for the user
+
       this.workflowService.renderGraph(this.svgRoot);
     });
   }
@@ -134,6 +154,11 @@ export class RecipeComponent implements OnInit, AfterViewInit {
       walletId = this.credentials[0].wallet_id;
     }
     return walletId;
+  }
+
+  private setProgress (progress: number, progressMsg: string) {
+    this.progress = progress;
+    this.progressMsg = progressMsg;
   }
 
 }

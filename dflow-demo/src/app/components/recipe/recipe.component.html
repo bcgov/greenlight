@@ -1,4 +1,18 @@
 <div class="container">
-  <h1 class="roadmap-title">dFlow Demo - Starting a Restaurant Recipe</h1>
+
+  <ng-container *ngIf="progress < 100">
+    <div>{{progressMsg}}</div>
+    <div class="progress mb-2">
+      <div class="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar"
+        [attr.aria-valuemin]="0"
+        [ngStyle]="{'width': progress + '%'}"
+        [attr.aria-valuenow]="progress"
+        [attr.aria-valuemax]="100">
+      </div>
+    </div>
+  </ng-container>
+
   <svg #canvasRoot class="container"></svg>
+
 </div>
