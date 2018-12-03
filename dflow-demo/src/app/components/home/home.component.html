@@ -3,20 +3,29 @@
       dFlow Demo
   </h1>
 
-  <p>
-    Please select the credential you would like to obtain:
-  </p>
+  <ng-container>
+    <p>
+      Please select the credential you would like to obtain:
+    </p>
 
-  <div class="form-group">
-    <label class="control-label" for="credPicker">Credential:</label>
-    <select id="credPicker" class="form-control col-md-6" [(ngModel)]="selectedCred">
-      <option value="undefined">Select a credential</option>
-      <option *ngFor="let cred of availableCreds" [ngValue]="cred">
-        {{ cred.issuer.name }} - {{ cred.schema.name }}
-      </option>
-    </select>
-    <div class="invalid-feedback" *ngIf="error">Please pick an issuer/schema combination to proceed.</div>
-  </div>
+    <div class="form-group">
+      <label class="control-label" for="credPicker">Credential:</label>
+      <select id="credPicker" class="form-control col-md-6" [(ngModel)]="selectedCred">
+        <option value="undefined">Select a credential</option>
+        <option *ngFor="let cred of availableCreds" [ngValue]="cred">
+          {{ cred.issuer.name }} - {{ cred.schema.name }}
+        </option>
+      </select>
+      <div class="invalid-feedback" *ngIf="error">Please pick an issuer/schema combination to proceed.</div>
+    </div>
+  </ng-container>
+
+  <ng-container>
+    <div class="form-group">
+      <label class="col-form-label control-label" for="inputDefault">ToB ID (optional):</label>
+      <input type="text" class="form-control col-md-6" id="inputDefault" [(ngModel)]="selectedTopic">
+    </div>
+  </ng-container>
 
   <button class="btn btn-primary" type="button" (click)="begin()">Begin</button>
 </main>

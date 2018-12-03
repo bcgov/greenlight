@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
 
   availableCreds: Array<any>;
   selectedCred: any;
+  selectedTopic: string;
   error = false;
 
   constructor(
@@ -69,7 +70,13 @@ export class HomeComponent implements OnInit {
     } else {
       this.error = false;
 
-      const url = `/demo?name=${this.selectedCred.schema.name}&version=${this.selectedCred.schema.version}&did=${this.selectedCred.schema.origin_did}`;
+      // build queryParam for topic, if specified
+      let topicParam = '';
+      if (this.selectedTopic) {
+        topicParam = `topic=${this.selectedTopic}&`;
+      }
+
+      const url = `/demo?${topicParam}name=${this.selectedCred.schema.name}&version=${this.selectedCred.schema.version}&did=${this.selectedCred.schema.origin_did}`;
 
       this.router.navigateByUrl(url);
     }
