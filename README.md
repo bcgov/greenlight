@@ -26,7 +26,7 @@ Once the other components are running, you can build and run this application by
 ./manage start
 ```
 
-The permitify demo can be started at: `http://localhost:5000/demo`.  The demo starts with registering a new company with BC Registries. Once completed, the list of additional credentials needed appears. The Happy Path for the demo is to walk through acquiring the credentials in order, noting the pre-completion of information (based on proof requests) from previous steps.
+The dflow demo can be started at: `http://localhost:5000/demo`.  The demo starts with registering a new company with BC Registries. Once completed, the list of additional credentials needed appears. The Happy Path for the demo is to walk through acquiring the credentials in order, noting the pre-completion of information (based on proof requests) from previous steps.
 
 To reset the demo, including removing the Indy wallets of the demo Issuers, run:
 
@@ -38,7 +38,7 @@ And then run the steps above to build (if necessary) and start dFlow.
 
 ## Running a Shared Instance
 
-dFlow can be run on a server for multiple users. The `docker` folder provides guidance of what needs to be set up. Likewise, the `openshift` folder contains an example of deploying permitify to a `Red Hat OpenShift` instance.
+dFlow can be run on a server for multiple users. The `docker` folder provides guidance of what needs to be set up. Likewise, the `openshift` folder contains an example of deploying dflow to a `Red Hat OpenShift` instance.
 
 ## Services
 
@@ -56,7 +56,7 @@ A "complete" provisional VON Network consists of the following components;
 
 - A Provisional Ledger Node Pool; [von-network](https://github.com/bcgov/von-network)
 - An instance of TheOrgBook; [TheOrgBook](https://github.com/bcgov/TheOrgBook)
-- And a set of Issuer Services; [dFlow](https://github.com/bcgov/permitify)
+- And a set of Issuer Services; [dFlow](https://github.com/bcgov/dflow)
 
 Refer to the docker compose documentation in each of the projects for specific details.
 
@@ -80,7 +80,7 @@ Data Convention:
  - Include “incorporation” in the schema name for the claims issued by the new service in order for the claims to be processed as foundational claims (I.e. “incorporation.onbis”, “incorporation.bc_regisgries”)
   - the province's abbreviation (i.e. "Ont") should be included in the data directory name (i.e. OntClaims) and the name of the test data json file (i.e.OntClaims_XXXX.json). **The scripts are case-sensitive.**
 
-1. Create a subdirectory with the name of the new service under ‘permitify/site_templates’
+1. Create a subdirectory with the name of the new service under ‘dflow/site_templates’
 
   ```
   mkdir onbis
@@ -145,7 +145,7 @@ Modify config.toml to make the input forms fields match the fields in the schema
 **
 ```
 onbis:
-    image: permitify
+    image: agent
     environment:
       PYTHON_ENV: development
       THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
@@ -173,7 +173,7 @@ volumes:
   liquor_control_and_licensing_branch_wallet:
   onbis_wallet:
 ```
-4. Add a Docker container for the new service to permitify/docker/manage.sh script:
+4. Add a Docker container for the new service to dflow/docker/manage.sh script:
 ```
 ALL_CONTAINERS="\
     bc_registries\

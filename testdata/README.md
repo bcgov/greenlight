@@ -33,4 +33,4 @@ Once the data is generated, the `loadClaims.py` script can be used to import it 
 ```
 AGENT_URL=<AGENT_URL> python loadClaims.py <DATA_FOLDER>
 ```
-Where *AGENT_URL* is the endpoint for the agent that will issue the credential (e.g.: https://devex-von-permitify-dev.pathfinder.gov.bc.ca/bcreg for the BC Registries agent), and <DATA_FOLDER> is the folder containing the test data to be imported (e.g.: ***permitify-data***).
+Where *AGENT_URL* is the endpoint for the agent that will issue the credential (e.g.: https://devex-von-dflow-dev.pathfinder.gov.bc.ca/bcreg for the BC Registries agent), and <DATA_FOLDER> is the folder containing the test data to be imported (e.g.: ***dflow-data***).

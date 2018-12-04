@@ -4,7 +4,7 @@
 # Template File: templates/agents/fraser-valley-health-authority-deploy.json
 #=========================================================
 # NAME=fraser-valley-health-authority
-# APP_GROUP=permitify
+# APP_GROUP=dflow-demo
 # IMAGE_NAMESPACE=devex-von-permitify-tools
 TAG_NAME=prod
 APPLICATION_URL=https://theorgbook.pathfinder.gov.bc.ca

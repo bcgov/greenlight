@@ -4,7 +4,7 @@
 # Template File: templates/agents/worksafe-bc-deploy.json
 #=========================================================
 # NAME=worksafe-bc
-# APP_GROUP=permitify
+# APP_GROUP=dflow-demo
 # IMAGE_NAMESPACE=devex-von-permitify-tools
 TAG_NAME=prod
 APPLICATION_URL=https://theorgbook.pathfinder.gov.bc.ca
