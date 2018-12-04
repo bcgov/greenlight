@@ -1,11 +1,11 @@
 #=========================================================
 # OpenShift Jenkins pipeline template parameters for:
-# Jenkinsfile: ./jenkins/permitify/Jenkinsfile
+# Jenkinsfile: ./jenkins/agent/Jenkinsfile
 # Template File: https://raw.githubusercontent.com/BCDevOps/openshift-tools/master/provisioning/pipeline/resources/pipeline-build.json
 #=========================================================
-NAME=permitify
+NAME=agent
 # GITHUB_WEBHOOK_SECRET=[a-zA-Z0-9]{40}
-SOURCE_REPOSITORY_URL=https://github.com/bcgov/permitify.git
+SOURCE_REPOSITORY_URL=https://github.com/bcgov/dflow.git
 SOURCE_REPOSITORY_REF=master
-CONTEXT_DIR=jenkins/permitify
+CONTEXT_DIR=jenkins/agent
 JENKINSFILE_PATH=Jenkinsfile

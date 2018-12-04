@@ -4,10 +4,10 @@
 # Template File: templates/dflow/dflow-deploy.json
 #=========================================================
 # NAME=dflow
-# APP_GROUP=permitify
+# APP_GROUP=dflow-demo
 # IMAGE_NAMESPACE=devex-von-permitify-tools
 TAG_NAME=test
-APPLICATION_DOMAIN=devex-von-permitify-test.pathfinder.gov.bc.ca
+APPLICATION_DOMAIN=devex-von-dflow-test.pathfinder.gov.bc.ca
 TOB_API_URL=https://devex-von-test.pathfinder.gov.bc.ca/api
 TOB_APP_URL=https://devex-von-test.pathfinder.gov.bc.ca
 # WEB_HOST_NAME=0.0.0.0

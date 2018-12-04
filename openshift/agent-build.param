@@ -1,10 +1,10 @@
 #=========================================================
 # OpenShift template parameters for:
 # Component: .
-# Template File: templates/agents/permitify-build.json
+# Template File: templates/agents/agent-build.json
 #=========================================================
-NAME=permitify
-GIT_REPO_URL=https://github.com/bcgov/permitify.git
+NAME=agent
+GIT_REPO_URL=https://github.com/bcgov/dflow.git
 GIT_REF=master
 SOURCE_CONTEXT_DIR=
 OUTPUT_IMAGE_TAG=latest

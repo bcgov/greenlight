@@ -30,7 +30,7 @@ issuers:
 
     credential_types:
       - description: Business License
-        schema: biz_license.permitify
+        schema: biz_license.dflow
         issuer_url: $APPLICATION_URL_INCORP
         depends_on:
           - liquor-license
@@ -54,48 +54,48 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.5'
+    version: '1.0.0'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
-          name: registration.permitify
-          version: '1.0.5'
+          name: registration.dflow
+          version: '1.0.0'
         attributes:
           - corp_num
           - legal_name
   pst-number:
-    version: '1.0.5'
+    version: '1.0.0'
     schemas:
       - key:
           did: CYnWiuEtJJuhpWvVz3kY9D
-          name: pst_number.permitify
-          version: '1.0.5'
+          name: pst_number.dflow
+          version: '1.0.0'
         attributes:
           - corp_num
   clearance-letter:
-    version: '1.0.5'
+    version: '1.0.0'
     schemas:
       - key:
           did: MAcounf9HxhgnqqhzReTLC
-          name: worksafe.permitify
-          version: '1.0.5'
+          name: worksafe.dflow
+          version: '1.0.0'
         attributes:
           - corp_num
   operating-permit:
-    version: '1.0.5'
+    version: '1.0.0'
     schemas:
       - key:
           did: L6SJy7gNRCLUp8dV94hfex
-          name: operating_permit.permitify
-          version: '1.0.5'
+          name: operating_permit.dflow
+          version: '1.0.0'
         attributes:
           - corp_num
   liquor-license:
-    version: '1.0.5'
+    version: '1.0.0'
     schemas:
       - key:
           did: ScrMddP9C426QPrp1KViZB
-          name: liquor_license.permitify
-          version: '1.0.5'
+          name: liquor_license.dflow
+          version: '1.0.0'
         attributes:
           - corp_num

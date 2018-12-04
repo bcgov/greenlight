@@ -8,14 +8,14 @@ SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 usage () {
   cat <<-EOF
 
-  Manage the permitify issuer services within a given OpenShift environment.
+  Manage the dflow issuer services within a given OpenShift environment.
 
   Usage:
     $0 [options] [commands]
 
   Example:
     $0 -e test scaleDown
-    - This will scale down all of the issuer services in the permitify TEST environment.
+    - This will scale down all of the issuer services in the dflow TEST environment.
 
   Options:
   ========

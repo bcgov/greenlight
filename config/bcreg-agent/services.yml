@@ -30,7 +30,7 @@ issuers:
 
     credential_types:
       - description: Registration
-        schema: registration.permitify
+        schema: registration.dflow
         issuer_url: $APPLICATION_URL_INCORP
         topic:
           source_id:
@@ -120,7 +120,7 @@ issuers:
 
 
       - description: Relationship
-        schema: relationship.permitify
+        schema: relationship.dflow
         issuer_url: $APPLICATION_URL_DBA
         credential:
           effective_date:
@@ -198,11 +198,11 @@ issuers:
 
 # proof_requests:
 #   registration:
-#     version: '1.0.5'
+#     version: '1.0.0'
 #     schemas:
 #       - key:
-#           name: registration.permitify
-#           version: '1.0.5'
+#           name: registration.dflow
+#           version: '1.0.0'
 #         attributes:
 #           - corp_num
 #           - address_line_1
