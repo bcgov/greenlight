@@ -2,7 +2,7 @@ forms:
   finance-pst:
     path: /liquor/license
     type: issue-credential
-    schema_name: liquor_license.permitify
+    schema_name: liquor_license.dflow
     page_title: Liquor Control and Licensing Branch
     title: Liquor Control and Licensing Branch
     template: bcgov.index.html

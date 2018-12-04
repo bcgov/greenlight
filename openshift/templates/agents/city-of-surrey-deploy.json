@@ -91,7 +91,7 @@
               "from": {
                 "kind": "ImageStreamTag",
                 "namespace": "${IMAGE_NAMESPACE}",
-                "name": "permitify:${TAG_NAME}"
+                "name": "agent:${TAG_NAME}"
               }
             }
           }
@@ -336,7 +336,7 @@
       "displayName": "App Group",
       "description": "The name assigned to all of the deployments in this project.",
       "required": true,
-      "value": "permitify"
+      "value": "dflow-demo"
     },
     {
       "name": "IMAGE_NAMESPACE",
@@ -357,14 +357,14 @@
       "displayName": "Application Url",
       "description": "The application URL.",
       "required": true,
-      "value": "https://proxy-devex-von-permitify-dev.pathfinder.gov.bc.ca"
+      "value": "https://devex-von-dflow-dev.pathfinder.gov.bc.ca"
     },
     {
       "name": "ENDPOINT_URL",
       "displayName": "Endpoint URL",
       "description": "The public domain endpoint for the agent, which is registered on the ledger.",
       "required": true,
-      "value": "https://devex-von-permitify-dev.pathfinder.gov.bc.ca"
+      "value": "https://devex-von-dflow-dev.pathfinder.gov.bc.ca"
     },
     {
       "name": "CONFIG_ROOT",

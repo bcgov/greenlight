@@ -40,7 +40,7 @@ def on_starting(server):
     server.log.debug('Importing von-x services: pid %s', os.getpid())
     # import the shared manager instance before any processes are forked
     # this is necessary for the pipes and locks to be inherited
-    from permitify.common import MANAGER
+    from dflow.common import MANAGER
     server.service_mgr = MANAGER
 
 def when_ready(server):

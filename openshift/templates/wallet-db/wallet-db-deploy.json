@@ -256,7 +256,7 @@
           "displayName": "App Group",
           "description": "The name assigned to all of the deployments in this project.",
           "required": true,
-          "value": "permitify"
+          "value": "dflow-demo"
         },
         {
             "name": "IMAGE_NAMESPACE",

@@ -1,5 +1,5 @@
-- name: registration.permitify
-  version: '1.0.5'
+- name: registration.dflow
+  version: '1.0.0'
   attributes:
     - corp_num
     - registration_date
@@ -16,8 +16,8 @@
     - postal_code
     - province
 
-- name: relationship.permitify
-  version: '1.0.5'
+- name: relationship.dflow
+  version: '1.0.0'
   attributes:
     - corp_num
     - dba_corp_num

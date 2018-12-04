@@ -5,7 +5,7 @@
 #=========================================================
 NAME=dflow
 # GITHUB_WEBHOOK_SECRET=[a-zA-Z0-9]{40}
-SOURCE_REPOSITORY_URL=https://github.com/bcgov/permitify.git
+SOURCE_REPOSITORY_URL=https://github.com/bcgov/dflow.git
 SOURCE_REPOSITORY_REF=master
 CONTEXT_DIR=jenkins/dflow
 JENKINSFILE_PATH=Jenkinsfile

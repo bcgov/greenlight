@@ -74,7 +74,7 @@
       "displayName": "Git Repo URL",
       "description": "The URL to your GIT repo.",
       "required": true,
-      "value": "https://github.com/bcgov/permitify.git"
+      "value": "https://github.com/bcgov/dflow.git"
     },
     {
       "name": "GIT_REF",
