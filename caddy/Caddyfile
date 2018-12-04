@@ -27,10 +27,18 @@
         without /bc-tob
     }
 
+    proxy /bcreg/health {%BCREG_AGENT_HOST%}:{%BCREG_AGENT_PORT%} {
+        without /bcreg
+    }
+
     proxy /bcreg {%BCREG_AGENT_HOST%}:{%BCREG_AGENT_PORT%} {
         except /assets
         transparent
         fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
+    }
+
+    proxy /finance/health {%MINISTRY_FINANCE_AGENT_HOST%}:{%MINISTRY_FINANCE_AGENT_PORT%} {
+        without /finance
     }
 
     proxy /finance {%MINISTRY_FINANCE_AGENT_HOST%}:{%MINISTRY_FINANCE_AGENT_PORT%} {
@@ -39,10 +47,18 @@
         fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
     }
 
+    proxy /surrey/health {%CITY_SURREY_AGENT_HOST%}:{%CITY_SURREY_AGENT_PORT%} {
+        without /surrey
+    }
+
     proxy /surrey {%CITY_SURREY_AGENT_HOST%}:{%CITY_SURREY_AGENT_PORT%} {
         except /assets
         transparent
         fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
+    }
+
+    proxy /fraser-valley/health {%FRASER_VALLEY_AGENT_HOST%}:{%FRASER_VALLEY_AGENT_PORT%} {
+        without /fraser-valley
     }
 
     proxy /fraser-valley {%FRASER_VALLEY_AGENT_HOST%}:{%FRASER_VALLEY_AGENT_PORT%} {
@@ -51,10 +67,18 @@
         fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
     }
 
+    proxy /liquor/health {%LIQUOR_CONTROL_AGENT_HOST%}:{%LIQUOR_CONTROL_AGENT_PORT%} {
+        without /liquor
+    }
+
     proxy /liquor {%LIQUOR_CONTROL_AGENT_HOST%}:{%LIQUOR_CONTROL_AGENT_PORT%} {
         except /assets
         transparent
         fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
+    }
+
+    proxy /worksafe/health {%WORKSAFE_AGENT_HOST%}:{%WORKSAFE_AGENT_PORT%} {
+        without /worksafe
     }
 
     proxy /worksafe {%WORKSAFE_AGENT_HOST%}:{%WORKSAFE_AGENT_PORT%} {
