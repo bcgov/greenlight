@@ -357,14 +357,14 @@
       "displayName": "Application Url",
       "description": "The application URL.",
       "required": true,
-      "value": "https://devex-von-dflow-dev.pathfinder.gov.bc.ca"
+      "value": "https://dev-dflow.orgbook.gov.bc.ca"
     },
     {
       "name": "ENDPOINT_URL",
       "displayName": "Endpoint URL",
       "description": "The public domain endpoint for the agent, which is registered on the ledger.",
       "required": true,
-      "value": "https://devex-von-dflow-dev.pathfinder.gov.bc.ca"
+      "value": "https://dev-dflow.orgbook.gov.bc.ca"
     },
     {
       "name": "CONFIG_ROOT",
@@ -462,7 +462,7 @@
       "displayName": "TOB Application URL",
       "description": "The URL of the TOB application.",
       "required": true,
-      "value": "https://devex-von-dev.pathfinder.gov.bc.ca"
+      "value": "https://dev-demo.orgbook.gov.bc.ca"
     },
     {
       "name": "INDY_WALLET_TYPE",

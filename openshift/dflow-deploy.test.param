@@ -7,9 +7,9 @@
 # APP_GROUP=dflow-demo
 # IMAGE_NAMESPACE=devex-von-permitify-tools
 TAG_NAME=test
-APPLICATION_DOMAIN=devex-von-dflow-test.pathfinder.gov.bc.ca
-TOB_API_URL=https://devex-von-test.pathfinder.gov.bc.ca/api
-TOB_APP_URL=https://devex-von-test.pathfinder.gov.bc.ca
+APPLICATION_DOMAIN=dflow.orgbook.gov.bc.ca
+TOB_API_URL=https://demo.orgbook.gov.bc.ca/api
+TOB_APP_URL=https://demo.orgbook.gov.bc.ca
 # WEB_HOST_NAME=0.0.0.0
 # WEB_HOST_PORT=8080
 # WEB_HOST_TLS=off
