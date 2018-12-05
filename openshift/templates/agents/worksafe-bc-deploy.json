@@ -455,7 +455,7 @@
       "displayName": "TOB API URL",
       "description": "The URL of the TOB API.",
       "required": true,
-      "value": "https://django-devex-von-dev.pathfinder.gov.bc.ca/api/v2"
+      "value": "https://dev-demo-api.orgbook.gov.bc.ca/api/v2"
     },
     {
       "name": "TOB_APP_URL",
