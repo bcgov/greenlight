@@ -8,7 +8,6 @@ issuers:
     endpoint: ${ENDPOINT_URL}/fraser-valley
 
     connection:
-      id: fraser-valley
       type: TheOrgBook
       api_url: $TOB_API_URL
       sign_target: false
