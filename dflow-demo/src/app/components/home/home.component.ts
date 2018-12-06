@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-
-import { forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
-
-import { TobService } from '../../services/tob.service';
-import { Schema } from '../../models/schema';
-import { Issuer } from 'src/app/models/issuer';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
+import { Issuer } from 'src/app/models/issuer';
+import { Schema } from '../../models/schema';
+import { TobService } from '../../services/tob.service';
+import { SearchInputComponent } from '../search/search-input/search-input.component';
+
+
 
 @Component({
   selector: 'app-home',
@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
+  @ViewChild('searchInput') _searchInput: SearchInputComponent;
+
   availableCreds: Array<any>;
   selectedCred: any;
   selectedTopic: string;
@@ -22,7 +24,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private tobService: TobService,
-    private router: Router ) {
+    private _router: Router ) {
     this.availableCreds = new Array<any>();
    }
 
@@ -63,6 +65,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  /**
+   * Updated the currently selected topic id, if the search was successful
+   * @param evt the event triggered by the typeahead search action
+   */
+  performSearch(evt?) {
+    const selected = this._searchInput.value;
+    if (selected && selected.id) {
+      this.selectedTopic = selected.id;
+    }
+  }
+
   begin() {
     if (!this.selectedCred) {
       // don't proceed if a credential is not selected
@@ -78,7 +91,7 @@ export class HomeComponent implements OnInit {
 
       const url = `/demo?${topicParam}name=${this.selectedCred.schema.name}&version=${this.selectedCred.schema.version}&did=${this.selectedCred.schema.origin_did}`;
 
-      this.router.navigateByUrl(url);
+      this._router.navigateByUrl(url);
     }
   }
 }
