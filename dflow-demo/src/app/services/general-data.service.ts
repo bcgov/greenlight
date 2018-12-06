@@ -129,14 +129,20 @@ export class GeneralDataService {
           let found = null;
           for(let name of row.names) {
             if(~ name.text.toLowerCase().indexOf(term.toLowerCase())) {
-              found = name.text;
+              found = {
+                id: name.id,
+                term: name.text
+              };
               break;
             } else if(found === null) {
-              found = name.text;
+              found = {
+                id: name.id,
+                term: name.text
+              };
             }
           }
           if(found !== null) {
-            ret.push({id: row.id, term: found});
+            ret.push(found);
           }
         }
         return ret;
