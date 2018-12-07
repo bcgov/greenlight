@@ -1,5 +1,5 @@
 issuers:
-  ministry-finance:
+  worksafe:
     logo_path: ''
     name: WorkSafe BC
     abbreviation: WorkSafe BC"
@@ -8,7 +8,6 @@ issuers:
     endpoint: ${ENDPOINT_URL}/worksafe
 
     connection:
-      id: worksafe
       type: TheOrgBook
       api_url: $TOB_API_URL
       sign_target: false
