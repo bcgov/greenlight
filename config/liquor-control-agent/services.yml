@@ -1,5 +1,5 @@
 issuers:
-  liquor-control:
+  liquor:
     logo_path: ''
     name: Liquor Control and Licensing Branch
     abbreviation: LCLB
@@ -8,7 +8,6 @@ issuers:
     endpoint: ${ENDPOINT_URL}/liquor
 
     connection:
-      id: liquor
       type: TheOrgBook
       api_url: $TOB_API_URL
       sign_target: false

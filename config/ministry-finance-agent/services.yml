@@ -1,5 +1,5 @@
 issuers:
-  ministry-finance:
+  finance:
     logo_path: ''
     name: BC Ministry of Finance
     abbreviation: Ministry of Finance
@@ -8,7 +8,6 @@ issuers:
     endpoint: ${ENDPOINT_URL}/finance
 
     connection:
-      id: finance
       type: TheOrgBook
       api_url: $TOB_API_URL
       sign_target: false

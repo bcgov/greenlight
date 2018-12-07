@@ -1,0 +1,17 @@
+<div>
+  <ng-template #rt let-r="result" let-t="term">
+    <ngb-highlight [result]="r.term" [term]="t"></ngb-highlight>
+  </ng-template>
+
+  <input [ngClass]="{'form-control': true, 'col-md-6': 'true'}"
+    #queryInput type="text" id="queryInput" name="query" size="40"
+    autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+    [ngbTypeahead]="typeaheadSearch" [focusFirst]="false"
+    (selectItem)="typeaheadSelected($event)"
+    [resultTemplate]="rt"
+    [inputFormatter]="formatter">
+  <!-- <button #queryButton class="btn btn-primary">
+    <span class="load" *ngIf="loading"><div class="loading-indicator"></div></span>
+    <span class="fa fa-search" *ngIf="! loading"></span>
+  </button> -->
+</div>
