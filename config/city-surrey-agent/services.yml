@@ -8,6 +8,7 @@ issuers:
     endpoint: ${ENDPOINT_URL}/surrey
 
     connection:
+      id: surrey
       type: TheOrgBook
       api_url: $TOB_API_URL
       sign_target: false
