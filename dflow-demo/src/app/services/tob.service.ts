@@ -63,16 +63,6 @@ export class TobService {
     return this.http.get(reqURL);
   }
 
-  /**
-   * Returns a JSON structure representing the list of steps obtained by the topic (e.g.: Incorporated Company)
-   * @param topicId the id of the topic being requested
-   */
-  getStepsByTopic (topicId: number) {
-    const reqURL = `/bc-tob/topic/${topicId}/step/active`;
-    // TODO: use types if possible
-    return this.http.get(reqURL);
-  }
-
   getCredentialsByTopic (topicId) {
     const reqURL = `/bc-tob/topic/${topicId}/credential/active`;
     // const reqURL = '/assets/data/credentials-by-topic.json';
