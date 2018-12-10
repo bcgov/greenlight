@@ -42,7 +42,7 @@ export class WorkflowStepComponent implements OnInit {
       this.actionTxt = `Enroll with ${this.step.issuer.name}`;
       const credentialParam = `credential_ids=${this.step.walletId}`;
       const schemaParam = `schema_name=${this.step.requestedSchema.name}&schema_version=${this.step.requestedSchema.version}&issuer_did=${this.step.requestedSchema.did}`;
-      this.actionURL = `${this.step.issuer.url}?${credentialParam}&${schemaParam}`;
+      this.actionURL = `${this.step.actionURL}?${credentialParam}&${schemaParam}`;
       this.actionTarget = '_self'
     } else {
       this.actionTxt = 'Dependencies not met';
