@@ -56,6 +56,14 @@ export class TobService {
   }
 
   /**
+   * Restirns a JSON structure representing the details for the credentials registered in ToB.
+   */
+  getCredentialTypes() {
+    const reqURL = '/bc-tob/credentialtype?inactive=false&latest=true&revoked=false';
+    return this.http.get(reqURL);
+  }
+
+  /**
    * Returns a JSON structure representing the list of steps obtained by the topic (e.g.: Incorporated Company)
    * @param topicId the id of the topic being requested
    */

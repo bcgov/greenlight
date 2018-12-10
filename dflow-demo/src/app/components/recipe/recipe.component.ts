@@ -30,6 +30,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   links: any;
 
   credentials: any;
+  credentialTypes: any;
   walletId: string;
   graphLayout: Promise<any>;
 
@@ -57,7 +58,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
       this.graphLayout = this.tobService.getIssuers().toPromise()
       .then((issuers: any) => {
         console.log('Issuers:', issuers);
-        this.setProgress(80, 'Retrieving issuer data...'); // this value is arbitrary, it just provides visual feedback for the user
+        this.setProgress(70, 'Retrieving issuer data...'); // this value is arbitrary, it just provides visual feedback for the user
 
         issuers.results.forEach(issuer => {
           this.issuers.push(new Issuer(issuer));
@@ -67,12 +68,20 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         return this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid).toPromise();
       }).then((topology: any) => {
         console.log('Path:', topology);
-        this.setProgress(95, 'Generating graph...'); // this value is arbitrary, it just provides visual feedback for the user
+        this.setProgress(80, 'Generating graph...'); // this value is arbitrary, it just provides visual feedback for the user
 
         // store topology
         this.nodes = topology.result.nodes;
         this.links = topology.result.links;
       }).then(() => {
+        this.setProgress(90, 'Processing credentials...'); // this value is arbitrary, it just provides visual feedback for the user
+        // grab credential types, to decode the credential-specific issuer URL for each credential
+        return this.tobService.getCredentialTypes().toPromise();
+      })
+      .then((credTypes: any) => {
+        this.credentialTypes = credTypes;
+
+        this.setProgress(95, 'Processing credentials...'); // this value is arbitrary, it just provides visual feedback for the user
         return new Promise<any>((resolve) => {
           setTimeout(() => {
             // grab the credentials if we already have a topic, otherwise return an empty array
@@ -96,6 +105,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
           const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
           const deps = this.tobService.getDependenciesByID(node.id, this.links, this.credentials, this.issuers);
           const credData = this.availableCredForIssuer(issuer);
+          const schemaURL = this.getCredentialActionURL(node.schema_name);
           const step = new Step({
             topicId: this.topic,
             walletId: this.walletId,
@@ -107,7 +117,8 @@ export class RecipeComponent implements OnInit, AfterViewInit {
               name: this.targetName,
               version: this.targetVersion,
               did: this.targetDid
-            }
+            },
+            schemaURL: schemaURL
           });
           const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
           this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
@@ -159,6 +170,13 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   private setProgress (progress: number, progressMsg: string) {
     this.progress = progress;
     this.progressMsg = progressMsg;
+  }
+
+  private getCredentialActionURL (schemaName: string) {
+    const credType = this.credentialTypes.results.find((credType) => {
+      return credType.schema.name === schemaName;
+    });
+    return credType.url;
   }
 
 }
