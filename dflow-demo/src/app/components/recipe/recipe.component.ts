@@ -104,7 +104,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         this.nodes.forEach(node => {
           const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
           const deps = this.tobService.getDependenciesByID(node.id, this.links, this.credentials, this.issuers);
-          const credData = this.availableCredForIssuer(issuer);
+          const credData = this.availableCredForIssuerAndSchema(issuer, node.schema_name);
           const schemaURL = this.getCredentialActionURL(node.schema_name);
           const step = new Step({
             topicId: this.topic,
@@ -146,10 +146,11 @@ export class RecipeComponent implements OnInit, AfterViewInit {
    * Returns the credential issued by the specified issuer, if available.
    * @param issuer the issuer issuing the credential.
    */
-  private availableCredForIssuer (issuer: Issuer) {
+  private availableCredForIssuerAndSchema (issuer: Issuer, schemaName: string) {
     let result;
     this.credentials.forEach(cred => {
-      if (cred.credential_type.issuer.did === issuer.did) {
+      if (cred.credential_type.issuer.did === issuer.did
+          && cred.credential_type.schema.name === schemaName) {
         result = {
           id: cred.id,
           effective_date: cred.effective_date
