@@ -84,6 +84,9 @@ issuers:
               type:
                 input: entity_type
                 from: value
+              format:
+                input: category
+                from: value
               value:
                 input: entity_type
                 from: claim
@@ -91,6 +94,9 @@ issuers:
             fields:
               type:
                 input: entity_status
+                from: value
+              format:
+                input: category
                 from: value
               value:
                 input: entity_status

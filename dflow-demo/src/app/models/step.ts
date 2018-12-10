@@ -13,10 +13,10 @@ export class Step {
   walletId: string;
   // TODO: refactor requestedschema out of the step, if possible
   requestedSchema: any;
+  actionURL: string;
 
   // computed
   actionText: string;
-  actionURL: string;
 
   constructor ( stepData: any ) {
       this.topicId = stepData.topicId;
@@ -28,6 +28,7 @@ export class Step {
         this.credentialId = stepData.credData.id;
         this.effectiveDate = stepData.credData.effective_date;
       }
+      this.actionURL = stepData.schemaURL;
 
       this.requestedSchema = {
         name: '',

@@ -10,6 +10,8 @@ import { HomeComponent } from './components/home/home.component';
 import { RecipeComponent } from './components/recipe/recipe.component';
 import { WorkflowStepComponent } from './components/workflow/workflow-step/workflow-step.component';
 import { FormsModule } from '@angular/forms';
+import { SearchInputComponent } from './components/search/search-input/search-input.component';
+import { GeneralDataService } from './services/general-data.service';
 
 
 
@@ -20,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     HeaderComponent,
     HomeComponent,
     RecipeComponent,
-    WorkflowStepComponent
+    WorkflowStepComponent,
+    SearchInputComponent
   ],
   entryComponents: [
     WorkflowStepComponent
@@ -32,7 +35,9 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     NgbModule
   ],
-  providers: [],
+  providers: [
+    GeneralDataService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
