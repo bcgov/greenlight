@@ -166,3 +166,7 @@ $RECYCLE.BIN/
 __pycache__
 .env*
 .vscode
+
+# Certificates
+*.crt
+*.key
