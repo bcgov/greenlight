@@ -105,7 +105,8 @@ export class TobService {
         return dep.source.indexOf(issuer.did) > -1
       });
       const isAvailable = this.isCredentialAvailable(dep.source, creds);
-      return new StepDependency(depIssuer.name, isAvailable);
+      const depSchema = dep.source.split(':')[0]; // ghrab the schema name
+      return new StepDependency(depIssuer.name, depSchema, isAvailable);
     });
   }
 
@@ -116,7 +117,8 @@ export class TobService {
    */
   private isCredentialAvailable(id: string, creds: any) {
     const result = creds.filter((cred) => {
-      return id.indexOf(cred.credential_type.issuer.did) > -1;
+      return id.indexOf(cred.credential_type.issuer.did) > -1
+        && id.indexOf(cred.credential_type.schema.name) > -1;
     });
     return result.length > 0;
   }
