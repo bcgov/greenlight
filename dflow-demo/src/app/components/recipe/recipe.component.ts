@@ -4,7 +4,7 @@ import { Issuer } from 'src/app/models/issuer';
 import { WorkflowLink } from 'src/app/models/workflow-link';
 import { WorkflowNodeResolverService } from 'src/app/services/workflow-node-resolver.service';
 import { WorkflowService } from 'src/app/services/workflow.service';
-import { Step } from '../../models/step';
+import { Step, StepDependency } from '../../models/step';
 import { NodeLabelType, WorkflowNode } from '../../models/workflow-node';
 import { TobService } from '../../services/tob.service';
 
@@ -31,7 +31,6 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
   credentials: any;
   credentialTypes: any;
-  walletId: string;
   graphLayout: Promise<any>;
 
   constructor(
@@ -98,17 +97,17 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
         console.log('Credentials:', creds);
         this.credentials = creds;
-        this.walletId = this.getWalletId();
 
         // add nodes
         this.nodes.forEach(node => {
           const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
           const deps = this.tobService.getDependenciesByID(node.id, this.links, this.credentials, this.issuers);
+          const walletId = this.getWalletId(deps);
           const credData = this.availableCredForIssuerAndSchema(issuer, node.schema_name);
           const schemaURL = this.getCredentialActionURL(node.schema_name);
           const step = new Step({
             topicId: this.topic,
-            walletId: this.walletId,
+            walletId: walletId,
             stepName: node.schema_name,
             dependencies: deps,
             issuer: issuer,
@@ -160,12 +159,19 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     return result;
   }
 
-  private getWalletId() {
-    let walletId = undefined;
-    if (this.credentials && this.credentials.length > 0) {
-      walletId = this.credentials[0].wallet_id;
+  private getWalletId(deps: Array<StepDependency>) {
+    let walletId = new Array<string>();
+    if (this.credentials && this.credentials.length > 0 && deps) {
+      deps.forEach(dependency => {
+        const availableCred = this.credentials.find((cred) => {
+          return cred.credential_type.schema.name === dependency.schema;
+        });
+        if (availableCred) {
+          walletId.push(availableCred.wallet_id);
+        }
+      });
     }
-    return walletId;
+    return walletId.join(',');
   }
 
   private setProgress (progress: number, progressMsg: string) {
