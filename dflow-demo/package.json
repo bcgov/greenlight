@@ -22,6 +22,7 @@
     "@angular/router": "~7.0.0",
     "@bcgov/bootstrap-theme": "https://github.com/cywolf/bootstrap-theme/releases/download/v4.1.0-rc0/bcgov-bootstrap-theme-4.1.0-rc0.tgz",
     "@ng-bootstrap/ng-bootstrap": "^4.0.0",
+    "@ng-select/ng-select": "^2.13.1",
     "bootstrap": "~4.1.0",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.5.4",
