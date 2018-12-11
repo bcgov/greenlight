@@ -1,4 +1,4 @@
-<main class="container">
+<main class="container home">
   <h1>
       dFlow Demo
   </h1>
@@ -10,12 +10,11 @@
 
     <div class="form-group">
       <label class="control-label" for="credPicker">Credential:</label>
-      <select id="credPicker" class="form-control col-md-6" [(ngModel)]="selectedCred">
-        <option value="undefined">Select a credential</option>
-        <option *ngFor="let cred of availableCreds" [ngValue]="cred">
+      <ng-select [(ngModel)]="selectedCred">
+        <ng-option *ngFor="let cred of availableCreds" [value]="cred">
           {{ cred.issuer.name }} - {{ cred.schema.name }}
-        </option>
-      </select>
+        </ng-option>
+      </ng-select>
       <div class="invalid-feedback" *ngIf="error">Please pick an issuer/schema combination to proceed.</div>
     </div>
   </ng-container>
@@ -27,4 +26,5 @@
 
 
   <button class="btn btn-primary mt-3" type="button" (click)="begin()">Begin</button>
+
 </main>
