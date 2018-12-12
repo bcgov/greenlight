@@ -28,7 +28,7 @@ export class TobService {
    * Queries ToB and returns a list of @Issuer entities that are currently registered.
    */
   getIssuers () {
-    const reqURL = '/bc-tob/issuer?inactive=false&latest=true&revoked=false&page_size=100';
+    const reqURL = '/bc-tob/issuer?inactive=false&latest=true&revoked=false&page_size=250';
     // const reqURL = '/assets/data/issuers.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
@@ -38,7 +38,7 @@ export class TobService {
    * Queries ToB and returns the list of @Schema objects that are currently registered.
    */
   getLatestSchemas () {
-    const reqURL = '/bc-tob/schema?inactive=false&latest=true&revoked=false&page_size=100';
+    const reqURL = '/bc-tob/schema?inactive=false&latest=true&revoked=false&page_size=250';
     // const reqURL = '/assets/data/schemas.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
@@ -59,17 +59,7 @@ export class TobService {
    * Restirns a JSON structure representing the details for the credentials registered in ToB.
    */
   getCredentialTypes() {
-    const reqURL = '/bc-tob/credentialtype?inactive=false&latest=true&revoked=false';
-    return this.http.get(reqURL);
-  }
-
-  /**
-   * Returns a JSON structure representing the list of steps obtained by the topic (e.g.: Incorporated Company)
-   * @param topicId the id of the topic being requested
-   */
-  getStepsByTopic (topicId: number) {
-    const reqURL = `/bc-tob/topic/${topicId}/step/active`;
-    // TODO: use types if possible
+    const reqURL = '/bc-tob/credentialtype?inactive=false&latest=true&revoked=false&page_size=250';
     return this.http.get(reqURL);
   }
 
@@ -115,7 +105,8 @@ export class TobService {
         return dep.source.indexOf(issuer.did) > -1
       });
       const isAvailable = this.isCredentialAvailable(dep.source, creds);
-      return new StepDependency(depIssuer.name, isAvailable);
+      const depSchema = dep.source.split(':')[0]; // ghrab the schema name
+      return new StepDependency(depIssuer.name, depSchema, isAvailable);
     });
   }
 
@@ -126,7 +117,8 @@ export class TobService {
    */
   private isCredentialAvailable(id: string, creds: any) {
     const result = creds.filter((cred) => {
-      return id.indexOf(cred.credential_type.issuer.did) > -1;
+      return id.indexOf(cred.credential_type.issuer.did) > -1
+        && id.indexOf(cred.credential_type.schema.name) > -1;
     });
     return result.length > 0;
   }
