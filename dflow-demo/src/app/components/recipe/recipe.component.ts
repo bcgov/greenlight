@@ -162,13 +162,21 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   private getWalletId(deps: Array<StepDependency>) {
     let walletId = new Array<string>();
     if (this.credentials && this.credentials.length > 0 && deps) {
-      deps.forEach(dependency => {
-        const availableCred = this.credentials.find((cred) => {
-          return cred.credential_type.schema.name === dependency.schema;
-        });
-        if (availableCred) {
-          walletId.push(availableCred.wallet_id);
-        }
+      // TODO: fix dependency handling to only use what is necessary
+      /*
+       * This is the right way of handling things, however the dflow agents use a
+       * list of proofs and "depends_on" clauses that doesn't match (to make the graph interesting)
+       * /
+      // deps.forEach(dependency => {
+        // const availableCred = this.credentials.find((cred) => {
+        //   return cred.credential_type.schema.name === dependency.schema;
+        // });
+        // if (availableCred) {
+        //   walletId.push(availableCred.wallet_id);
+        // }
+      // });
+      this.credentials.forEach(cred => {
+        walletId.push(cred.wallet_id);
       });
     }
     return walletId.join(',');
