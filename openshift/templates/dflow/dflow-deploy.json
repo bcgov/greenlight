@@ -290,14 +290,14 @@
       "displayName": "TOB API URL",
       "description": "The public URL of the TOB API.",
       "required": true,
-      "value": "https://devex-von-dev.pathfinder.gov.bc.ca/api"
+      "value": "https://dev-demo.orgbook.gov.bc.ca/api"
     },
     {
       "name": "TOB_APP_URL",
       "displayName": "TOB Application URL",
       "description": "The URL of the TOB application.",
       "required": true,
-      "value": "https://devex-von-dev.pathfinder.gov.bc.ca"
+      "value": "https://dev-demo.orgbook.gov.bc.ca"
     },
     {
       "name": "WEB_HOST_NAME",
