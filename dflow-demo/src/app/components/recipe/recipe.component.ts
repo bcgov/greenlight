@@ -166,7 +166,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
       /*
        * This is the right way of handling things, however the dflow agents use a
        * list of proofs and "depends_on" clauses that doesn't match (to make the graph interesting)
-       * /
+       */
       // deps.forEach(dependency => {
         // const availableCred = this.credentials.find((cred) => {
         //   return cred.credential_type.schema.name === dependency.schema;
