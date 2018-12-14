@@ -204,11 +204,11 @@ issuers:
 
 # proof_requests:
 #   registration:
-#     version: '1.0.0'
+#     version: '1.0.1'
 #     schemas:
 #       - key:
 #           name: registration.dflow
-#           version: '1.0.0'
+#           version: '1.0.1'
 #         attributes:
 #           - corp_num
 #           - address_line_1

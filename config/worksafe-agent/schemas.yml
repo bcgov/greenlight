@@ -1,5 +1,5 @@
 - name: worksafe.dflow
-  version: '1.0.0'
+  version: '1.0.1'
   attributes:
     - corp_num
     - dba_corp_num
