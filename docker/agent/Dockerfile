@@ -8,8 +8,8 @@ WORKDIR $HOME
 ADD assets $HOME/assets
 ADD config $HOME/config
 ADD docker $HOME/docker
-ADD src $HOME/src
-ADD templates $HOME/templates
+ADD dflow-agent/src $HOME/src
+ADD dflow-agent/templates $HOME/templates
 
 USER root
 
