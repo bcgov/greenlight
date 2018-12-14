@@ -94,6 +94,7 @@ configureEnvironment () {
     esac
   done
 
+  # general
   export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-"dflow"}
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export APPLICATION_URL=${APPLICATION_URL-http://localhost:${WEB_HTTP_PORT:-5000}}
@@ -106,6 +107,7 @@ configureEnvironment () {
   export WEB_HOST_NAME=${WEB_HOST_NAME:-0.0.0.0}
   export WEB_HOST_PORT=${WEB_HOST_PORT:-8080}
   export WEB_HOST_TLS=${WEB_HOST_TLS:-off}
+  export WEB_HTTP_PORT=${WEB_HTTP_PORT:-5000}
   export BCREG_AGENT_HOST=${BCREG_AGENT_HOST:-bcreg-agent}
   export BCREG_AGENT_PORT=${BCREG_AGENT_PORT:-8000}
   export MINISTRY_FINANCE_AGENT_HOST=${MINISTRY_FINANCE_AGENT_HOST:-ministry-finance-agent}
@@ -118,8 +120,6 @@ configureEnvironment () {
   export LIQUOR_CONTROL_AGENT_PORT=${LIQUOR_CONTROL_AGENT_PORT:-8000}
   export WORKSAFE_AGENT_HOST=${WORKSAFE_AGENT_HOST:-worksafe-agent}
   export WORKSAFE_AGENT_PORT=${WORKSAFE_AGENT_PORT:-8000}
-  export WEB_HTTP_PORT=${WEB_HTTP_PORT:-5000}
-  export WEB_HOST_PORT=${WEB_HOST_PORT:-8080}
 
   # wallet-db
   export POSTGRESQL_DATABASE="THE_ORG_BOOK"
@@ -159,7 +159,7 @@ getStartupParams() {
   echo ${ARGS} ${CONTAINERS}
 }
 
-build() {
+build-old() {
   # Build all containers in the docker-compose file
   echo -e "\nBuilding agent and wallet containers ..."
   echo docker-compose build $@
@@ -212,6 +212,28 @@ build() {
     'dflow'
 }
 
+build() {
+  # This image only exists to pre-create the npm cache directory
+  # so it can be properly used as a volume, it doesn't apply to openshift
+  echo -e "\nBuilding nodejs-build image ..."
+  docker build -q \
+    -t 'nodejs-build' \
+    -f './nodejs-build/Dockerfile' '../'
+
+  # NB: We build with DEV_MODE=true but run with DEV_MODE=false
+  echo -e "\nBuilding dfow-dev image ..."
+  ${S2I_EXE} build \
+    -e "DEV_MODE=true" \
+    -e "HTTP_PROXY=${HTTP_PROXY}" \
+    -e "HTTPS_PROXY=${HTTPS_PROXY}" \
+    -e "NG_BASE_HREF=${WEB_BASE_HREF}" \
+    -e "NG_DEPLOY_URL=${WEB_DEPLOY_URL}" \
+    -v "${COMPOSE_PROJECT_NAME}_dflow-npm-cache:/opt/app-root/src/.npm" \
+    '../dflow-demo' \
+    'nodejs-build' \
+    'dflow-dev'
+}
+
 deleteVolumes() {
   _projectName=${COMPOSE_PROJECT_NAME:-docker}
 
@@ -247,10 +269,12 @@ shift || true
 case "$COMMAND" in
   start|up)
     # also start caddy
-    DEFAULT_CONTAINERS="caddy $DEFAULT_CONTAINERS"
+    # DEFAULT_CONTAINERS="caddy $DEFAULT_CONTAINERS"
+    DEFAULT_CONTAINERS="caddy-dev"
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
-    docker-compose up -d ${_startupParams}
+    # docker-compose up -d ${_startupParams}
+    docker-compose run --rm --service-ports caddy-dev
     docker-compose logs -f
     ;;
   logs)

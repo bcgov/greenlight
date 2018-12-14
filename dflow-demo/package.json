@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "dev": "node --trace-warnings ./node_modules/\\@angular/cli/bin/ng serve --host 0.0.0.0 --port 4200 --base-href ${NG_BASE_HREF:-/} --deploy-url ${NG_DEPLOY_URL:-/}",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
