@@ -12,7 +12,7 @@
       <label class="control-label" for="credPicker">Credential:</label>
       <ng-select [(ngModel)]="selectedCred">
         <ng-option *ngFor="let cred of availableCreds" [value]="cred">
-          {{ cred.issuer.name }} - {{ cred.schema.name }}
+          {{ cred.issuer.name }} - {{ cred.schema.name }}:{{cred.schema.version}}
         </ng-option>
       </ng-select>
       <div class="invalid-feedback" *ngIf="error">Please pick an issuer/schema combination to proceed.</div>
