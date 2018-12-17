@@ -64,7 +64,10 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         });
       }).then(() => {
         // get topology and set-up graphing library
-        return this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid).toPromise();
+        return this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid).toPromise().catch(() => {
+          // TODO: instead of retrying, find a better way to handle this long timeout
+          return this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid).toPromise();
+        });
       }).then((topology: any) => {
         console.log('Path:', topology);
         this.setProgress(80, 'Generating graph...'); // this value is arbitrary, it just provides visual feedback for the user
