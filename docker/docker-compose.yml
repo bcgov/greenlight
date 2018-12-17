@@ -1,45 +1,45 @@
 version: '3'
 services:
 
-  # caddy:
-  #   image: dflow
-  #   environment:
-  #     TOB_API_URL: ${TOB_API_URL}
-  #     TOB_APP_URL: ${TOB_APP_URL}
-  #     WEB_BASE_HREF: ${WEB_BASE_HREF}
-  #     WEB_HOST_NAME: ${WEB_HOST_NAME}
-  #     WEB_HOST_PORT: ${WEB_HOST_PORT}
-  #     WEB_HOST_TLS: ${WEB_HOST_TLS}
-  #     BCREG_AGENT_HOST: ${BCREG_AGENT_HOST}
-  #     BCREG_AGENT_PORT: ${BCREG_AGENT_PORT}
-  #     MINISTRY_FINANCE_AGENT_HOST: ${MINISTRY_FINANCE_AGENT_HOST}
-  #     MINISTRY_FINANCE_AGENT_PORT: ${MINISTRY_FINANCE_AGENT_PORT}
-  #     CITY_SURREY_AGENT_HOST: ${CITY_SURREY_AGENT_HOST}
-  #     CITY_SURREY_AGENT_PORT: ${CITY_SURREY_AGENT_PORT}
-  #     FRASER_VALLEY_AGENT_HOST: ${FRASER_VALLEY_AGENT_HOST}
-  #     FRASER_VALLEY_AGENT_PORT: ${FRASER_VALLEY_AGENT_PORT}
-  #     LIQUOR_CONTROL_AGENT_HOST: ${LIQUOR_CONTROL_AGENT_HOST}
-  #     LIQUOR_CONTROL_AGENT_PORT: ${LIQUOR_CONTROL_AGENT_PORT}
-  #     WORKSAFE_AGENT_HOST: ${WORKSAFE_AGENT_HOST}
-  #     WORKSAFE_AGENT_PORT: ${WORKSAFE_AGENT_PORT}
-  #   depends_on:
-  #     - bcreg-agent
-  #     - ministry-finance-agent
-  #     - city-surrey-agent
-  #     - fraser-valley-agent
-  #     - liquor-control-agent
-  #     - worksafe-agent
-  #   networks:
-  #     - orgbook
-  #     - vonx
-  #   ports:
-  #     - ${WEB_HTTP_PORT}:${WEB_HOST_PORT}
-  #   volumes:
-  #     - ../caddy/Caddyfile:/etc/Caddyfile
-  #     - caddy-data:/root/.caddy
-  #     - caddy-logs:/srv/logs
-  #   command:
-  #     '/tmp/scripts/run'
+  caddy:
+    image: dflow
+    environment:
+      TOB_API_URL: ${TOB_API_URL}
+      TOB_APP_URL: ${TOB_APP_URL}
+      WEB_BASE_HREF: ${WEB_BASE_HREF}
+      WEB_HOST_NAME: ${WEB_HOST_NAME}
+      WEB_HOST_PORT: ${WEB_HOST_PORT}
+      WEB_HOST_TLS: ${WEB_HOST_TLS}
+      BCREG_AGENT_HOST: ${BCREG_AGENT_HOST}
+      BCREG_AGENT_PORT: ${BCREG_AGENT_PORT}
+      MINISTRY_FINANCE_AGENT_HOST: ${MINISTRY_FINANCE_AGENT_HOST}
+      MINISTRY_FINANCE_AGENT_PORT: ${MINISTRY_FINANCE_AGENT_PORT}
+      CITY_SURREY_AGENT_HOST: ${CITY_SURREY_AGENT_HOST}
+      CITY_SURREY_AGENT_PORT: ${CITY_SURREY_AGENT_PORT}
+      FRASER_VALLEY_AGENT_HOST: ${FRASER_VALLEY_AGENT_HOST}
+      FRASER_VALLEY_AGENT_PORT: ${FRASER_VALLEY_AGENT_PORT}
+      LIQUOR_CONTROL_AGENT_HOST: ${LIQUOR_CONTROL_AGENT_HOST}
+      LIQUOR_CONTROL_AGENT_PORT: ${LIQUOR_CONTROL_AGENT_PORT}
+      WORKSAFE_AGENT_HOST: ${WORKSAFE_AGENT_HOST}
+      WORKSAFE_AGENT_PORT: ${WORKSAFE_AGENT_PORT}
+    depends_on:
+      - bcreg-agent
+      - ministry-finance-agent
+      - city-surrey-agent
+      - fraser-valley-agent
+      - liquor-control-agent
+      - worksafe-agent
+    networks:
+      - orgbook
+      - vonx
+    ports:
+      - ${WEB_HTTP_PORT}:${WEB_HOST_PORT}
+    volumes:
+      - ../caddy/Caddyfile:/etc/Caddyfile
+      - caddy-data:/root/.caddy
+      - caddy-logs:/srv/logs
+    command:
+      '/tmp/scripts/run'
 
   caddy-dev:
     image: dflow-dev
@@ -52,7 +52,7 @@ services:
       - orgbook
       - vonx
     ports:
-      - 5001:4200
+      - 5050:5050
       - 5858:5858
     volumes:
       - ../caddy/Caddyfile:/etc/Caddyfile
@@ -60,224 +60,224 @@ services:
       - caddy-logs:/srv/logs
       - ../dflow-demo/src:/opt/app-root/src/src
 
-  # bcreg-agent:
-  #   build:
-  #     context: ..
-  #     dockerfile: docker/agent/Dockerfile
-  #   environment:
-  #     DOCKERHOST: ${DOCKERHOST}
-  #     APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
-  #     ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
-  #     CONFIG_ROOT: ../config/bcreg-agent
-  #     ENVIRONMENT: ${ENVIRONMENT:-default}
-  #     ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
-  #     INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
-  #     FORMS: ${FORMS:-}
-  #     ISSUERS: ${ISSUERS:-}
-  #     LOG_LEVEL: ${LOG_LEVEL:-}
-  #     PYTHON_ENV: ${PYTHON_ENV:-development}
-  #     TOB_API_URL: ${TOB_API_URL:-}
-  #     TOB_APP_URL: ${TOB_APP_URL:-}
-  #     POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
-  #     POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
-  #     POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
-  #     POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
-  #     POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
-  #     WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
-  #     INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
-  #     INDY_WALLET_SEED: ${BCREG_WALLET_SEED:-}
-  #   networks:
-  #     - orgbook
-  #     - vonx
-  #   depends_on:
-  #     - agent-wallet-db
-  #   volumes:
-  #     - bcreg-agent-wallet:/home/indy/.indy_client/wallet
+  bcreg-agent:
+    build:
+      context: ..
+      dockerfile: docker/agent/Dockerfile
+    environment:
+      DOCKERHOST: ${DOCKERHOST}
+      APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
+      CONFIG_ROOT: ../config/bcreg-agent
+      ENVIRONMENT: ${ENVIRONMENT:-default}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
+      INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
+      FORMS: ${FORMS:-}
+      ISSUERS: ${ISSUERS:-}
+      LOG_LEVEL: ${LOG_LEVEL:-}
+      PYTHON_ENV: ${PYTHON_ENV:-development}
+      TOB_API_URL: ${TOB_API_URL:-}
+      TOB_APP_URL: ${TOB_APP_URL:-}
+      POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
+      POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
+      POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
+      WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      INDY_WALLET_SEED: ${BCREG_WALLET_SEED:-}
+    networks:
+      - orgbook
+      - vonx
+    depends_on:
+      - agent-wallet-db
+    volumes:
+      - bcreg-agent-wallet:/home/indy/.indy_client/wallet
 
-  # ministry-finance-agent:
-  #   build:
-  #     context: ..
-  #     dockerfile: docker/agent/Dockerfile
-  #   environment:
-  #     DOCKERHOST: ${DOCKERHOST}
-  #     APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
-  #     ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
-  #     CONFIG_ROOT: ../config/ministry-finance-agent
-  #     ENVIRONMENT: ${ENVIRONMENT:-default}
-  #     ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
-  #     INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
-  #     FORMS: ${FORMS:-}
-  #     ISSUERS: ${ISSUERS:-}
-  #     LOG_LEVEL: ${LOG_LEVEL:-}
-  #     PYTHON_ENV: ${PYTHON_ENV:-development}
-  #     TOB_API_URL: ${TOB_API_URL:-}
-  #     TOB_APP_URL: ${TOB_APP_URL:-}
-  #     POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
-  #     POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
-  #     POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
-  #     POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
-  #     POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
-  #     WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
-  #     INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
-  #     INDY_WALLET_SEED: ${MOFI_WALLET_SEED:-}
-  #   networks:
-  #     - orgbook
-  #     - vonx
-  #   depends_on:
-  #     - agent-wallet-db
-  #   volumes:
-  #     - ministry-finance-agent-wallet:/home/indy/.indy_client/wallet
+  ministry-finance-agent:
+    build:
+      context: ..
+      dockerfile: docker/agent/Dockerfile
+    environment:
+      DOCKERHOST: ${DOCKERHOST}
+      APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
+      CONFIG_ROOT: ../config/ministry-finance-agent
+      ENVIRONMENT: ${ENVIRONMENT:-default}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
+      INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
+      FORMS: ${FORMS:-}
+      ISSUERS: ${ISSUERS:-}
+      LOG_LEVEL: ${LOG_LEVEL:-}
+      PYTHON_ENV: ${PYTHON_ENV:-development}
+      TOB_API_URL: ${TOB_API_URL:-}
+      TOB_APP_URL: ${TOB_APP_URL:-}
+      POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
+      POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
+      POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
+      WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      INDY_WALLET_SEED: ${MOFI_WALLET_SEED:-}
+    networks:
+      - orgbook
+      - vonx
+    depends_on:
+      - agent-wallet-db
+    volumes:
+      - ministry-finance-agent-wallet:/home/indy/.indy_client/wallet
 
-  # city-surrey-agent:
-  #   build:
-  #     context: ..
-  #     dockerfile: docker/agent/Dockerfile
-  #   environment:
-  #     DOCKERHOST: ${DOCKERHOST}
-  #     APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
-  #     ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
-  #     CONFIG_ROOT: ../config/city-surrey-agent
-  #     ENVIRONMENT: ${ENVIRONMENT:-default}
-  #     ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
-  #     INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
-  #     FORMS: ${FORMS:-}
-  #     ISSUERS: ${ISSUERS:-}
-  #     LOG_LEVEL: ${LOG_LEVEL:-}
-  #     PYTHON_ENV: ${PYTHON_ENV:-development}
-  #     TOB_API_URL: ${TOB_API_URL:-}
-  #     TOB_APP_URL: ${TOB_APP_URL:-}
-  #     POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
-  #     POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
-  #     POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
-  #     POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
-  #     POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
-  #     WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
-  #     INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
-  #     INDY_WALLET_SEED: ${SURREY_WALLET_SEED:-}
-  #   networks:
-  #     - orgbook
-  #     - vonx
-  #   depends_on:
-  #     - agent-wallet-db
-  #   volumes:
-  #     - city-surrey-agent-wallet:/home/indy/.indy_client/wallet
+  city-surrey-agent:
+    build:
+      context: ..
+      dockerfile: docker/agent/Dockerfile
+    environment:
+      DOCKERHOST: ${DOCKERHOST}
+      APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
+      CONFIG_ROOT: ../config/city-surrey-agent
+      ENVIRONMENT: ${ENVIRONMENT:-default}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
+      INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
+      FORMS: ${FORMS:-}
+      ISSUERS: ${ISSUERS:-}
+      LOG_LEVEL: ${LOG_LEVEL:-}
+      PYTHON_ENV: ${PYTHON_ENV:-development}
+      TOB_API_URL: ${TOB_API_URL:-}
+      TOB_APP_URL: ${TOB_APP_URL:-}
+      POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
+      POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
+      POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
+      WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      INDY_WALLET_SEED: ${SURREY_WALLET_SEED:-}
+    networks:
+      - orgbook
+      - vonx
+    depends_on:
+      - agent-wallet-db
+    volumes:
+      - city-surrey-agent-wallet:/home/indy/.indy_client/wallet
 
 
-  # fraser-valley-agent:
-  #   build:
-  #     context: ..
-  #     dockerfile: docker/agent/Dockerfile
-  #   environment:
-  #     DOCKERHOST: ${DOCKERHOST}
-  #     APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
-  #     ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
-  #     CONFIG_ROOT: ../config/fraser-valley-agent
-  #     ENVIRONMENT: ${ENVIRONMENT:-default}
-  #     ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
-  #     INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
-  #     FORMS: ${FORMS:-}
-  #     ISSUERS: ${ISSUERS:-}
-  #     LOG_LEVEL: ${LOG_LEVEL:-}
-  #     PYTHON_ENV: ${PYTHON_ENV:-development}
-  #     TOB_API_URL: ${TOB_API_URL:-}
-  #     TOB_APP_URL: ${TOB_APP_URL:-}
-  #     POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
-  #     POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
-  #     POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
-  #     POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
-  #     POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
-  #     WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
-  #     INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
-  #     INDY_WALLET_SEED: ${FRASER_WALLET_SEED:-}
-  #   networks:
-  #     - orgbook
-  #     - vonx
-  #   depends_on:
-  #     - agent-wallet-db
-  #   volumes:
-  #     - fraser-valley-agent-wallet:/home/indy/.indy_client/wallet
+  fraser-valley-agent:
+    build:
+      context: ..
+      dockerfile: docker/agent/Dockerfile
+    environment:
+      DOCKERHOST: ${DOCKERHOST}
+      APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
+      CONFIG_ROOT: ../config/fraser-valley-agent
+      ENVIRONMENT: ${ENVIRONMENT:-default}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
+      INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
+      FORMS: ${FORMS:-}
+      ISSUERS: ${ISSUERS:-}
+      LOG_LEVEL: ${LOG_LEVEL:-}
+      PYTHON_ENV: ${PYTHON_ENV:-development}
+      TOB_API_URL: ${TOB_API_URL:-}
+      TOB_APP_URL: ${TOB_APP_URL:-}
+      POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
+      POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
+      POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
+      WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      INDY_WALLET_SEED: ${FRASER_WALLET_SEED:-}
+    networks:
+      - orgbook
+      - vonx
+    depends_on:
+      - agent-wallet-db
+    volumes:
+      - fraser-valley-agent-wallet:/home/indy/.indy_client/wallet
 
-  # liquor-control-agent:
-  #   build:
-  #     context: ..
-  #     dockerfile: docker/agent/Dockerfile
-  #   environment:
-  #     DOCKERHOST: ${DOCKERHOST}
-  #     APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
-  #     ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
-  #     CONFIG_ROOT: ../config/liquor-control-agent
-  #     ENVIRONMENT: ${ENVIRONMENT:-default}
-  #     ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
-  #     INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
-  #     FORMS: ${FORMS:-}
-  #     ISSUERS: ${ISSUERS:-}
-  #     LOG_LEVEL: ${LOG_LEVEL:-}
-  #     PYTHON_ENV: ${PYTHON_ENV:-development}
-  #     TOB_API_URL: ${TOB_API_URL:-}
-  #     TOB_APP_URL: ${TOB_APP_URL:-}
-  #     POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
-  #     POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
-  #     POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
-  #     POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
-  #     POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
-  #     WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
-  #     INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
-  #     INDY_WALLET_SEED: ${LIQUOR_WALLET_SEED:-}
-  #   networks:
-  #     - orgbook
-  #     - vonx
-  #   depends_on:
-  #     - agent-wallet-db
-  #   volumes:
-  #     - liquor-control-agent-wallet:/home/indy/.indy_client/wallet
+  liquor-control-agent:
+    build:
+      context: ..
+      dockerfile: docker/agent/Dockerfile
+    environment:
+      DOCKERHOST: ${DOCKERHOST}
+      APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
+      CONFIG_ROOT: ../config/liquor-control-agent
+      ENVIRONMENT: ${ENVIRONMENT:-default}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
+      INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
+      FORMS: ${FORMS:-}
+      ISSUERS: ${ISSUERS:-}
+      LOG_LEVEL: ${LOG_LEVEL:-}
+      PYTHON_ENV: ${PYTHON_ENV:-development}
+      TOB_API_URL: ${TOB_API_URL:-}
+      TOB_APP_URL: ${TOB_APP_URL:-}
+      POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
+      POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
+      POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
+      WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      INDY_WALLET_SEED: ${LIQUOR_WALLET_SEED:-}
+    networks:
+      - orgbook
+      - vonx
+    depends_on:
+      - agent-wallet-db
+    volumes:
+      - liquor-control-agent-wallet:/home/indy/.indy_client/wallet
 
-  # worksafe-agent:
-  #   build:
-  #     context: ..
-  #     dockerfile: docker/agent/Dockerfile
-  #   environment:
-  #     DOCKERHOST: ${DOCKERHOST}
-  #     APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
-  #     ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
-  #     CONFIG_ROOT: ../config/worksafe-agent
-  #     ENVIRONMENT: ${ENVIRONMENT:-default}
-  #     ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
-  #     INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
-  #     FORMS: ${FORMS:-}
-  #     ISSUERS: ${ISSUERS:-}
-  #     LOG_LEVEL: ${LOG_LEVEL:-}
-  #     PYTHON_ENV: ${PYTHON_ENV:-development}
-  #     TOB_API_URL: ${TOB_API_URL:-}
-  #     TOB_APP_URL: ${TOB_APP_URL:-}
-  #     POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
-  #     POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
-  #     POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
-  #     POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
-  #     POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
-  #     WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
-  #     INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
-  #     INDY_WALLET_SEED: ${WORKSAFE_WALLET_SEED:-}
-  #   networks:
-  #     - orgbook
-  #     - vonx
-  #   depends_on:
-  #     - agent-wallet-db
-  #   volumes:
-  #     - worksafe-agent-wallet:/home/indy/.indy_client/wallet
+  worksafe-agent:
+    build:
+      context: ..
+      dockerfile: docker/agent/Dockerfile
+    environment:
+      DOCKERHOST: ${DOCKERHOST}
+      APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
+      CONFIG_ROOT: ../config/worksafe-agent
+      ENVIRONMENT: ${ENVIRONMENT:-default}
+      ENABLE_GUNICORN: ${ENABLE_GUNICORN:-0}
+      INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
+      FORMS: ${FORMS:-}
+      ISSUERS: ${ISSUERS:-}
+      LOG_LEVEL: ${LOG_LEVEL:-}
+      PYTHON_ENV: ${PYTHON_ENV:-development}
+      TOB_API_URL: ${TOB_API_URL:-}
+      TOB_APP_URL: ${TOB_APP_URL:-}
+      POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
+      POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
+      POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
+      WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      INDY_WALLET_SEED: ${WORKSAFE_WALLET_SEED:-}
+    networks:
+      - orgbook
+      - vonx
+    depends_on:
+      - agent-wallet-db
+    volumes:
+      - worksafe-agent-wallet:/home/indy/.indy_client/wallet
 
-  # agent-wallet-db:
-  #   image: registry.access.redhat.com/rhscl/postgresql-10-rhel7:latest
-  #   environment:
-  #     - POSTGRESQL_USER=${POSTGRESQL_USER}
-  #     - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
-  #     - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
-  #     - POSTGRESQL_ADMIN_PASSWORD=${POSTGRESQL_ADMIN_PASSWORD}
-  #   networks:
-  #     - orgbook
-  #   ports:
-  #     - 5431:5432
-  #   volumes:
-  #     - agent-wallet-db:/var/lib/pgsql/data
+  agent-wallet-db:
+    image: registry.access.redhat.com/rhscl/postgresql-10-rhel7:latest
+    environment:
+      - POSTGRESQL_USER=${POSTGRESQL_USER}
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
+      - POSTGRESQL_ADMIN_PASSWORD=${POSTGRESQL_ADMIN_PASSWORD}
+    networks:
+      - orgbook
+    ports:
+      - 5431:5432
+    volumes:
+      - agent-wallet-db:/var/lib/pgsql/data
 
 volumes:
   caddy-data:

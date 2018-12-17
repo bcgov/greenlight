@@ -159,7 +159,7 @@ getStartupParams() {
   echo ${ARGS} ${CONTAINERS}
 }
 
-build-old() {
+build() {
   # Build all containers in the docker-compose file
   echo -e "\nBuilding agent and wallet containers ..."
   echo docker-compose build $@
@@ -212,7 +212,7 @@ build-old() {
     'dflow'
 }
 
-build() {
+build-dev() {
   # This image only exists to pre-create the npm cache directory
   # so it can be properly used as a volume, it doesn't apply to openshift
   echo -e "\nBuilding nodejs-build image ..."
@@ -221,7 +221,7 @@ build() {
     -f './nodejs-build/Dockerfile' '../'
 
   # NB: We build with DEV_MODE=true but run with DEV_MODE=false
-  echo -e "\nBuilding dfow-dev image ..."
+  echo -e "\nBuilding dflow-dev image ..."
   ${S2I_EXE} build \
     -e "DEV_MODE=true" \
     -e "HTTP_PROXY=${HTTP_PROXY}" \
@@ -269,12 +269,10 @@ shift || true
 case "$COMMAND" in
   start|up)
     # also start caddy
-    # DEFAULT_CONTAINERS="caddy $DEFAULT_CONTAINERS"
-    DEFAULT_CONTAINERS="caddy-dev"
+    DEFAULT_CONTAINERS="caddy $DEFAULT_CONTAINERS"
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
-    # docker-compose up -d ${_startupParams}
-    docker-compose run --rm --service-ports caddy-dev
+    docker-compose up -d ${_startupParams}
     docker-compose logs -f
     ;;
   logs)
