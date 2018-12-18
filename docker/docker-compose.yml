@@ -44,6 +44,8 @@ services:
   caddy-dev:
     image: dflow-dev
     environment:
+      TOB_API_URL: ${TOB_API_URL}
+      TOB_APP_URL: ${TOB_APP_URL}
       DEV_MODE: "false"
       NODE_ENV: "development"
       NPM_CONFIG_LOGLEVEL: "notice"
@@ -53,7 +55,6 @@ services:
       - vonx
     ports:
       - 5050:5050
-      - 5858:5858
     volumes:
       - ../caddy/Caddyfile:/etc/Caddyfile
       - caddy-data:/root/.caddy

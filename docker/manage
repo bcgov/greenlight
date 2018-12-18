@@ -268,7 +268,6 @@ shift || true
 
 case "$COMMAND" in
   start|up)
-    # also start caddy
     DEFAULT_CONTAINERS="caddy $DEFAULT_CONTAINERS"
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
@@ -277,6 +276,14 @@ case "$COMMAND" in
     ;;
   logs)
     configureEnvironment $@
+    docker-compose logs -f
+    ;;
+  start-dev)
+    DEFAULT_CONTAINERS="caddy-dev $DEFAULT_CONTAINERS"
+    _startupParams=$(getStartupParams $@)
+    configureEnvironment $@
+    [ -z "$SKIP_BUILD" ] && build-dev
+    docker-compose up -d ${_startupParams}
     docker-compose logs -f
     ;;
   stop)
