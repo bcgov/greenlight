@@ -52,12 +52,17 @@ usage() {
 
   start - Same as up
 
+  start-dev - Builds and runs a live development version of dflow, along with
+              the required supporting components. Once started, the website is
+              automatically compiled and updated in response to file modifications.
+
   logs - Display the logs from the docker compose run (ctrl-c to exit).
 
   stop - Stops the services.  This is a non-destructive process.  The volumes and containers
          are not deleted so they will be reused the next time you run start.
 
   down - Brings down the services and removes the volumes (storage) and containers.
+
   rm - Same as down
 
   lint - Apply pylint to Python source code.
@@ -255,9 +260,8 @@ pylint() {
     echo -e "Installing pylint ..."
     $PIP install pylint
   fi
-  $PIP install -q -r ../src/requirements.txt
   cd ..
-  $PYLINT src/*.py src/vonx
+  $PYLINT dflow-agent/src/*.py
 }
 
 # =================================================================================================================
