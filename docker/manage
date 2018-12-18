@@ -279,7 +279,7 @@ case "$COMMAND" in
     docker-compose logs -f
     ;;
   start-dev)
-    DEFAULT_CONTAINERS="caddy-dev $DEFAULT_CONTAINERS"
+    DEFAULT_CONTAINERS="proxy-dev dflow-dev $DEFAULT_CONTAINERS"
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
     [ -z "$SKIP_BUILD" ] && build-dev

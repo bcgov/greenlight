@@ -61,7 +61,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "dflow-demo:build"
+            "browserTarget": "dflow-demo:build",
+            "proxyConfig": "src/proxy.conf.js"
           },
           "configurations": {
             "production": {

@@ -1,6 +1,65 @@
 version: '3'
 services:
 
+  # proxy instance to be used in development mode with dflow-dev
+  proxy-dev:
+    image: "abiosoft/caddy:no-stats"
+    environment:
+      TOB_API_URL: ${TOB_API_URL}
+      TOB_APP_URL: ${TOB_APP_URL}
+      WEB_BASE_HREF: ${WEB_BASE_HREF}
+      WEB_HOST_NAME: ${WEB_HOST_NAME}
+      WEB_HOST_PORT: ${WEB_HOST_PORT}
+      WEB_HOST_TLS: ${WEB_HOST_TLS}
+      BCREG_AGENT_HOST: ${BCREG_AGENT_HOST}
+      BCREG_AGENT_PORT: ${BCREG_AGENT_PORT}
+      MINISTRY_FINANCE_AGENT_HOST: ${MINISTRY_FINANCE_AGENT_HOST}
+      MINISTRY_FINANCE_AGENT_PORT: ${MINISTRY_FINANCE_AGENT_PORT}
+      CITY_SURREY_AGENT_HOST: ${CITY_SURREY_AGENT_HOST}
+      CITY_SURREY_AGENT_PORT: ${CITY_SURREY_AGENT_PORT}
+      FRASER_VALLEY_AGENT_HOST: ${FRASER_VALLEY_AGENT_HOST}
+      FRASER_VALLEY_AGENT_PORT: ${FRASER_VALLEY_AGENT_PORT}
+      LIQUOR_CONTROL_AGENT_HOST: ${LIQUOR_CONTROL_AGENT_HOST}
+      LIQUOR_CONTROL_AGENT_PORT: ${LIQUOR_CONTROL_AGENT_PORT}
+      WORKSAFE_AGENT_HOST: ${WORKSAFE_AGENT_HOST}
+      WORKSAFE_AGENT_PORT: ${WORKSAFE_AGENT_PORT}
+    depends_on:
+      - bcreg-agent
+      - ministry-finance-agent
+      - city-surrey-agent
+      - fraser-valley-agent
+      - liquor-control-agent
+      - worksafe-agent
+    networks:
+      - orgbook
+      - vonx
+    ports:
+      - ${WEB_HTTP_PORT}:${WEB_HOST_PORT}
+    volumes:
+      - ../caddy/Caddyfile:/etc/Caddyfile
+      - ../assets:/srv/assets
+      - caddy-data:/root/.caddy
+      - caddy-logs:/srv/logs
+
+  # dflow angular app running with hot-reload capabilities
+  dflow-dev:
+    image: dflow-dev
+    environment:
+      DEV_MODE: "false"
+      NODE_ENV: "development"
+      NPM_CONFIG_LOGLEVEL: "notice"
+      NPM_RUN: "dev"
+    depends_on:
+      - proxy-dev
+    networks:
+      - orgbook
+      - vonx
+    ports:
+      - 5050:5050
+    volumes:
+      - ../dflow-demo/src:/opt/app-root/src/src
+
+  # production-ready caddy instance, used to serve the angular app as well as acting as proxy
   caddy:
     image: dflow
     environment:
@@ -40,26 +99,6 @@ services:
       - caddy-logs:/srv/logs
     command:
       '/tmp/scripts/run'
-
-  caddy-dev:
-    image: dflow-dev
-    environment:
-      TOB_API_URL: ${TOB_API_URL}
-      TOB_APP_URL: ${TOB_APP_URL}
-      DEV_MODE: "false"
-      NODE_ENV: "development"
-      NPM_CONFIG_LOGLEVEL: "notice"
-      NPM_RUN: "dev"
-    networks:
-      - orgbook
-      - vonx
-    ports:
-      - 5050:5050
-    volumes:
-      - ../caddy/Caddyfile:/etc/Caddyfile
-      - caddy-data:/root/.caddy
-      - caddy-logs:/srv/logs
-      - ../dflow-demo/src:/opt/app-root/src/src
 
   bcreg-agent:
     build:
