@@ -52,12 +52,17 @@ usage() {
 
   start - Same as up
 
+  start-dev - Builds and runs a live development version of dflow, along with
+              the required supporting components. Once started, the website is
+              automatically compiled and updated in response to file modifications.
+
   logs - Display the logs from the docker compose run (ctrl-c to exit).
 
   stop - Stops the services.  This is a non-destructive process.  The volumes and containers
          are not deleted so they will be reused the next time you run start.
 
   down - Brings down the services and removes the volumes (storage) and containers.
+
   rm - Same as down
 
   lint - Apply pylint to Python source code.
@@ -94,6 +99,7 @@ configureEnvironment () {
     esac
   done
 
+  # general
   export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-"dflow"}
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export APPLICATION_URL=${APPLICATION_URL-http://localhost:${WEB_HTTP_PORT:-5000}}
@@ -106,6 +112,7 @@ configureEnvironment () {
   export WEB_HOST_NAME=${WEB_HOST_NAME:-0.0.0.0}
   export WEB_HOST_PORT=${WEB_HOST_PORT:-8080}
   export WEB_HOST_TLS=${WEB_HOST_TLS:-off}
+  export WEB_HTTP_PORT=${WEB_HTTP_PORT:-5000}
   export BCREG_AGENT_HOST=${BCREG_AGENT_HOST:-bcreg-agent}
   export BCREG_AGENT_PORT=${BCREG_AGENT_PORT:-8000}
   export MINISTRY_FINANCE_AGENT_HOST=${MINISTRY_FINANCE_AGENT_HOST:-ministry-finance-agent}
@@ -118,8 +125,6 @@ configureEnvironment () {
   export LIQUOR_CONTROL_AGENT_PORT=${LIQUOR_CONTROL_AGENT_PORT:-8000}
   export WORKSAFE_AGENT_HOST=${WORKSAFE_AGENT_HOST:-worksafe-agent}
   export WORKSAFE_AGENT_PORT=${WORKSAFE_AGENT_PORT:-8000}
-  export WEB_HTTP_PORT=${WEB_HTTP_PORT:-5000}
-  export WEB_HOST_PORT=${WEB_HOST_PORT:-8080}
 
   # wallet-db
   export POSTGRESQL_DATABASE="THE_ORG_BOOK"
@@ -212,6 +217,28 @@ build() {
     'dflow'
 }
 
+build-dev() {
+  # This image only exists to pre-create the npm cache directory
+  # so it can be properly used as a volume, it doesn't apply to openshift
+  echo -e "\nBuilding nodejs-build image ..."
+  docker build -q \
+    -t 'nodejs-build' \
+    -f './nodejs-build/Dockerfile' '../'
+
+  # NB: We build with DEV_MODE=true but run with DEV_MODE=false
+  echo -e "\nBuilding dflow-dev image ..."
+  ${S2I_EXE} build \
+    -e "DEV_MODE=true" \
+    -e "HTTP_PROXY=${HTTP_PROXY}" \
+    -e "HTTPS_PROXY=${HTTPS_PROXY}" \
+    -e "NG_BASE_HREF=${WEB_BASE_HREF}" \
+    -e "NG_DEPLOY_URL=${WEB_DEPLOY_URL}" \
+    -v "${COMPOSE_PROJECT_NAME}_dflow-npm-cache:/opt/app-root/src/.npm" \
+    '../dflow-demo' \
+    'nodejs-build' \
+    'dflow-dev'
+}
+
 deleteVolumes() {
   _projectName=${COMPOSE_PROJECT_NAME:-docker}
 
@@ -233,9 +260,8 @@ pylint() {
     echo -e "Installing pylint ..."
     $PIP install pylint
   fi
-  $PIP install -q -r ../src/requirements.txt
   cd ..
-  $PYLINT src/*.py src/vonx
+  $PYLINT dflow-agent/src/*.py
 }
 
 # =================================================================================================================
@@ -246,7 +272,6 @@ shift || true
 
 case "$COMMAND" in
   start|up)
-    # also start caddy
     DEFAULT_CONTAINERS="caddy $DEFAULT_CONTAINERS"
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
@@ -255,6 +280,14 @@ case "$COMMAND" in
     ;;
   logs)
     configureEnvironment $@
+    docker-compose logs -f
+    ;;
+  start-dev)
+    DEFAULT_CONTAINERS="proxy-dev dflow-dev $DEFAULT_CONTAINERS"
+    _startupParams=$(getStartupParams $@)
+    configureEnvironment $@
+    [ -z "$SKIP_BUILD" ] && build-dev
+    docker-compose up -d ${_startupParams}
     docker-compose logs -f
     ;;
   stop)

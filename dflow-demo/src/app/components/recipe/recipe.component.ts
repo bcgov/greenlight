@@ -194,7 +194,10 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     const credType = this.credentialTypes.results.find((credType) => {
       return credType.schema.name === schemaName;
     });
-    return credType.url;
+    if (!credType) {
+      console.log(`Could not find any credential type matching schema ${schemaName}`);
+    }
+    return credType.url || '';
   }
 
 }
