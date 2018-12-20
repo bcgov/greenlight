@@ -7,6 +7,7 @@ import { WorkflowService } from 'src/app/services/workflow.service';
 import { Step, StepDependency } from '../../models/step';
 import { NodeLabelType, WorkflowNode } from '../../models/workflow-node';
 import { TobService } from '../../services/tob.service';
+import { ProgressBarComponent } from '../util/progress-bar/progress-bar.component';
 
 @Component({
   selector: 'app-recipe',
@@ -15,10 +16,10 @@ import { TobService } from '../../services/tob.service';
 })
 export class RecipeComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('canvasRoot') svgRoot;
+  @ViewChild('svgCanvas') svgRoot;
+  @ViewChild(ProgressBarComponent) progressBar: ProgressBarComponent;
 
-  progress: number;
-  progressMsg: string;
+  loading: boolean;
 
   topic: number;
   targetName: string;
@@ -28,31 +29,37 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   issuers: Array<Issuer>;
   nodes: any;
   links: any;
-
   credentials: any;
   credentialTypes: any;
+
   graphLayout: Promise<any>;
+  progressMsg: string;
+  progressQty: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private workflowService: WorkflowService,
     private nodeResolverService: WorkflowNodeResolverService,
     private tobService: TobService) {
-      this.setProgress(15, 'Loading steps...');
-      this.issuers = new Array<Issuer>();
     }
 
   ngOnInit() {
-    // get topicId from route
+    this.loading = true;
+    this.issuers = new Array<Issuer>();
+
     this.activatedRoute.queryParams.subscribe((params) => {
       this.targetName = params['name'];
       this.targetVersion = params['version'];
       this.targetDid = params['did'];
-
       this.topic = params['topic'];
 
+      // TODO: handle missing query params, maybe display alert error
+    });
+  }
+
+  ngAfterViewInit() {
+
       this.setProgress(50, 'Loading steps...'); // this value is arbitrary, it just provides visual feedback for the user
-      console.log(this.progress);
 
       this.graphLayout = this.tobService.getIssuers().toPromise()
       .then((issuers: any) => {
@@ -131,17 +138,23 @@ export class RecipeComponent implements OnInit, AfterViewInit {
           this.workflowService.addLink(new WorkflowLink(link.target, link.source));
         });
       });
-    })
-  }
 
-  ngAfterViewInit() {
     // render graph
     this.graphLayout.then(() => {
       // hide progress-bar and show graph
       this.setProgress(100, 'dFlow loaded!'); // this value is arbitrary, it just provides visual feedback for the user
 
+      this.loading = false;
+
       this.workflowService.renderGraph(this.svgRoot);
     });
+  }
+  /**
+   * Updates the current progress status, displayed in the progress bar.
+   */
+  setProgress(progress: number, message?: string) {
+    this.progressQty = progress;
+    this.progressMsg = message;
   }
 
   /**
@@ -183,11 +196,6 @@ export class RecipeComponent implements OnInit, AfterViewInit {
       });
     }
     return walletId.join(',');
-  }
-
-  private setProgress (progress: number, progressMsg: string) {
-    this.progress = progress;
-    this.progressMsg = progressMsg;
   }
 
   private getCredentialActionURL (schemaName: string) {
