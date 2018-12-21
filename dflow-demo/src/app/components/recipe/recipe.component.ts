@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin, of } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Issuer } from 'src/app/models/issuer';
 import { WorkflowLink } from 'src/app/models/workflow-link';
 import { WorkflowNodeResolverService } from 'src/app/services/workflow-node-resolver.service';
@@ -15,7 +17,6 @@ import { ProgressBarComponent } from '../util/progress-bar/progress-bar.componen
   styleUrls: ['./recipe.component.scss']
 })
 export class RecipeComponent implements OnInit, AfterViewInit {
-
   @ViewChild('svgCanvas') svgRoot;
   @ViewChild(ProgressBarComponent) progressBar: ProgressBarComponent;
 
@@ -26,129 +27,123 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   targetVersion: string;
   targetDid: string;
 
-  issuers: Array<Issuer>;
-  nodes: any;
-  links: any;
-  credentials: any;
-  credentialTypes: any;
+  issuers: Observable;
+  topology: Observable;
+  credentials: Observable;
+  credentialTypes: Observable;
 
-  graphLayout: Promise<any>;
   progressMsg: string;
   progressQty: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private cdRef: ChangeDetectorRef,
     private workflowService: WorkflowService,
     private nodeResolverService: WorkflowNodeResolverService,
-    private tobService: TobService) {
-    }
+    private tobService: TobService
+  ) {}
 
   ngOnInit() {
     this.loading = true;
-    this.issuers = new Array<Issuer>();
+    this.setProgress(0, 'Initializing');
 
-    this.activatedRoute.queryParams.subscribe((params) => {
+    this.activatedRoute.queryParams.subscribe(params => {
       this.targetName = params['name'];
       this.targetVersion = params['version'];
       this.targetDid = params['did'];
       this.topic = params['topic'];
 
       // TODO: handle missing query params, maybe display alert error
+
+      // start request for observables
+      this.issuers = this.tobService.getIssuers();
+      this.topology = this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid);
+      this.credentialTypes = this.tobService.getCredentialTypes();
+      if(this.topic){
+        this.credentials = this.tobService.getCredentialsByTopic(this.topic);
+      } else {
+        this.credentials = of(new Array<any>());
+      }
     });
   }
 
   ngAfterViewInit() {
+    const issuers = new Array<Issuer>();
+    let nodes;
+    let links;
+    let credentialTypes;
+    let credentials;
 
-      this.setProgress(50, 'Loading steps...'); // this value is arbitrary, it just provides visual feedback for the user
+    // Provide visual feedback as requests complete
+    this.issuers.subscribe(issuersRepl => {
+      console.log('Issuers: ', issuersRepl);
+      issuersRepl.results.forEach(issuer => {
+        issuers.push(new Issuer(issuer));
+      });
+      this.setProgress(this.progressQty + 25, 'Retrieved Issuers');
+      this.cdRef.detectChanges();
+    });
+    this.credentialTypes.subscribe(credTypes => {
+      console.log('CredTypes: ', credTypes);
+      credentialTypes = credTypes;
+      this.setProgress(this.progressQty + 25, 'Obtained Credential Types');
+      this.cdRef.detectChanges();
+    });
+    this.credentials.subscribe(creds => {
+      console.log('Credentials: ', creds);
+      credentials = creds;
+      this.setProgress(this.progressQty + 25, 'Acquired Credentials');
+      this.cdRef.detectChanges();
+    });
+    this.topology.subscribe(topology => {
+      console.log('Topology: ', topology);
+      nodes = topology.result.nodes;
+      links = topology.result.links;
+      this.setProgress(this.progressQty + 25, 'Mapping Topology');
+      this.cdRef.detectChanges();
+    });
 
-      this.graphLayout = this.tobService.getIssuers().toPromise()
-      .then((issuers: any) => {
-        console.log('Issuers:', issuers);
-        this.setProgress(70, 'Retrieving issuer data...'); // this value is arbitrary, it just provides visual feedback for the user
-
-        issuers.results.forEach(issuer => {
-          this.issuers.push(new Issuer(issuer));
+    // Prepare the graph and render once all the data is available
+    forkJoin(this.issuers, this.credentialTypes, this.credentials, this.topology).subscribe(() => {
+      // add nodes
+      nodes.forEach(node => {
+        const issuer = this.tobService.getIssuerByDID(node.origin_did, issuers);
+        const deps = this.tobService.getDependenciesByID(node.id, links, credentials, issuers);
+        const walletId = this.getWalletId(deps, credentials);
+        const credData = this.availableCredForIssuerAndSchema(issuer, node.schema_name, credentials);
+        const schemaURL = this.getCredentialActionURL(node.schema_name, credentialTypes);
+        const step = new Step({
+          topicId: this.topic,
+          walletId: walletId,
+          stepName: node.schema_name,
+          dependencies: deps,
+          issuer: issuer,
+          credData: credData,
+          schema: {
+            name: this.targetName,
+            version: this.targetVersion,
+            did: this.targetDid
+          },
+          schemaURL: schemaURL
         });
-      }).then(() => {
-        // get topology and set-up graphing library
-        return this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid).toPromise().catch(() => {
-          // TODO: instead of retrying, find a better way to handle this long timeout
-          return this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid).toPromise();
-        });
-      }).then((topology: any) => {
-        console.log('Path:', topology);
-        this.setProgress(80, 'Generating graph...'); // this value is arbitrary, it just provides visual feedback for the user
-
-        // store topology
-        this.nodes = topology.result.nodes;
-        this.links = topology.result.links;
-      }).then(() => {
-        this.setProgress(90, 'Processing credentials...'); // this value is arbitrary, it just provides visual feedback for the user
-        // grab credential types, to decode the credential-specific issuer URL for each credential
-        return this.tobService.getCredentialTypes().toPromise();
-      })
-      .then((credTypes: any) => {
-        this.credentialTypes = credTypes;
-
-        this.setProgress(95, 'Processing credentials...'); // this value is arbitrary, it just provides visual feedback for the user
-        return new Promise<any>((resolve) => {
-          setTimeout(() => {
-            // grab the credentials if we already have a topic, otherwise return an empty array
-            if (this.topic) {
-              resolve(this.tobService.getCredentialsByTopic(this.topic).toPromise());
-            } else {
-              resolve(new Array<any>());
-            }
-          }, 1000);
-        });
-      })
-      .then((creds: any) => {
-        this.setProgress(99, 'Processing credentials...'); // this value is arbitrary, it just provides visual feedback for the user
-
-        console.log('Credentials:', creds);
-        this.credentials = creds;
-
-        // add nodes
-        this.nodes.forEach(node => {
-          const issuer = this.tobService.getIssuerByDID(node.origin_did, this.issuers);
-          const deps = this.tobService.getDependenciesByID(node.id, this.links, this.credentials, this.issuers);
-          const walletId = this.getWalletId(deps);
-          const credData = this.availableCredForIssuerAndSchema(issuer, node.schema_name);
-          const schemaURL = this.getCredentialActionURL(node.schema_name);
-          const step = new Step({
-            topicId: this.topic,
-            walletId: walletId,
-            stepName: node.schema_name,
-            dependencies: deps,
-            issuer: issuer,
-            credData: credData,
-            schema : {
-              name: this.targetName,
-              version: this.targetVersion,
-              did: this.targetDid
-            },
-            schemaURL: schemaURL
-          });
-          const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
-          this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
-        });
-
-        // add links
-        this.links.forEach(link => {
-          this.workflowService.addLink(new WorkflowLink(link.target, link.source));
-        });
+        const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
+        this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
       });
 
-    // render graph
-    this.graphLayout.then(() => {
+      // add links
+      links.forEach(link => {
+        this.workflowService.addLink(new WorkflowLink(link.target, link.source));
+      });
+
       // hide progress-bar and show graph
-      this.setProgress(100, 'dFlow loaded!'); // this value is arbitrary, it just provides visual feedback for the user
-
-      this.loading = false;
-
-      this.workflowService.renderGraph(this.svgRoot);
+      this.setProgress(100, 'Rendering dFlow');
+      setTimeout(() => {
+        this.loading = false;
+        this.workflowService.renderGraph(this.svgRoot);
+      }, 500);
     });
   }
+
   /**
    * Updates the current progress status, displayed in the progress bar.
    */
@@ -161,11 +156,10 @@ export class RecipeComponent implements OnInit, AfterViewInit {
    * Returns the credential issued by the specified issuer, if available.
    * @param issuer the issuer issuing the credential.
    */
-  private availableCredForIssuerAndSchema (issuer: Issuer, schemaName: string) {
+  private availableCredForIssuerAndSchema(issuer: Issuer, schemaName: string, credentials: any) {
     let result;
-    this.credentials.forEach(cred => {
-      if (cred.credential_type.issuer.did === issuer.did
-          && cred.credential_type.schema.name === schemaName) {
+    credentials.forEach(cred => {
+      if (cred.credential_type.issuer.did === issuer.did && cred.credential_type.schema.name === schemaName) {
         result = {
           id: cred.id,
           effective_date: cred.effective_date
@@ -175,31 +169,31 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     return result;
   }
 
-  private getWalletId(deps: Array<StepDependency>) {
+  private getWalletId(deps: Array<StepDependency>, credentials: any) {
     let walletId = new Array<string>();
-    if (this.credentials && this.credentials.length > 0 && deps) {
+    if (credentials && credentials.length > 0 && deps) {
       // TODO: fix dependency handling to only use what is necessary
       /*
        * This is the right way of handling things, however the dflow agents use a
        * list of proofs and "depends_on" clauses that doesn't match (to make the graph interesting)
        */
       // deps.forEach(dependency => {
-        // const availableCred = this.credentials.find((cred) => {
-        //   return cred.credential_type.schema.name === dependency.schema;
-        // });
-        // if (availableCred) {
-        //   walletId.push(availableCred.wallet_id);
-        // }
+      // const availableCred = this.credentials.find((cred) => {
+      //   return cred.credential_type.schema.name === dependency.schema;
       // });
-      this.credentials.forEach(cred => {
+      // if (availableCred) {
+      //   walletId.push(availableCred.wallet_id);
+      // }
+      // });
+      credentials.forEach(cred => {
         walletId.push(cred.wallet_id);
       });
     }
     return walletId.join(',');
   }
 
-  private getCredentialActionURL (schemaName: string) {
-    const credType = this.credentialTypes.results.find((credType) => {
+  private getCredentialActionURL(schemaName: string, credentialTypes: any) {
+    const credType = credentialTypes.results.find(credType => {
       return credType.schema.name === schemaName;
     });
     if (!credType) {
@@ -207,5 +201,4 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     }
     return credType.url || '';
   }
-
 }
