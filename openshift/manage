@@ -246,7 +246,7 @@ recycle() {
 }
 
 # Add any non-issurer service pods to this list
-NON_ISSURER_SERVICE_PODS="redis proxy wallet-db"
+NON_ISSURER_SERVICE_PODS="redis dflow wallet-db"
 
 getIssuerServicePods() {
   _pods=$(getAllPods ${@})

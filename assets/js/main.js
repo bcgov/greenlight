@@ -70,11 +70,16 @@ $(function() {
         url: `${THE_ORG_BOOK_APP_URL}/api/credential/${walletId}`,
         contentType: "application/json"
       }).done(function(response) {
-        // retrieve queryparams defining the target credentials from the URL before returning to dFlow
-        const schema_name = window.location.href.split('&')[1].split('=')[1];
-        const schema_version = window.location.href.split('&')[2].split('=')[1];
-        const issuer_did = window.location.href.split('&')[3].split('=')[1];
-        window.location = `/demo?topic=${response.topic}&name=${schema_name}&version=${schema_version}&did=${issuer_did}`
+        // get dFlow host from document.referrer
+        const hostURL = document.referrer.split('/demo')[0];
+
+        // retrieve queryparams defining the target credentials
+        const schema_name = decodeURIComponent(window.location.href.split('&')[1].split('=')[1]);
+        const schema_version = decodeURIComponent(window.location.href.split('&')[2].split('=')[1]);
+        const issuer_did = decodeURIComponent(window.location.href.split('&')[3].split('=')[1]);
+
+        // build dFlow return URL from above parameters
+        window.location = `${hostURL}/demo?topic=${response.topic}&name=${schema_name}&version=${schema_version}&did=${issuer_did}`;
       });
     });
   });
