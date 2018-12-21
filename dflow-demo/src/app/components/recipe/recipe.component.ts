@@ -136,7 +136,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
       });
 
       // hide progress-bar and show graph
-      this.setProgress(100, 'Rendering dFlow');
+      this.setProgress(100, 'Rendering Graph');
       setTimeout(() => {
         this.loading = false;
         this.workflowService.renderGraph(this.svgRoot);
