@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin, of } from 'rxjs';
+import { from } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
+import { combineAll, delay, retry, tap } from 'rxjs/operators';
 import { Issuer } from 'src/app/models/issuer';
 import { WorkflowLink } from 'src/app/models/workflow-link';
 import { WorkflowNodeResolverService } from 'src/app/services/workflow-node-resolver.service';
@@ -17,6 +18,7 @@ import { ProgressBarComponent } from '../util/progress-bar/progress-bar.componen
   styleUrls: ['./recipe.component.scss']
 })
 export class RecipeComponent implements OnInit, AfterViewInit {
+
   @ViewChild('svgCanvas') svgRoot;
   @ViewChild(ProgressBarComponent) progressBar: ProgressBarComponent;
 
@@ -27,17 +29,13 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   targetVersion: string;
   targetDid: string;
 
-  issuers: Observable;
-  topology: Observable;
-  credentials: Observable;
-  credentialTypes: Observable;
+  observables: Array<Observable<string>>;
 
   progressMsg: string;
   progressQty: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private cdRef: ChangeDetectorRef,
     private workflowService: WorkflowService,
     private nodeResolverService: WorkflowNodeResolverService,
     private tobService: TobService
@@ -47,7 +45,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.setProgress(0, 'Initializing');
 
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.subscribe((params) => {
       this.targetName = params['name'];
       this.targetVersion = params['version'];
       this.targetDid = params['did'];
@@ -56,96 +54,94 @@ export class RecipeComponent implements OnInit, AfterViewInit {
       // TODO: handle missing query params, maybe display alert error
 
       // start request for observables
-      this.issuers = this.tobService.getIssuers();
-      this.topology = this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid);
-      this.credentialTypes = this.tobService.getCredentialTypes();
-      if(this.topic){
-        this.credentials = this.tobService.getCredentialsByTopic(this.topic);
-      } else {
-        this.credentials = of(new Array<any>());
-      }
+      this.observables = [
+        this.tobService.getIssuers(),
+        this.tobService.getCredentialTypes(),
+        this.tobService.getCredentialsByTopic(this.topic),
+        this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid).pipe(retry(2))
+      ];
     });
   }
 
   ngAfterViewInit() {
-    const issuers = new Array<Issuer>();
-    let nodes;
-    let links;
-    let credentialTypes;
-    let credentials;
-
-    // Provide visual feedback as requests complete
-    this.issuers.subscribe(issuersRepl => {
-      console.log('Issuers: ', issuersRepl);
-      issuersRepl.results.forEach(issuer => {
-        issuers.push(new Issuer(issuer));
-      });
-      this.setProgress(this.progressQty + 25, 'Retrieved Issuers');
-      this.cdRef.detectChanges();
-    });
-    this.credentialTypes.subscribe(credTypes => {
-      console.log('CredTypes: ', credTypes);
-      credentialTypes = credTypes;
-      this.setProgress(this.progressQty + 25, 'Obtained Credential Types');
-      this.cdRef.detectChanges();
-    });
-    this.credentials.subscribe(creds => {
-      console.log('Credentials: ', creds);
-      credentials = creds;
-      this.setProgress(this.progressQty + 25, 'Acquired Credentials');
-      this.cdRef.detectChanges();
-    });
-    this.topology.subscribe(topology => {
-      console.log('Topology: ', topology);
-      nodes = topology.result.nodes;
-      links = topology.result.links;
-      this.setProgress(this.progressQty + 25, 'Mapping Topology');
-      this.cdRef.detectChanges();
-    });
 
     // Prepare the graph and render once all the data is available
-    forkJoin(this.issuers, this.credentialTypes, this.credentials, this.topology).subscribe(() => {
-      // add nodes
-      nodes.forEach(node => {
-        const issuer = this.tobService.getIssuerByDID(node.origin_did, issuers);
-        const deps = this.tobService.getDependenciesByID(node.id, links, credentials, issuers);
-        const walletId = this.getWalletId(deps, credentials);
-        const credData = this.availableCredForIssuerAndSchema(issuer, node.schema_name, credentials);
-        const schemaURL = this.getCredentialActionURL(node.schema_name, credentialTypes);
-        const step = new Step({
-          topicId: this.topic,
-          walletId: walletId,
-          stepName: node.schema_name,
-          dependencies: deps,
-          issuer: issuer,
-          credData: credData,
-          schema: {
-            name: this.targetName,
-            version: this.targetVersion,
-            did: this.targetDid
-          },
-          schemaURL: schemaURL
-        });
-        const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
-        this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
-      });
+    from(this.observables)
+      .pipe(
+        delay(200), // allow the progress bar to animate nicely
+        tap((observable) => {
+          switch(observable) {
+            case this.observables[0]:
+              this.setProgress(this.progressQty + 25, 'Retrieved Issuers');
+              break;
+            case this.observables[1]:
+              this.setProgress(this.progressQty + 25, 'Obtained Credential Types');
+              break;
+            case this.observables[2]:
+              this.setProgress(this.progressQty + 25, 'Acquired Credentials');
+              break;
+            case this.observables[3]:
+              this.setProgress(this.progressQty + 25, 'Mapped Topology');
+              break;
+            default:
+              console.log('Unknown observable: ', observable);
+          }
+      }),
+      combineAll())
+      .subscribe(
+        (response) => {
+          const issuers = response[0].results.map((item) => {
+            return new Issuer(item);
+          });
+          const credentialTypes = response[1];
+          const credentials = response[2];
+          const nodes = response[3].result.nodes;
+          const links = response[3].result.links;
 
-      // add links
-      links.forEach(link => {
-        this.workflowService.addLink(new WorkflowLink(link.target, link.source));
-      });
+          // add nodes
+          nodes.forEach(node => {
+            const issuer = this.tobService.getIssuerByDID(node.origin_did, issuers);
+            const deps = this.tobService.getDependenciesByID(node.id, links, credentials, issuers);
+            const walletId = this.getWalletId(deps, credentials);
+            const credData = this.availableCredForIssuerAndSchema(issuer, node.schema_name, credentials);
+            const schemaURL = this.getCredentialActionURL(node.schema_name, credentialTypes);
+            const step = new Step({
+              topicId: this.topic,
+              walletId: walletId,
+              stepName: node.schema_name,
+              dependencies: deps,
+              issuer: issuer,
+              credData: credData,
+              schema: {
+                name: this.targetName,
+                version: this.targetVersion,
+                did: this.targetDid
+              },
+              schemaURL: schemaURL
+            });
+            const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
+            this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
+          });
 
-      // hide progress-bar and show graph
-      this.setProgress(100, 'Rendering Graph');
-      setTimeout(() => {
-        this.loading = false;
-        this.workflowService.renderGraph(this.svgRoot);
-      }, 500);
-    });
+          // add links
+          links.forEach(link => {
+            this.workflowService.addLink(new WorkflowLink(link.target, link.source));
+          });
+
+          // hide progress-bar and show graph
+          this.setProgress(100, 'Rendering Graph');
+          setTimeout(() => {
+            this.loading = false;
+            this.workflowService.renderGraph(this.svgRoot);
+          }, 500);
+      }
+    );
   }
 
   /**
    * Updates the current progress status, displayed in the progress bar.
+   * @param progress the current progress
+   * @param message the prograss status message
    */
   setProgress(progress: number, message?: string) {
     this.progressQty = progress;
