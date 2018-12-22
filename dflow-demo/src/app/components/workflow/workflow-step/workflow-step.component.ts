@@ -35,6 +35,7 @@ export class WorkflowStepComponent implements OnInit {
 
     // prepare actionURL and actionTxt
     if (this.obtainedCert) {
+      console.log('nah');
       this.actionTxt = 'View record';
       this.actionURL = `/topic/${this.step.topicId}/cred/${this.step.credentialId}`;
       this.actionTarget = '_blank';
