@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { from } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { from, Observable } from 'rxjs';
 import { combineAll, delay, retry, tap } from 'rxjs/operators';
 import { Issuer } from 'src/app/models/issuer';
 import { WorkflowLink } from 'src/app/models/workflow-link';
@@ -29,7 +28,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   targetVersion: string;
   targetDid: string;
 
-  observables: Array<Observable<string>>;
+  observables: Array<Observable<any>>;
 
   progressMsg: string;
   progressQty: number;
@@ -69,7 +68,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     from(this.observables)
       .pipe(
         delay(200), // allow the progress bar to animate nicely
-        tap((observable) => {
+        tap((observable: Observable<any>) => {
           switch(observable) {
             case this.observables[0]:
               this.setProgress(this.progressQty + 25, 'Retrieved Issuers');
@@ -89,7 +88,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
       }),
       combineAll())
       .subscribe(
-        (response) => {
+        (response: any) => {
           const issuers = response[0].results.map((item) => {
             return new Issuer(item);
           });
@@ -99,7 +98,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
           const links = response[3].result.links;
 
           // add nodes
-          nodes.forEach(node => {
+          nodes.forEach((node: any) => {
             const issuer = this.tobService.getIssuerByDID(node.origin_did, issuers);
             const deps = this.tobService.getDependenciesByID(node.id, links, credentials, issuers);
             const walletId = this.getWalletId(deps, credentials);
@@ -124,7 +123,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
           });
 
           // add links
-          links.forEach(link => {
+          links.forEach((link: any) => {
             this.workflowService.addLink(new WorkflowLink(link.target, link.source));
           });
 
