@@ -6,57 +6,29 @@
     'card-danger': !allDepsSatisfied
   }">
     <div class="card-header">
-      <h5 class="my-0">{{ step.issuer.name }}</h5>
-      <h6 class="my-0 font-italic">{{ step.name }}</h6>
+
+      <h6 class="my-0 mr-2 font-italic float-left">{{ step.name }}</h6>
+
+      <span>
+        <!-- RouterLink and target are used so that teh link will work also when in development mode -->
+        <a class="icon-link" target="{{isDevMode ? '_self' : '_blank'}}" [routerLink]="['/topic', step.topicId, 'cred', step.credentialId]">
+          <i *ngIf="step.effectiveDate" class="fa fa-lg fa-id-card float-right"></i>
+          <i *ngIf="allDepsSatisfied && !obtainedCert" class="fa fa-lg fa-plus-square float-right"></i>
+        </a>
+      </span>
+
     </div>
+
     <div class="card-body">
-        <div id="cert-body" class="claim-body">
 
-            <ng-container *ngIf="step.effectiveDate; else certNotFoundTemplate">
-              <div class="row form-group">
-                <label class="col-sm-4 control-label" translate="">Issuer</label>
-                <div class="col-sm-8 form-field">
-                    <a id="issuer-link" rel="external" href="{{step.issuer.url}}">
-                      {{ step.issuer.name }} <small><span class="fa fa-external-link"></span></small>
-                    </a>
-                </div>
-              </div>
-              <div class="row form-group">
-                  <label class="col-sm-4 control-label" translate="">Effective Date</label>
-                  <div id="effective-date" class="col-sm-8 form-field">{{ step.effectiveDate }}</div>
-              </div>
-            </ng-container>
-
-            <ng-template #certNotFoundTemplate>
-                <em class="text-muted">Certificate not found</em>
-            </ng-template>
-
-            <ng-container *ngIf="step.dependencies.length > 0 && !step.effectiveDate">
-                <hr class="cert-panel-divider"/>
-
-                <div class="depends">
-                    <h4 class="depends-title text-muted" translate="">Depends on</h4>
-                    <ul class="depends-items" *ngFor="let dep of step.dependencies">
-                      <li class="depends-item">
-                        <span class="badge-pill" [ngClass]="{'badge-success': dep.isAvailable, 'badge-danger': !dep.isAvailable}">
-                          <span class="fa mr-1" [ngClass]="{'fa-check-circle': dep.isAvailable, 'fa-times': !dep.isAvailable}"></span>
-                          <span>{{dep.name}} ({{dep.schema}})</span>
-                        </span>
-                      </li>
-                    </ul>
-                </div>
-            </ng-container>
-
-        </div>
-
-        <hr class="cert-panel-divider"/>
-
-        <div class="panel-footer text-right">
-            <a id="cta" target="{{actionTarget}}" class="btn btn-primary" [ngClass]="{'disabled': !actionURL }" href="{{actionURL}}">
-              <span class="fa fa-arrow-right" *ngIf="actionURL"></span>
-                {{ actionTxt }}
-            </a>
-        </div>
+      <div>
+        <span class="mx-1 font-weight-bold">Issuer:</span>
+        <span class="mx-1">
+          <a rel="external" href="{{step.issuer.url}}">
+            {{ step.issuer.name }} <small><i class="fa fa-external-link"></i></small>
+          </a>
+        </span>
+      </div>
 
     </div>
-  </div>
+</div>

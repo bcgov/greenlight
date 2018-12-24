@@ -1,0 +1,11 @@
+<h5 class="text-center">{{message}}</h5>
+
+<div class="progress my-2">
+  <div class="progress-bar progress-bar-striped progress-bar-animated"
+    role="progressbar"
+    [attr.aria-valuemin]="0"
+    [ngStyle]="{'width': progress + '%'}"
+    [attr.aria-valuenow]="progress"
+    [attr.aria-valuemax]="100">
+  </div>
+</div>

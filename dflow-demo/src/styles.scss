@@ -10,3 +10,54 @@ $fa-font-path: "../node_modules/font-awesome/fonts/";
 @import './app/components/workflow/workflow-step/workflow-step.component.scss';
 
 @import "~@ng-select/ng-select/themes/default.theme.css";
+
+@keyframes spin {
+	from {
+		transform: rotate(0);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+$indicator-color: #666;
+$dark-indicator-color: #eeeff3;
+$indicator-size: 1em;
+$indicator-thickness: 0.2em;
+.loading-indicator {
+	&, &:after {
+		border-radius: 50%;
+		width: $indicator-size;
+		height: $indicator-size;
+	}
+	animation: spin 1.1s infinite linear;
+	border: $indicator-thickness solid transparent;
+	border-top-color: $indicator-color;
+	line-height: 1;
+	&:not(.inline) {
+    margin: 0 auto;
+  }
+	position: relative;
+	text-indent: -9999em;
+	transform: translateZ(0);
+	&:after {
+		position: absolute;
+		top: (- $indicator-thickness);
+		left: (- $indicator-thickness);
+		border: $indicator-thickness solid transparentize($indicator-color, 0.8);
+		content: ' ';
+	}
+	.alt-text {
+	  display: none;
+	}
+	.dark-bg & {
+	  border-top-color: $dark-indicator-color;
+    &:after {
+		  border-color: transparentize($dark-indicator-color, 0.8);
+    }
+  }
+}
+
+.page-load {
+  font-size: 2rem;
+}

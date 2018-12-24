@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { Step } from 'src/app/models/step';
 
 @Component({
@@ -17,9 +17,13 @@ export class WorkflowStepComponent implements OnInit {
   actionTxt: string;
   actionTarget: string;
 
+  isDevMode: boolean;
+
   constructor() {  }
 
   ngOnInit() {
+    this.isDevMode = isDevMode();
+
     // generate component state variables
     if (this.step.dependencies.length > 0) {
       this.allDepsSatisfied = this.step.dependencies.map((item) => {

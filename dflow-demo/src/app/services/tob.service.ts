@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
 import { Issuer } from '../models/issuer';
 import { StepDependency } from '../models/step';
 
@@ -64,10 +65,13 @@ export class TobService {
   }
 
   getCredentialsByTopic (topicId) {
-    const reqURL = `/bc-tob/topic/${topicId}/credential/active`;
-    // const reqURL = '/assets/data/credentials-by-topic.json';
     // TODO: use types if possible
-    return this.http.get(reqURL);
+    if (topicId) {
+      const reqURL = `/bc-tob/topic/${topicId}/credential/active`;
+      // const reqURL = '/assets/data/credentials-by-topic.json';
+      return this.http.get(reqURL);
+    }
+    return of(new Array<any>());
   }
 
   /**
