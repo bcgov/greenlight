@@ -17,7 +17,6 @@ import { ProgressBarComponent } from '../util/progress-bar/progress-bar.componen
   styleUrls: ['./recipe.component.scss']
 })
 export class RecipeComponent implements OnInit, AfterViewInit {
-
   @ViewChild('svgCanvas') svgRoot;
   @ViewChild(ProgressBarComponent) progressBar: ProgressBarComponent;
 
@@ -44,7 +43,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.setProgress(0, 'Initializing');
 
-    this.activatedRoute.queryParams.subscribe((params) => {
+    this.activatedRoute.queryParams.subscribe(params => {
       this.targetName = params['name'];
       this.targetVersion = params['version'];
       this.targetDid = params['did'];
@@ -63,13 +62,12 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-
     // Prepare the graph and render once all the data is available
     from(this.observables)
       .pipe(
         delay(200), // allow the progress bar to animate nicely
         tap((observable: Observable<any>) => {
-          switch(observable) {
+          switch (observable) {
             case this.observables[0]:
               this.setProgress(this.progressQty + 25, 'Retrieved Issuers');
               break;
@@ -85,56 +83,55 @@ export class RecipeComponent implements OnInit, AfterViewInit {
             default:
               console.log('Unknown observable: ', observable);
           }
-      }),
-      combineAll())
-      .subscribe(
-        (response: any) => {
-          const issuers = response[0].results.map((item) => {
-            return new Issuer(item);
-          });
-          const credentialTypes = response[1];
-          const credentials = response[2];
-          const nodes = response[3].result.nodes;
-          const links = response[3].result.links;
+        }),
+        combineAll()
+      )
+      .subscribe((response: any) => {
+        const issuers = response[0].results.map(item => {
+          return new Issuer(item);
+        });
+        const credentialTypes = response[1];
+        const credentials = response[2];
+        const nodes = response[3].result.nodes;
+        const links = response[3].result.links;
 
-          // add nodes
-          nodes.forEach((node: any) => {
-            const issuer = this.tobService.getIssuerByDID(node.origin_did, issuers);
-            const deps = this.tobService.getDependenciesByID(node.id, links, credentials, issuers);
-            const walletId = this.getWalletId(deps, credentials);
-            const credData = this.availableCredForIssuerAndSchema(issuer, node.schema_name, credentials);
-            const schemaURL = this.getCredentialActionURL(node.schema_name, credentialTypes);
-            const step = new Step({
-              topicId: this.topic,
-              walletId: walletId,
-              stepName: node.schema_name,
-              dependencies: deps,
-              issuer: issuer,
-              credData: credData,
-              schema: {
-                name: this.targetName,
-                version: this.targetVersion,
-                did: this.targetDid
-              },
-              schemaURL: schemaURL
-            });
-            const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
-            this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
+        // add nodes
+        nodes.forEach((node: any) => {
+          const issuer = this.tobService.getIssuerByDID(node.origin_did, issuers);
+          const deps = this.tobService.getDependenciesByID(node.id, links, credentials, issuers);
+          const walletId = this.getWalletId(deps, credentials);
+          const credData = this.availableCredForIssuerAndSchema(issuer, node.schema_name, credentials);
+          const schemaURL = this.getCredentialActionURL(node.schema_name, credentialTypes);
+          const step = new Step({
+            topicId: this.topic,
+            walletId: walletId,
+            stepName: node.schema_name,
+            dependencies: deps,
+            issuer: issuer,
+            credData: credData,
+            schema: {
+              name: this.targetName,
+              version: this.targetVersion,
+              did: this.targetDid
+            },
+            schemaURL: schemaURL
           });
+          const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
+          this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
+        });
 
-          // add links
-          links.forEach((link: any) => {
-            this.workflowService.addLink(new WorkflowLink(link.target, link.source));
-          });
+        // add links
+        links.forEach((link: any) => {
+          this.workflowService.addLink(new WorkflowLink(link.target, link.source));
+        });
 
-          // hide progress-bar and show graph
-          this.setProgress(100, 'Rendering Graph');
-          setTimeout(() => {
-            this.loading = false;
-            this.workflowService.renderGraph(this.svgRoot);
-          }, 500);
-      }
-    );
+        // hide progress-bar and show graph
+        this.setProgress(100, 'Rendering Graph');
+        setTimeout(() => {
+          this.loading = false;
+          this.workflowService.renderGraph(this.svgRoot);
+        }, 500);
+      });
   }
 
   /**
