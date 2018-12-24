@@ -11,10 +11,14 @@
 
       <span>
         <!-- RouterLink and target are used so that teh link will work also when in development mode -->
-        <a class="icon-link" target="{{isDevMode ? '_self' : '_blank'}}" [routerLink]="['/topic', step.topicId, 'cred', step.credentialId]">
-          <i *ngIf="step.effectiveDate" class="fa fa-lg fa-id-card float-right"></i>
-          <i *ngIf="allDepsSatisfied && !obtainedCert" class="fa fa-lg fa-plus-square float-right"></i>
+        <a *ngIf="step.effectiveDate" class="icon-link" target="{{isDevMode ? '_self' : '_blank'}}" [routerLink]="['/topic', step.topicId, 'cred', step.credentialId]">
+          <i class="fa fa-lg fa-id-card float-right"></i>
         </a>
+
+        <a *ngIf="allDepsSatisfied && !obtainedCert"  class="icon-link" target="_self" href="{{actionURL}}">
+          <i class="fa fa-lg fa-plus-square float-right"></i>
+        </a>
+
       </span>
 
     </div>

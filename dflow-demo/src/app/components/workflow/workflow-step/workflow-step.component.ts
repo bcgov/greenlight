@@ -14,8 +14,6 @@ export class WorkflowStepComponent implements OnInit {
   obtainedCert = false;
 
   actionURL: string;
-  actionTxt: string;
-  actionTarget: string;
 
   isDevMode: boolean;
 
@@ -39,19 +37,13 @@ export class WorkflowStepComponent implements OnInit {
 
     // prepare actionURL and actionTxt
     if (this.obtainedCert) {
-      this.actionTxt = 'View record';
       this.actionURL = `/topic/${this.step.topicId}/cred/${this.step.credentialId}`;
-      this.actionTarget = '_blank';
     } else if (this.isStart || this.allDepsSatisfied) {
-      this.actionTxt = `Enroll with ${this.step.issuer.name}`;
       const credentialParam = `credential_ids=${this.step.walletId}`;
       const schemaParam = `schema_name=${this.step.requestedSchema.name}&schema_version=${this.step.requestedSchema.version}&issuer_did=${this.step.requestedSchema.did}`;
       this.actionURL = `${this.step.actionURL}?${credentialParam}&${schemaParam}`;
-      this.actionTarget = '_self'
     } else {
-      this.actionTxt = 'Dependencies not met';
       this.actionURL = null;
-      this.actionTarget = '';
     }
   }
 
