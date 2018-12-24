@@ -7,7 +7,8 @@ const PROXY_CONFIG = [
           "/fraser-valley",
           "/liquor",
           "/surrey",
-          "/worksafe"
+          "/worksafe",
+          "/topic"
       ],
       target: "http://proxy-dev:8080",
       secure: false,
