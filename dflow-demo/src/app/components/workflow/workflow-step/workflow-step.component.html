@@ -15,7 +15,7 @@
           <i class="fa fa-lg fa-id-card float-right"></i>
         </a>
 
-        <a *ngIf="allDepsSatisfied && !obtainedCert"  class="icon-link" target="_self" href="{{actionURL}}">
+        <a *ngIf="(isStart || allDepsSatisfied) && !obtainedCert"  class="icon-link" target="_self" href="{{actionURL}}">
           <i class="fa fa-lg fa-plus-square float-right"></i>
         </a>
 
