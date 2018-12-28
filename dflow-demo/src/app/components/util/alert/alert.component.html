@@ -1,0 +1,5 @@
+<div class="col-md-6 offset-md-3" *ngFor="let alert of alerts">
+  <ngb-alert [type]="alert.type" (close)="close(alert)">
+    {{ alert.message }}
+  </ngb-alert>
+</div>

@@ -1,13 +1,14 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { from, Observable } from 'rxjs';
-import { combineAll, delay, retry, tap } from 'rxjs/operators';
+import { combineAll, delay, retry, tap, catchError } from 'rxjs/operators';
 import { Issuer } from 'src/app/models/issuer';
 import { WorkflowLink } from 'src/app/models/workflow-link';
 import { WorkflowNodeResolverService } from 'src/app/services/workflow-node-resolver.service';
 import { WorkflowService } from 'src/app/services/workflow.service';
 import { Step, StepDependency } from '../../models/step';
 import { NodeLabelType, WorkflowNode } from '../../models/workflow-node';
+import { AlertService } from '../../services/alert.service';
 import { TobService } from '../../services/tob.service';
 import { ProgressBarComponent } from '../util/progress-bar/progress-bar.component';
 
@@ -33,6 +34,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   progressQty: number;
 
   constructor(
+    private alertService: AlertService,
     private activatedRoute: ActivatedRoute,
     private workflowService: WorkflowService,
     private nodeResolverService: WorkflowNodeResolverService,
@@ -83,6 +85,9 @@ export class RecipeComponent implements OnInit, AfterViewInit {
             default:
               console.log('Unknown observable: ', observable);
           }
+        }),
+        catchError((error: any) => {
+          this.alertService.error('An error has occurred, please try again.');
         }),
         combineAll()
       )
