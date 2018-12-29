@@ -7,6 +7,10 @@
       </progress-bar>
   </ng-container>
 
+  <div *ngIf="!loading && errors.length > 0" class="text-center recipe-error">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+  </div>
+
   <svg #svgCanvas class="w-100 h-100"></svg>
 
 </div>

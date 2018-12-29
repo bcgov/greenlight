@@ -1,18 +1,15 @@
-.roadmap-title {
-  font-size: 28px;
-  font-weight: 500;
-  color: #036;
-  text-align: center;
+.recipe-error {
+  font-size: 10em;
+  color: #712024;
 }
 
+// Graph styles
 svg {
   outline: 1px solid rgba(255, 255, 255, 0);
   // width: 100%;
   // height: 100%;
 }
 
-
-// Graph styles
 .node rect,
 .node circle,
 .node ellipse {

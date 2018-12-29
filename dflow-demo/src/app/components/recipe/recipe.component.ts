@@ -22,6 +22,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   @ViewChild(ProgressBarComponent) progressBar: ProgressBarComponent;
 
   loading: boolean;
+  errors: Array<string>;
 
   topic: number;
   targetName: string;
@@ -43,6 +44,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.loading = true;
+    this.errors = new Array<string>();
     this.setProgress(0, 'Initializing');
 
     this.activatedRoute.queryParams.subscribe(params => {
@@ -88,6 +90,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         }),
         catchError((error: any) => {
           this.alertService.error('An error has occurred, please try again.');
+          return Observable.throw(error);
         }),
         combineAll()
       )
@@ -127,14 +130,24 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
         // add links
         links.forEach((link: any) => {
-          this.workflowService.addLink(new WorkflowLink(link.target, link.source));
+          if (link.error) {
+            this.errors.push(link.error);
+          } else {
+            this.workflowService.addLink(new WorkflowLink(link.target, link.source));
+          }
         });
 
         // hide progress-bar and show graph
         this.setProgress(100, 'Rendering Graph');
         setTimeout(() => {
           this.loading = false;
-          this.workflowService.renderGraph(this.svgRoot);
+          if (this.errors.length > 0) {
+            this.errors.forEach((errorMessage) => {
+              this.alertService.error(errorMessage);
+            });
+          } else {
+            this.workflowService.renderGraph(this.svgRoot);
+          }
         }, 500);
       });
   }
