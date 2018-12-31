@@ -1,18 +1,12 @@
-<div class="w-100 px-2">
+<div class="container my-md-5">
 
-  <ng-container *ngIf="progress < 100">
-    <div>{{progressMsg}}</div>
-    <div class="progress mb-2">
-      <div class="progress-bar progress-bar-striped progress-bar-animated"
-        role="progressbar"
-        [attr.aria-valuemin]="0"
-        [ngStyle]="{'width': progress + '%'}"
-        [attr.aria-valuenow]="progress"
-        [attr.aria-valuemax]="100">
-      </div>
-    </div>
+  <ng-container *ngIf="loading">
+      <progress-bar #progressBar
+        [message]='progressMsg'
+        [progress]='progressQty'>
+      </progress-bar>
   </ng-container>
 
-  <svg #canvasRoot class="w-100"></svg>
+  <svg #svgCanvas class="w-100 h-100"></svg>
 
 </div>

@@ -1,30 +1,55 @@
-<main class="container home">
-  <h1>
-      dFlow Demo
-  </h1>
+<section id="home-hero" class="hero-banner">
 
-  <ng-container>
-    <p>
-      Please select the credential you would like to obtain:
-    </p>
+  <div class="container my-md-5">
 
-    <div class="form-group">
-      <label class="control-label" for="credPicker">Credential:</label>
-      <ng-select [(ngModel)]="selectedCred">
-        <ng-option *ngFor="let cred of availableCreds" [value]="cred">
-          {{ cred.issuer.name }} - {{ cred.schema.name }}:{{cred.schema.version}}
-        </ng-option>
-      </ng-select>
-      <div class="invalid-feedback" *ngIf="error">Please pick an issuer/schema combination to proceed.</div>
+    <div class="row">
+      <div class="col-sm-12">
+        <h1 class="page-title" id="contentStart" tabindex="-1" translate>Decentralized Flow</h1>
+
+        <p class="lead">
+        dFlow demonstrates how to simplify bureaucracy by using blockchain to streamline the process of acquiring and using credentials.
+        </p>
+      </div>
     </div>
-  </ng-container>
 
-  <ng-container>
-      <label class="col-form-label control-label">Legal Entity (optional):</label>
-      <search-input #searchInput (accepted)="performSearch($event)"></search-input>
-  </ng-container>
+  </div>
+
+</section>
+
+<section id="home-body" class="container">
+
+    <div class="container my-4 mt-md-5">
+      <h2>Let's get started!</h2>
+
+      <p>
+      This new service uses cutting-edge blockchain-based technology to issue credentials, while ensuring all pre-requisites are met.
+      </p>
+
+      <ol>
+        <li>Select the credential you wish to check/obtain from the drop-down list.</li>
+        <li>Find your legal entity. Don't worry, this step is optional and you will be able to create it if you don't already have one.</li>
+        <li>Click the begin button!</li>
+      </ol>
 
 
-  <button class="btn btn-primary mt-3" type="button" (click)="begin()">Begin</button>
+      <div class="form-group col-md-8">
+        <label class="control-label" for="credPicker">Credential:</label>
+        <ng-select [(ngModel)]="selectedCred">
+          <ng-option *ngFor="let cred of availableCreds" [value]="cred">
+            {{ cred.issuer.name }} - {{ cred.schema.name }}:{{cred.schema.version}}
+          </ng-option>
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="error">Please pick an issuer/schema combination to proceed.</div>
+      </div>
 
-</main>
+      <div class="form-group col-md-8">
+        <label class="col-form-label control-label">Legal Entity (optional):</label>
+        <search-input #searchInput (accepted)="performSearch($event)"></search-input>
+      </div>
+
+      <div class="my-4 col-md-8">
+          <button class="btn btn-primary" type="button" (click)="begin()">Begin</button>
+      </div>
+    </div>
+
+</section>

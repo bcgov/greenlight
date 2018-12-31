@@ -13,6 +13,7 @@ import { RecipeComponent } from './components/recipe/recipe.component';
 import { SearchInputComponent } from './components/search/search-input/search-input.component';
 import { WorkflowStepComponent } from './components/workflow/workflow-step/workflow-step.component';
 import { GeneralDataService } from './services/general-data.service';
+import { ProgressBarComponent } from './components/util/progress-bar/progress-bar.component';
 
 
 
@@ -24,7 +25,8 @@ import { GeneralDataService } from './services/general-data.service';
     HomeComponent,
     RecipeComponent,
     WorkflowStepComponent,
-    SearchInputComponent
+    SearchInputComponent,
+    ProgressBarComponent
   ],
   entryComponents: [
     WorkflowStepComponent
