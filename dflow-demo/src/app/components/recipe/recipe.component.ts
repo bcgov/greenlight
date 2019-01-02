@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { from, Observable } from 'rxjs';
-import { combineAll, delay, retry, tap, catchError } from 'rxjs/operators';
+import { catchError, combineAll, delay, retry, tap } from 'rxjs/operators';
 import { Issuer } from 'src/app/models/issuer';
 import { WorkflowLink } from 'src/app/models/workflow-link';
 import { WorkflowNodeResolverService } from 'src/app/services/workflow-node-resolver.service';
@@ -37,6 +37,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   constructor(
     private alertService: AlertService,
     private activatedRoute: ActivatedRoute,
+    private cdRef: ChangeDetectorRef,
     private workflowService: WorkflowService,
     private nodeResolverService: WorkflowNodeResolverService,
     private tobService: TobService
@@ -49,11 +50,21 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.targetName = params['name'];
-      this.targetVersion = params['version'];
-      this.targetDid = params['did'];
-      this.topic = params['topic'];
+      if (!this.targetName) {
+        this.errors.push('Target schema name parameter is missing!');
+      }
 
-      // TODO: handle missing query params, maybe display alert error
+      this.targetVersion = params['version'];
+      if (!this.targetVersion) {
+        this.errors.push('Target schema version parameter is missing!');
+      }
+
+      this.targetDid = params['did'];
+      if (!this.targetDid) {
+        this.errors.push('Target issuer did parameter is missing!');
+      }
+
+      this.topic = params['topic'];
 
       // start request for observables
       this.observables = [
@@ -66,90 +77,94 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Prepare the graph and render once all the data is available
-    from(this.observables)
-      .pipe(
-        delay(200), // allow the progress bar to animate nicely
-        tap((observable: Observable<any>) => {
-          switch (observable) {
-            case this.observables[0]:
-              this.setProgress(this.progressQty + 25, 'Retrieved Issuers');
-              break;
-            case this.observables[1]:
-              this.setProgress(this.progressQty + 25, 'Obtained Credential Types');
-              break;
-            case this.observables[2]:
-              this.setProgress(this.progressQty + 25, 'Acquired Credentials');
-              break;
-            case this.observables[3]:
-              this.setProgress(this.progressQty + 25, 'Mapped Topology');
-              break;
-            default:
-              console.log('Unknown observable: ', observable);
-          }
-        }),
-        catchError((error: any) => {
-          this.alertService.error('An error has occurred, please try again.');
-          return Observable.throw(error);
-        }),
-        combineAll()
-      )
-      .subscribe((response: any) => {
-        const issuers = response[0].results.map(item => {
-          return new Issuer(item);
-        });
-        const credentialTypes = response[1];
-        const credentials = response[2];
-        const nodes = response[3].result.nodes;
-        const links = response[3].result.links;
-
-        // add nodes
-        nodes.forEach((node: any) => {
-          const issuer = this.tobService.getIssuerByDID(node.origin_did, issuers);
-          const deps = this.tobService.getDependenciesByID(node.id, links, credentials, issuers);
-          const walletId = this.getWalletId(deps, credentials);
-          const credData = this.availableCredForIssuerAndSchema(issuer, node.schema_name, credentials);
-          const schemaURL = this.getCredentialActionURL(node.schema_name, credentialTypes);
-          const step = new Step({
-            topicId: this.topic,
-            walletId: walletId,
-            stepName: node.schema_name,
-            dependencies: deps,
-            issuer: issuer,
-            credData: credData,
-            schema: {
-              name: this.targetName,
-              version: this.targetVersion,
-              did: this.targetDid
-            },
-            schemaURL: schemaURL
+    if (this.errors.length > 0) {
+      this.displayErrors();
+      this.cdRef.detectChanges();
+    } else {
+      // Prepare the graph and render once all the data is available
+      from(this.observables)
+        .pipe(
+          delay(200), // allow the progress bar to animate nicely
+          tap((observable: Observable<any>) => {
+            switch (observable) {
+              case this.observables[0]:
+                this.setProgress(this.progressQty + 25, 'Retrieved Issuers');
+                break;
+              case this.observables[1]:
+                this.setProgress(this.progressQty + 25, 'Obtained Credential Types');
+                break;
+              case this.observables[2]:
+                this.setProgress(this.progressQty + 25, 'Acquired Credentials');
+                break;
+              case this.observables[3]:
+                this.setProgress(this.progressQty + 25, 'Mapped Topology');
+                break;
+              default:
+                console.log('Unknown observable: ', observable);
+            }
+          }),
+          catchError((error: any) => {
+            this.errors.push('An error has occurred, please try again.');
+            this.displayErrors();
+            return Observable.throw(error);
+          }),
+          combineAll()
+        )
+        .subscribe((response: any) => {
+          const issuers = response[0].results.map(item => {
+            return new Issuer(item);
           });
-          const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
-          this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
-        });
+          const credentialTypes = response[1];
+          const credentials = response[2];
+          const nodes = response[3].result.nodes;
+          const links = response[3].result.links;
 
-        // add links
-        links.forEach((link: any) => {
-          if (link.error) {
-            this.errors.push(link.error);
-          } else {
-            this.workflowService.addLink(new WorkflowLink(link.target, link.source));
-          }
-        });
-
-        // hide progress-bar and show graph
-        this.setProgress(100, 'Rendering Graph');
-        setTimeout(() => {
-          this.loading = false;
-          if (this.errors.length > 0) {
-            this.errors.forEach((errorMessage) => {
-              this.alertService.error(errorMessage);
+          // add nodes
+          nodes.forEach((node: any) => {
+            const issuer = this.tobService.getIssuerByDID(node.origin_did, issuers);
+            const deps = this.tobService.getDependenciesByID(node.id, links, credentials, issuers);
+            const walletId = this.getWalletId(deps, credentials);
+            const credData = this.availableCredForIssuerAndSchema(issuer, node.schema_name, credentials);
+            const schemaURL = this.getCredentialActionURL(node.schema_name, credentialTypes);
+            const step = new Step({
+              topicId: this.topic,
+              walletId: walletId,
+              stepName: node.schema_name,
+              dependencies: deps,
+              issuer: issuer,
+              credData: credData,
+              schema: {
+                name: this.targetName,
+                version: this.targetVersion,
+                did: this.targetDid
+              },
+              schemaURL: schemaURL
             });
-          } else {
-            this.workflowService.renderGraph(this.svgRoot);
-          }
-        }, 500);
-      });
+            const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
+            this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));
+          });
+
+          // add links
+          links.forEach((link: any) => {
+            if (link.error) {
+              this.errors.push(link.error);
+            } else {
+              this.workflowService.addLink(new WorkflowLink(link.target, link.source));
+            }
+          });
+
+          // hide progress-bar and show graph
+          this.setProgress(100, 'Rendering Graph');
+          setTimeout(() => {
+            this.loading = false;
+            if (this.errors.length > 0) {
+              this.displayErrors();
+            } else {
+              this.workflowService.renderGraph(this.svgRoot);
+            }
+          }, 500);
+        });
+    }
   }
 
   /**
@@ -160,6 +175,13 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   setProgress(progress: number, message?: string) {
     this.progressQty = progress;
     this.progressMsg = message;
+  }
+
+  displayErrors() {
+    this.loading = false;
+    this.errors.forEach(errorMessage => {
+      this.alertService.error(errorMessage);
+    });
   }
 
   /**
@@ -183,18 +205,6 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     let walletId = new Array<string>();
     if (credentials && credentials.length > 0 && deps) {
       // TODO: fix dependency handling to only use what is necessary
-      /*
-       * This is the right way of handling things, however the dflow agents use a
-       * list of proofs and "depends_on" clauses that doesn't match (to make the graph interesting)
-       */
-      // deps.forEach(dependency => {
-      // const availableCred = this.credentials.find((cred) => {
-      //   return cred.credential_type.schema.name === dependency.schema;
-      // });
-      // if (availableCred) {
-      //   walletId.push(availableCred.wallet_id);
-      // }
-      // });
       credentials.forEach(cred => {
         walletId.push(cred.wallet_id);
       });
