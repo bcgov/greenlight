@@ -1,0 +1,5 @@
+<div class="col-md-8 offset-md-2 my-2" *ngFor="let alert of alerts">
+  <ngb-alert class="text-center" [type]="alert.type" (close)="close(alert)">
+    <span [innerHtml]="alert.message"></span>
+  </ngb-alert>
+</div>
