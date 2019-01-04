@@ -7,6 +7,13 @@
       </progress-bar>
   </ng-container>
 
-  <svg #svgCanvas class="w-100 h-100"></svg>
+  <div *ngIf="!loading && errors.length > 0" class="text-center recipe-error">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      <p>An error has occurred. Please return to the home page and try again.</p>
+  </div>
+
+  <svg #svgCanvas class="w-100 h-100" aria-labelledby="svgCanvas-title" role="group">
+    <title id="svgCanvas-title">Dependency Graph</title>
+  </svg>
 
 </div>
