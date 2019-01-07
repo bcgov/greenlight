@@ -1,0 +1,38 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: templates/agents/ministry-of-agriculture-deploy.json
+#=========================================================
+NAME=ministry-of-agriculture
+APP_GROUP=dflow-demo
+IMAGE_NAMESPACE=devex-von-permitify-tools
+TAG_NAME=dev
+APPLICATION_URL=https://dev-dflow.orgbook.gov.bc.ca
+ENDPOINT_URL=https://dev-dflow.orgbook.gov.bc.ca
+CONFIG_ROOT=../config/agri-agent
+HOST_PORT=8080
+ENVIRONMENT=default
+GENESIS_URL=
+INDY_LEDGER_URL=http://159.89.115.24
+LEDGER_PROTOCOL_VERSION=
+AUTO_REGISTER_DID=1
+FORMS=
+ISSUERS=
+LOG_LEVEL=
+PYTHON_ENV=development
+TOB_API_URL=https://dev-demo-api.orgbook.gov.bc.ca/api/v2
+TOB_APP_URL=https://dev-demo.orgbook.gov.bc.ca
+INDY_WALLET_TYPE=postgres
+POSTGRESQL_WALLET_HOST=wallet-db
+POSTGRESQL_WALLET_PORT=5432
+POSTGRESQL_WALLET_NAME=agri_issuer
+WALLET_ENCRYPTION_KEY=[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}
+INDY_WALLET_SEED=[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}
+INDY_WALLET_DID=[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}
+WALLET_CREDENTIAL_STORE_NAME=agri-wallet-credentials
+MOUNT_PATH=/home/indy/.indy_client/wallet
+PERSISTENT_VOLUME_SIZE=1Gi
+CPU_LIMIT=0
+MEMORY_LIMIT=0Mi
+CPU_REQUEST=0
+MEMORY_REQUEST=0Mi
