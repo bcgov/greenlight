@@ -1,0 +1,152 @@
+# Documentation: https://github.com/bcgov/von-agent-template/tree/master/von-x-agent/config
+
+issuers:
+  agri:
+    name: BC Ministry of Agriculture
+    abbreviation: agri
+    url: https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/agriculture
+    email: agriservicebc@gov.bc.ca
+    logo_path: ../assets/img/bc-logo.svg
+    endpoint: ${ENDPOINT_URL}/agri
+
+    connection:
+      type: TheOrgBook
+      api_url: $TOB_API_URL
+      sign_target: false
+
+    wallet:
+      name: ${POSTGRESQL_WALLET_NAME:-agri_issuer}
+      seed: $INDY_WALLET_SEED
+      type: $INDY_WALLET_TYPE
+      params:
+        storage_config:
+          url: "$POSTGRESQL_WALLET_HOST:$POSTGRESQL_WALLET_PORT"
+      access_creds:
+        key: $WALLET_ENCRYPTION_KEY
+        storage_credentials:
+          account: $POSTGRESQL_WALLET_USER
+          password: $POSTGRESQL_WALLET_PASSWORD
+          admin_account: ${POSTGRESQL_WALLET_ADMIN_USER:-postgres}
+          admin_password: $POSTGRESQL_WALLET_ADMIN_PASSWORD
+        key_derivation_method: ARGON2I_MOD
+
+    credential_types:
+    - description: Dog/Cat Breeder Licence
+      schema: dog-cat-breeder-licence.agri
+      issuer_url: $APPLICATION_URL_INCORP
+      depends_on:
+        - registration
+        - pst-number
+      credential:
+        effective_date:
+          input: effective_date
+          from: claim
+
+      # topic identifies the organization id is the subject of the credential
+      # in BC Gov deployment  type is always "registration"
+      topic:
+        source_id:
+          input: corp_num
+          from: claim
+        type:
+          input: registration
+          from: value
+
+      mapping:
+
+        - model: address
+          fields:
+            addressee:
+              input: addressee
+              from: claim
+            civic_address:
+              input: address_line_1
+              from: claim
+            city:
+              input: city
+              from: claim
+            province:
+              input: province
+              from: claim
+            postal_code:
+              input: postal_code
+              from: claim
+            country:
+              input: country
+              from: claim
+
+        # "attribute" defines a generic field in the TOB model
+        # "value" identifies where to derive the data value (typically it comes from the claim)
+        # "type" - if "value" - is the name of the attribute
+        # "format" is an optional data format (default text)
+        - model: attribute
+          fields:
+            type:
+              input: registration_date
+              from: value
+            format:
+              input: datetime
+              from: value
+            value:
+              input: licence_issued_date
+              from: claim
+        - model: attribute
+          fields:
+            type:
+              input: entity_status
+              from: value
+            value:
+              input: licence_status
+              from: claim
+        - model: attribute
+          fields:
+            type:
+              input: effective_date
+              from: value
+            format:
+              input: datetime
+              from: value
+            value:
+              input: effective_date
+              from: claim
+
+verifiers:
+  bctob:
+    name: BC OrgBook
+    connection:
+      type: TheOrgBook
+      api_url: $TOB_API_URL
+    wallet:
+      seed: "tob-verifier-wallet-000000000001"
+
+proof_requests:
+  # This Agent's DID - for proof requests based on this Issuer's Credentials
+  #      TkgmPnj3uWsWLAHafh1iod
+
+  registration:
+    version: '1.0.1'
+    schemas:
+      - key:
+          did: 6qnvgJtqwK44D8LFYnV5Yf
+          name: registration.dflow
+          version: '1.0.1'
+        attributes:
+          - corp_num
+          - legal_name
+          - addressee
+          - address_line_1
+          - address_line_2
+          - city
+          - postal_code
+          - province
+          - country
+
+  pst-number:
+    version: '1.0.1'
+    schemas:
+      - key:
+          did: CYnWiuEtJJuhpWvVz3kY9D
+          name: pst_number.dflow
+          version: '1.0.1'
+        attributes:
+          - corp_num
