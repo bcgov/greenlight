@@ -12,7 +12,6 @@ ENDPOINT_URL=https://dflow.orgbook.gov.bc.ca
 # CONFIG_ROOT=../config/bcreg-agent
 # HOST_PORT=8080
 # ENVIRONMENT=default
-# ENABLE_GUNICORN=0
 # GENESIS_URL=
 INDY_LEDGER_URL=http://138.197.138.255
 # LEDGER_PROTOCOL_VERSION=

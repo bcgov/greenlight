@@ -144,10 +144,6 @@
                     "value": "${ENVIRONMENT}"
                   },
                   {
-                    "name": "ENABLE_GUNICORN",
-                    "value": "${ENABLE_GUNICORN}"
-                  },
-                  {
                     "name": "GENESIS_URL",
                     "value": "${GENESIS_URL}"
                   },
@@ -386,13 +382,6 @@
       "description": "The application environment.",
       "required": true,
       "value": "default"
-    },
-    {
-      "name": "ENABLE_GUNICORN",
-      "displayName": "Enable gunicorn",
-      "description": "A flag to indicate whether or not to use the gunicorn server.",
-      "required": true,
-      "value": "0"
     },
     {
       "name": "GENESIS_URL",

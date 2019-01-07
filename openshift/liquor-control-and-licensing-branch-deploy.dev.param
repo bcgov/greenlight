@@ -12,7 +12,6 @@ ENDPOINT_URL=https://dev-dflow.orgbook.gov.bc.ca
 # CONFIG_ROOT=../config/liquor-control-agent
 # HOST_PORT=8080
 # ENVIRONMENT=default
-# ENABLE_GUNICORN=0
 # GENESIS_URL=
 # INDY_LEDGER_URL=http://159.89.115.24
 # LEDGER_PROTOCOL_VERSION=
