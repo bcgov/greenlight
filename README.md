@@ -111,8 +111,6 @@ myorg-agent:
       CONFIG_ROOT: ../config/agri-agent
       ENVIRONMENT: ${ENVIRONMENT:-default}
       INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
-      FORMS: ${FORMS:-}
-      ISSUERS: ${ISSUERS:-}
       LOG_LEVEL: ${LOG_LEVEL:-}
       PYTHON_ENV: ${PYTHON_ENV:-development}
       TOB_API_URL: ${TOB_API_URL:-}

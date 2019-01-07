@@ -160,14 +160,6 @@
                     "value": "${AUTO_REGISTER_DID}"
                   },
                   {
-                    "name": "FORMS",
-                    "value": "${FORMS}"
-                  },
-                  {
-                    "name": "ISSUERS",
-                    "value": "${ISSUERS}"
-                  },
-                  {
                     "name": "LOG_LEVEL",
                     "value": "${LOG_LEVEL}"
                   },
@@ -412,25 +404,11 @@
       "value": "1"
     },
     {
-      "name": "FORMS",
-      "displayName": "Forms",
-      "description": "Forms.",
-      "required": false,
-      "value": ""
-    },
-    {
-      "name": "ISSUERS",
-      "displayName": "Issuers",
-      "description": "Issuers.",
-      "required": false,
-      "value": ""
-    },
-    {
       "name": "LOG_LEVEL",
       "displayName": "Log Level",
-      "description": "Log Level.",
+      "description": "Sets the desired level of logging. See https://docs.python.org/3/howto/logging.html",
       "required": false,
-      "value": ""
+      "value": "INFO"
     },
     {
       "name": "PYTHON_ENV",
