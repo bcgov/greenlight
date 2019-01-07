@@ -4,7 +4,7 @@ issuers:
     name: Liquor Control and Licensing Branch
     abbreviation: LCLB
     email: lclb.test.issuer@example.ca
-    url: $APPLICATION_URL_INCORP
+    url: https://www2.gov.bc.ca/gov/content/employment-business/business/liquor-regulation-licensing
     endpoint: ${ENDPOINT_URL}/liquor
 
     connection:
