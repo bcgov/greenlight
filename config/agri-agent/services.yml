@@ -127,7 +127,7 @@ proof_requests:
     version: '1.0.1'
     schemas:
       - key:
-          did: 6qnvgJtqwK44D8LFYnV5Yf
+          did: URxeJgeTXWAQVUq11p7jiK
           name: registration.dflow
           version: '1.0.1'
         attributes:
@@ -145,7 +145,7 @@ proof_requests:
     version: '1.0.1'
     schemas:
       - key:
-          did: CYnWiuEtJJuhpWvVz3kY9D
+          did: LXyXUfC6yJNWuWRrvR9RWx
           name: pst_number.dflow
           version: '1.0.1'
         attributes:
