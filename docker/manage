@@ -75,7 +75,7 @@ exit 1
 # Default Settings:
 # -----------------------------------------------------------------------------------------------------------------
 
-DEFAULT_CONTAINERS="agent-wallet-db bcreg-agent ministry-finance-agent city-surrey-agent fraser-valley-agent liquor-control-agent worksafe-agent"
+DEFAULT_CONTAINERS="agent-wallet-db agri-agent bcreg-agent ministry-finance-agent city-surrey-agent fraser-valley-agent liquor-control-agent worksafe-agent"
 
 # -----------------------------------------------------------------------------------------------------------------
 # Functions:
@@ -104,6 +104,7 @@ configureEnvironment () {
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export APPLICATION_URL=${APPLICATION_URL-http://localhost:${WEB_HTTP_PORT:-5000}}
   export ENDPOINT_URL=http://${ENDPOINT_HOST-$DOCKERHOST:${WEB_HTTP_PORT:-5000}}
+  export LOG_LEVEL="INFO"
 
   # caddy
   export TOB_API_URL=${TOB_API_URL:-http://tob-api:8080/api/v2}
@@ -113,6 +114,8 @@ configureEnvironment () {
   export WEB_HOST_PORT=${WEB_HOST_PORT:-8080}
   export WEB_HOST_TLS=${WEB_HOST_TLS:-off}
   export WEB_HTTP_PORT=${WEB_HTTP_PORT:-5000}
+  export AGRI_AGENT_HOST=${AGRI_AGENT_HOST:-agri-agent}
+  export AGRI_AGENT_PORT=${AGRI_AGENT_PORT:-8000}
   export BCREG_AGENT_HOST=${BCREG_AGENT_HOST:-bcreg-agent}
   export BCREG_AGENT_PORT=${BCREG_AGENT_PORT:-8000}
   export MINISTRY_FINANCE_AGENT_HOST=${MINISTRY_FINANCE_AGENT_HOST:-ministry-finance-agent}

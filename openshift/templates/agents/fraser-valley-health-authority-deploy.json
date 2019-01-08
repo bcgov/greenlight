@@ -144,10 +144,6 @@
                     "value": "${ENVIRONMENT}"
                   },
                   {
-                    "name": "ENABLE_GUNICORN",
-                    "value": "${ENABLE_GUNICORN}"
-                  },
-                  {
                     "name": "GENESIS_URL",
                     "value": "${GENESIS_URL}"
                   },
@@ -162,14 +158,6 @@
                   {
                     "name": "AUTO_REGISTER_DID",
                     "value": "${AUTO_REGISTER_DID}"
-                  },
-                  {
-                    "name": "FORMS",
-                    "value": "${FORMS}"
-                  },
-                  {
-                    "name": "ISSUERS",
-                    "value": "${ISSUERS}"
                   },
                   {
                     "name": "LOG_LEVEL",
@@ -388,13 +376,6 @@
       "value": "default"
     },
     {
-      "name": "ENABLE_GUNICORN",
-      "displayName": "Enable gunicorn",
-      "description": "A flag to indicate whether or not to use the gunicorn server.",
-      "required": true,
-      "value": "0"
-    },
-    {
       "name": "GENESIS_URL",
       "displayName": "Genesis Url",
       "description": "URL for downloading a copy of the genesis file defining the ledger connection for the environment.  Used when connecting the the Sovrin Ledger.",
@@ -423,25 +404,11 @@
       "value": "1"
     },
     {
-      "name": "FORMS",
-      "displayName": "Forms",
-      "description": "Forms.",
-      "required": false,
-      "value": ""
-    },
-    {
-      "name": "ISSUERS",
-      "displayName": "Issuers",
-      "description": "Issuers.",
-      "required": false,
-      "value": ""
-    },
-    {
       "name": "LOG_LEVEL",
       "displayName": "Log Level",
-      "description": "Log Level.",
+      "description": "Sets the desired level of logging. See https://docs.python.org/3/howto/logging.html",
       "required": false,
-      "value": ""
+      "value": "INFO"
     },
     {
       "name": "PYTHON_ENV",

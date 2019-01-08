@@ -4,7 +4,7 @@ issuers:
     name: BC Ministry of Finance
     abbreviation: Ministry of Finance
     email: minfinance.test.issuer@example.ca
-    url: $APPLICATION_URL_INCORP
+    url: https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/finance
     endpoint: ${ENDPOINT_URL}/finance
 
     connection:

@@ -28,23 +28,7 @@ isInstalled(){
   fi
 }
 
-enableGunicorn(){
-  if [ ! -z "$ENABLE_GUNICORN" ] && [ "$ENABLE_GUNICORN" = "1" ] && ! isInstalled gunicorn; then
-    echo "ENABLE_GUNICORN has been set, however gunicorn was not found."
-    echo "Setting ENABLE_GUNICORN to 0 ..."
-    export ENABLE_GUNICORN=0
-  fi
-}
-
-CMD="$@"
-if [ -z "$CMD" ]; then
-  enableGunicorn
-  if [ -z "$ENABLE_GUNICORN" ] || [ "$ENABLE_GUNICORN" = "0" ]; then
-    CMD="python ${APP_NAME}.py"
-  else
-    CMD="gunicorn --bind ${HOST_IP}:${HOST_PORT} -c gunicorn_config.py dflow.common:init_app"
-  fi
-fi
+CMD="python ${APP_NAME}.py"
 
 echo "Starting server ..."
 exec $CMD

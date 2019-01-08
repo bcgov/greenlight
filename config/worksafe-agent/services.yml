@@ -4,7 +4,7 @@ issuers:
     name: WorkSafe BC
     abbreviation: WorkSafe BC"
     email: worksafe.test.issuer@example.ca
-    url: $APPLICATION_URL_INCORP
+    url: https://www.worksafebc.com/en
     endpoint: ${ENDPOINT_URL}/worksafe
 
     connection:

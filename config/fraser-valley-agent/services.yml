@@ -4,7 +4,7 @@ issuers:
     name: Fraser Valley Health Authority
     abbreviation: FRV
     email: frv.test.issuer@example.ca
-    url: $APPLICATION_URL_INCORP
+    url: https://www.fraserhealth.ca/
     endpoint: ${ENDPOINT_URL}/fraser-valley
 
     connection:
