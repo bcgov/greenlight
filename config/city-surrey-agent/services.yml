@@ -4,7 +4,7 @@ issuers:
     name: City of Surrey
     abbreviation: SUR
     email: surrey.test.issuer@example.ca
-    url: $APPLICATION_URL_INCORP
+    url: https://www.surrey.ca/
     endpoint: ${ENDPOINT_URL}/surrey
 
     connection:

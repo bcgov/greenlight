@@ -148,6 +148,14 @@
                     "value": "${WEB_BASE_HREF}"
                   },
                   {
+                    "name": "MINISTRY_AGRICULTURE_AGENT_HOST",
+                    "value": "${MINISTRY_AGRICULTURE_AGENT_HOST}"
+                  },
+                  {
+                    "name": "MINISTRY_AGRICULTURE_AGENT_PORT",
+                    "value": "${MINISTRY_AGRICULTURE_AGENT_PORT}"
+                  },
+                  {
                     "name": "BCREG_AGENT_HOST",
                     "value": "${BCREG_AGENT_HOST}"
                   },
@@ -326,6 +334,20 @@
       "description": "The base HREF.",
       "required": true,
       "value": "/"
+    },
+    {
+      "name": "MINISTRY_AGRICULTURE_HOST",
+      "displayName": "Agent Host Name",
+      "description": "The name of the Ministry of Agriculture von-x agent associated with this proxy.",
+      "required": true,
+      "value": "ministry-of-agriculture"
+    },
+    {
+      "name": "MINISTRY_AGRICULTURE_PORT",
+      "displayName": "Agent Port",
+      "description": "The port of the Ministry of Agriculture von-x agent associated with this proxy.",
+      "required": true,
+      "value": "8080"
     },
     {
       "name": "BCREG_AGENT_HOST",

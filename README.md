@@ -64,163 +64,123 @@ Refer to the docker compose documentation in each of the projects for specific d
 
 A [Quick Start Guide](https://github.com/bcgov/TheOrgBook/tree/master/docker#quick-start-guide) can be found in the [bcgov/TheOrgBook](https://github.com/bcgov/TheOrgBook) repository.
 
-## Setting up a new issuing service in dFlow
+## Adding a new issuing service to dFlow
 
-> **THIS INFORMATION NEEDS TO BE UPDATED TO REFLECT THE LATEST RELEASE**
-
-The steps below describe how to register a service (i.e. Ontario Corporate Registry, “OntarioReg”) that issues **foundational** claims (i.e. incorporation) for a business and loads test data for the new service into TheOrgBook using load scripts. The new service is added to the **local** instance of dFlow.
+The steps below describe how to add and register a new issuer service to a dFlow instance.
 
 Prerequisites:
- -  von-network and TheOrgBook local instances are running at http://localhost:9000 and http://localhost:8080 respectively
- -  the seeds for TheOrgBook and the new service are registered in the von-network throug the UI (http://localhost:9000)
- -  the test claim data is available under TheOrgBook/APISpec/TestData/OntClaims in OntClaims_XXX.json files
+- You have followed the [OpenShift Scripts](https://github.com/BCDevOps/openshift-project-tools/blob/master/bin/README.md) environment setup instructions to install and configure the scripts for use on your system (only for OpenShift deployments).
 
-Data Convention:
- - Make sure to include the word “Reg” in the service name in order for the claims issued by the service to be processed as foundational claims (i.e. OntarioReg)
- - Include “incorporation” in the schema name for the claims issued by the new service in order for the claims to be processed as foundational claims (I.e. “incorporation.onbis”, “incorporation.bc_regisgries”)
-  - the province's abbreviation (i.e. "Ont") should be included in the data directory name (i.e. OntClaims) and the name of the test data json file (i.e.OntClaims_XXXX.json). **The scripts are case-sensitive.**
+### Create Configuration Files
 
-1. Create a subdirectory with the name of the new service under ‘dflow/site_templates’
+First of all, we need to create the configuration files for the new issuer service. Following one of the existing agents as an example (e.g.: bcreg), create a new folder containing `routes.yml`, `schemas.yml`, `services.yml` and `settings.yml`. Name the folder using a short mnemonic, that will be used throughout the configuration (e.g.: myorg).
 
-  ```
-  mkdir onbis
-  ```
+For more information on creating and setting up the configuration files, please refer to the documentation in [von-agent-template](https://github.com/bcgov/von-agent-template/tree/master/von-x-agent/config).
 
-2.  Copy config.toml and schema.json file into the “onbis” directory from the directory of another service that issues foundational claims (i.e. bc_registries):
+### Update Caddy Configuration
 
-```cd onbis
-   cd bc_registries/congif.toml 
-   cd bc_Registries/shema.json
+Caddy needs to be configured to support proxying requests to the new agent. To do this, add the following proxy instructions to the Caddyfile, making sure to replace _myorg_ with the mnemonic you previously picked.
 ```
+proxy /myorg/health {%MYORG_AGENT_HOST%}:{%MYORG_AGENT_PORT%} {
+    without /worksafe
+}
 
-3. Modify the copied files to match the list of fields included in the data json files, i.e.: 
-
-```
-OntClaims_1.json
-{
-    "OntarioReg": [
-        {
-            "address_line_1": "1183 Gorham Street",
-            "address_line_2": "",
-            "addressee": "Gilbert Schroeder",
-            "city": "London",
-            "country": "CA",
-            "legal_name": "Schroeder Dive",
-            "postal_code": "N0N 0N0",
-            "province": "ON",
-            "schema": "incorporation.onbis"
-        }
-    ]
+proxy /myorg {%MYORG_AGENT_HOST%}:{%MYORG_AGENT_PORT%} {
+    except /assets
+    transparent
+    fail_timeout 0
 }
 ```
-```
-schema.json
-[
-    {
-        "name": "incorporation.onbis",
-        "version": "1.0.0",
-        "attr_names": [
-            "legal_entity_id",
-            "corp_num",
-            "legal_name",
-            "org_type",
-            "addressee",
-            "address_line_1",
-            "address_line_2",
-            "city",
-            "province",
-            "postal_code",
-            "country",
-            "effective_date",
-            "end_date"
-        ]
-    }
-]
-```
 
-Modify config.toml to make the input forms fields match the fields in the schema.json if you plan to use the dFlow UI to manually issue a claim.
+### Update Docker Configuration
 
-4. Register the new service in docker_compose.yml. 
-**Note: Make sure the port assigned to the new service does not conflict with the ports assigned to other services**
-**
-```
-onbis:
-    image: agent
-    environment:
-      PYTHON_ENV: development
-      THE_ORG_BOOK_API_URL: ${THE_ORG_BOOK_API_URL}
-      THE_ORG_BOOK_APP_URL: ${THE_ORG_BOOK_APP_URL}
-      DISCONNECTED: '${DISCONNECTED-false}'
-      TEMPLATE_NAME: onbis
-      APPLICATION_URL: ${APPLICATION_URL}:5000
-      INDY_WALLET_SEED: ${INDY_WALLET_SEED}7
-      TOB_INDY_SEED: ${TOB_INDY_SEED}
-      LEDGER_URL: ${LEDGER_URL}
-    volumes:
-      - onbis_wallet:/home/indy/.indy_client/wallet
-    ports:
-      - 5006:8080
-```
-
- Register the wallet for the new service in the docker-compose.yml:
-```
-volumes:
-  worksafe_bc_wallet:
-  bc_registries_wallet:
-  ministry_of_finance_wallet:
-  fraser_valley_health_authority_wallet:
-  city_of_surrey_wallet:
-  liquor_control_and_licensing_branch_wallet:
-  onbis_wallet:
-```
-4. Add a Docker container for the new service to dflow/docker/manage.sh script:
-```
-ALL_CONTAINERS="\
-    bc_registries\
-    worksafe_bc\
-    ministry_of_finance\
-    fraser_valley_health_authority\
-    city_of_surrey\
-    liquor_control_and_licensing_branch\
-    onbis\
-"
-```
-
-Optional: if you want to create an input form for the new service and submit claims manually. Create src/static/js/onbis.js,  src/templates/onbis.index.html, src/templates/ongov.admin.index.html and src/templates/ongov.index.html by copying other issuing service’s files and modify for the new service.
-
-5. Add a URL for the new service to the load script in TheOrgBook
-
-```
-cd TheOrgBook/APISpec/TestData
-vi loadClaims.py
-```
+In `docker-compose.yml`:
+- add a section describing the new issuer service. Use the exisisting agents as example, and make sure to update any references to configuration files, etc.
+  - remember to also add a volume for the agent, making sure the volume name and the environment variables match what is in the configuration.
 ```
 ...
-URLS = {
-  'local': {
-        # bc_registries (needs to be first)
-        'Reg': 'http://localhost:5000',
-        # worksafe_bc
-        'Worksafe': 'http://localhost:5001',
-        # ministry_of_finance
-        'Finance': 'http://localhost:5002',
-        # fraser_valley_health_authority
-        'Health': 'http://localhost:5003',
-        # city_of_surrey
-        'City': 'http://localhost:5004',
-        # liquor_control_and_licensing_branch
-        'Liquor': 'http://localhost:5005',
-        # onbis
-        'OntarioReg': "http://localhost:5006"
-    },
-....
+
+myorg-agent:
+    build:
+      context: ..
+      dockerfile: docker/agent/Dockerfile
+    environment:
+      DOCKERHOST: ${DOCKERHOST}
+      APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
+      ENDPOINT_URL: ${ENDPOINT_URL:-http://localhost:5000}
+      CONFIG_ROOT: ../config/agri-agent
+      ENVIRONMENT: ${ENVIRONMENT:-default}
+      INDY_LEDGER_URL: ${LEDGER_URL:-http://localhost:9000}
+      LOG_LEVEL: ${LOG_LEVEL:-}
+      PYTHON_ENV: ${PYTHON_ENV:-development}
+      TOB_API_URL: ${TOB_API_URL:-}
+      TOB_APP_URL: ${TOB_APP_URL:-}
+      POSTGRESQL_WALLET_HOST: ${POSTGRESQL_WALLET_HOST}
+      POSTGRESQL_WALLET_PORT: ${POSTGRESQL_WALLET_PORT}
+      POSTGRESQL_WALLET_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_WALLET_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_WALLET_ADMIN_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD}
+      WALLET_ENCRYPTION_KEY: ${WALLET_ENCRYPTION_KEY}
+      INDY_WALLET_TYPE: ${INDY_WALLET_TYPE}
+      INDY_WALLET_SEED: ${MYORG_WALLET_SEED:-}
+    networks:
+      - orgbook
+      - vonx
+    depends_on:
+      - agent-wallet-db
+    volumes:
+      - myorg-agent-wallet:/home/indy/.indy_client/wallet
+
+...
+
+volumes:
+  myorg-agent-wallet:
+  ...
+```
+- add environment variables and dependencies referencing the new agent to the `proxy-dev` and `caddy` services
+```
+proxy-dev:
+    image: "abiosoft/caddy:no-stats"
+    environment:
+      ...
+      MYORG_AGENT_HOST: ${MYORG_AGENT_HOST}
+      MYORG_AGENT_PORT: ${MYORG_AGENT_PORT}
+      ...
+    depends_on:
+      ...
+      - myorg-agent
+      ...
+
+...
+
+caddy:
+    image: dflow
+    environment:
+      ...
+      MYORG_AGENT_HOST: ${MYORG_AGENT_HOST}
+      MYORG_AGENT_PORT: ${MYORG_AGENT_PORT}
+      ...
+    depends_on:
+      - myorg-agent
+      ...
 ```
 
-6. Test that the new service is available at [http://localhost:5006](http://localhost:5006)
-
-7. Run the load script to load the data into TheOrgBook from OntClaims data directory using the **local** instance of the new service in dFlow
-
+In the `manage` script in the docker directory:
+- export the environment variables for the new agent. See how this is done for other agents in the configuration section related to "caddy".
 ```
-cd TheOrgBook/APISpec/TestData
-./load-all.sh --evn local --prefix Ont
+export MYORG_AGENT_HOST=${MYORG_AGENT_HOST:-myorg-agent}
+export MYORG_AGENT_PORT=${MYORG_AGENT_PORT:-8000}  
 ```
+- add the new agent to the `DEFAULT_CONTAINERS` list.
+```
+DEFAULT_CONTAINERS="agent-wallet-db myorg-agent bcreg-agent ministry-finance-agent city-surrey-agent fraser-valley-agent liquor-control-agent worksafe-agent"
+```
+
+### Upate OpenShift Configuration
+
+If you use OpenShift, you will be interested in adding a new deployment configuration for the new agent, and updating the deployment configuration for dflow to correctly proxy requests.
+
+- In the `openshift/agents` folder, copy one of the existing agents deployment configurations and create a new one.
+  - Make sure to update the name and all the variables in the deployment configuration to reflect the new agent mnemonic picked for the configuration files.
+- from within the `openshift` folder, run `genParams.sh` create the parameter files for the new deployment configuration.
+- create an `.overrides.sh` file for the new agent, following one of the other agents as example.

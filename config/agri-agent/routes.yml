@@ -1,0 +1,98 @@
+# Documentation: https://github.com/bcgov/von-agent-template/tree/master/von-x-agent/config
+
+forms:
+  dog-cat-breeder-licence:
+
+    # URL for the Web form - becomes <server>/<path> e.g. http://localhost:5000/agri/dog-cat-breeder-licence
+    path: /agri/dog-cat-breeder-licence
+
+    # type is always "issue-credential"
+    type: issue-credential
+
+    schema_name: dog-cat-breeder-licence.agri
+    page_title: BC Ministry of Agriculture
+    title: Application for Dog and Cat Breeder Licence
+
+    # Templates are defined in von-x-agent/templates
+    template: bcgov.index.html
+
+    description: >
+      Dog and Cat Breeder Licence is issued by the BC Ministry of Agriculture issues to authorized Dog and Cat Breeders in the Province.
+
+    explanation: Use the form below to apply for a Dog and Cat Breeder Licence for your organization.
+
+    proof_request:
+      id: registration
+      connection_id: bctob
+
+    #js_includes:
+    #  - src: js/bc_registries.js
+
+    # "fields" are displayed on the UI for the user to enter values
+    fields:
+      - name: corp_num
+        label: Corp Num
+        type: text
+        required: true
+
+      - name: legal_name
+        label: Legal Name
+        type: text
+        required: true
+
+      - name: address
+        label: Breeder Contact and Location
+        type: address
+        required: true
+
+      - name: region
+        label: Region of BC
+        type: select
+        options:
+          - Vancouver Island-Coast
+          - South Coast
+          - Cariboo Chilcotion Coast
+          - Thompson Nicola
+          - Okanagan
+          - Kootenay
+          - Omenica Skeena
+          - Peace
+        required: true
+
+      - name: type_of_breeder
+        label: Type of Breeder
+        type: select
+        options:
+          - Dog
+          - Cat
+          - Dog and Cat
+        required: true
+
+      - name: breeding_frequency
+        label: Frequency of Breeding
+        type: select
+        options:
+          - Less than annually
+          - Annually
+          - Twice annually
+          - More often than twice annually
+
+      - name: effective_date
+        label: Effective Date
+        type: date
+        required: true
+
+    # "mapping" identifies attributes that are auto-populated
+    mapping:
+      attributes:
+        - name: licence_num
+          from: helper
+          source: pst
+
+        - name: licence_issued_date
+          from: helper
+          source: now_iso
+
+        - name: licence_status
+          from: literal
+          source: ACT
