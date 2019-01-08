@@ -52,21 +52,21 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.1'
+    version: '1.0.2'
     schemas:
       - key:
-          did: URxeJgeTXWAQVUq11p7jiK
+          did: 6qnvgJtqwK44D8LFYnV5Yf
           name: registration.dflow
-          version: '1.0.1'
+          version: '1.0.2'
         attributes:
           - corp_num
           - legal_name
   clearance-letter:
-    version: '1.0.1'
+    version: '1.0.2'
     schemas:
       - key:
-          did: 6gypL4WhnUmhesqNYtZrHx
+          did: MAcounf9HxhgnqqhzReTLC
           name: worksafe.dflow
-          version: '1.0.1'
+          version: '1.0.2'
         attributes:
           - corp_num
