@@ -58,7 +58,7 @@ node {
 
           echo "Building ${BUILD_CONFIG} ..."
           def build = openshift.selector("bc", "${BUILD_CONFIG}")
-          build.startBuild().logs("-f")
+          build.startBuild().logs("-f --pod-running-timeout=1m")
         }
       }
     }

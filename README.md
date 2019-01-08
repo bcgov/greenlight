@@ -69,17 +69,17 @@ A [Quick Start Guide](https://github.com/bcgov/TheOrgBook/tree/master/docker#qui
 The steps below describe how to add and register a new issuer service to a dFlow instance.
 
 Prerequisites:
-- You have followed the [OpenShift Scripts](https://github.com/BCDevOps/openshift-project-tools/blob/master/bin/README.md) environment setup instructions to install and configure the scripts for use on your system.
+- You have followed the [OpenShift Scripts](https://github.com/BCDevOps/openshift-project-tools/blob/master/bin/README.md) environment setup instructions to install and configure the scripts for use on your system (only for OpenShift deployments).
 
 ### Create Configuration Files
 
-First of all, we need to create the configuration files for the new issuer service. Following one of the existing agents as an example (e.g.: bcreg), create a new folder containing `routes.yml`, `schemas.yml`, `services.yml` and `settings.yml`. name the folder using a short mnemonic name, that will be used throughout the configuration (e.g.: myorg).
+First of all, we need to create the configuration files for the new issuer service. Following one of the existing agents as an example (e.g.: bcreg), create a new folder containing `routes.yml`, `schemas.yml`, `services.yml` and `settings.yml`. Name the folder using a short mnemonic, that will be used throughout the configuration (e.g.: myorg).
 
 For more information on creating and setting up the configuration files, please refer to the documentation in [von-agent-template](https://github.com/bcgov/von-agent-template/tree/master/von-x-agent/config).
 
 ### Update Caddy Configuration
 
-Caddy needs to be configured to support proxying requests to the new agent. To do this, add a set of proxy instructions to the Caddyfile, following what already inplace for the other agents.
+Caddy needs to be configured to support proxying requests to the new agent. To do this, add the following proxy instructions to the Caddyfile, making sure to replace _myorg_ with the mnemonic you previously picked.
 ```
 proxy /myorg/health {%MYORG_AGENT_HOST%}:{%MYORG_AGENT_PORT%} {
     without /worksafe
@@ -178,7 +178,7 @@ DEFAULT_CONTAINERS="agent-wallet-db myorg-agent bcreg-agent ministry-finance-age
 
 ### Upate OpenShift Configuration
 
-If you use OpenShift, you will be interested in adding a deployment configuration for the new agent, and updating the deployment configuration for dflow to correctly proxy requests.
+If you use OpenShift, you will be interested in adding a new deployment configuration for the new agent, and updating the deployment configuration for dflow to correctly proxy requests.
 
 - In the `openshift/agents` folder, copy one of the existing agents deployment configurations and create a new one.
   - Make sure to update the name and all the variables in the deployment configuration to reflect the new agent mnemonic picked for the configuration files.
