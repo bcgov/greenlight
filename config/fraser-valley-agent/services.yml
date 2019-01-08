@@ -55,7 +55,7 @@ proof_requests:
     version: '1.0.1'
     schemas:
       - key:
-          did: 6qnvgJtqwK44D8LFYnV5Yf
+          did: URxeJgeTXWAQVUq11p7jiK
           name: registration.dflow
           version: '1.0.1'
         attributes:
@@ -65,7 +65,7 @@ proof_requests:
     version: '1.0.1'
     schemas:
       - key:
-          did: MAcounf9HxhgnqqhzReTLC
+          did: 6gypL4WhnUmhesqNYtZrHx
           name: worksafe.dflow
           version: '1.0.1'
         attributes:
