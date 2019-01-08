@@ -148,12 +148,12 @@
                     "value": "${WEB_BASE_HREF}"
                   },
                   {
-                    "name": "MINISTRY_AGRICULTURE_HOST",
-                    "value": "${MINISTRY_AGRICULTURE_HOST}"
+                    "name": "MINISTRY_AGRICULTURE_AGENT_HOST",
+                    "value": "${MINISTRY_AGRICULTURE_AGENT_HOST}"
                   },
                   {
-                    "name": "MINISTRY_AGRICULTURE_PORT",
-                    "value": "${MINISTRY_AGRICULTURE_PORT}"
+                    "name": "MINISTRY_AGRICULTURE_AGENT_PORT",
+                    "value": "${MINISTRY_AGRICULTURE_AGENT_PORT}"
                   },
                   {
                     "name": "BCREG_AGENT_HOST",
