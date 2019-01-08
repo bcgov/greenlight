@@ -88,11 +88,11 @@
         fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
     }
 
-    proxy /agri/health {%AGRI_AGENT_HOST%}:{%AGRI_AGENT_PORT%} {
+    proxy /agri/health {%MINISTRY_AGRICULTURE_AGENT_HOST%}:{%MINISTRY_AGRICULTURE_AGENT_PORT%} {
         without /agri
     }
 
-    proxy /agri {%AGRI_AGENT_HOST%}:{%AGRI_AGENT_PORT%} {
+    proxy /agri {%MINISTRY_AGRICULTURE_AGENT_HOST%}:{%MINISTRY_AGRICULTURE_AGENT_PORT%} {
         except /assets
         transparent
         fail_timeout 0 # see https://github.com/mholt/caddy/issues/1925
