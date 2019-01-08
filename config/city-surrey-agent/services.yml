@@ -57,7 +57,7 @@ proof_requests:
     version: '1.0.2'
     schemas:
       - key:
-          did: URxeJgeTXWAQVUq11p7jiK
+          did: 6qnvgJtqwK44D8LFYnV5Yf
           name: registration.dflow
           version: '1.0.2'
         attributes:
@@ -67,7 +67,7 @@ proof_requests:
     version: '1.0.2'
     schemas:
       - key:
-          did: LXyXUfC6yJNWuWRrvR9RWx
+          did: CYnWiuEtJJuhpWvVz3kY9D
           name: pst_number.dflow
           version: '1.0.2'
         attributes:
@@ -76,7 +76,7 @@ proof_requests:
     version: '1.0.2'
     schemas:
       - key:
-          did: 6gypL4WhnUmhesqNYtZrHx
+          did: MAcounf9HxhgnqqhzReTLC
           name: worksafe.dflow
           version: '1.0.2'
         attributes:
@@ -85,7 +85,7 @@ proof_requests:
     version: '1.0.2'
     schemas:
       - key:
-          did: MMXXtMQ7MdKejtwW3aBnpU
+          did: L6SJy7gNRCLUp8dV94hfex
           name: operating_permit.dflow
           version: '1.0.2'
         attributes:
@@ -94,7 +94,7 @@ proof_requests:
     version: '1.0.2'
     schemas:
       - key:
-          did: 54As1eREa8jfobXbCY77gr
+          did: ScrMddP9C426QPrp1KViZB
           name: liquor_license.dflow
           version: '1.0.2'
         attributes:

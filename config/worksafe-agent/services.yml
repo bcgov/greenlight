@@ -56,7 +56,7 @@ proof_requests:
     version: '1.0.2'
     schemas:
       - key:
-          did: URxeJgeTXWAQVUq11p7jiK
+          did: 6qnvgJtqwK44D8LFYnV5Yf
           name: registration.dflow
           version: '1.0.2'
         attributes:
