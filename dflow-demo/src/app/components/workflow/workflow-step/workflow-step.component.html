@@ -10,8 +10,8 @@
       <h6 class="my-0 mr-2 font-italic float-left">{{ step.name }}</h6>
 
       <span>
-        <!-- RouterLink and target are used so that teh link will work also when in development mode -->
-        <a *ngIf="step.effectiveDate" class="icon-link" target="{{isDevMode ? '_self' : '_blank'}}" [routerLink]="['/topic', step.topicId, 'cred', step.credentialId]" aria-label="View Credential">
+        <!-- RouterLink and target are used so that the link will work also when in development mode -->
+        <a *ngIf="step.effectiveDate" class="icon-link" target="_blank" href="{{actionURL}}" aria-label="View Credential">
           <i class="fa fa-lg fa-id-card float-right"></i>
         </a>
 

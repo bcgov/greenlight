@@ -15,13 +15,9 @@ export class WorkflowStepComponent implements OnInit {
 
   actionURL: string;
 
-  isDevMode: boolean;
-
   constructor() {  }
 
   ngOnInit() {
-    this.isDevMode = isDevMode();
-
     // generate component state variables
     if (this.step.dependencies.length > 0) {
       this.allDepsSatisfied = this.step.dependencies.map((item) => {
@@ -35,7 +31,7 @@ export class WorkflowStepComponent implements OnInit {
 
     this.obtainedCert = this.step.credentialId ? true : false;
 
-    // prepare actionURL and actionTxt
+    // prepare actionURL
     if (this.obtainedCert) {
       this.actionURL = `/topic/${this.step.topicId}/cred/${this.step.credentialId}`;
     } else if (this.isStart || this.allDepsSatisfied) {
