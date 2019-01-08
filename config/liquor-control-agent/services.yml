@@ -54,39 +54,39 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.1'
+    version: '1.0.2'
     schemas:
       - key:
           did: URxeJgeTXWAQVUq11p7jiK
           name: registration.dflow
-          version: '1.0.1'
+          version: '1.0.2'
         attributes:
           - corp_num
           - legal_name
   pst-number:
-    version: '1.0.1'
+    version: '1.0.2'
     schemas:
       - key:
           did: LXyXUfC6yJNWuWRrvR9RWx
           name: pst_number.dflow
-          version: '1.0.1'
+          version: '1.0.2'
         attributes:
           - corp_num
   clearance-letter:
-    version: '1.0.1'
+    version: '1.0.2'
     schemas:
       - key:
           did: 6gypL4WhnUmhesqNYtZrHx
           name: worksafe.dflow
-          version: '1.0.1'
+          version: '1.0.2'
         attributes:
           - corp_num
   operating-permit:
-    version: '1.0.1'
+    version: '1.0.2'
     schemas:
       - key:
           did: MMXXtMQ7MdKejtwW3aBnpU
           name: operating_permit.dflow
-          version: '1.0.1'
+          version: '1.0.2'
         attributes:
           - corp_num

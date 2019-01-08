@@ -53,12 +53,12 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.1'
+    version: '1.0.2'
     schemas:
       - key:
           did: URxeJgeTXWAQVUq11p7jiK
           name: registration.dflow
-          version: '1.0.1'
+          version: '1.0.2'
         attributes:
           - corp_num
           # - address_line_1
