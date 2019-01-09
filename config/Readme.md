@@ -321,12 +321,12 @@ proof_requests:
   # This Agent's DID - for proof requests based on this Issuer's Credentials
   #      X3tCbZSE9uUb223KYDWd6o
   permitify_registration:
-    version: '1.0.1'
+    version: '1.0.2'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
           name: registration.dflow
-          version: '1.0.1'
+          version: '1.0.2'
         attributes:
           - corp_num
           - legal_name
