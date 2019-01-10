@@ -202,7 +202,7 @@ hasEnterpriseWallet() {
   fi
 
   _walletType=$(getWalletType ${_podName})
-  if [ "${_walletType}" == "remote" ]; then
+  if [ "${_walletType}" == "postgres_storage" ]; then
     return 0
   else
     return 1

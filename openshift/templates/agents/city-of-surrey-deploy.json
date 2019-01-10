@@ -436,27 +436,27 @@
       "displayName": "Wallet Storage Type",
       "description": "The wallet storage type.  Your choice of 'postgres' or 'sqlite' at the moment.  If not defined, defaults to 'sqlite' for compatibility",
       "required": false,
-      "value": "postgres"
+      "value": "postgres_storage"
     },
     {
       "name": "POSTGRESQL_WALLET_HOST",
       "displayName": "PostgreSql Wallet Hostname",
       "required": true,
-      "description": "Hostname of the deployed database hosting the wallet.  Only used when INDY_WALLET_TYPE = postgres.",
+      "description": "Hostname of the deployed database hosting the wallet.  Only used when INDY_WALLET_TYPE = postgres_storage_storage.",
       "value": "wallet-db"
     },
     {
       "name": "POSTGRESQL_WALLET_PORT",
       "displayName": "PostgreSql Wallet Port",
       "required": true,
-      "description": "The port number of the deployed database hosting the wallet.  Only used when INDY_WALLET_TYPE = postgres.",
+      "description": "The port number of the deployed database hosting the wallet.  Only used when INDY_WALLET_TYPE = postgres_storage_storage.",
       "value": "5432"
     },
     {
       "name": "POSTGRESQL_WALLET_NAME",
       "displayName": "PostgreSql Wallet Name",
       "required": true,
-      "description": "The name of the deployed database hosting the wallet.  Only used when INDY_WALLET_TYPE = postgres.",
+      "description": "The name of the deployed database hosting the wallet.  Only used when INDY_WALLET_TYPE = postgres_storage_storage.",
       "value": "city_of_surrey_issuer"
     },
     {
