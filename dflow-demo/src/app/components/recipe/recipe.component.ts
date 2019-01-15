@@ -111,9 +111,12 @@ export class RecipeComponent implements OnInit, AfterViewInit {
           combineAll()
         )
         .subscribe((response: any) => {
+          this.checkForErrors(response);
+
           const issuers = response[0].results.map(item => {
             return new Issuer(item);
           });
+
           const credentialTypes = response[1];
           const credentials = response[2];
           const nodes = response[3].result.nodes;
@@ -175,6 +178,14 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   setProgress(progress: number, message?: string) {
     this.progressQty = progress;
     this.progressMsg = message;
+  }
+
+  checkForErrors(response: any) {
+    response.forEach(res => {
+      if (!res.success) {
+        this.errors.push(res.result);
+      }
+    });
   }
 
   displayErrors() {
