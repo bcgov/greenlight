@@ -114,8 +114,11 @@ export class RecipeComponent implements OnInit, AfterViewInit {
           const issuers = response[0].results.map(item => {
             return new Issuer(item);
           });
+
           const credentialTypes = response[1];
           const credentials = response[2];
+
+          this.checkDependencySearchSuccess(response[3]);
           const nodes = response[3].result.nodes;
           const links = response[3].result.links;
 
@@ -175,6 +178,12 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   setProgress(progress: number, message?: string) {
     this.progressQty = progress;
     this.progressMsg = message;
+  }
+
+  checkDependencySearchSuccess(response: any) {
+    if (!response.success) {
+      this.errors.push(response.result);
+    }
   }
 
   displayErrors() {

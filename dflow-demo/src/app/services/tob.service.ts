@@ -28,8 +28,8 @@ export class TobService {
   /**
    * Queries ToB and returns a list of @Issuer entities that are currently registered.
    */
-  getIssuers () {
-    const reqURL = '/bc-tob/issuer?page_size=1000';
+  getIssuers (page_num?: number) {
+    const reqURL = page_num ? `/bc-tob/issuer?page=${page_num}` : '/bc-tob/issuer';
     // const reqURL = '/assets/data/issuers.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
@@ -38,8 +38,8 @@ export class TobService {
   /**
    * Queries ToB and returns the list of @Schema objects that are currently registered.
    */
-  getLatestSchemas () {
-    const reqURL = '/bc-tob/schema?page_size=1000';
+  getSchemas (page_num?: number) {
+    const reqURL = page_num ? `/bc-tob/schema?page=${page_num}` : '/bc-tob/schema';
     // const reqURL = '/assets/data/schemas.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
@@ -54,6 +54,11 @@ export class TobService {
     // const reqURL = '/assets/data/topic.json';
     // TODO: use types if possible
     return this.http.get(reqURL);
+  }
+
+  getPaginatedUrl(url: string, page?: number) {
+    // return this.http.get(`${url}?page=${pageNum}`);
+    return this.http.get(`${url}?page=${page}`);
   }
 
   /**

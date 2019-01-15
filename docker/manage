@@ -104,7 +104,7 @@ configureEnvironment () {
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export APPLICATION_URL=${APPLICATION_URL-http://localhost:${WEB_HTTP_PORT:-5000}}
   export ENDPOINT_URL=http://${ENDPOINT_HOST-$DOCKERHOST:${WEB_HTTP_PORT:-5000}}
-  export LOG_LEVEL="INFO"
+  export LOG_LEVEL=${LOG_LEVEL:-INFO}
 
   # caddy
   export TOB_API_URL=${TOB_API_URL:-http://tob-api:8080/api/v2}
