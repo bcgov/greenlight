@@ -111,7 +111,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
           combineAll()
         )
         .subscribe((response: any) => {
-          const issuers = response[0].results.map(item => {
+          const issuers = response[0].map(item => {
             return new Issuer(item);
           });
 
@@ -222,7 +222,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   }
 
   private getCredentialActionURL(schemaName: string, credentialTypes: any) {
-    const credType = credentialTypes.results.find(credType => {
+    const credType = credentialTypes.find(credType => {
       return credType.schema.name === schemaName;
     });
     if (!credType) {
