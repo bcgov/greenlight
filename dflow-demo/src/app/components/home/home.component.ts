@@ -20,18 +20,15 @@ export class HomeComponent implements OnInit {
   selectedTopic: string;
   error = false;
 
-  recordCache = {};
-
   constructor(private tobService: TobService, private _router: Router) {
     this.availableCreds = new Array<any>();
   }
 
   ngOnInit() {
-    const getIssuers = this.getIssuers();
-    const getSchemas = this.getSchemas();
+    const getIssuers = this.tobService.getIssuers();
+    const getSchemas = this.tobService.getSchemas();
 
     forkJoin(getIssuers, getSchemas).subscribe((data: any) => {
-      console.log('DATA:', data);
       const issuers = data[0] as any;
       const schemas = data[1] as any;
 
@@ -92,45 +89,5 @@ export class HomeComponent implements OnInit {
 
       this._router.navigateByUrl(url);
     }
-  }
-
-  /**
-   * Load records from a paginated API endpoint, recursively following new pages until all data has been fetched.
-   * @param url the URL to query
-   * @param cache whether to enable cache
-   * @param prevLoad the result of the previous call in the stack, if acting recursively
-   */
-  loadRecordList(url: string, cache?: boolean, prevLoad?: any): Observable<any> {
-    if (cache && this.recordCache[url]) {
-      return this.recordCache[url];
-    }
-    let pageNum = prevLoad ? prevLoad.page + 1 : 1;
-    let results = prevLoad ? prevLoad.results : new Array<any>();
-    return this.tobService
-      .getPaginatedUrl(url, pageNum)
-      .pipe(
-        map((response: any) => {
-          results = results.concat(response['results']);
-          if (response['last_index'] < response['total']) {
-            return this.loadRecordList(url, cache, { page: pageNum, results: results });
-          }
-          if (cache) {
-            this.recordCache[url] = results;
-          }
-          return of(results);
-        }),
-        switchMap(val => {
-          // return the last value emitted by the observable, which will contain all of the data
-          return val;
-        })
-      );
-  }
-
-  getIssuers(): Observable<any> {
-    return this.loadRecordList('/bc-tob/issuer', true);
-  }
-
-  getSchemas(): Observable<any> {
-    return this.loadRecordList('/bc-tob/schema', true);
   }
 }

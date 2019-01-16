@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { Issuer } from '../models/issuer';
 import { StepDependency } from '../models/step';
 
@@ -8,6 +9,8 @@ import { StepDependency } from '../models/step';
   providedIn: 'root'
 })
 export class TobService {
+
+  recordCache = {};
 
   constructor(private http: HttpClient) { }
 
@@ -28,21 +31,15 @@ export class TobService {
   /**
    * Queries ToB and returns a list of @Issuer entities that are currently registered.
    */
-  getIssuers (page_num?: number) {
-    const reqURL = page_num ? `/bc-tob/issuer?page=${page_num}` : '/bc-tob/issuer';
-    // const reqURL = '/assets/data/issuers.json';
-    // TODO: use types if possible
-    return this.http.get(reqURL);
+  getIssuers () {
+    return this.loadRecordList('/bc-tob/issuer');
   }
 
   /**
    * Queries ToB and returns the list of @Schema objects that are currently registered.
    */
-  getSchemas (page_num?: number) {
-    const reqURL = page_num ? `/bc-tob/schema?page=${page_num}` : '/bc-tob/schema';
-    // const reqURL = '/assets/data/schemas.json';
-    // TODO: use types if possible
-    return this.http.get(reqURL);
+  getSchemas () {
+    return this.loadRecordList('/bc-tob/schema');
   }
 
   /**
@@ -65,8 +62,7 @@ export class TobService {
    * Restirns a JSON structure representing the details for the credentials registered in ToB.
    */
   getCredentialTypes() {
-    const reqURL = '/bc-tob/credentialtype?page_size=1000';
-    return this.http.get(reqURL);
+    return this.loadRecordList('/bc-tob/credentialtype');
   }
 
   getCredentialsByTopic (topicId) {
@@ -130,5 +126,30 @@ export class TobService {
         && id.indexOf(cred.credential_type.schema.name) > -1;
     });
     return result.length > 0;
+  }
+
+  /**
+   * Load records from a paginated API endpoint, recursively following new pages until all data has been fetched.
+   * @param url the URL to query
+   * @param cache whether to enable cache
+   * @param prevLoad the result of the previous call in the stack, if acting recursively
+   */
+  private loadRecordList(url: string, prevLoad?: any): Observable<any> {
+    let pageNum = prevLoad ? prevLoad.page + 1 : 1;
+    let results = prevLoad ? prevLoad.results : new Array<any>();
+    return this.getPaginatedUrl(url, pageNum)
+      .pipe(
+        map((response: any) => {
+          results = results.concat(response['results']);
+          if (response['last_index'] < response['total']) {
+            return this.loadRecordList(url, { page: pageNum, results: results });
+          }
+          return of(results);
+        }),
+        switchMap(val => {
+          // return the last value emitted by the observable, which will contain all of the data
+          return val;
+        })
+      );
   }
 }
