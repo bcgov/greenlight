@@ -148,7 +148,7 @@ export MYORG_AGENT_PORT=${MYORG_AGENT_PORT:-8000}
 DEFAULT_CONTAINERS="agent-wallet-db myorg-agent bcreg-agent ministry-finance-agent city-surrey-agent fraser-valley-agent liquor-control-agent worksafe-agent"
 ```
 
-### Upate OpenShift Configuration
+### Update OpenShift Configuration
 
 If you use OpenShift, you will be interested in adding a new deployment configuration for the new agent, and updating the deployment configuration for dflow to correctly proxy requests.
 
