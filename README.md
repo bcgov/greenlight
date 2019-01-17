@@ -17,11 +17,11 @@ The business problem addressed in this demo is a business trying to get Business
 
 # Running a Complete VON Network
 
-A quick start guide for running a complete local VON Network (including a local Indy Network, an instance of TheOrgBook and dFlow) can be found in the [VON Network Quick Start Guide](https://github.com/bcgov/permitify/blob/master/docker/VONNetworkQuickStartGuide.md).
+A quick start guide for running a complete local VON Network (including a local Indy Network, an instance of TheOrgBook and dFlow) can be found in the [VON Network Quick Start Guide](https://github.com/bcgov/dFlow/blob/master/docker/VONQuickStartGuide.md).
 
 ## Running Locally
 
-Instructions for running just dFlow locally can be found in the [dFlow docker folder](https://github.com/bcgov/permitify/tree/master/docker). Instructions for running a 
+Instructions for running just dFlow locally can be found in the [dFlow docker folder](https://github.com/bcgov/dFlow/tree/master/docker). Instructions for running a 
 
 ## Running a Shared Instance
 

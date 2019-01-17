@@ -11,7 +11,6 @@ Each agent folder contains the files used to configure a VON Issuer/Verifier. If
   - [File: settings.yml](#file-settingsyml)
   - [File: routes.yml](#file-routesyml)
   - [File: services.yml](#file-servicesyml)
-  - [The Config Files Generator](#the-config-files-generator)
 
 ## Summary: The Configuration Files
 
@@ -105,7 +104,7 @@ forms:
     explanation: Use the form below to apply for a my-permit for your organization.
 
     proof_request:
-      id: permitify_registration
+      id: dflow_registration
       connection_id: bctob
 
     js_includes:
@@ -157,7 +156,7 @@ As the Web Form loads, any `proof_request` entries referenced in this file (`rou
 - `date` - a date field, with calendar support.
 - `select` - a dropdown list of enumerated values driven by the `options` list.
 - `address` - a special, multi-field widget for entering a Canadian address that includes auto-complete (using the Canada Post auto-complete API).
-  - An example of the use of the `address` field type can be seen [here in dFlow](https://dflow.orgbook.gov.bc.ca/bcreg/incorporation?credential_ids=&schema_name=registration.dflow&schema_version=1.0.0&issuer_did=6qnvgJtqwK44D8LFYnV5Yf) - the fields from the "Mailing Address" label down to "Postal Code" and "Country" fields. [Here](https://github.com/bcgov/permitify/blob/master/config/bcreg-agent/routes.yml) is the `routes.yml` entry for that address.
+  - An example of the use of the `address` field type can be seen [here in dFlow](https://dflow.orgbook.gov.bc.ca/bcreg/incorporation?credential_ids=&schema_name=registration.dflow&schema_version=1.0.0&issuer_did=6qnvgJtqwK44D8LFYnV5Yf) - the fields from the "Mailing Address" label down to "Postal Code" and "Country" fields. [Here](https://github.com/bcgov/dFlow/blob/master/config/bcreg-agent/routes.yml) is the `routes.yml` entry for that address.
 
 `mappings` is a list of attributes that are auto-populated by one of a number of helpers. The current set of helper functions can be found by looking at [this code from the VON-X repo (master branch)](https://github.com/PSPC-SPAC-buyandsell/von-x/blob/master/vonx/web/helpers.py).
 
@@ -232,7 +231,7 @@ issuers:
       schema: my-permit.my-organization.ca
       issuer_url: http://localhost:5000/my-organization/my-permit
       depends_on:
-        - permitify_registration
+        - dflow_registration
         - pst_number
       credential:
         effective_date:
@@ -320,7 +319,7 @@ verifiers:
 proof_requests:
   # This Agent's DID - for proof requests based on this Issuer's Credentials
   #      X3tCbZSE9uUb223KYDWd6o
-  permitify_registration:
+  dflow_registration:
     version: '1.0.2'
     schemas:
       - key:
