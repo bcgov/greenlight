@@ -26,7 +26,7 @@ The following **Quick Start Guide** will have you up and running in no time.  Fo
 
 The instructions above provide you with an instance of the applications which are only accessible on the local machine.  What if you want to host the instances on another machine and access them remotely?  Well, you can, however ...  This method is only suitable for development and testing.  It is NOT suitable for any level of production level hosting.  The following instructions are an abbreviated set that only contain the differences to the start commands.
 
-Tha examples use `192.168.15.117` as the IP address, replace `192.168.15.117` with the IP address of the machine on which you are hosting the applications.  *You may be able to use the hostname of the machine in place of the IP address.*
+These examples use `192.168.15.117` as the IP address. Replace `192.168.15.117` with the IP address of the machine on which you are hosting the applications.  *You may be able to use the hostname of the machine in place of the IP address.*
 
 1. From `.../von-network` run `./manage start 192.168.15.117 &`, and wait for the von-network components to fully start.
 1. From `.../TheOrgBook/docker` run `./manage start seed=the_org_book_0000000000000000000 APPLICATION_URL=http://192.168.15.117:8080 LEDGER_URL=http://192.168.15.117:9000`

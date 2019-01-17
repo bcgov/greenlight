@@ -76,7 +76,7 @@ If the user interface does not start, or the `Credentials` drop down does not po
 
 ## Health Check
 
-To check whether the issuer services have started browse to the *healthcheck* endpoint of each service.  An **ok** response from the service indicates it is ready.  A full list of the services (and their urls) can be found in the [CaddyFile](https://github.com/bcgov/permitify/blob/master/caddy/Caddyfile) of the dFlow application.
+To check whether the issuer services have started browse to the *healthcheck* endpoint of each service.  An **ok** response from the service indicates it is ready.  A full list of the services (and their urls) can be found in the [CaddyFile](https://github.com/bcgov/dFlow/blob/master/caddy/Caddyfile) of the dFlow application.
 
 [http://localhost:5000/bcreg/health](http://localhost:5000/bcreg/health)
 [http://localhost:5000/finance/health](http://localhost:5000/finance/health)
