@@ -248,6 +248,10 @@
                   {
                     "name": "ENDPOINT_URL",
                     "value": "${ENDPOINT_URL}"
+                  },
+                  {
+                    "name": "TCP_SOCKET_FAMILY",
+                    "value": "${TCP_SOCKET_FAMILY}"
                   }
                 ],
                 "readinessProbe": {
@@ -353,6 +357,13 @@
       "description": "The public domain endpoint for the agent, which is registered on the ledger.",
       "required": true,
       "value": "https://dev-dflow.orgbook.gov.bc.ca"
+    },
+    {
+      "name": "TCP_SOCKET_FAMILY",
+      "displayName": "TCP Socket Family",
+      "description": "The TCP socket version to be used by the agent DNS resolver.",
+      "required": true,
+      "value": "IPV4"
     },
     {
       "name": "CONFIG_ROOT",
