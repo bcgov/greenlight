@@ -9,6 +9,7 @@
 TAG_NAME=test
 APPLICATION_URL=https://dflow.orgbook.gov.bc.ca
 ENDPOINT_URL=https://dflow.orgbook.gov.bc.ca
+# TCP_SOCKET_FAMILY=TCPV4
 # CONFIG_ROOT=../config/liquor-control-agent
 # HOST_PORT=8080
 # ENVIRONMENT=default
