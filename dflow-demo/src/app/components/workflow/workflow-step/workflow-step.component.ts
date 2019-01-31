@@ -37,7 +37,8 @@ export class WorkflowStepComponent implements OnInit {
     } else if (this.isStart || this.allDepsSatisfied) {
       const credentialParam = `credential_ids=${this.step.walletId}`;
       const schemaParam = `schema_name=${this.step.requestedSchema.name}&schema_version=${this.step.requestedSchema.version}&issuer_did=${this.step.requestedSchema.did}`;
-      this.actionURL = `${this.step.actionURL}?${credentialParam}&${schemaParam}`;
+      const issuer_endpoint = `issuer_endpoint=${this.step.endpoint}`;
+      this.actionURL = `${this.step.actionURL}?${credentialParam}&${schemaParam}&${issuer_endpoint}`;
     } else {
       this.actionURL = null;
     }

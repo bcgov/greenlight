@@ -33,7 +33,7 @@ issuers:
     credential_types:
     - description: Dog/Cat Breeder Licence
       schema: dog-cat-breeder-licence.agri
-      issuer_url: $APPLICATION_URL_INCORP
+      issuer_url: $APPLICATION_URL/agri/dog-cat-breeder-licence
       depends_on:
         - registration
         - pst-number

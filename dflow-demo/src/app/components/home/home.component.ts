@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   selectedTopic: string;
   error = false;
 
-  constructor(private tobService: TobService, private _router: Router) {
+  constructor(private tobService: TobService, private router: Router) {
     this.availableCreds = new Array<any>();
   }
 
@@ -79,15 +79,15 @@ export class HomeComponent implements OnInit {
     } else {
       this.error = false;
 
-      // build queryParam for topic, if specified
-      let topicParam = '';
-      if (this.selectedTopic) {
-        topicParam = `topic=${this.selectedTopic}&`;
-      }
-
-      const url = `/demo?${topicParam}name=${this.selectedCred.schema.name}&version=${this.selectedCred.schema.version}&did=${this.selectedCred.schema.origin_did}`;
-
-      this._router.navigateByUrl(url);
+      this.router.navigate(['/demo'], { queryParams : {
+          topic: this.selectedTopic,
+          name: this.selectedCred.schema.name,
+          version: this.selectedCred.schema.version,
+          did: this.selectedCred.schema.origin_did,
+          issuer_endpoint: this.selectedCred.issuer.endpoint
+        },
+        queryParamsHandling: 'merge'
+      });
     }
   }
 }
