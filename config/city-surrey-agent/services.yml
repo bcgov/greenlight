@@ -31,7 +31,7 @@ issuers:
     credential_types:
       - description: Business License
         schema: biz_license.dflow
-        issuer_url: $APPLICATION_URL_INCORP
+        issuer_url: $APPLICATION_URL/surrey/biz
         depends_on:
           - liquor-license
         topic:

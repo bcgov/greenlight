@@ -31,7 +31,7 @@ issuers:
     credential_types:
       - description: Registration
         schema: registration.dflow
-        issuer_url: $APPLICATION_URL_INCORP
+        issuer_url: $APPLICATION_URL/bcreg/incorporation
         topic:
           source_id:
             input: corp_num
@@ -127,7 +127,7 @@ issuers:
 
       - description: Relationship
         schema: relationship.dflow
-        issuer_url: $APPLICATION_URL_DBA
+        issuer_url: $APPLICATION_URL/bcreg/dba
         credential:
           effective_date:
             input: effective_date

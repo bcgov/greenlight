@@ -31,7 +31,7 @@ issuers:
     credential_types:
       - description: Operating Permit
         schema: operating_permit.dflow
-        issuer_url: $APPLICATION_URL_INCORP
+        issuer_url: $APPLICATION_URL/fraser-valley/permit
         depends_on:
           - clearance-letter
         topic:

@@ -31,7 +31,7 @@ issuers:
     credential_types:
       - description: PST Number
         schema: pst_number.dflow
-        issuer_url: $APPLICATION_URL_INCORP
+        issuer_url: $APPLICATION_URL/finance/pst
         depends_on:
         - registration
         topic:
