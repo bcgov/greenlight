@@ -28,6 +28,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   targetName: string;
   targetVersion: string;
   targetDid: string;
+  endpoint: string;
 
   observables: Array<Observable<any>>;
 
@@ -64,6 +65,11 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         this.errors.push('Target issuer did parameter is missing!');
       }
 
+      this.endpoint = params['issuer_endpoint'];
+      if (!this.endpoint) {
+        this.errors.push('Target issuer endpoint parameter is missing!');
+      }
+
       this.topic = params['topic'];
 
       // start request for observables
@@ -71,7 +77,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         this.tobService.getIssuers(),
         this.tobService.getCredentialTypes(),
         this.tobService.getCredentialsByTopic(this.topic),
-        this.tobService.getPathToStep(this.targetName, this.targetVersion, this.targetDid).pipe(retry(2))
+        this.tobService.getPathToStep(this.endpoint, this.targetName, this.targetVersion, this.targetDid).pipe(retry(2))
       ];
     });
   }
@@ -141,7 +147,8 @@ export class RecipeComponent implements OnInit, AfterViewInit {
                 version: this.targetVersion,
                 did: this.targetDid
               },
-              schemaURL: schemaURL
+              schemaURL: schemaURL,
+              endpoint: this.endpoint
             });
             const nodeHTML = this.nodeResolverService.getHTMLForNode(step);
             this.workflowService.addNode(new WorkflowNode(node.id, nodeHTML, NodeLabelType.HTML));

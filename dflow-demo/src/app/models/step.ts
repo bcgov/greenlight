@@ -5,6 +5,7 @@ export class Step {
   topicId: number;
   name: string;
   dependencies: Array<StepDependency>;
+  endpoint: string
 
   // optional
   issuer: Issuer;
@@ -23,6 +24,8 @@ export class Step {
       this.walletId = stepData.walletId;
       this.name = stepData.stepName;
       this.dependencies = stepData.dependencies;
+      this.endpoint = stepData.endpoint;
+
       this.issuer = stepData.issuer;
       if (stepData.credData) {
         this.credentialId = stepData.credData.id;

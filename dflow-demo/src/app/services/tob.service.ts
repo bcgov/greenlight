@@ -16,16 +16,21 @@ export class TobService {
 
   /**
    * Returns the path - described as step and dependencies - to a step.
+   * @param endpojnt The endpoint for the target issuer.
    * @param name The name of the shema being looked up.
    * @param version The version of the schema being looked up.
    * @param did The did of the issuer issuing the specified schema.
    */
-  getPathToStep (name: string, version: string, did: string) {
-    // TODO: need a way of determining the baseURL for an agent
-    const baseURL = '/bcreg';
-    const reqURL = `${baseURL}/get-credential-dependencies?schema_name=${name}&schema_version=${version}&origin_did=${did}`;
-    // const reqURL = '/assets/data/topology.json';
-    return this.http.post(reqURL, null);
+  getPathToStep (endpoint: string, name: string, version: string, did: string) {
+    let reqURL = '';
+
+    // This is required to address limitations with how the agent endpoints are published in Docker
+    if (/^http(s?):\/\/localhost/.test(window.location.href)) {
+      reqURL = `bcreg/get-credential-dependencies?schema_name=${name}&schema_version=${version}&origin_did=${did}`;
+    } else {
+      reqURL = `${endpoint}/get-credential-dependencies?schema_name=${name}&schema_version=${version}&origin_did=${did}`;
+    }
+    return this.http.post(reqURL, null, { withCredentials: true });
   }
 
   /**

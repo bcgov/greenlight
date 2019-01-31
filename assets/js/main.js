@@ -77,9 +77,10 @@ $(function() {
         const schema_name = decodeURIComponent(window.location.href.split('&')[1].split('=')[1]);
         const schema_version = decodeURIComponent(window.location.href.split('&')[2].split('=')[1]);
         const issuer_did = decodeURIComponent(window.location.href.split('&')[3].split('=')[1]);
+        const issuer_endpoint = decodeURIComponent(window.location.href.split('&')[4].split('=')[1]);
 
         // build dFlow return URL from above parameters
-        window.location = `${hostURL}/demo?topic=${response.topic}&name=${schema_name}&version=${schema_version}&did=${issuer_did}`;
+        window.location = `${hostURL}/demo?topic=${response.topic}&name=${schema_name}&version=${schema_version}&did=${issuer_did}&issuer_endpoint=${issuer_endpoint}`;
       });
     });
   });
