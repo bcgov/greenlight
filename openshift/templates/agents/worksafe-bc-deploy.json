@@ -53,6 +53,29 @@
       }
     },
     {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "labels": {
+          "app": "services",
+          "name": "${NAME}",
+          "app-group": "${APP_GROUP}"
+        }
+      },
+      "spec": {
+        "host": "${ENDPOINT_URL}",
+        "tls": {
+          "insecureEdgeTerminationPolicy": "Redirect",
+          "termination": "edge"
+        },
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}"
+        }
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -356,7 +379,7 @@
       "displayName": "Endpoint URL",
       "description": "The public domain endpoint for the agent, which is registered on the ledger.",
       "required": true,
-      "value": "https://dev-dflow.orgbook.gov.bc.ca"
+      "value": "https://worksafe-bc-dev-dflow.pathfinder.gov.bc.ca"
     },
     {
       "name": "TCP_SOCKET_FAMILY",

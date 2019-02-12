@@ -8,7 +8,7 @@
 # IMAGE_NAMESPACE=devex-von-permitify-tools
 TAG_NAME=test
 APPLICATION_URL=https://dflow.orgbook.gov.bc.ca
-ENDPOINT_URL=https://dflow.orgbook.gov.bc.ca
+ENDPOINT_URL=https://city-of-surrey-dflow.pathfinder.gov.bc.ca
 # TCP_SOCKET_FAMILY=TCPV4
 # CONFIG_ROOT=../config/city-surrey-agent
 # HOST_PORT=8080
