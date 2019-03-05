@@ -1,0 +1,74 @@
+<section id="about" class="container my-2">
+
+  <div id="overview" class="section">
+    <h4 class="mt-4">How GreenLight works</h4>
+
+    <ul>
+      <li>After you select the permit or license you need, GreenLight evaluates what prerequisites are needed to acquire that permit or license (credential).</li>
+      <li>GreenLight repeats the process for each prerequisite credential until all the necessary permits and licenses are determined.</li>
+      <li>GreenLight then presents a map of the credentials needed and the order of acquisition necessary to meet the prerequisites, starting from teh credentials that have no prerequisites.</li>
+      <li>For each credential, GreenLight indicates who teh issuer is.</li>
+    </ul>
+  </div>
+
+  <div id="symbol-meaning" class="section">
+    <h4 class="mt-4">What do the symbols mean?</h4>
+
+    <img class="img-fluid mx-auto"
+                [src]="'assets/img/gl-symbols.png'"
+                tabindex="-1" alt="GreenLight symbol legend">
+  </div>
+
+  <div id="color-meaning" class="section">
+    <h4 class="mt-4">And the colours?</h4>
+
+    <div class="px-3">
+      <div class="row my-3">
+        <div class="col-2 font-weight-bold text-center rounded gl-green">
+          Green
+        </div>
+        <div class="col-10">
+          Green signifies that you need and have this credential already.
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="col-2 font-weight-bold text-center rounded gl-yellow">
+          Yellow
+        </div>
+        <div class="col-10">
+          Yellow signifies that you need this credential but you don't have it yet; you have the dependencies to go for it so go get it!
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="col-2 font-weight-bold text-center rounded gl-red">
+          Red
+        </div>
+        <div class="col-10">
+          Red signifies that you need this credential but you don't have it. You don't have the dependencies for it so you cannot apply for it.
+        </div>
+      </div>
+    </div>
+
+    <p>
+      <span class="font-weight-bold">Example:</span> Let's say you have a restaurant and you want to apply for a liquor license. GreenLight tells you in one easy step that:
+    </p>
+
+    <ul style="list-style: none">
+      <li><i class="fa fa-check"></i> You are a registered corporation.</li>
+      <li><i class="fa fa-check"></i> You have WorkSafe BC coverage.</li>
+      <li><i class="fa fa-check"></i> You have a PST number.</li>
+      <li><i class="fa fa-times"></i> You do not have an ioperating permit, but you can apply for one./li>
+      <li><i class="fa fa-times"></i> Without the operating permit, you cannot apply for a liquor license.</li>
+    </ul>
+
+    <img class="img-fluid mx-auto"
+                [src]="'assets/img/gl-example.png'"
+                tabindex="-1" alt="GreenLight example">
+
+    <p>
+      GreenLight has saved you the time and hassle of trying to figure out what steps need to be completed and in what order when it comes to getting a liquor license.
+    </p>
+
+  </div>
+
+</section>

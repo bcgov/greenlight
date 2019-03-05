@@ -1,3 +1,32 @@
 .icon-link {
   color: inherit;
 }
+
+.card-header {
+  padding: 0 0 0 0;
+}
+
+.card-success  {
+  .step-name {
+    background-color: #6aa84fff;
+    color: #fff;
+    margin-left: 15px;
+  }
+}
+
+.card-warning  {
+  .step-name {
+    background-color: #e3a82b;
+    color: #fff;
+    margin-left: 15px;
+  }
+}
+
+.card-danger > .card-header {
+  background-color: #ff0000ff;
+
+  .step-name {
+    color: #fff;
+    margin-left: 15px;
+  }
+}

@@ -1,25 +1,29 @@
 <div class="workflow-node card"
   [ngClass]="{
-    'card-default': isStart && !obtainedCert,
+    'card-warning': (isStart || allDepsSatisfied) && !obtainedCert,
     'card-success': obtainedCert,
-    'card-warning': allDepsSatisfied && !obtainedCert,
     'card-danger': !allDepsSatisfied && !isStart
   }">
     <div class="card-header">
 
-      <h6 class="my-0 mr-2 font-italic float-left">{{ step.name }}</h6>
+      <div class="row h-100 w-100">
 
-      <span>
-        <!-- RouterLink and target are used so that the link will work also when in development mode -->
-        <a *ngIf="step.effectiveDate" class="icon-link" target="_blank" href="{{actionURL}}" aria-label="View Credential">
-          <i class="fa fa-lg fa-id-card float-right"></i>
-        </a>
+          <div class="col rounded-left step-name">
+            <h6 class="my-1 mx-2 w-100 h-100 text-center font-italic float-left">{{ step.name }}</h6>
+          </div>
 
-        <a *ngIf="(isStart || allDepsSatisfied) && !obtainedCert"  class="icon-link" target="_self" href="{{actionURL}}" aria-label="Obtain Credential">
-          <i class="fa fa-lg fa-plus-square float-right"></i>
-        </a>
+          <div class="my-2 ml-2 pl-1">
+            <!-- RouterLink and target are used so that the link will work also when in development mode -->
+            <a *ngIf="step.effectiveDate" class="icon-link" target="_blank" href="{{actionURL}}" aria-label="View Credential">
+              <i class="fa fa-lg fa-id-card float-right"></i>
+            </a>
 
-      </span>
+            <a *ngIf="(isStart || allDepsSatisfied) && !obtainedCert"  class="icon-link" target="_self" href="{{actionURL}}" aria-label="Obtain Credential">
+              <i class="fa fa-lg fa-plus-square float-right"></i>
+            </a>
+
+          </div>
+      </div>
 
     </div>
 

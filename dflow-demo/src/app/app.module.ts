@@ -15,6 +15,7 @@ import { WorkflowStepComponent } from './components/workflow/workflow-step/workf
 import { GeneralDataService } from './services/general-data.service';
 import { ProgressBarComponent } from './components/util/progress-bar/progress-bar.component';
 import { AlertComponent } from './components/util/alert/alert.component';
+import { AboutComponent } from './components/about/about.component';
 
 
 
@@ -28,7 +29,8 @@ import { AlertComponent } from './components/util/alert/alert.component';
     WorkflowStepComponent,
     SearchInputComponent,
     ProgressBarComponent,
-    AlertComponent
+    AlertComponent,
+    AboutComponent
   ],
   entryComponents: [
     WorkflowStepComponent

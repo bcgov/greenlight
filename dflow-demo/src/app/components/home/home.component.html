@@ -1,13 +1,13 @@
 <section id="home-hero" class="hero-banner">
 
-  <div class="container my-md-5">
+  <div class="container my-md-3">
 
     <div class="row">
       <div class="col-sm-12">
-        <h1 class="page-title" id="contentStart" tabindex="-1" translate>Decentralized Flow</h1>
+        <h1 class="page-title" id="contentStart" tabindex="-1" translate>GreenLight</h1>
 
         <p class="lead">
-        dFlow demonstrates how to simplify bureaucracy by using blockchain to streamline the process of acquiring and using credentials.
+        Streamlining your permit and licensing experience.
         </p>
       </div>
     </div>
@@ -18,22 +18,21 @@
 
 <section id="home-body" class="container">
 
-    <div class="container my-4 mt-md-5">
-      <h2>Let's get started!</h2>
+    <div class="container my-4 mt-md-3">
+      <p class="text-center" style="color: red">This new service is a proof of concept.</p>
 
-      <p>
-      This new service uses cutting-edge blockchain-based technology to issue credentials, while ensuring all pre-requisites are met.
+      <p class="text-justify">
+      This new service is a <span class="font-italic">decentralized workflow</span> application - a mapping tool - that helps you navigate the
+      sometimes tricky license and permit process. It uses cutting-edge blockchain technology to show you not only the steps to getting your permit or license,
+      but more importantly, the interdependencies that might be involved. Using a colour-coded flow diagram, GreenLight helps you build up the credentials
+      you need to get the "green light" to perate!
       </p>
 
-      <ol>
-        <li>Select the credential you wish to check/obtain from the drop-down list.</li>
-        <li>Find your legal entity. Don't worry, this step is optional and you will be able to create it if you don't already have one.</li>
-        <li>Click the begin button!</li>
-      </ol>
+      <p>Let's get started!</p>
 
 
-      <div class="form-group col-md-8">
-        <label class="control-label" for="credPicker">Credential:</label>
+      <div class="form-group">
+        <label class="control-label" for="credPicker">What permit or license do you need?</label>
         <ng-select [(ngModel)]="selectedCred">
           <ng-option *ngFor="let cred of availableCreds" [value]="cred">
             {{ cred.issuer.name }} - {{ cred.schema.name }}:{{cred.schema.version}}
@@ -42,13 +41,31 @@
         <div class="invalid-feedback" *ngIf="error">Please pick an issuer/schema combination to proceed.</div>
       </div>
 
-      <div class="form-group col-md-8">
-        <label class="col-form-label control-label">Legal Entity (optional):</label>
+      <div class="form-group">
+        <label class="col-form-label control-label">What is the name of your corporation/legal entity (if applicable)?*</label>
         <search-input #searchInput (accepted)="performSearch($event)"></search-input>
+        <span>
+          <small>
+              * This field is optional. If your business is new, leave this blank and use GreenLight to register it.
+          </small>
+        </span>
       </div>
 
-      <div class="my-4 col-md-8">
-          <button class="btn btn-primary" type="button" (click)="begin()">Begin</button>
+      <div class="row my-4">
+        <div class="col"><!--Layout Placeholder--></div>
+        <div class="col">
+          <button class="btn btn-primary float-right" type="button" (click)="begin()">Begin</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+            <p class="fun-facts text-justify p-2 rounded">
+              <span class="font-weight-bold">DID YOU KNOW:</span> GreenLight contains the public data from more than 410,000 registered corporations in British Columbia.
+              Other credential issuers can join, so the foundational data GreenLight can access will grow and become even more powerful.
+            </p>
+        </div>
+        <div class="col-8"><!--Layout Placeholder--></div>
       </div>
     </div>
 
