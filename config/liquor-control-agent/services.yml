@@ -30,7 +30,7 @@ issuers:
 
     credential_types:
       - description: Liquor License
-        schema: liquor_license.dflow
+        schema: Liquor License
         issuer_url: $APPLICATION_URL/liquor/license
         depends_on:
           - pst-number
@@ -54,39 +54,39 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.2'
+    version: '1.0.3'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
-          name: registration.dflow
-          version: '1.0.2'
+          name: Registered Corporation
+          version: '1.0.3'
         attributes:
           - corp_num
           - legal_name
   pst-number:
-    version: '1.0.2'
+    version: '1.0.3'
     schemas:
       - key:
           did: CYnWiuEtJJuhpWvVz3kY9D
-          name: pst_number.dflow
-          version: '1.0.2'
+          name: PST Number
+          version: '1.0.3'
         attributes:
           - corp_num
   clearance-letter:
-    version: '1.0.2'
+    version: '1.0.3'
     schemas:
       - key:
           did: MAcounf9HxhgnqqhzReTLC
-          name: worksafe.dflow
-          version: '1.0.2'
+          name: WorkSafe BC Coverage
+          version: '1.0.3'
         attributes:
           - corp_num
   operating-permit:
-    version: '1.0.2'
+    version: '1.0.3'
     schemas:
       - key:
           did: L6SJy7gNRCLUp8dV94hfex
-          name: operating_permit.dflow
-          version: '1.0.2'
+          name: Operating Permit
+          version: '1.0.3'
         attributes:
           - corp_num

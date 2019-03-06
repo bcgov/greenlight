@@ -1,7 +1,7 @@
 # File Format Documentation: https://github.com/bcgov/von-agent-template/tree/master/von-x-agent/config
 
-- name: dog-cat-breeder-licence.agri
-  version: '1.0.2'
+- name: Dog and Cat Breeder License
+  version: '1.0.3'
   description: Dog/Cat Breeder Licence issued by BC Ministry of Agriculture
 
   attributes:

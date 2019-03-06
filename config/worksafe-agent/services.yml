@@ -30,7 +30,7 @@ issuers:
 
     credential_types:
       - description: Clearance Letter
-        schema: worksafe.dflow
+        schema: WorkSafe BC Coverage
         issuer_url: $APPLICATION_URL/worksafe/clearance-letter
         depends_on:
           - registration
@@ -53,12 +53,12 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.2'
+    version: '1.0.3'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
-          name: registration.dflow
-          version: '1.0.2'
+          name: Registered Corporation
+          version: '1.0.3'
         attributes:
           - corp_num
           # - address_line_1

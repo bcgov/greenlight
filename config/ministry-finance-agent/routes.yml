@@ -2,7 +2,7 @@ forms:
   finance-pst:
     path: /finance/pst
     type: issue-credential
-    schema_name: pst_number.dflow
+    schema_name: PST Number
     page_title: Ministry of Finance
     title: PST Number
     template: bcgov.index.html
