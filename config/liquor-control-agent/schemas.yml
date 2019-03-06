@@ -1,5 +1,5 @@
-- name: liquor_license.dflow
-  version: '1.0.2'
+- name: Liquor License
+  version: '1.0.3'
   attributes:
     - corp_num
     - dba_corp_num

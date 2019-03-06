@@ -1,5 +1,5 @@
-- name: worksafe.dflow
-  version: '1.0.2'
+- name: WorkSafe BC Coverage
+  version: '1.0.3'
   attributes:
     - corp_num
     - dba_corp_num

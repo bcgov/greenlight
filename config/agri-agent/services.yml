@@ -32,7 +32,7 @@ issuers:
 
     credential_types:
     - description: Dog/Cat Breeder Licence
-      schema: dog-cat-breeder-licence.agri
+      schema: Dog and Cat Breeder License
       issuer_url: $APPLICATION_URL/agri/dog-cat-breeder-licence
       depends_on:
         - registration
@@ -124,12 +124,12 @@ proof_requests:
   #      TkgmPnj3uWsWLAHafh1iod
 
   registration:
-    version: '1.0.2'
+    version: '1.0.3'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
-          name: registration.dflow
-          version: '1.0.2'
+          name: Registered Corporation
+          version: '1.0.3'
         attributes:
           - corp_num
           - legal_name
@@ -142,11 +142,11 @@ proof_requests:
           - country
 
   pst-number:
-    version: '1.0.2'
+    version: '1.0.3'
     schemas:
       - key:
           did: CYnWiuEtJJuhpWvVz3kY9D
-          name: pst_number.dflow
-          version: '1.0.2'
+          name: PST Number
+          version: '1.0.3'
         attributes:
           - corp_num

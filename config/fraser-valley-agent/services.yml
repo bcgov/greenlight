@@ -30,7 +30,7 @@ issuers:
 
     credential_types:
       - description: Operating Permit
-        schema: operating_permit.dflow
+        schema: Operating Permit
         issuer_url: $APPLICATION_URL/fraser-valley/permit
         depends_on:
           - clearance-letter
@@ -52,21 +52,21 @@ verifiers:
 
 proof_requests:
   registration:
-    version: '1.0.2'
+    version: '1.0.3'
     schemas:
       - key:
           did: 6qnvgJtqwK44D8LFYnV5Yf
-          name: registration.dflow
-          version: '1.0.2'
+          name: Registered Corporation
+          version: '1.0.3'
         attributes:
           - corp_num
           - legal_name
   clearance-letter:
-    version: '1.0.2'
+    version: '1.0.3'
     schemas:
       - key:
           did: MAcounf9HxhgnqqhzReTLC
-          name: worksafe.dflow
-          version: '1.0.2'
+          name: WorkSafe BC Coverage
+          version: '1.0.3'
         attributes:
           - corp_num

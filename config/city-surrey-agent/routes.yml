@@ -2,7 +2,7 @@ forms:
   finance-pst:
     path: /surrey/biz
     type: issue-credential
-    schema_name: biz_license.dflow
+    schema_name: Business License
     page_title: City of Surrey
     title: Surrey
     template: city_of_surrey.index.html
