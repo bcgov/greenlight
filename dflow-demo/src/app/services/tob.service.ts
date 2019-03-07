@@ -91,7 +91,7 @@ export class TobService {
   }
 
   /**
-   * Returns the list of @StepDependency for teh specified id.
+   * Returns the list of @StepDependency for the specified id.
    * @param id the id of the step being processed.
    * @param links the data structure representing the topology links.
    * @param creds the available credentials to be processed
