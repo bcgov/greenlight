@@ -16,7 +16,7 @@
     - postal_code
     - province
 
-- name: relationship.dflow
+- name: Business Relationship
   version: '1.0.3'
   attributes:
     - corp_num

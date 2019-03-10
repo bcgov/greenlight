@@ -126,7 +126,7 @@ issuers:
 
 
       - description: Relationship
-        schema: relationship.dflow
+        schema: Business Relationship
         issuer_url: $APPLICATION_URL/bcreg/dba
         credential:
           effective_date:
