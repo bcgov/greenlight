@@ -20,7 +20,7 @@
 
     rewrite {
         # required for Angular router to work properly
-        r ^/demo/?$
+        r ^/(demo|about|home)/?$
         to /
     }
 
