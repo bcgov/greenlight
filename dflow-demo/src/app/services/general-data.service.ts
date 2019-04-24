@@ -136,7 +136,7 @@ export class GeneralDataService {
               break;
             } else if(found === null) {
               found = {
-                id: name.id,
+                id: name.credential_id,
                 term: name.text
               };
             }
