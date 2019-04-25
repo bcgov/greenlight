@@ -130,7 +130,7 @@ export class GeneralDataService {
           for(let name of row.names) {
             if(~ name.text.toLowerCase().indexOf(term.toLowerCase())) {
               found = {
-                id: name.id,
+                id: name.credential_id,
                 term: name.text
               };
               break;
