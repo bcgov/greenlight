@@ -5,8 +5,8 @@ WORKDIR $HOME
 
 ADD config $HOME/config
 ADD docker $HOME/docker
-ADD dflow-agent/src $HOME/src
-ADD dflow-agent/templates $HOME/templates
+ADD greenlight-agent/src $HOME/src
+ADD greenlight-agent/templates $HOME/templates
 
 USER root
 

@@ -312,7 +312,7 @@
       "displayName": "App Group",
       "description": "The name assigned to all of the deployments in this project.",
       "required": true,
-      "value": "dflow-demo"
+      "value": "greenlight-demo"
     },
     {
       "name": "IMAGE_NAMESPACE",
@@ -333,14 +333,14 @@
       "displayName": "Application Url",
       "description": "The application URL.",
       "required": true,
-      "value": "https://dev-dflow.orgbook.gov.bc.ca"
+      "value": "https://dev-greenlight.orgbook.gov.bc.ca"
     },
     {
       "name": "ENDPOINT_URL",
       "displayName": "Endpoint URL",
       "description": "The public domain endpoint for the agent, which is registered on the ledger.",
       "required": true,
-      "value": "https://bc-registries-dev-dflow.pathfinder.gov.bc.ca"
+      "value": "https://bc-registries-dev-greenlight.pathfinder.gov.bc.ca"
     },
     {
       "name": "TCP_SOCKET_FAMILY",
@@ -382,7 +382,7 @@
       "displayName": "Indy Ledger URL",
       "description": "URL for a running instance of the von-network.  Used when connecting to the BCovrin Ledger.",
       "required": false,
-      "value": "http://dev.dflow.bcovrin.vonx.io"
+      "value": "http://dev.greenlight.bcovrin.vonx.io"
     },
     {
       "name": "LEDGER_PROTOCOL_VERSION",

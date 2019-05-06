@@ -2,7 +2,7 @@
 // In other words all of the images that are currently deployed in DEV will be tagged for deployment to TEST.
 
 // Define these in the order they should be deployed.
-def APP_NAMES = ['dflow', 'agent', 'postgresql']
+def APP_NAMES = ['greenlight', 'agent', 'postgresql']
 def SOURCE_TAG = 'dev'
 def DESTINATION_TAG = 'test'
 

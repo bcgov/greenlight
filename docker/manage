@@ -52,7 +52,7 @@ usage() {
 
   start - Same as up
 
-  start-dev - Builds and runs a live development version of dflow, along with
+  start-dev - Builds and runs a live development version of greenlight, along with
               the required supporting components. Once started, the website is
               automatically compiled and updated in response to file modifications.
 
@@ -100,7 +100,7 @@ configureEnvironment () {
   done
 
   # general
-  export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-"dflow"}
+  export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-"greenlight"}
   export LEDGER_URL=${LEDGER_URL-http://$DOCKERHOST:9000}
   export APPLICATION_URL=${APPLICATION_URL-http://localhost:${WEB_HTTP_PORT:-5000}}
   export ENDPOINT_URL=http://${ENDPOINT_HOST-$DOCKERHOST:${WEB_HTTP_PORT:-5000}}
@@ -177,7 +177,7 @@ build() {
   # The s2i-caddy image is used as base for the caddy-runtime runtime image.
   # The caddy-runtime image is used for the final runtime image.
   # The nodejs-build image is used to build the artifacts for the angular distribution.
-  # The dflow image is copy of the s2i-caddy image complete with a copy of the build artifacts.
+  # The greenlight image is copy of the s2i-caddy image complete with a copy of the build artifacts.
   #
   echo -e "\nBuilding bcgov-s2i-caddy image ..."
   docker build -q \
@@ -204,7 +204,7 @@ build() {
   fi
 
 
-  echo -e "\nBuilding dflow image ..."
+  echo -e "\nBuilding greenlight image ..."
   ${S2I_EXE} build \
     -e "NPM_CONFIG_COLOR=${NPM_COLOR}" \
     -e "NPM_CONFIG_LOGLEVEL=timing" \
@@ -212,12 +212,12 @@ build() {
     -e "HTTPS_PROXY=${HTTPS_PROXY}" \
     -e "NG_BASE_HREF=${WEB_BASE_HREF}" \
     -e "NG_DEPLOY_URL=${WEB_DEPLOY_URL}" \
-    -v "${COMPOSE_PROJECT_NAME}_dflow-npm-cache:/opt/app-root/src/.npm" \
+    -v "${COMPOSE_PROJECT_NAME}_greenlight-npm-cache:/opt/app-root/src/.npm" \
     --runtime-image "caddy-runtime" \
-    -a /opt/app-root/src/dist/dflow-demo \
-    '../dflow-demo' \
+    -a /opt/app-root/src/dist/greenlight-demo \
+    '../greenlight-demo' \
     'nodejs-build' \
-    'dflow'
+    'greenlight'
 }
 
 build-dev() {
@@ -229,17 +229,17 @@ build-dev() {
     -f './nodejs-build/Dockerfile' '../'
 
   # NB: We build with DEV_MODE=true but run with DEV_MODE=false
-  echo -e "\nBuilding dflow-dev image ..."
+  echo -e "\nBuilding greenlight-dev image ..."
   ${S2I_EXE} build \
     -e "DEV_MODE=true" \
     -e "HTTP_PROXY=${HTTP_PROXY}" \
     -e "HTTPS_PROXY=${HTTPS_PROXY}" \
     -e "NG_BASE_HREF=${WEB_BASE_HREF}" \
     -e "NG_DEPLOY_URL=${WEB_DEPLOY_URL}" \
-    -v "${COMPOSE_PROJECT_NAME}_dflow-npm-cache:/opt/app-root/src/.npm" \
-    '../dflow-demo' \
+    -v "${COMPOSE_PROJECT_NAME}_greenlight-npm-cache:/opt/app-root/src/.npm" \
+    '../greenlight-demo' \
     'nodejs-build' \
-    'dflow-dev'
+    'greenlight-dev'
 }
 
 deleteVolumes() {
@@ -264,7 +264,7 @@ pylint() {
     $PIP install pylint
   fi
   cd ..
-  $PYLINT dflow-agent/src/*.py
+  $PYLINT greenlight-agent/src/*.py
 }
 
 # =================================================================================================================
@@ -286,7 +286,7 @@ case "$COMMAND" in
     docker-compose logs -f
     ;;
   start-dev)
-    DEFAULT_CONTAINERS="proxy-dev dflow-dev $DEFAULT_CONTAINERS"
+    DEFAULT_CONTAINERS="proxy-dev greenlight-dev $DEFAULT_CONTAINERS"
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
     [ -z "$SKIP_BUILD" ] && build-dev

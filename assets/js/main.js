@@ -70,7 +70,7 @@ $(function() {
         url: `${THE_ORG_BOOK_APP_URL}/api/credential/${walletId}`,
         contentType: "application/json"
       }).done(function(response) {
-        // get dFlow host from document.referrer
+        // get greenlight host from document.referrer
         const hostURL = document.referrer.split('/demo')[0];
 
         // retrieve queryparams defining the target credentials
@@ -79,7 +79,7 @@ $(function() {
         const issuer_did = decodeURIComponent(window.location.href.split('&')[3].split('=')[1]);
         const issuer_endpoint = decodeURIComponent(window.location.href.split('&')[4].split('=')[1]);
 
-        // build dFlow return URL from above parameters
+        // build greenlight return URL from above parameters
         window.location = `${hostURL}/demo?topic=${response.topic}&name=${schema_name}&version=${schema_version}&did=${issuer_did}&issuer_endpoint=${issuer_endpoint}`;
       });
     });

@@ -1,5 +1,5 @@
 export PROJECT_NAMESPACE=${PROJECT_NAMESPACE:-devex-von-permitify}
-export GIT_URI=${GIT_URI:-"https://github.com/bcgov/dflow.git"}
+export GIT_URI=${GIT_URI:-"https://github.com/bcgov/greenlight.git"}
 export GIT_REF=${GIT_REF:-"master"}
 
 
@@ -15,7 +15,7 @@ export -a skip_git_overrides=""
 export builds=""
 
 # The images to be tagged after build
-export images="agent postgresql dflow redis"
+export images="agent postgresql greenlight redis"
 
 # The routes for the project
-export routes="dflow"
+export routes="greenlight"

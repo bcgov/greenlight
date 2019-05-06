@@ -1,0 +1,15 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: templates/greenlight-angular/greenlight-angular-build.json
+#=========================================================
+NAME=greenlight-angular
+GIT_REPO_URL=https://github.com/bcgov/greenlight.git
+GIT_REF=master
+SOURCE_CONTEXT_DIR=
+OUTPUT_IMAGE_TAG=latest
+DOCKER_FILE_PATH=docker/angular-build/Dockerfile
+CPU_LIMIT=0
+MEMORY_LIMIT=0Mi
+CPU_REQUEST=0
+MEMORY_REQUEST=0Mi

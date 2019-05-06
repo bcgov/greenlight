@@ -4,7 +4,7 @@
 # Template File: templates/redis/redis-deploy.json
 #=========================================================
 NAME=redis
-APP_GROUP=dflow-demo
+APP_GROUP=greenlight-demo
 DATABASE_PASSWORD=[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}
 IMAGE_NAMESPACE=devex-von-permitify-tools
 SOURCE_IMAGE_NAME=redis

@@ -1,6 +1,6 @@
-# Running dFlow with Docker Compose
+# Running GreenLight with Docker Compose
 
-The following instructions provide details on how to deploy dFlow using Docker Compose.  This method of deployment is intended for local development and demonstration purposes.  It is **NOT** intended to be support production level deployments where security, availability, resilience, and data integrity are important.
+The following instructions provide details on how to deploy GreenLight using Docker Compose.  This method of deployment is intended for local development and demonstration purposes.  It is **NOT** intended to be support production level deployments where security, availability, resilience, and data integrity are important.
 
 All application services are exposed to the host so they may be easily accessed individually for development and testing purposes.
 
@@ -14,7 +14,7 @@ All application services are exposed to the host so they may be easily accessed 
 
 ## Quick Start Guide
 
-For basic instructions on running a full local demo of the VON Network with dFlow, see the [Quick Start Guide](VONNetworkQuickStartGuide.md).
+For basic instructions on running a full local demo of the VON Network with GreenLight, see the [Quick Start Guide](VONQuickStartGuide.md).
 
 ## Management Script
 
@@ -68,15 +68,15 @@ Often during a debugging session, `stop` is sufficient as want to keep your wall
 
 ## Using the Application
 
-* The dFlow user interface is exposed at [http://localhost:5000/](http://localhost:5000/)
+* The GreenLight user interface is exposed at [http://localhost:5000/](http://localhost:5000/)
 
-To confirm the application initialization is complete, go to the dFlow screen and look at the `Credentials` drop down. It should have all of the Credentials for the Issuer/Verifier Agents listed - currently 8 entries. If only some are showing, wait and refresh the screen until all are displayed.
+To confirm the application initialization is complete, go to the GreenLight screen and look at the `Credentials` drop down. It should have all of the Credentials for the Issuer/Verifier Agents listed - currently 8 entries. If only some are showing, wait and refresh the screen until all are displayed.
 
 If the user interface does not start, or the `Credentials` drop down does not populate in a reasonable amount of time - check the rolling logs for errors and stack traces.
 
 ## Health Check
 
-To check whether the issuer services have started browse to the *healthcheck* endpoint of each service.  An **ok** response from the service indicates it is ready.  A full list of the services (and their urls) can be found in the [CaddyFile](https://github.com/bcgov/dFlow/blob/master/caddy/Caddyfile) of the dFlow application.
+To check whether the issuer services have started browse to the *healthcheck* endpoint of each service.  An **ok** response from the service indicates it is ready.  A full list of the services (and their urls) can be found in the [CaddyFile](https://github.com/bcgov/greenlight/blob/master/caddy/Caddyfile) of the GreenLight application.
 
 [http://localhost:5000/bcreg/health](http://localhost:5000/bcreg/health)
 [http://localhost:5000/finance/health](http://localhost:5000/finance/health)

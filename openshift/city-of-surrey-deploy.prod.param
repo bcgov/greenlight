@@ -4,7 +4,7 @@
 # Template File: templates/agents/city-of-surrey-deploy.json
 #=========================================================
 # NAME=city-of-surrey
-# APP_GROUP=dflow-demo
+# APP_GROUP=greenlight-demo
 # IMAGE_NAMESPACE=devex-von-permitify-tools
 TAG_NAME=prod
 APPLICATION_URL=https://demo.orgbook.gov.bc.ca
@@ -14,7 +14,7 @@ ENDPOINT_URL=https://demo.orgbook.gov.bc.ca
 # HOST_PORT=8080
 # ENVIRONMENT=default
 # GENESIS_URL=
-INDY_LEDGER_URL=http://dflow.bcovrin.vonx.io
+INDY_LEDGER_URL=http://greenlight.bcovrin.vonx.io
 # LEDGER_PROTOCOL_VERSION=
 # AUTO_REGISTER_DID=1
 LOG_LEVEL=WARNING
