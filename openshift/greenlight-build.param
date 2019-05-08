@@ -1,0 +1,13 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: templates/greenlight/greenlight-build.json
+#=========================================================
+NAME=greenlight
+SOURCE_IMAGE_NAMESPACE=devex-von-permitify-tools
+SOURCE_IMAGE_NAME=greenlight-angular
+SOURCE_IMAGE_TAG=latest
+RUNTIME_IMAGE_NAMESPACE=devex-von-permitify-tools
+RUNTIME_IMAGE_NAME=caddy-runtime
+RUNTIME_IMAGE_TAG=latest
+OUTPUT_IMAGE_TAG=latest

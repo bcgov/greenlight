@@ -4,17 +4,17 @@
 # Template File: templates/agents/fraser-valley-health-authority-deploy.json
 #=========================================================
 NAME=fraser-valley-health-authority
-APP_GROUP=dflow-demo
+APP_GROUP=greenlight-demo
 IMAGE_NAMESPACE=devex-von-permitify-tools
 TAG_NAME=dev
-APPLICATION_URL=https://dev-dflow.orgbook.gov.bc.ca
-ENDPOINT_URL=https://fraser-valley-health-dev-dflow.pathfinder.gov.bc.ca
+APPLICATION_URL=https://dev-greenlight.orgbook.gov.bc.ca
+ENDPOINT_URL=https://fraser-valley-health-dev-greenlight.pathfinder.gov.bc.ca
 TCP_SOCKET_FAMILY=TCPV4
 CONFIG_ROOT=../config/fraser-valley-agent
 HOST_PORT=8080
 ENVIRONMENT=default
 GENESIS_URL=
-INDY_LEDGER_URL=http://dev.dflow.bcovrin.vonx.io
+INDY_LEDGER_URL=http://dev.greenlight.bcovrin.vonx.io
 LEDGER_PROTOCOL_VERSION=
 AUTO_REGISTER_DID=1
 LOG_LEVEL=INFO

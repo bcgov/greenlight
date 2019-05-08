@@ -4,17 +4,17 @@
 # Template File: templates/agents/worksafe-bc-deploy.json
 #=========================================================
 # NAME=worksafe-bc
-# APP_GROUP=dflow-demo
+# APP_GROUP=greenlight-demo
 # IMAGE_NAMESPACE=devex-von-permitify-tools
 TAG_NAME=test
-APPLICATION_URL=https://dflow.orgbook.gov.bc.ca
-ENDPOINT_URL=https://worksafe-bc-dflow.pathfinder.gov.bc.ca
+APPLICATION_URL=https://greenlight.orgbook.gov.bc.ca
+ENDPOINT_URL=https://worksafe-bc-greenlight.pathfinder.gov.bc.ca
 # TCP_SOCKET_FAMILY=TCPV4
 # CONFIG_ROOT=../config/worksafe-agent
 # HOST_PORT=8080
 # ENVIRONMENT=default
 # GENESIS_URL=
-INDY_LEDGER_URL=http://dflow.bcovrin.vonx.io
+INDY_LEDGER_URL=http://greenlight.bcovrin.vonx.io
 # LEDGER_PROTOCOL_VERSION=
 # AUTO_REGISTER_DID=1
 LOG_LEVEL=WARNING

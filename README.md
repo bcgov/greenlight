@@ -1,12 +1,12 @@
-# dFlow
+# GreenLight
 
-dFlow ("decentralized workFlow") demonstrates a basic application for deploying the [VON-X](https://github.com/PSPC-SPAC-buyandsell/von-x) library, in order to enable issuer registration, claims verification, and credential submission to [TheOrgBook](https://github.com/bcgov/TheOrgBook). It includes Docker tooling for deployment of the application behind a Caddy reverse proxy.
+GreenLight (an instance of decentralized workFlow) demonstrates a basic application for deploying the [VON-X](https://github.com/PSPC-SPAC-buyandsell/von-x) library, in order to enable issuer registration, claims verification, and credential submission to [TheOrgBook](https://github.com/bcgov/TheOrgBook). It includes Docker tooling for deployment of the application behind a Caddy reverse proxy.
 
-`dFlow` is being developed as part of the Verifiable Organizations Network (VON). For more information on VON see https://vonx.io.  Even, better - join in with what we are doing and contribute to VON and the Indy community.
+`greenlight` is being developed as part of the Verifiable Organizations Network (VON). For more information on VON see https://vonx.io.  Even, better - join in with what we are doing and contribute to VON and the Indy community.
 
-## The dFlow Business Scenario
+## The GreenLight Business Scenario
 
-The business problem addressed in this demo is a business trying to get Business Permits and Licences in their local municipality. Getting such authorizations are complicated processes, often requiring contacting multiple jurisdictions to acquire multiple credentials - licenses, permits, registrations, etc., each of which may require the presentation of previously acquired credentials from other sources. dFlow simplifies the problem by:
+The business problem addressed in this demo is a business trying to get Business Permits and Licences in their local municipality. Getting such authorizations are complicated processes, often requiring contacting multiple jurisdictions to acquire multiple credentials - licenses, permits, registrations, etc., each of which may require the presentation of previously acquired credentials from other sources. GreenLight simplifies the problem by:
 
 - Asking the user to select the business goal they are trying to achieve. For example, a Business Licence to open a restaurent, or a "Dog and Cat Breeder" permit.
 - Starting from the goal, evaluating the Hyperledger Indy prerequisite proof request to determine the credentials needed to acquire that credential.
@@ -17,15 +17,15 @@ The business problem addressed in this demo is a business trying to get Business
 
 # Running a Complete VON Network
 
-A quick start guide for running a complete local VON Network (including a local Indy Network, an instance of TheOrgBook and dFlow) can be found in the [VON Network Quick Start Guide](https://github.com/bcgov/dFlow/blob/master/docker/VONQuickStartGuide.md).
+A quick start guide for running a complete local VON Network (including a local Indy Network, an instance of TheOrgBook and GreenLight) can be found in the [VON Network Quick Start Guide](https://github.com/bcgov/greenlight/blob/master/docker/VONQuickStartGuide.md).
 
 ## Running Locally
 
-Instructions for running just dFlow locally can be found in the [dFlow docker folder](https://github.com/bcgov/dFlow/tree/master/docker). Instructions for running a 
+Instructions for running just GreenLight locally can be found in the [GreenLight docker folder](https://github.com/bcgov/greenlight/tree/master/docker).
 
 ## Running a Shared Instance
 
-dFlow can be run on a server for multiple users. The `docker` folder provides guidance of what needs to be set up. Likewise, the `openshift` folder contains an example of deploying dflow to a `Red Hat OpenShift` instance.
+GreenLight can be run on a server for multiple users. The `docker` folder provides guidance of what needs to be set up. Likewise, the `openshift` folder contains an example of deploying GreenLight to a `Red Hat OpenShift` instance.
 
 ## Services
 
@@ -37,9 +37,9 @@ Services are defined using config files. See ./config folders for examples of th
 
 - For Django's hot-reloading to work in development, the src directory needs to mounted as a volume. This only works when one "service" is defined in the docker-compose.yml since multiple services will clobber each other's config files that get copied in.
 
-## Adding a new issuing service to dFlow
+## Adding a new issuing service to GreenLight
 
-The steps below describe how to add and register a new issuer service to a dFlow instance.
+The steps below describe how to add and register a new issuer service to a GreenLight instance.
 
 Prerequisites:
 
@@ -126,7 +126,7 @@ proxy-dev:
 ...
 
 caddy:
-    image: dflow
+    image: greenlight
     environment:
       ...
       MYORG_AGENT_HOST: ${MYORG_AGENT_HOST}
@@ -150,7 +150,7 @@ DEFAULT_CONTAINERS="agent-wallet-db myorg-agent bcreg-agent ministry-finance-age
 
 ### Update OpenShift Configuration
 
-If you use OpenShift, you will be interested in adding a new deployment configuration for the new agent, and updating the deployment configuration for dflow to correctly proxy requests.
+If you use OpenShift, you will be interested in adding a new deployment configuration for the new agent, and updating the deployment configuration for GreenLight to correctly proxy requests.
 
 - In the `openshift/agents` folder, copy one of the existing agents deployment configurations and create a new one.
   - Make sure to update the name and all the variables in the deployment configuration to reflect the new agent mnemonic picked for the configuration files.

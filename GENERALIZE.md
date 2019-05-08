@@ -1,6 +1,6 @@
-If dFlow is to be decoupled from TheOrgBook, there are a few changes that will need to be made. This is a rough list of expected changes to help you get started.
+If GreenLight is to be decoupled from TheOrgBook, there are a few changes that will need to be made. This is a rough list of expected changes to help you get started.
 
-- On boot, dFlow publishes unpublished schemas and claim definitions found in the configuration files. This is good but it also registers itself with TheOrgBook which will need to be trimmed out. - https://github.com/bcgov/dflow/blob/master/src/von_connector/apps.py
+- On boot, GreenLight publishes unpublished schemas and claim definitions found in the configuration files. This is good but it also registers itself with TheOrgBook which will need to be trimmed out. - https://github.com/bcgov/greenlight/blob/master/src/von_connector/apps.py
 
 
 ### Current Claims Exchange API
@@ -46,8 +46,8 @@ returns `claim request json`
 
 ### Important Files
 
-- https://github.com/bcgov/dflow/blob/master/src/von_connector/apps.py
-- https://github.com/bcgov/dflow/blob/master/src/von_connector/schema.py
-- https://github.com/bcgov/dflow/blob/master/src/von_connector/proof.py
-- https://github.com/bcgov/dflow/blob/master/src/dflow/views.py
-- https://github.com/bcgov/dflow/tree/master/site_templates
+- https://github.com/bcgov/greenlight/blob/master/src/von_connector/apps.py
+- https://github.com/bcgov/greenlight/blob/master/src/von_connector/schema.py
+- https://github.com/bcgov/greenlight/blob/master/src/von_connector/proof.py
+- https://github.com/bcgov/greenlight/blob/master/src/greenlight/views.py
+- https://github.com/bcgov/greenlight/tree/master/site_templates

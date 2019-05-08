@@ -3,7 +3,7 @@ FROM node:carbon
 
 WORKDIR /app
 
-ADD dflow-demo /app
+ADD greenlight-demo /app
 
 RUN npm install
 

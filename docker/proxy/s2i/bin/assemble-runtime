@@ -1,4 +1,4 @@
 #!/bin/sh
 echo "Moving bits and pieces, please hold on..."
 
-cp -r /srv/dflow-demo/* /srv
+cp -r /srv/greenlight-demo/* /srv

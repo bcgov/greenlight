@@ -4,7 +4,7 @@
 # Template File: templates/wallet-db/wallet-db-deploy.json
 #=========================================================
 # NAME=wallet-db
-# APP_GROUP=dflow-demo
+# APP_GROUP=greenlight-demo
 # IMAGE_NAMESPACE=devex-von-permitify-tools
 # SOURCE_IMAGE_NAME=postgresql
 TAG_NAME=prod

@@ -8,14 +8,14 @@ SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 usage () {
   cat <<-EOF
 
-  Manage the dflow issuer services within a given OpenShift environment.
+  Manage the greenlight issuer services within a given OpenShift environment.
 
   Usage:
     $0 [options] [commands]
 
   Example:
     $0 -e test scaleDown
-    - This will scale down all of the issuer services in the dflow TEST environment.
+    - This will scale down all of the issuer services in the greenlight TEST environment.
 
   Options:
   ========
@@ -208,7 +208,7 @@ recycle() {
 }
 
 # Add any non-issurer service pods to this list
-NON_ISSURER_SERVICE_PODS="redis dflow wallet-db"
+NON_ISSURER_SERVICE_PODS="redis greenlight wallet-db"
 
 getIssuerServicePods() {
   _pods=$(getAllPods ${@})
