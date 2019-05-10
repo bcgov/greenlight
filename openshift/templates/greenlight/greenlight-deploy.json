@@ -336,14 +336,14 @@
       "value": "/"
     },
     {
-      "name": "MINISTRY_AGRICULTURE_HOST",
+      "name": "MINISTRY_AGRICULTURE_AGENT_HOST",
       "displayName": "Agent Host Name",
       "description": "The name of the Ministry of Agriculture von-x agent associated with this proxy.",
       "required": true,
       "value": "ministry-of-agriculture"
     },
     {
-      "name": "MINISTRY_AGRICULTURE_PORT",
+      "name": "MINISTRY_AGRICULTURE_AGENT_PORT",
       "displayName": "Agent Port",
       "description": "The port of the Ministry of Agriculture von-x agent associated with this proxy.",
       "required": true,
