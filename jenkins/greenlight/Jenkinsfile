@@ -3,7 +3,7 @@ def APP_NAME = 'greenlight'
 def ANGULAR_APP_NAME = 'greenlight-angular'
 
 // Wait timeout in minutes
-def WAIT_TIMEOUT = 25
+def WAIT_TIMEOUT = 10
 
 // Edit your environment TAG names below
 def TAG_NAMES = ['dev', 'test', 'prod']
@@ -32,8 +32,8 @@ node {
         openshift.withProject() {
 
           echo "Building the application artifacts ..."
-          def build = openshift.selector("bc", "${ANGULAR_BUILD_CONFIG}")
-          build.startBuild()
+          def buildConfig = openshift.selector("bc", "${ANGULAR_BUILD_CONFIG}")
+          def build = buildConfig.startBuild()
 
           timeout(WAIT_TIMEOUT) {
             // Wait for the build to complete ...
@@ -60,8 +60,8 @@ node {
         openshift.withProject() {
 
           echo "Building the ${RUNTIME_BUILD_CONFIG} image ..."
-          def build = openshift.selector("bc", "${RUNTIME_BUILD_CONFIG}")
-          build.startBuild()
+          def buildConfig = openshift.selector("bc", "${RUNTIME_BUILD_CONFIG}")
+          def build = buildConfig.startBuild()
 
           timeout(WAIT_TIMEOUT) {
             // Wait for the build to complete ...
@@ -88,8 +88,8 @@ node {
         openshift.withProject() {
 
           echo "Building ${BUILD_CONFIG} ..."
-          def build = openshift.selector("bc", "${BUILD_CONFIG}")
-          build.startBuild().logs("-f")
+          def buildConfig = openshift.selector("bc", "${BUILD_CONFIG}")
+          def build = buildConfig.startBuild()
 
           timeout(WAIT_TIMEOUT) {
             // Wait for the build to complete ...

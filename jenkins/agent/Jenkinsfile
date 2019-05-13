@@ -1,6 +1,9 @@
 // Edit your app's name below
 def APP_NAME = 'agent'
 
+// Wait timeout in minutes
+def WAIT_TIMEOUT = 5
+
 // Edit your environment TAG names below
 def TAG_NAMES = ['dev', 'test', 'prod']
 
@@ -26,8 +29,8 @@ node {
         openshift.withProject() {
 
           echo "Building ${BUILD_CONFIG} ..."
-          def build = openshift.selector("bc", "${BUILD_CONFIG}")
-          build.startBuild()
+          def buildConfig = openshift.selector("bc", "${BUILD_CONFIG}")
+          def build = buildConfig.startBuild()
 
           timeout(WAIT_TIMEOUT) {
             // Wait for the build to complete ...
