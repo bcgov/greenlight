@@ -3,7 +3,7 @@ def APP_NAME = 'greenlight'
 def ANGULAR_APP_NAME = 'greenlight-angular'
 
 // Wait timeout in minutes
-def WAIT_TIMEOUT = 5
+def WAIT_TIMEOUT = 25
 
 // Edit your environment TAG names below
 def TAG_NAMES = ['dev', 'test', 'prod']
