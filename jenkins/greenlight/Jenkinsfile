@@ -33,7 +33,7 @@ node {
 
           echo "Building the application artifacts ..."
           def build = openshift.selector("bc", "${ANGULAR_BUILD_CONFIG}")
-          build.startBuild().logs("-f")
+          build.startBuild()
 
           timeout(WAIT_TIMEOUT) {
             // Wait for the build to complete ...
@@ -61,7 +61,7 @@ node {
 
           echo "Building the ${RUNTIME_BUILD_CONFIG} image ..."
           def build = openshift.selector("bc", "${RUNTIME_BUILD_CONFIG}")
-          build.startBuild().logs("-f")
+          build.startBuild()
 
           timeout(WAIT_TIMEOUT) {
             // Wait for the build to complete ...
