@@ -2,6 +2,9 @@
 def APP_NAME = 'greenlight'
 def ANGULAR_APP_NAME = 'greenlight-angular'
 
+// Wait timeout in minutes
+def WAIT_TIMEOUT = 10
+
 // Edit your environment TAG names below
 def TAG_NAMES = ['dev', 'test', 'prod']
 
@@ -22,6 +25,32 @@ String getImageTagHash(String imageName, String tag = "") {
   return istag.out.tokenize('@')[1].trim()
 }
 
+void build(String buildConfigName, int waitTimeout) {
+  // Find all of the build configurations associated to the application ...
+  def buildconfigs = openshift.selector("bc", "${buildConfigName}")
+  echo "Found ${buildconfigs.count()} buildconfigs: ${buildconfigs.names()}"
+
+  // Kick off all the builds in parallel ...
+  def builds = buildconfigs.startBuild()
+  echo "Started ${builds.count()} builds: ${builds.names()}"
+
+  timeout(waitTimeout) {
+    // Wait for all the builds to complete ...
+    // This section will exit after the last build completes.
+    echo "Waiting for builds to complete ..."
+    builds.withEach {
+      // untilEach and watch - do not support watching multiple named resources,
+      // so we have to feed it one at a time.
+      it.untilEach(1) {
+          echo "${it.object().status.phase} - ${it.name()}"
+          return (it.object().status.phase == "Complete")
+      }
+    }
+  }
+
+  echo "Builds complete ..."
+}
+
 node {
   stage("Build ${ANGULAR_BUILD_CONFIG}") {
     script {
@@ -29,8 +58,7 @@ node {
         openshift.withProject() {
 
           echo "Building the application artifacts ..."
-          def build = openshift.selector("bc", "${ANGULAR_BUILD_CONFIG}")
-          build.startBuild().logs("-f")
+          build("${ANGULAR_BUILD_CONFIG}", WAIT_TIMEOUT)
         }
       }
     }
@@ -43,8 +71,7 @@ node {
         openshift.withProject() {
 
           echo "Building the ${RUNTIME_BUILD_CONFIG} image ..."
-          def build = openshift.selector("bc", "${RUNTIME_BUILD_CONFIG}")
-          build.startBuild().logs("-f")
+          build("${RUNTIME_BUILD_CONFIG}", WAIT_TIMEOUT)
         }
       }
     }
@@ -57,8 +84,7 @@ node {
         openshift.withProject() {
 
           echo "Building ${BUILD_CONFIG} ..."
-          def build = openshift.selector("bc", "${BUILD_CONFIG}")
-          build.startBuild().logs("-f")
+          build("${BUILD_CONFIG}", WAIT_TIMEOUT)
         }
       }
     }
