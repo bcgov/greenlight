@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-export DOCKERHOST=${APPLICATION_URL-$(docker run --rm --net=host codenvy/che-ip)}
+export DOCKERHOST=${APPLICATION_URL-$(docker run --rm --net=host eclipse/che-ip)}
 export MSYS_NO_PATHCONV=1
 set -e
 
