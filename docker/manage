@@ -180,19 +180,19 @@ build() {
   # The greenlight image is copy of the s2i-caddy image complete with a copy of the build artifacts.
   #
   echo -e "\nBuilding bcgov-s2i-caddy image ..."
-  docker build -q \
+  docker build -q $(initDockerBuildArgs) \
     -t 'bcgov-s2i-caddy' \
     'https://github.com/BCDevOps/s2i-caddy.git'
 
   echo -e "\nBuilding caddy-runtime image ..."
-  docker build -q \
+  docker build -q $(initDockerBuildArgs) \
     -t 'caddy-runtime' \
     -f './proxy/Dockerfile' '../'
 
   # This image only exists to pre-create the npm cache directory
   # so it can be properly used as a volume, it doesn't apply to openshift
   echo -e "\nBuilding nodejs-build image ..."
-  docker build -q \
+  docker build -q $(initDockerBuildArgs) \
     -t 'nodejs-build' \
     -f './nodejs-build/Dockerfile' '../'
 
@@ -224,7 +224,7 @@ build-dev() {
   # This image only exists to pre-create the npm cache directory
   # so it can be properly used as a volume, it doesn't apply to openshift
   echo -e "\nBuilding nodejs-build image ..."
-  docker build -q \
+  docker build -q $(initDockerBuildArgs) \
     -t 'nodejs-build' \
     -f './nodejs-build/Dockerfile' '../'
 
@@ -265,6 +265,30 @@ pylint() {
   fi
   cd ..
   $PYLINT greenlight-agent/src/*.py
+}
+
+initDockerBuildArgs() {
+  dockerBuildArgs=""
+
+  # HTTP proxy, prefer lower case
+  if [[ "${http_proxy}" ]]; then
+    dockerBuildArgs=" ${dockerBuildArgs} --build-arg http_proxy=${http_proxy}"
+  else
+    if [[ "${HTTP_PROXY}" ]]; then
+      dockerBuildArgs=" ${dockerBuildArgs} --build-arg http_proxy=${HTTP_PROXY}"
+    fi
+  fi
+
+  # HTTPS proxy, prefer lower case
+  if [[ "${https_proxy}" ]]; then
+    dockerBuildArgs=" ${dockerBuildArgs} --build-arg https_proxy=${https_proxy}"
+  else
+    if [[ "${HTTPS_PROXY}" ]]; then
+      dockerBuildArgs=" ${dockerBuildArgs} --build-arg https_proxy=${HTTPS_PROXY}"
+    fi
+  fi
+
+  echo ${dockerBuildArgs}
 }
 
 # =================================================================================================================
